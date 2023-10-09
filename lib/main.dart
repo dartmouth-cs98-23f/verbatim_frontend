@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 void main() {
   runApp(const MyApp());
@@ -36,6 +37,20 @@ class MyApp extends StatelessWidget {
   }
 }
 
+Future<String> fetchFromBackend() async {
+  final response = await http.get(Uri.parse('http://localhost:8080/api/v1/helloWorld'));
+
+  if (response.statusCode == 200) {
+    // If the server did return a 200 OK response,
+    // then parse the JSON.
+    return response.body;
+  } else {
+    // If the server did not return a 200 OK response,
+    // then throw an exception.
+    throw Exception('Failed to load album');
+  }
+}
+
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key, required this.title});
 
@@ -56,8 +71,10 @@ class MyHomePage extends StatefulWidget {
 
 class _MyHomePageState extends State<MyHomePage> {
   int _counter = 0;
+  late String _backendResponse = "";
 
-  void _incrementCounter() {
+  void _incrementCounter() async {
+    String response = await fetchFromBackend();
     setState(() {
       // This call to setState tells the Flutter framework that something has
       // changed in this State, which causes it to rerun the build method below
@@ -65,6 +82,7 @@ class _MyHomePageState extends State<MyHomePage> {
       // _counter without calling setState(), then the build method would not be
       // called again, and so nothing would appear to happen.
       _counter++;
+      _backendResponse = response;
     });
   }
 
@@ -106,10 +124,10 @@ class _MyHomePageState extends State<MyHomePage> {
           mainAxisAlignment: MainAxisAlignment.center,
           children: <Widget>[
             const Text(
-              'You have pushed the button this many times:',
+              'Press the + button to talk to the backend:',
             ),
             Text(
-              '$_counter',
+              '$_backendResponse',
               style: Theme.of(context).textTheme.headlineMedium,
             ),
           ],
