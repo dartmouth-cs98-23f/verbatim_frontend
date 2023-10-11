@@ -1,4 +1,4 @@
 # verbatim_frontend
 Verbatim Flutter Frontend
 
-Ryan
+Ryan Dudak, Eve Wening, Eric Richardson, Dahlia Igiraneza, Jackline Gathoni
