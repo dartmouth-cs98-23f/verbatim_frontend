@@ -38,7 +38,9 @@ class MyApp extends StatelessWidget {
 }
 
 Future<String> fetchFromBackend() async {
-  final response = await http.get(Uri.parse('http://localhost:8080/api/v1/helloWorld'));
+
+  try {
+    final response = await http.get(Uri.parse('http://localhost:8080/api/v1/helloWorld'));
 
   if (response.statusCode == 200) {
     // If the server did return a 200 OK response,
@@ -47,8 +49,13 @@ Future<String> fetchFromBackend() async {
   } else {
     // If the server did not return a 200 OK response,
     // then throw an exception.
-    throw Exception('Failed to load album');
+    //throw Exception('Failed to load album');
+    return "response.body";
   }
+  } catch(E) {
+    return "something went wrong " + E.toString();
+  }
+  
 }
 
 class MyHomePage extends StatefulWidget {
