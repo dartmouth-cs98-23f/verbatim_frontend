@@ -93,7 +93,6 @@ class _SignUpState extends State<SignUp> {
       // Continue with sign-up
       print('Successfully signed up with this info: $username, $email, $password, $confirmedPassword');
       signUp(context, username, email, password, confirmedPassword);
-      print('After');
     }
   }
 
