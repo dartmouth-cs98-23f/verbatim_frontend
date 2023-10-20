@@ -22,27 +22,33 @@ class _SignUpState extends State<SignUp> {
   final confirmPasswordController = TextEditingController();
 
   void signUp(BuildContext context, username, String email, String password, String confirmPassword) async {
-    final response = await http.post(
-      Uri.parse('http://localhost:8080/api/v1/register'),
-      headers: <String, String>{
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode(
-          {'username': username, 'email': email, 'password': password}),
-    );
 
-    if (response.statusCode == 200) {
-      // Successful sign-up
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-            builder: (context) =>
-                globalChallenge()), // Use your actual page widget
+    try{
+      final response = await http.post(
+        Uri.parse('http://localhost:8080/api/v1/register'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode(
+            {'username': username, 'email': email, 'password': password}),
       );
-      print('Sign-up successful');
-    } else {
-      // Handle error
-      print('Error during sign-up');
+
+      if (response.statusCode == 200) {
+        // Successful sign-up
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+              builder: (context) =>
+                  globalChallenge()), // Use your actual page widget
+        );
+        print('Sign-up successful');
+      }
+      else{
+        print('Error during sign-up: ${response.statusCode.toString()}');
+      }
+    }
+    catch(e){
+      print('Error during sign-up: ${e.toString()}');
     }
   }
 

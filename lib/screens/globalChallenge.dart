@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'sideBar.dart';
-import 'package:verbatim_frontend/main.dart';
 
 class globalChallenge extends StatefulWidget {
   @override
@@ -29,35 +27,35 @@ class _GlobalChallengeState extends State<globalChallenge> {
             response
                 ? Text('Your Response: $userResponse')
                 : Column(
-                    children: [
-                      TextField(
-                        controller: responseController,
-                        onChanged: (value) {
-                          setState(() {
-                            userResponse = value;
-                          });
-                        },
-                        decoration: InputDecoration(
-                          hintText: 'Enter your response',
-                        ),
-                      ),
-                      SizedBox(height: 10.0),
-                      Visibility(
-                        visible:
-                            !response, // Show the button when response is false
-                        child: ElevatedButton(
-                          onPressed: () {
-                            setState(() {
-                              userResponse = responseController.text;
-                              responseController.clear();
-                              response = true;
-                            });
-                          },
-                          child: Text('Enter'),
-                        ),
-                      ),
-                    ],
+              children: [
+                TextField(
+                  controller: responseController,
+                  onChanged: (value) {
+                    setState(() {
+                      userResponse = value;
+                    });
+                  },
+                  decoration: InputDecoration(
+                    hintText: 'Enter your response',
                   ),
+                ),
+                SizedBox(height: 10.0),
+                Visibility(
+                  visible:
+                  !response, // Show the button when response is false
+                  child: ElevatedButton(
+                    onPressed: () {
+                      setState(() {
+                        userResponse = responseController.text;
+                        responseController.clear();
+                        response = true;
+                      });
+                    },
+                    child: Text('Enter'),
+                  ),
+                ),
+              ],
+            ),
           ],
         ),
       ),
