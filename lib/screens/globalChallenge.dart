@@ -12,7 +12,7 @@ class globalChallenge extends StatefulWidget {
 }
 
 class _GlobalChallengeState extends State<globalChallenge> {
-  String userResponse = ''; // Variable to store the user's response
+  String userResponse = '';
   TextEditingController responseController = TextEditingController();
 
   bool response = false;
@@ -22,28 +22,35 @@ class _GlobalChallengeState extends State<globalChallenge> {
     double screenHeight = MediaQuery.of(context).size.height;
 
     return Scaffold(
+      //Constant features: Title, sidebar, alarm icon
+
+      //Title: Verbatim
       appBar: AppBar(
         title: Text(
           'Verbatim',
           style: TextStyle(
-            fontSize: 18, // Adjust the font size
-            fontWeight: FontWeight.bold, // Apply bold style
+            fontSize: 18,
+            fontWeight: FontWeight.bold,
           ),
         ),
+
+        //left hand corner: alarm icon
         actions: <Widget>[
           IconButton(
-            icon: Icon(Icons.add_alert), // Replace with your desired icon
-            onPressed: () {
-              // Handle the button press
-            },
+            icon: Icon(Icons.add_alert),
+            onPressed: () {},
           ),
         ],
-        centerTitle: false, // Align title to the left
+        centerTitle: false,
       ),
+
+      //Sidebar implemented from sideBar.dart
       drawer: SideBar(),
+
       body: Center(
         child: Column(
           children: [
+            //Global Challenge # --> eventually pull in from backend
             Text(
               'Global Challenge #17',
               style: TextStyle(
@@ -51,17 +58,20 @@ class _GlobalChallengeState extends State<globalChallenge> {
                 fontWeight: FontWeight.bold,
               ),
             ),
+
+            // Tab controller: 'Play' and 'Global Stats'
             Container(
-              height: (500 * (screenHeight / 650)),
+              height: (500 *
+                  (screenHeight /
+                      650)), // amateur attempt at screen responsivity - will update later
               padding: EdgeInsets.symmetric(horizontal: 50.0),
               child: DefaultTabController(
-                length: 2, // Number of tabs
+                length: 2,
                 child: Column(
                   children: [
                     Expanded(
                       child: TabBar(
-                        indicatorColor: Colors
-                            .black, // Set the indicator (selected tab) color to black
+                        indicatorColor: Colors.black,
                         labelColor: Colors.black,
                         tabs: [
                           Tab(text: 'Play'),
@@ -70,12 +80,14 @@ class _GlobalChallengeState extends State<globalChallenge> {
                       ),
                     ),
                     Expanded(
-                      flex:
-                          7, // Adjust the flex value to control the tab content size
+                      flex: 7,
                       child: TabBarView(
                         children: [
+                          // PLAY TAB
                           Center(
                             child: response
+
+                                // if a response has been submitted;
                                 ? Column(
                                     children: [
                                       SizedBox(height: 30.0),
@@ -95,6 +107,8 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                         ),
                                       ),
                                       SizedBox(height: 25.0),
+
+                                      // user's response
                                       RichText(
                                         text: TextSpan(
                                           children: [
@@ -102,55 +116,24 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                               text: 'You said: ',
                                               style: TextStyle(
                                                 fontSize: 16,
-                                                color: Colors
-                                                    .black, // Change the color to your preference
+                                                color: Colors.black,
                                               ),
                                             ),
                                             TextSpan(
                                               text: userResponse,
                                               style: TextStyle(
-                                                fontSize: 24, // Make it big
-                                                fontWeight: FontWeight
-                                                    .bold, // Make it bold
-                                                color: Colors
-                                                    .black, // Change the color to your preference
+                                                fontSize: 24,
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black,
                                               ),
                                             ),
                                           ],
                                         ),
                                       ),
                                       SizedBox(height: 20.0),
-                                      Visibility(
-                                        visible:
-                                            !response, // Show the button when response is false
-                                        child: ElevatedButton(
-                                          style: ElevatedButton.styleFrom(
-                                            backgroundColor: Color.fromARGB(
-                                              255,
-                                              22,
-                                              93,
-                                              151,
-                                            ), // Background color
-                                            foregroundColor:
-                                                Colors.white, // Text color
-                                            shape: RoundedRectangleBorder(
-                                              borderRadius:
-                                                  BorderRadius.circular(0),
-                                            ),
-                                          ),
-                                          onPressed: () {
-                                            setState(() {
-                                              userResponse =
-                                                  responseController.text;
-                                              responseController.clear();
-                                              response = true;
-                                            });
-                                          },
-                                          child: Text('Submit!'),
-                                        ),
-                                      ),
                                       SizedBox(
                                           height: 15.0 * (screenHeight / 300)),
+
                                       Center(
                                         child: Container(
                                           width: 200,
@@ -194,6 +177,8 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                       ),
                                     ],
                                   )
+
+                                // if a response has NOT been submitted
                                 : Column(
                                     children: [
                                       SizedBox(
@@ -234,8 +219,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                       SizedBox(
                                           height: 15.0 * (screenHeight / 300)),
                                       Visibility(
-                                        visible:
-                                            !response, // Show the button when response is false
+                                        visible: !response,
                                         child: ElevatedButton(
                                           style: ElevatedButton.styleFrom(
                                             backgroundColor: Color.fromARGB(
@@ -243,9 +227,8 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                               22,
                                               93,
                                               151,
-                                            ), // Background color
-                                            foregroundColor:
-                                                Colors.white, // Text color
+                                            ),
+                                            foregroundColor: Colors.white,
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(0),
@@ -311,8 +294,11 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                     ],
                                   ),
                           ),
+
+                          // GLOBAL STATS TAB
                           Center(
                               child: response
+                                  // if a response HAS been submitted: you can see global stats
                                   ? Column(
                                       children: [
                                         SizedBox(height: 15.0),
@@ -332,6 +318,8 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                           ),
                                         ),
                                         SizedBox(height: 20.0),
+
+                                        // scrollable - maybe play should be scrollable too?
                                         Expanded(
                                           child: CustomScrollView(
                                             slivers: <Widget>[
@@ -401,7 +389,6 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                                 child: Center(
                                                   child: Text(
                                                     "Friends' Answers",
-                                                    // Add the text you want above the grid
                                                     style: TextStyle(
                                                       fontSize: 14,
                                                       fontWeight:
@@ -413,8 +400,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                               SliverGrid(
                                                 gridDelegate:
                                                     SliverGridDelegateWithMaxCrossAxisExtent(
-                                                  maxCrossAxisExtent:
-                                                      200.0, // Adjust the width of each column as needed
+                                                  maxCrossAxisExtent: 200.0,
                                                   mainAxisSpacing: 10.0,
                                                   crossAxisSpacing: 10.0,
                                                   childAspectRatio: 4.0,
@@ -438,7 +424,6 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                                 child: Center(
                                                   child: Text(
                                                     "New Category in 13:04:16",
-                                                    // Add the text you want above the grid
                                                     style: TextStyle(
                                                       fontSize: 14,
                                                       fontWeight:
@@ -452,6 +437,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                         ),
                                       ],
                                     )
+                                  // if a response has not been submitted, global stats are blocked
                                   : Text(
                                       'You need to submit a response to view Global States')),
                         ],

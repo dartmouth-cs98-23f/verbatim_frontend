@@ -24,11 +24,10 @@ class SideBar extends StatelessWidget {
           Container(
             decoration: ShapeDecoration(
               shape: RoundedRectangleBorder(
-                borderRadius:
-                    BorderRadius.circular(10.0), // Adjust the radius value
+                borderRadius: BorderRadius.circular(10.0),
                 side: BorderSide(
                   color: Colors.black,
-                  width: .75, // Border width
+                  width: .75,
                 ),
               ),
             ),
@@ -46,8 +45,7 @@ class SideBar extends StatelessWidget {
             title: Text('Friends'),
             initiallyExpanded:
                 true, // this will expand all of them - need to make a custom expansion tile at some point to fix this (i think)
-            //leading: Icon(Icons.person, color: Colors.black),
-            // trailing: Icon(Icons.add),
+
             shape: Border(),
             children: <Widget>[
               SizedBox(height: 10.0),
@@ -56,8 +54,7 @@ class SideBar extends StatelessWidget {
                 child: Container(
                   decoration: ShapeDecoration(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                          10.0), // Adjust the radius value
+                      borderRadius: BorderRadius.circular(10.0),
                       side: BorderSide(
                         color: Colors.black,
                         width: .75,
@@ -77,8 +74,7 @@ class SideBar extends StatelessWidget {
                 child: Container(
                   decoration: ShapeDecoration(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                          10.0), // Adjust the radius value
+                      borderRadius: BorderRadius.circular(10.0),
                       side: BorderSide(
                         color: Colors.black,
                         width: .75,
@@ -98,8 +94,7 @@ class SideBar extends StatelessWidget {
                 child: Container(
                   decoration: ShapeDecoration(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                          10.0), // Adjust the radius value
+                      borderRadius: BorderRadius.circular(10.0),
                       side: BorderSide(
                         color: Colors.black,
                         width: .75,
@@ -129,8 +124,7 @@ class SideBar extends StatelessWidget {
                 child: Container(
                   decoration: ShapeDecoration(
                     shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(
-                          10.0), // Adjust the radius value
+                      borderRadius: BorderRadius.circular(10.0),
                       side: BorderSide(
                         color: Colors.black,
                         width: .75,
@@ -161,8 +155,7 @@ class SideBar extends StatelessWidget {
             child: Container(
               decoration: ShapeDecoration(
                 shape: RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.circular(10.0), // Adjust the radius value
+                  borderRadius: BorderRadius.circular(10.0),
                   side: BorderSide(
                     color: Colors.black,
                     width: .75,
@@ -183,8 +176,7 @@ class SideBar extends StatelessWidget {
             child: Container(
               decoration: ShapeDecoration(
                 shape: RoundedRectangleBorder(
-                  borderRadius:
-                      BorderRadius.circular(10.0), // Adjust the radius value
+                  borderRadius: BorderRadius.circular(10.0),
                   side: BorderSide(
                     color: Colors.black,
                     width: .75,
