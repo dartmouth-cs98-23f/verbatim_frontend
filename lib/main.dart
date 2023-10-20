@@ -20,6 +20,11 @@ class MyApp extends StatelessWidget {
         colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
         useMaterial3: true,
       ),
+      navigatorKey: navigatorKey, // Set the navigatorKey
+      routes: {
+        '/global_challenge': (context) => globalChallenge(),
+        // Define other routes here
+      },
       home: const MyHomePage(title: 'Flutter Demo Home Page'),
     );
   }
@@ -60,9 +65,7 @@ void signUp(
     // Successful sign-up
     Navigator.push(
       context,
-      MaterialPageRoute(
-          builder: (context) =>
-              globalChallenge()), // Use your actual page widget
+      MaterialPageRoute(builder: (context) => globalChallenge()),
     );
     print('Sign-up successful');
   } else {
