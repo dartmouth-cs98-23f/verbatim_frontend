@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:verbatim_frontend/screens/sign_up.dart';
+import 'package:verbatim_frontend/screens/signUp.dart';
 
 void main() {
   runApp(const MyApp());
