@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
-
 import 'sideBar.dart';
 import 'package:verbatim_frontend/main.dart';
 import 'dart:math';
