@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:verbatim_frontend/screens/logIn.dart';
 import 'package:verbatim_frontend/screens/signUp.dart';
 
 void main() {
@@ -12,7 +13,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return const MaterialApp(
       debugShowCheckedModeBanner: false,
-      home: SignUp(),
+      home: LogIn(),
     );
   }
 }
