@@ -43,6 +43,7 @@ class SideBar extends StatelessWidget {
           SizedBox(height: 20.0),
           ExpansionTile(
             title: Text('Friends'),
+            trailing: Icon(Icons.add),
             initiallyExpanded:
                 true, // this will expand all of them - need to make a custom expansion tile at some point to fix this (i think)
 
@@ -201,9 +202,8 @@ class SideBar extends StatelessWidget {
 void handleTap(BuildContext context, int index) {
   switch (index) {
     case 0: // "Global Challenge"
-      var navigatorKey;
-      navigatorKey.currentState!.pushNamed('/global_challenge');
-
+      // ignore: prefer_typing_uninitialized_variables
+      Navigator.pushNamed(context, '/global_challenge');
       break;
     case 1: // "Group Name"
       Navigator.pushNamed(context, '/group_name');
