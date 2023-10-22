@@ -32,6 +32,10 @@ dependencies:
   flutter:
     sdk: flutter
   get: ^4.1.4
+  fl_chart: ^0.40.0
+  http: ^1.1.0
+  google_sign_in: ^5.2.1
+  flutter_signin_button: ^2.0.0
   
 
 
