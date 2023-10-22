@@ -201,6 +201,7 @@ class SideBar extends StatelessWidget {
 void handleTap(BuildContext context, int index) {
   switch (index) {
     case 0: // "Global Challenge"
+      var navigatorKey;
       navigatorKey.currentState!.pushNamed('/global_challenge');
 
       break;
