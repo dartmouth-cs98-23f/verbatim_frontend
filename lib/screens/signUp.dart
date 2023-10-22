@@ -5,6 +5,9 @@ import '../Components/my_button.dart';
 import 'globalChallenge.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:flutter_signin_button/flutter_signin_button.dart';
+
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -20,6 +23,7 @@ class _SignUpState extends State<SignUp> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+  GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
 
   void signUp(BuildContext context, username, String email, String password, String confirmPassword) async {
 
@@ -52,10 +56,30 @@ class _SignUpState extends State<SignUp> {
     }
   }
 
-  // To be implemented later
-  void signUpWithGoogle(){
-    print('Signing up with Google to be done later!');
+  Future<void> signUpWithGoogle() async {
+    // try {
+    //   final account = await _googleSignIn.signIn();
+    //
+    //   if (account != null) {
+    //     // User is signed in with Google, you can access account.displayName, account.email, etc.
+    //     // Add your logic to handle this user, e.g., save it to your backend.
+    //     print('Google Sign-In successful');
+    //     // Navigate to the desired screen after signing in
+    //     Navigator.push(
+    //       context,
+    //       MaterialPageRoute(builder: (context) => globalChallenge()),
+    //     );
+    //   } else {
+    //     // User canceled the Google Sign-In process or encountered an error.
+    //     print('Google Sign-In canceled or failed');
+    //   }
+    // } catch (error) {
+    //   // Handle any errors that occur during the Google Sign-In process.
+    //   print('Error during Google Sign-In: $error');
+    // }
+    print('Google Sign-In canceled or failed');
   }
+
 
   bool isValidEmail(String email) {
     // Use a regular expression to validate email format
@@ -233,6 +257,7 @@ class _SignUpState extends State<SignUp> {
                           },
                         ),
                         const SizedBox(height: 20),
+
                         MyButton(
                           buttonText: 'Sign up with Google',
                           hasButtonImage: true,
