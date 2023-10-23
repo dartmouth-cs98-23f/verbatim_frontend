@@ -35,7 +35,7 @@ class _SignUpState extends State<SignUp> {
           'Content-Type': 'application/json',
         },
         body: jsonEncode(
-            {'firstName': firstName, 'lastName': lastName, 'email': email, 'password': password}),
+            {'username': firstName, 'email': email, 'password': password}),
       );
 
       if (response.statusCode == 200) {
