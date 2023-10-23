@@ -44,7 +44,7 @@ class _SignUpState extends State<SignUp> {
           context,
           MaterialPageRoute(
               builder: (context) =>
-                  globalChallenge()), // Use your actual page widget
+                  globalChallenge()),
         );
         print('Sign-up successful');
       }
@@ -213,7 +213,7 @@ class _SignUpState extends State<SignUp> {
                         child: getValidationErrorWidget('firstName') ?? Container(),
                       ),
 
-                      const SizedBox(height: 25),
+                      const SizedBox(height: 18),
                       MyTextField(
                         controller: lastNameController,
                         hintText: 'Last name',
@@ -223,7 +223,7 @@ class _SignUpState extends State<SignUp> {
                         child: getValidationErrorWidget('lastName') ?? Container(),
                       ),
 
-                      const SizedBox(height: 25),
+                      const SizedBox(height: 18),
                       MyTextField(
                         controller: emailController,
                         hintText: 'Email',
@@ -233,7 +233,7 @@ class _SignUpState extends State<SignUp> {
                         child: getValidationErrorWidget('email') ?? Container(),
                       ),
 
-                      const SizedBox(height: 25),
+                      const SizedBox(height: 18),
                       MyTextField(
                         controller: passwordController,
                         hintText: 'Password',
@@ -243,7 +243,7 @@ class _SignUpState extends State<SignUp> {
                         child: getValidationErrorWidget('password') ?? Container(),
                       ),
 
-                      const SizedBox(height: 25),
+                      const SizedBox(height: 18),
                       MyTextField(
                         controller: confirmPasswordController,
                         hintText: 'Confirm Password',
@@ -260,7 +260,7 @@ class _SignUpState extends State<SignUp> {
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 35),
+                        const SizedBox(height: 25),
                         MyButton(
                           buttonText: 'Create account',
                           hasButtonImage: false,
@@ -275,7 +275,7 @@ class _SignUpState extends State<SignUp> {
                             );
                           },
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 15),
 
                         MyButton(
                           buttonText: 'Sign up with Google',
