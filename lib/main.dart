@@ -1,4 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:verbatim_frontend/screens/getStarted.dart';
+import 'package:verbatim_frontend/screens/logIn.dart';
+import 'package:verbatim_frontend/screens/onboardingPage1.dart';
+import 'package:verbatim_frontend/screens/onboardingPage2.dart';
+import 'package:verbatim_frontend/screens/onboardingPage3.dart';
+import 'package:verbatim_frontend/screens/onboardingPage4.dart';
 import 'screens/globalChallenge.dart';
 
 import 'package:verbatim_frontend/screens/signUp.dart';
@@ -20,7 +26,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/global_challenge': (context) => globalChallenge(),
       },
-      home: globalChallenge(),
+      home: GetStarted(),
     );
   }
 }
