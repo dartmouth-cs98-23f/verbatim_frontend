@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'sideBar.dart';
-import 'package:verbatim_frontend/main.dart';
 import 'dart:math';
 import 'package:fl_chart/fl_chart.dart';
 
