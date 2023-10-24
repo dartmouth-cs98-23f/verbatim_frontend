@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'screens/globalChallenge.dart';
-
-import 'package:verbatim_frontend/screens/signUp.dart';
+import 'screens/addFriend.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -19,6 +18,7 @@ class MyApp extends StatelessWidget {
       navigatorKey: navigatorKey, // Set the navigatorKey
       routes: {
         '/global_challenge': (context) => globalChallenge(),
+        '/add_friend': (context) => addFriend(),
       },
       home: globalChallenge(),
     );
