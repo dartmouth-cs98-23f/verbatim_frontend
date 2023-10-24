@@ -1,4 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:verbatim_frontend/screens/onboardingPage4.dart';
+
+import 'getStarted.dart';
 
 class OnBoardingPage3 extends StatelessWidget {
   const OnBoardingPage3({super.key});
@@ -97,7 +100,8 @@ class OnBoardingPage3 extends StatelessWidget {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      // Action for 'Skip' button
+                      // Navigate to the 'Get started' page
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => GetStarted()));
                     },
                     style: ElevatedButton.styleFrom(primary: Colors.white),
                     child: Text(
@@ -107,10 +111,14 @@ class OnBoardingPage3 extends StatelessWidget {
                   ),
                   ElevatedButton(
                     onPressed: () {
-                      // Action for 'Next' button
+                      // Navigate to the 'On boarding page 4'
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => OnBoardingPage4()));
                     },
                     style: ElevatedButton.styleFrom(primary: Color(0xFF1E4693)),
-                    child: Text('Next'),
+                    child: Text(
+                      'Next',
+                      style: TextStyle(color: Colors.white),
+                    ),
                   ),
                 ],
               ),
