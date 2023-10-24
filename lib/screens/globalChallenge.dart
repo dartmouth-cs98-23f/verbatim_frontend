@@ -6,6 +6,7 @@ import 'package:fl_chart/fl_chart.dart';
 class globalChallenge extends StatefulWidget {
   @override
   _GlobalChallengeState createState() => _GlobalChallengeState();
+
 }
 
 class _GlobalChallengeState extends State<globalChallenge> {
