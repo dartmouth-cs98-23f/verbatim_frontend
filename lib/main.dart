@@ -26,7 +26,7 @@ class MyApp extends StatelessWidget {
       routes: {
         '/global_challenge': (context) => globalChallenge(),
       },
-      home: GetStarted(),
+      home: OnBoardingPage2(),
     );
   }
 }

@@ -1,4 +1,7 @@
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:verbatim_frontend/screens/signUp.dart';
+import 'logIn.dart';
 
 class GetStarted extends StatelessWidget {
   const GetStarted({super.key});
@@ -44,10 +47,21 @@ class GetStarted extends StatelessWidget {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      // Action for 'Sign Up' button
+                      // Navigate to the 'Sign Up' page
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignUp()));
                     },
-                    style: ElevatedButton.styleFrom(primary: Color(0xFF1E4693)),
-                    child: Text('Sign Up!'),
+                    style: ElevatedButton.styleFrom(
+                      primary: Color(0xFF1E4693), // Background color
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(0.0), // Rectangular shape
+                      ),
+                    ),
+                    child: Text(
+                      'Sign Up!',
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
+                    ),
                   ),
                   const SizedBox(height: 10),
                   RichText(
@@ -58,9 +72,14 @@ class GetStarted extends StatelessWidget {
                         TextSpan(
                           text: 'Sign-in',
                           style: TextStyle(
-                            color: Color(0xFF1E4693), // Blue color for hyperlink
-                            // decoration: TextDecoration.underline,
+                            color: Color(0xFF1E4693),
+                            decoration: TextDecoration.underline,
                           ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              // Navigate to the 'Log In' page
+                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => LogIn()));
+                            },
                         ),
                       ],
                     ),
