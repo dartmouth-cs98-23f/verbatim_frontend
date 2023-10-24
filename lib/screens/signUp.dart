@@ -19,13 +19,14 @@ class SignUp extends StatefulWidget {
 class _SignUpState extends State<SignUp> {
   late String _backendResponse = "";
   Map<String, Text> validationErrors = {};
-  final usernameController = TextEditingController();
+  final firstNameController = TextEditingController();
+  final lastNameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email']);
 
-  void signUp(BuildContext context, username, String email, String password, String confirmPassword) async {
+  void signUp(BuildContext context, String firstName, String lastName, String email, String password, String confirmPassword) async {
 
     try{
       final response = await http.post(
@@ -34,7 +35,7 @@ class _SignUpState extends State<SignUp> {
           'Content-Type': 'application/json',
         },
         body: jsonEncode(
-            {'username': username, 'email': email, 'password': password}),
+            {'username': firstName, 'email': email, 'password': password}),
       );
 
       if (response.statusCode == 200) {
@@ -43,7 +44,7 @@ class _SignUpState extends State<SignUp> {
           context,
           MaterialPageRoute(
               builder: (context) =>
-                  globalChallenge()), // Use your actual page widget
+                  globalChallenge()),
         );
         print('Sign-up successful');
       }
@@ -87,21 +88,28 @@ class _SignUpState extends State<SignUp> {
     return emailRegex.hasMatch(email);
   }
 
-  void placeHolder(BuildContext context, String username, String email, String password, String confirmedPassword) {
+  void placeHolder(BuildContext context, String firstName, String lastName, String email, String password, String confirmedPassword) {
     // Clear any previous validation errors
     setState(() {
       validationErrors.clear();
     });
 
-    validateField(username, "username", "Username is required");
+    validateField(firstName, "firstName", "First name is required");
+    validateField(lastName, "lastName", "Last name is required");
     validateField(email, "email", "Email is required");
     validateField(password, "password", "Password is required");
     validateField(confirmedPassword, "confirmedPassword", "Confirm your password");
 
     // Check for specific validation rules
-    if (username.isNotEmpty) {
-      if (username.contains('@')) {
-        setValidationError("username", "Username should not contain the '@' character");
+    if (firstName.isNotEmpty) {
+      if (firstName.contains('@')) {
+        setValidationError("firstName", "First name should not contain the '@' character");
+      }
+    }
+
+    if (lastName.isNotEmpty) {
+      if (lastName.contains('@')) {
+        setValidationError("lastName", "Last name should not contain the '@' character");
       }
     }
 
@@ -121,8 +129,8 @@ class _SignUpState extends State<SignUp> {
 
     if (validationErrors.isEmpty) {
       // Continue with sign-up
-      print('Successfully signed up with this info: $username, $email, $password, $confirmedPassword');
-      signUp(context, username, email, password, confirmedPassword);
+      print('Successfully signed up with this info: $firstName, $lastName, $email, $password, $confirmedPassword');
+      signUp(context, firstName, lastName, email, password, confirmedPassword);
     }
   }
 
@@ -197,15 +205,25 @@ class _SignUpState extends State<SignUp> {
                     children: [
                       const SizedBox(height: 29),
                       MyTextField(
-                        controller: usernameController,
-                        hintText: 'Username',
+                        controller: firstNameController,
+                        hintText: 'First name',
                         obscureText: false,
                       ),
                       Container(
-                        child: getValidationErrorWidget('username') ?? Container(),
+                        child: getValidationErrorWidget('firstName') ?? Container(),
                       ),
 
-                      const SizedBox(height: 25),
+                      const SizedBox(height: 18),
+                      MyTextField(
+                        controller: lastNameController,
+                        hintText: 'Last name',
+                        obscureText: false,
+                      ),
+                      Container(
+                        child: getValidationErrorWidget('lastName') ?? Container(),
+                      ),
+
+                      const SizedBox(height: 18),
                       MyTextField(
                         controller: emailController,
                         hintText: 'Email',
@@ -215,7 +233,7 @@ class _SignUpState extends State<SignUp> {
                         child: getValidationErrorWidget('email') ?? Container(),
                       ),
 
-                      const SizedBox(height: 25),
+                      const SizedBox(height: 18),
                       MyTextField(
                         controller: passwordController,
                         hintText: 'Password',
@@ -225,7 +243,7 @@ class _SignUpState extends State<SignUp> {
                         child: getValidationErrorWidget('password') ?? Container(),
                       ),
 
-                      const SizedBox(height: 25),
+                      const SizedBox(height: 18),
                       MyTextField(
                         controller: confirmPasswordController,
                         hintText: 'Confirm Password',
@@ -242,21 +260,22 @@ class _SignUpState extends State<SignUp> {
                   child: Column(
                       crossAxisAlignment: CrossAxisAlignment.start,
                       children: [
-                        const SizedBox(height: 35),
+                        const SizedBox(height: 25),
                         MyButton(
                           buttonText: 'Create account',
                           hasButtonImage: false,
                           onTap: () {
                             placeHolder(
                               context,
-                              usernameController.text,
+                              firstNameController.text,
+                              lastNameController.text,
                               emailController.text,
                               passwordController.text,
                               confirmPasswordController.text,
                             );
                           },
                         ),
-                        const SizedBox(height: 20),
+                        const SizedBox(height: 15),
 
                         MyButton(
                           buttonText: 'Sign up with Google',

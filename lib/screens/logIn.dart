@@ -17,10 +17,10 @@ class LogIn extends StatefulWidget {
 class _LogInState extends State<LogIn> {
   late String _backendResponse = "";
   Map<String, Text> validationErrors = {};
-  final usernameEmailController = TextEditingController();
+  final emailController = TextEditingController();
   final passwordController = TextEditingController();
 
-  void logIn(BuildContext context, String usernameEmail, String password) async {
+  void logIn(BuildContext context, String email, String password) async {
     try {
       final response = await http.post(
         Uri.parse('http://localhost:8080/api/v1/login'),
@@ -28,7 +28,7 @@ class _LogInState extends State<LogIn> {
           'Content-Type': 'application/json',
         },
         body: jsonEncode({
-          'usernameEmail': usernameEmail, // Send username or email based on your endpoint
+          'emailOrUsername': email,
           'password': password,
         }),
       );
@@ -42,11 +42,12 @@ class _LogInState extends State<LogIn> {
           String email = responseData['email'];
           String password = responseData['password']; // You have the user's password, but you may not want to store it in the client.
 
-          // You can use the retrieved data as needed.
-
+          // // Navigate to the global challenge page.
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => globalChallenge()),
+            MaterialPageRoute(
+              builder: (context) => globalChallenge(),
+            ),
           );
 
           print('Log-in successful');
@@ -72,27 +73,27 @@ class _LogInState extends State<LogIn> {
     return emailRegex.hasMatch(email);
   }
 
-  void placeHolder(BuildContext context, String usernameEmail, String password) {
+  void placeHolder(BuildContext context, String email, String password) {
     // Clear any previous validation errors
     setState(() {
       validationErrors.clear();
     });
-    print('usernameEmail is: ${usernameEmail}');
+    print('email is: ${email}');
     print('password is: ${password}');
 
-    validateField(usernameEmail, "usernameEmail", "Username or email is required");
+    validateField(email, "email", "Email is required");
     validateField(password, "password", "Password is required");
 
     // Check for specific validation rules
-    if (usernameEmail.isNotEmpty) {
-      if (usernameEmail.contains('@')) {
-        // Treat it as an email else as a username
-        print('Treat the entry as an email else as a username');
-        return;
-      }
-    }
+    // if (email.isNotEmpty) {
+    //   if (email.contains('@')) {
+    //     // Treat it as an email else as a username
+    //     print('Treat the entry as an email else as a username');
+    //     return;
+    //   }
+    // }
     //
-    // if (usernameEmail.isNotEmpty && !isValidEmail(usernameEmail)) {
+    // if (email.isNotEmpty && !isValidEmail(email)) {
     //   setValidationError("email", "The email you provided is invalid. Verify again.");
     //   return;
     // }
@@ -106,7 +107,7 @@ class _LogInState extends State<LogIn> {
 
     print('here');
     // All validations passed; proceed with login
-    logIn(context, usernameEmail, password);
+    logIn(context, email, password);
     print('after');
   }
 
@@ -164,12 +165,12 @@ class _LogInState extends State<LogIn> {
                     children: [
                       const SizedBox(height: 29),
                       MyTextField(
-                        controller: usernameEmailController,
-                        hintText: 'Username/Email',
+                        controller: emailController,
+                        hintText: 'Email',
                         obscureText: false,
                       ),
                       Container(
-                        child: getValidationErrorWidget('usernameEmail') ?? Container(),
+                        child: getValidationErrorWidget('email') ?? Container(),
                       ),
 
                       const SizedBox(height: 25),
@@ -196,7 +197,7 @@ class _LogInState extends State<LogIn> {
                         onTap: () {
                           placeHolder(
                             context,
-                            usernameEmailController.text,
+                            emailController.text,
                             passwordController.text,
                           );
                         },
