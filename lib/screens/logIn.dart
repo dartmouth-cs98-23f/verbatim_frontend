@@ -42,11 +42,12 @@ class _LogInState extends State<LogIn> {
           String email = responseData['email'];
           String password = responseData['password']; // You have the user's password, but you may not want to store it in the client.
 
-          // You can use the retrieved data as needed.
-
+          // // Navigate to the global challenge page.
           Navigator.push(
             context,
-            MaterialPageRoute(builder: (context) => globalChallenge()),
+            MaterialPageRoute(
+              builder: (context) => globalChallenge(),
+            ),
           );
 
           print('Log-in successful');
