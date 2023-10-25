@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/Components/my_textfield.dart';
 import '../Components/my_button.dart';
+import 'draft.dart';
 import 'globalChallenge.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -38,15 +39,27 @@ class _LogInState extends State<LogIn> {
 
         if (responseData != null) {
           // Authentication successful
-          String username = responseData['username'];
           String email = responseData['email'];
           String password = responseData['password']; // You have the user's password, but you may not want to store it in the client.
 
+          print("\nThe email is : ${email} \n The password is : ${password}");
           // // Navigate to the global challenge page.
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => globalChallenge(
+          //       // email: email,
+          //       // password: password,
+          //     ),
+          //   ),
+          // );
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => globalChallenge(),
+              builder: (context) => globalChallenge(
+                email: email,
+                password: password,
+              ),
             ),
           );
 
