@@ -24,12 +24,11 @@ class _GlobalChallengeState extends State<globalChallenge> {
 
       //Title: Verbatim
       appBar: AppBar(
-        title: Text(
-          'Verbatim',
-          style: TextStyle(
-            fontSize: 18,
-            fontWeight: FontWeight.bold,
-          ),
+        title: Container(
+          height: 50,
+          width: 220,
+          alignment: Alignment(-2.0, 0.0),
+          child: Image.asset('assets/Logo.png', fit: BoxFit.contain),
         ),
 
         //left hand corner: alarm icon
@@ -48,6 +47,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
       body: Center(
         child: Column(
           children: [
+            SizedBox(height: 20.0),
             //Global Challenge # --> eventually pull in from backend
             Text(
               'Global Challenge #17',
