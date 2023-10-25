@@ -8,9 +8,11 @@ import 'dart:convert';
 class globalChallenge extends StatefulWidget {
   final String email;
   final String password;
+  final String username;
 
   globalChallenge({
     Key? key,
+    required this.username,
     required this.email,
     required this.password,
   }) : super(key: key);
