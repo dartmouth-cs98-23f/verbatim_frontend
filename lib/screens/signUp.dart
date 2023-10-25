@@ -43,6 +43,7 @@ class _SignUpState extends State<SignUp> {
           context,
           MaterialPageRoute(
             builder: (context) => globalChallenge(
+              username: username,
               email: email,
               password: password,
             ),
@@ -71,6 +72,7 @@ class _SignUpState extends State<SignUp> {
           context,
           MaterialPageRoute(
             builder: (context) => globalChallenge(
+              username: '',  // to be decided - give them suggestions of what to use as their username
               email: account.email,
               password: '',
             ),
