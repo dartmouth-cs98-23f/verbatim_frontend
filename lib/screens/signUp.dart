@@ -17,7 +17,6 @@ class SignUp extends StatefulWidget {
 }
 
 class _SignUpState extends State<SignUp> {
-  late String _backendResponse = "";
   Map<String, Text> validationErrors = {};
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
@@ -35,16 +34,19 @@ class _SignUpState extends State<SignUp> {
           'Content-Type': 'application/json',
         },
         body: jsonEncode(
-            {'username': firstName, 'email': email, 'password': password}),
+            {'firstName': firstName, 'lastName': lastName, 'email': email, 'password': password}),
       );
 
       if (response.statusCode == 200) {
-        // Successful sign-up
+        // Successful sign-up: Navigate to the global
         Navigator.push(
           context,
           MaterialPageRoute(
-              builder: (context) =>
-                  globalChallenge()),
+            builder: (context) => globalChallenge(
+              email: email,
+              password: password,
+            ),
+          ),
         );
         print('Sign-up successful');
       }

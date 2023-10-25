@@ -37,7 +37,7 @@ class OnBoardingPage2 extends StatelessWidget {
                       const SizedBox(height: 200),
                       Center(
                         child: Text(
-                          'Discover Shared Vocabulary',
+                          'Discover \nShared Vocabulary',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                             color: Colors.black,
@@ -79,24 +79,39 @@ class OnBoardingPage2 extends StatelessWidget {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      // Navigate to the 'Get started' page
+                      // Navigate to the 'Sign Up' page
                       Navigator.of(context).push(MaterialPageRoute(builder: (context) => GetStarted()));
                     },
-                    style: ElevatedButton.styleFrom(primary: Colors.white),
+                    style: ElevatedButton.styleFrom(
+                      primary: Colors.white, // Background color
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(0.0), // Rectangular shape
+                      ),
+                    ),
                     child: Text(
                       'Skip',
-                      style: TextStyle(color: Colors.black),
+                      style: TextStyle(
+                        color: Colors.black,
+                      ),
                     ),
                   ),
+
                   ElevatedButton(
                     onPressed: () {
-                      // Navigate to the 'On boarding page 3'
+                      // Navigate to the 'Sign Up' page
                       Navigator.of(context).push(MaterialPageRoute(builder: (context) => OnBoardingPage3()));
                     },
-                    style: ElevatedButton.styleFrom(primary: Color(0xFF1E4693)),
+                    style: ElevatedButton.styleFrom(
+                      primary: Color(0xFF1E4693), // Background color
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(0.0), // Rectangular shape
+                      ),
+                    ),
                     child: Text(
                       'Next',
-                      style: TextStyle(color: Colors.white),
+                      style: TextStyle(
+                        color: Colors.white,
+                      ),
                     ),
                   ),
                 ],
