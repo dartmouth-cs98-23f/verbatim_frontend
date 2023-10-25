@@ -2,9 +2,11 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/Components/my_textfield.dart';
 import '../Components/my_button.dart';
+import 'draft.dart';
 import 'globalChallenge.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:google_sign_in/google_sign_in.dart';
 
 
 class LogIn extends StatefulWidget {
@@ -19,6 +21,7 @@ class _LogInState extends State<LogIn> {
   Map<String, Text> validationErrors = {};
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
+  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email'], clientId: '297398575103-o3engamrir3bf4pupurvj8lm4mn0iuqt.apps.googleusercontent.com');
 
   void logIn(BuildContext context, String email, String password) async {
     try {
@@ -38,15 +41,27 @@ class _LogInState extends State<LogIn> {
 
         if (responseData != null) {
           // Authentication successful
-          String username = responseData['username'];
           String email = responseData['email'];
           String password = responseData['password']; // You have the user's password, but you may not want to store it in the client.
 
+          print("\nThe email is : ${email} \n The password is : ${password}");
           // // Navigate to the global challenge page.
+          // Navigator.push(
+          //   context,
+          //   MaterialPageRoute(
+          //     builder: (context) => globalChallenge(
+          //       // email: email,
+          //       // password: password,
+          //     ),
+          //   ),
+          // );
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => globalChallenge(),
+              builder: (context) => globalChallenge(
+                email: email,
+                password: password,
+              ),
             ),
           );
 
@@ -62,9 +77,32 @@ class _LogInState extends State<LogIn> {
     }
   }
 
-  // To be implemented later
-  void signInWithGoogle(){
-    print('Signing up with Google to be done later!');
+
+  Future<void> signInWithGoogle() async {
+    try {
+      final GoogleSignInAccount? account = await _googleSignIn.signIn();
+
+      if (account != null) {  // User sign-in is successful
+        print('Google Sign-In successful');
+        print('Sign up with Google: ${account.email}');
+        // Navigate to the desired screen after signing in
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => globalChallenge(
+              email: account.email,
+              password: '',
+            ),
+          ),
+        );
+      } else {
+        // User canceled the Google Sign-In process or encountered an error.
+        print('Google Sign-In canceled or failed');
+      }
+    } catch (error) {
+      // Handle any errors that occur during the Google Sign-In process.
+      print('Error during Google Sign-In: $error');
+    }
   }
 
   bool isValidEmail(String email) {
@@ -73,7 +111,7 @@ class _LogInState extends State<LogIn> {
     return emailRegex.hasMatch(email);
   }
 
-  void placeHolder(BuildContext context, String email, String password) {
+  void validateUserInfo(BuildContext context, String email, String password) {
     // Clear any previous validation errors
     setState(() {
       validationErrors.clear();
@@ -195,7 +233,7 @@ class _LogInState extends State<LogIn> {
                         buttonText: 'Sign-in',
                         hasButtonImage: false,
                         onTap: () {
-                          placeHolder(
+                          validateUserInfo(
                             context,
                             emailController.text,
                             passwordController.text,
