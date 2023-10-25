@@ -20,7 +20,7 @@ class MyApp extends StatelessWidget {
       navigatorKey: navigatorKey, // Set the navigatorKey
       routes: {
         '/global_challenge': (context) =>
-            globalChallenge(email: '', password: ''),
+            globalChallenge(username: '', email: '', password: ''),
         '/add_friend': (context) => addFriend(),
       },
       home: OnBoardingPage1(),

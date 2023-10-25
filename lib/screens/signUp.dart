@@ -19,12 +19,13 @@ class _SignUpState extends State<SignUp> {
   Map<String, Text> validationErrors = {};
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
+  final usernameController = TextEditingController();
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
   final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email'], clientId: '297398575103-o3engamrir3bf4pupurvj8lm4mn0iuqt.apps.googleusercontent.com');
 
-  void signUp(BuildContext context, String firstName, String lastName, String email, String password, String confirmPassword) async {
+  void signUp(BuildContext context, String firstName, String lastName, String username, String email, String password, String confirmPassword) async {
 
     try{
       final response = await http.post(
@@ -33,7 +34,7 @@ class _SignUpState extends State<SignUp> {
           'Content-Type': 'application/json',
         },
         body: jsonEncode(
-            {'firstName': firstName, 'lastName': lastName, 'email': email, 'password': password}),
+            {'firstName': firstName, 'lastName': lastName, 'username': username, 'email': email, 'password': password}),
       );
 
       if (response.statusCode == 200) {
@@ -42,6 +43,7 @@ class _SignUpState extends State<SignUp> {
           context,
           MaterialPageRoute(
             builder: (context) => globalChallenge(
+              username: username,
               email: email,
               password: password,
             ),
@@ -65,11 +67,12 @@ class _SignUpState extends State<SignUp> {
       if (account != null) {  // User sign-in is successful
         print('Google Sign-In successful');
         print('Sign up with Google: ${account.email}');
-        // Navigate to the desired screen after signing in
+        // Navigate to the global challenge page
         Navigator.push(
           context,
           MaterialPageRoute(
             builder: (context) => globalChallenge(
+              username: '',  // to be decided - give them suggestions of what to use as their username
               email: account.email,
               password: '',
             ),
@@ -91,7 +94,7 @@ class _SignUpState extends State<SignUp> {
     return emailRegex.hasMatch(email);
   }
 
-  void validateUserInfo(BuildContext context, String firstName, String lastName, String email, String password, String confirmedPassword) {
+  void validateUserInfo(BuildContext context, String firstName, String lastName, String username, String email, String password, String confirmedPassword) {
     // Clear any previous validation errors
     setState(() {
       validationErrors.clear();
@@ -99,6 +102,7 @@ class _SignUpState extends State<SignUp> {
 
     validateField(firstName, "firstName", "First name is required");
     validateField(lastName, "lastName", "Last name is required");
+    validateField(username, "username", "Username is required");
     validateField(email, "email", "Email is required");
     validateField(password, "password", "Password is required");
     validateField(confirmedPassword, "confirmedPassword", "Confirm your password");
@@ -113,6 +117,12 @@ class _SignUpState extends State<SignUp> {
     if (lastName.isNotEmpty) {
       if (lastName.contains('@')) {
         setValidationError("lastName", "Last name should not contain the '@' character");
+      }
+    }
+
+    if (username.isNotEmpty) {
+      if (username.contains('@')) {
+        setValidationError("username", "Username should not contain the '@' character");
       }
     }
 
@@ -132,8 +142,8 @@ class _SignUpState extends State<SignUp> {
 
     if (validationErrors.isEmpty) {
       // Continue with sign-up
-      print('Successfully signed up with this info: $firstName, $lastName, $email, $password, $confirmedPassword');
-      signUp(context, firstName, lastName, email, password, confirmedPassword);
+      print('Successfully signed up with this info: $firstName, $lastName, $username, $email, $password, $confirmedPassword');
+      signUp(context, firstName, lastName, username, email, password, confirmedPassword);
     }
   }
 
@@ -166,7 +176,7 @@ class _SignUpState extends State<SignUp> {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 70.0),
+                  padding: const EdgeInsets.only(top: 60.0),
                   child: Align(
                     alignment: Alignment.center,
                     child: Text(
@@ -183,7 +193,7 @@ class _SignUpState extends State<SignUp> {
                   ),
                 ),
 
-                const SizedBox(height: 120),
+                const SizedBox(height: 80),
                 Padding(
                   padding: const EdgeInsets.only(left: 30.0),
                   child: Align(
@@ -206,7 +216,7 @@ class _SignUpState extends State<SignUp> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 29),
+                      const SizedBox(height: 20),
                       MyTextField(
                         controller: firstNameController,
                         hintText: 'First name',
@@ -216,7 +226,7 @@ class _SignUpState extends State<SignUp> {
                         child: getValidationErrorWidget('firstName') ?? Container(),
                       ),
 
-                      const SizedBox(height: 18),
+                      const SizedBox(height: 15),
                       MyTextField(
                         controller: lastNameController,
                         hintText: 'Last name',
@@ -226,7 +236,17 @@ class _SignUpState extends State<SignUp> {
                         child: getValidationErrorWidget('lastName') ?? Container(),
                       ),
 
-                      const SizedBox(height: 18),
+                      const SizedBox(height: 15),
+                      MyTextField(
+                        controller: usernameController,
+                        hintText: 'Username',
+                        obscureText: false,
+                      ),
+                      Container(
+                        child: getValidationErrorWidget('username') ?? Container(),
+                      ),
+
+                      const SizedBox(height: 15),
                       MyTextField(
                         controller: emailController,
                         hintText: 'Email',
@@ -236,7 +256,7 @@ class _SignUpState extends State<SignUp> {
                         child: getValidationErrorWidget('email') ?? Container(),
                       ),
 
-                      const SizedBox(height: 18),
+                      const SizedBox(height: 15),
                       MyTextField(
                         controller: passwordController,
                         hintText: 'Password',
@@ -246,7 +266,7 @@ class _SignUpState extends State<SignUp> {
                         child: getValidationErrorWidget('password') ?? Container(),
                       ),
 
-                      const SizedBox(height: 18),
+                      const SizedBox(height: 15),
                       MyTextField(
                         controller: confirmPasswordController,
                         hintText: 'Confirm Password',
@@ -272,6 +292,7 @@ class _SignUpState extends State<SignUp> {
                               context,
                               firstNameController.text,
                               lastNameController.text,
+                              usernameController.text,
                               emailController.text,
                               passwordController.text,
                               confirmPasswordController.text,

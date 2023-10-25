@@ -41,6 +41,7 @@ class _LogInState extends State<LogIn> {
 
         if (responseData != null) {
           // Authentication successful
+          String username = responseData['username'];
           String email = responseData['email'];
           String password = responseData['password']; // You have the user's password, but you may not want to store it in the client.
 
@@ -59,6 +60,7 @@ class _LogInState extends State<LogIn> {
             context,
             MaterialPageRoute(
               builder: (context) => globalChallenge(
+                username: username,
                 email: email,
                 password: password,
               ),
@@ -90,6 +92,7 @@ class _LogInState extends State<LogIn> {
           context,
           MaterialPageRoute(
             builder: (context) => globalChallenge(
+              username: '',  // to be decided - give them suggestions of what to use as their username
               email: account.email,
               password: '',
             ),
