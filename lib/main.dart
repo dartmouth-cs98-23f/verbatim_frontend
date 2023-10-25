@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:verbatim_frontend/screens/signUp.dart';
 import 'package:verbatim_frontend/screens/onboardingPage1.dart';
 import 'screens/globalChallenge.dart';
 import 'screens/addFriend.dart';
@@ -18,7 +19,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey, // Set the navigatorKey
       routes: {
-        '/global_challenge': (context) => globalChallenge(email: '', password: ''),
+        '/global_challenge': (context) =>
+            globalChallenge(email: '', password: ''),
         '/add_friend': (context) => addFriend(),
       },
       home: OnBoardingPage1(),
