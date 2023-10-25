@@ -253,7 +253,6 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                               responseController.clear();
                                               response = true;
                                             });
-                                            printUserInfo();
                                           },
                                           child: Text('Submit!'),
                                         ),
