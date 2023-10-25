@@ -2,6 +2,8 @@ import 'package:flutter/material.dart';
 import 'sideBar.dart';
 import 'dart:math';
 import 'package:fl_chart/fl_chart.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 
 class globalChallenge extends StatefulWidget {
   final String email;
@@ -16,27 +18,79 @@ class globalChallenge extends StatefulWidget {
   @override
   _GlobalChallengeState createState() => _GlobalChallengeState();
 
+  void setState(Null Function() param0) {}
 }
 
 class _GlobalChallengeState extends State<globalChallenge> {
   String userResponse = '';
+  List<String> userResponses = [];
   TextEditingController responseController = TextEditingController();
-
+  String question1 = "";
+  String question2 = "";
+  String question3 = "";
   // Test method to print the passed-in user info from log-in page
   void printUserInfo() {
     print('Email in gb: ${widget.email}, Password in gb: ${widget.password}');
   }
 
   bool response = false;
+  List<String> responses = List.filled(3, "");
+  String fetch_questions = "";
+  int currentQuestionIndex = 0;
+  List<String> questions = ["", "", ""];
+
+  Future<void> _fetchData() async {
+    final fetch_questions = await http
+        .get(Uri.parse('http://localhost:8080/api/v1/globalChallenge'));
+
+    if (fetch_questions.statusCode == 200) {
+      final Map<String, dynamic> data = json.decode(fetch_questions.body);
+
+      question1 = data['q1'];
+
+      question2 = data['q2'];
+      question3 = data['q3'];
+    }
+  }
+
+  @override
+  void initState() {
+    super.initState();
+    _fetchData().then((_) {
+      setState(() {
+        questions = [question1, question2, question3];
+      });
+    });
+    // This will fetch data when the widget is first created.
+  }
+
+  Future<void> sendUserResponses(List<String> userResponses) async {
+    final url = Uri.parse('http://localhost:8080/api/v1/globalChallenge');
+    final headers = <String, String>{'Content-Type': 'application/json'};
+    final response = await http.post(
+      url,
+      headers: headers,
+      body: json.encode({'responses': userResponses}),
+    );
+
+    if (response.statusCode == 200) {
+      print('Responses sent successfully');
+    } else {
+      print('Failed to send responses. Status code: ${response.statusCode}');
+    }
+  }
 
   @override
   Widget build(BuildContext context) {
     double screenHeight = MediaQuery.of(context).size.height;
 
+    List<String> questions = [question1, question2, question3];
+
     return Scaffold(
       //Constant features: Title, sidebar, alarm icon
 
       //Title: Verbatim
+
       appBar: AppBar(
         title: Container(
           height: 50,
@@ -97,19 +151,13 @@ class _GlobalChallengeState extends State<globalChallenge> {
                         children: [
                           // PLAY TAB
                           Center(
-                            child: response
+                            child: (response && currentQuestionIndex == 2)
 
                                 // if a response has been submitted;
                                 ? Column(
                                     children: [
                                       SizedBox(height: 30.0),
-                                      Text(
-                                        'Sports that start with "T"',
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
+
                                       SizedBox(height: 7.0),
                                       Text(
                                         '17,213 users have played',
@@ -132,7 +180,8 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                               ),
                                             ),
                                             TextSpan(
-                                              text: userResponse,
+                                              text: userResponses.join(
+                                                  ' '), // Join the list elements with a space
                                               style: TextStyle(
                                                 fontSize: 24,
                                                 fontWeight: FontWeight.bold,
@@ -197,7 +246,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                           height: 90.0 *
                                               pow((screenHeight / 1000), 2)),
                                       Text(
-                                        'Sports that start with "T"',
+                                        questions[currentQuestionIndex],
                                         style: TextStyle(
                                           fontSize: 18,
                                           fontWeight: FontWeight.bold,
@@ -250,11 +299,26 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                             setState(() {
                                               userResponse =
                                                   responseController.text;
+                                              userResponses.add(userResponse);
                                               responseController.clear();
-                                              response = true;
+                                              if (currentQuestionIndex <= 1) {
+                                                // If not the last question, go to the next question.
+                                                currentQuestionIndex += 1;
+                                              } else {
+                                                // If the last question, set 'response' to true to submit.
+                                                setState(() {
+                                                  response = true;
+                                                  //sendUserResponses(
+                                                  //    userResponses);
+                                                });
+                                              }
                                             });
                                           },
-                                          child: Text('Submit!'),
+                                          child: Text(
+                                            currentQuestionIndex == 2
+                                                ? 'Submit'
+                                                : 'Next',
+                                          ),
                                         ),
                                       ),
                                       SizedBox(
@@ -315,7 +379,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                       children: [
                                         SizedBox(height: 15.0),
                                         Text(
-                                          'Sports that start with "T"',
+                                          question1,
                                           style: TextStyle(
                                             fontSize: 18,
                                             fontWeight: FontWeight.bold,
