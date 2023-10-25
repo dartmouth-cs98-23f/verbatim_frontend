@@ -4,6 +4,15 @@ import 'dart:math';
 import 'package:fl_chart/fl_chart.dart';
 
 class globalChallenge extends StatefulWidget {
+  final String email;
+  final String password;
+
+  globalChallenge({
+    Key? key,
+    required this.email,
+    required this.password,
+  }) : super(key: key);
+
   @override
   _GlobalChallengeState createState() => _GlobalChallengeState();
 
@@ -12,6 +21,11 @@ class globalChallenge extends StatefulWidget {
 class _GlobalChallengeState extends State<globalChallenge> {
   String userResponse = '';
   TextEditingController responseController = TextEditingController();
+
+  // Test method to print the passed-in user info from log-in page
+  void printUserInfo() {
+    print('Email in gb: ${widget.email}, Password in gb: ${widget.password}');
+  }
 
   bool response = false;
 
