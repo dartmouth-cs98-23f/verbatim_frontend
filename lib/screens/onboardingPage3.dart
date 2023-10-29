@@ -41,7 +41,7 @@ class OnBoardingPage3 extends StatelessWidget {
                           'Compare & \nCompete',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            color: Colors.black,
+                            color: Color(0xFFE76F51),
                             fontSize: 32,
                             fontFamily: 'Mulish',
                             fontWeight: FontWeight.w700,
@@ -73,6 +73,7 @@ class OnBoardingPage3 extends StatelessWidget {
                                   text: 'Verba',
                                   style: TextStyle(
                                     fontWeight: FontWeight.bold,
+                                    color: Color(0xFFE76F51),
                                   ),
                                 ),
                                 TextSpan(
@@ -123,7 +124,7 @@ class OnBoardingPage3 extends StatelessWidget {
                       Navigator.of(context).push(MaterialPageRoute(builder: (context) => OnBoardingPage4()));
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xFF1E4693), // Background color
+                      primary: Color(0xFFE76F51), // Background color
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(0.0), // Rectangular shape
                       ),
