@@ -22,7 +22,7 @@ class MyButton extends StatelessWidget {
           height: 49,
           padding: const EdgeInsets.symmetric(horizontal: 18),
           decoration: ShapeDecoration(
-            color: Color(0xFF1E4693),
+            color: Color(0xFFE76F51),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(20),
             ),
@@ -44,7 +44,7 @@ class MyButton extends StatelessWidget {
                         fit: BoxFit.fill,
                       )
                           : null,
-                      color: Color(0xFF1E4693),
+                      color: Color(0xFFE76F51),
                     ),
                   ),
                   SizedBox(width: 10),

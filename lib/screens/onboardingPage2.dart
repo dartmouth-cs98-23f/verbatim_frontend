@@ -40,7 +40,7 @@ class OnBoardingPage2 extends StatelessWidget {
                           'Discover \nShared Vocabulary',
                           textAlign: TextAlign.center,
                           style: TextStyle(
-                            color: Colors.black,
+                            color: Color(0xFFE76F51),
                             fontSize: 32,
                             fontFamily: 'Mulish',
                             fontWeight: FontWeight.w700,
@@ -102,7 +102,7 @@ class OnBoardingPage2 extends StatelessWidget {
                       Navigator.of(context).push(MaterialPageRoute(builder: (context) => OnBoardingPage3()));
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xFF1E4693), // Background color
+                      primary: Color(0xFFE76F51), // Background color
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(0.0), // Rectangular shape
                       ),
