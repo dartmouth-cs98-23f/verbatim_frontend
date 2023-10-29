@@ -1,54 +1,75 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
-
-import 'globalChallenge.dart';
-import 'package:verbatim_frontend/main.dart';
+import 'package:verbatim_frontend/widgets/size.dart';
 
 class SideBar extends StatelessWidget {
+  final Color primary = Color.fromARGB(255, 231, 111, 81);
+
   @override
   Widget build(BuildContext context) {
     return Drawer(
-        child: Padding(
-      padding: const EdgeInsets.symmetric(horizontal: 2.0),
       child: ListView(
         children: <Widget>[
-          const SizedBox(
-            height: 64.0,
-            child: Center(
-              child: DrawerHeader(
-                child: Text('Jenny Linsky'),
-              ),
-            ),
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 20.0),
+            child: Container(
+                height: 64,
+                decoration: ShapeDecoration(
+                  color: primary,
+                  shape: RoundedRectangleBorder(
+                    borderRadius: BorderRadius.circular(10.0),
+                  ),
+                ),
+                child: Center(
+                  child: ListTile(
+                    title: Text(
+                      'Jenny Linsky',
+                      style: TextStyle(color: Colors.white, fontSize: 20),
+                    ),
+                    leading: Icon(Icons.mood, color: Colors.white, size: 32),
+                    trailing: Icon(Icons.arrow_drop_down,
+                        color: Colors.white, size: 26),
+                    onTap: () {},
+                  ),
+                )),
           ),
-
-          Container(
-            decoration: ShapeDecoration(
-              shape: RoundedRectangleBorder(
-                borderRadius: BorderRadius.circular(10.0),
-                side: BorderSide(
-                  color: Colors.black,
-                  width: .75,
+          Padding(
+            padding: EdgeInsets.symmetric(horizontal: 10, vertical: 10.0),
+            child: Container(
+              decoration: ShapeDecoration(
+                shape: RoundedRectangleBorder(
+                  borderRadius: BorderRadius.circular(10.0),
+                  side: BorderSide(
+                    color: primary,
+                    width: 1.5,
+                  ),
                 ),
               ),
-            ),
-            padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: .1),
-            child: ListTile(
-              title: Text('Global Challenge'),
-              leading: Icon(Icons.home, color: Colors.black),
-              onTap: () {
-                handleTap(context, 0);
-              },
+              child: ListTile(
+                title: Text('Global Challenge',
+                    style: TextStyle(
+                        color: primary,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 17)),
+                leading: Icon(Icons.home, color: primary),
+                onTap: () {
+                  handleTap(context, 0);
+                },
+              ),
             ),
           ),
           SizedBox(height: 20.0),
           ExpansionTile(
-            title: Text('Friends'),
+            title: Text('Friends',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18)),
 
             trailing: GestureDetector(
               onTap: () {
                 handleTap(context, 1);
               },
-              child: Icon(Icons.add),
+              child: Icon(Icons.add, color: Colors.black, size: 25),
             ),
 
             initiallyExpanded:
@@ -60,17 +81,12 @@ class SideBar extends StatelessWidget {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 5.0),
                 child: Container(
-                  decoration: ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                      side: BorderSide(
-                        color: Colors.black,
-                        width: .75,
-                      ),
-                    ),
-                  ),
                   child: ListTile(
-                    title: Text('Friend 1'),
+                    title: Text('Friend 1',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15)),
                     leading: Icon(Icons.person, color: Colors.black),
                     onTap: () {},
                   ),
@@ -80,17 +96,12 @@ class SideBar extends StatelessWidget {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 5.0),
                 child: Container(
-                  decoration: ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                      side: BorderSide(
-                        color: Colors.black,
-                        width: .75,
-                      ),
-                    ),
-                  ),
                   child: ListTile(
-                    title: Text('Friend 2'),
+                    title: Text('Friend 2',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15)),
                     leading: Icon(Icons.person, color: Colors.black),
                     onTap: () {},
                   ),
@@ -100,17 +111,12 @@ class SideBar extends StatelessWidget {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 5.0),
                 child: Container(
-                  decoration: ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                      side: BorderSide(
-                        color: Colors.black,
-                        width: .75,
-                      ),
-                    ),
-                  ),
                   child: ListTile(
-                    title: Text('Friend 3'),
+                    title: Text('Friend 3',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15)),
                     leading: Icon(Icons.person, color: Colors.black),
                     onTap: () {},
                   ),
@@ -118,11 +124,16 @@ class SideBar extends StatelessWidget {
               ),
             ],
           ),
-
           SizedBox(height: 20.0),
           ExpansionTile(
-            title: Text('Groups'),
-            trailing: Icon(Icons.add),
+            title: Text(
+              'Groups',
+              style: TextStyle(
+                  color: Colors.black,
+                  fontWeight: FontWeight.bold,
+                  fontSize: 18),
+            ),
+            trailing: Icon(Icons.add, color: Colors.black, size: 25),
             initiallyExpanded: true,
             shape: Border(),
             children: <Widget>[
@@ -130,18 +141,13 @@ class SideBar extends StatelessWidget {
               Container(
                 padding: EdgeInsets.symmetric(horizontal: 5.0),
                 child: Container(
-                  decoration: ShapeDecoration(
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(10.0),
-                      side: BorderSide(
-                        color: Colors.black,
-                        width: .75,
-                      ),
-                    ),
-                  ),
                   padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: .1),
                   child: ListTile(
-                    title: Text('Group 1'),
+                    title: Text('Group 1',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 15)),
                     leading: Icon(Icons.people, color: Colors.black),
                     onTap: () {},
                   ),
@@ -151,28 +157,26 @@ class SideBar extends StatelessWidget {
           ),
           SizedBox(height: 20.0),
           ListTile(
-            title: Text('Settings'),
-            leading: Icon(Icons.settings, color: Colors.black),
+            title: Text('More',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontWeight: FontWeight.bold,
+                    fontSize: 18)),
             onTap: () {
-              // Handle the "Settings" section tap
+              // Handle the "More" section tap
             },
           ),
           SizedBox(height: 10.0),
           Container(
             padding: EdgeInsets.symmetric(horizontal: 5.0),
             child: Container(
-              decoration: ShapeDecoration(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  side: BorderSide(
-                    color: Colors.black,
-                    width: .75,
-                  ),
-                ),
-              ),
               padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: .1),
               child: ListTile(
-                title: Text('Custom Challenge'),
+                title: Text('Custom Challenge',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18)),
                 leading: Icon(Icons.play_arrow, color: Colors.black),
                 onTap: () {},
               ),
@@ -182,27 +186,22 @@ class SideBar extends StatelessWidget {
           Container(
             padding: EdgeInsets.symmetric(horizontal: 5.0),
             child: Container(
-              decoration: ShapeDecoration(
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(10.0),
-                  side: BorderSide(
-                    color: Colors.black,
-                    width: .75,
-                  ),
-                ),
-              ),
               padding: EdgeInsets.symmetric(horizontal: 0.0, vertical: .1),
               child: ListTile(
-                title: Text('Invite Friends'),
+                title: Text('Invite Friends',
+                    style: TextStyle(
+                        color: Colors.black,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18)),
                 leading: Icon(Icons.person_add, color: Colors.black),
                 onTap: () {},
               ),
             ),
           ),
-          // Add more sections and list items as needed
+          SizedBox(height: 30),
         ],
       ),
-    ));
+    );
   }
 }
 
@@ -218,6 +217,6 @@ void handleTap(BuildContext context, int index) {
     case 2: // "Friend Name"
       Navigator.pushNamed(context, '/friend_name');
       break;
-    // Add cases for other items and routes
+    // Add cases for other routes
   }
 }

@@ -1,5 +1,10 @@
 import 'package:flutter/material.dart';
 import 'sideBar.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:verbatim_frontend/widgets/size.dart';
+import 'package:verbatim_frontend/widgets/friends_app_bar.dart';
+
+import 'package:verbatim_frontend/widgets/custom_app_bar.dart';
 
 class addFriend extends StatefulWidget {
   @override
@@ -9,19 +14,55 @@ class addFriend extends StatefulWidget {
 class _AddFriendState extends State<addFriend> {
   final TextEditingController _searchController = TextEditingController();
   String _searchText = "";
-  // all of the user's that aren't friends with this user
+  // all of the user's that aren't friends with this user - need via backend
   List<String> _data = [
-    "Sandy W.",
-    "Slinky M.",
-    "Hokus P.",
-    "Elliott S.",
-    "Aimee M.",
-    "Rolling S.",
-    "Alice D."
+    "Abigail Smith",
+    "Benjamin Johnson",
+    "Charlotte Williams",
+    "Daniel Brown",
+    "Elizabeth Jones",
+    "Harper Martinez",
+    "David Robinson",
+    "Madison Davis",
+    "Oliver Scott",
+    "Scarlett Lopez",
+    "Samuel Perez",
+    "Amelia Young",
+    "William Hall",
+    "Zoe Baker",
+    "Joseph Wright",
+    "Grace Taylor",
+    "Benjamin Lewis",
+    "Sophia Allen",
+    "Daniel Walker",
+    "Emma Harris",
+    "Joseph Perez",
+    "Abigail Wright",
+    "Noah Taylor",
+    "Mia White",
+    "Oliver Thomas",
+    "Amelia Wilson",
   ];
   List<String> _selectedFriends = [];
 
-  List<String> _suggestedNames = ["Karen S.", "Jen W.", "Harry W."];
+// suggested - need to come in through backend
+  List<String> _suggestedNames = [
+    "Zoe Clark",
+    "Sophia Thomas",
+    "William Scott",
+    "Harper King",
+    "Alexander Baker",
+    "Lily Martinez",
+    "Daniel Nelson",
+    "Mia Lee",
+    "Joseph Young",
+    "Victoria Jackson",
+    "James Adams",
+    "Scarlett Davis",
+    "Samuel Thomas",
+    "Sofia Robinson",
+    "Ethan Walker"
+  ];
 
   @override
   void initState() {
@@ -64,97 +105,183 @@ class _AddFriendState extends State<addFriend> {
   }
 
   Widget build(BuildContext context) {
-    return Scaffold(
-        //Constant features: Title, sidebar, alarm icon
+    final String assetName = 'assets/img1.svg';
 
-        //Title: Verbatim
-        appBar: AppBar(
-          title: Container(
-            height: 50,
-            width: 220,
-            alignment: Alignment(-2.0, 0.0),
-            child: Image.asset('assets/Logo.png', fit: BoxFit.contain),
-          ),
-          //left hand corner: alarm icon
-          actions: <Widget>[
-            IconButton(
-              icon: Icon(Icons.add_alert),
-              onPressed: () {},
-            ),
-          ],
-          centerTitle: false,
-        ),
-        //Sidebar implemented from sideBar.dart
-        drawer: SideBar(),
-        //search field
-        body: SingleChildScrollView(
-            child: Column(children: <Widget>[
-          Padding(
-            padding: const EdgeInsets.all(8.0),
-            child: TextField(
-              controller: _searchController,
-              decoration: InputDecoration(
-                hintText: 'Search Users',
+    return SafeArea(
+        child: Scaffold(
+      backgroundColor: Colors.orange,
+      body: Container(
+        color: Color.fromARGB(255, 255, 243, 238),
+        child: Column(
+          children: [
+            SizedBox(
+              width: double.maxFinite,
+              child: Column(
+                children: [
+                  SizedBox(
+                    height: 300.v,
+                    width: double.maxFinite,
+                    child: Stack(alignment: Alignment.bottomLeft, children: [
+                      // orange background
+                      Container(
+                        height: 300.v,
+                        width: double.maxFinite,
+                        margin: EdgeInsets.zero,
+                        padding: EdgeInsets.zero,
+                        child: SvgPicture.asset(
+                          assetName,
+                          fit: BoxFit.fill,
+                        ),
+                      ),
+                      FriendsAppBar(),
+
+                      Align(
+                        alignment: Alignment.center,
+                        child: Container(
+                            width: 400,
+                            height: 22,
+                            decoration: BoxDecoration(
+                              color: Colors.white,
+                              borderRadius: BorderRadius.circular(20),
+                            ),
+                            child: Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Icon(Icons.search, color: Colors.black),
+                                Expanded(
+                                  child: Center(
+                                    child: TextField(
+                                      controller: _searchController,
+                                      decoration: InputDecoration(
+                                        hintText: "Search User",
+                                        hintStyle: const TextStyle(
+                                            fontSize: 16.0,
+                                            color: Colors.black),
+                                        border: InputBorder.none,
+                                      ),
+                                      textAlign: TextAlign.left,
+                                    ),
+                                  ),
+                                )
+                              ],
+                            )),
+                      ),
+                      Align(
+                        alignment: Alignment.bottomLeft,
+                        child: Container(
+                          width: 152.h,
+                          margin: EdgeInsets.only(left: 32.h),
+                          child: RichText(
+                            text: TextSpan(
+                              children: [
+                                if (_searchText.isNotEmpty)
+                                  TextSpan(
+                                    text: "Search Results",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  )
+                                else
+                                  TextSpan(
+                                    text: "People you may know:",
+                                    style: TextStyle(
+                                      fontSize: 15,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ),
+                              ],
+                            ),
+                            textAlign: TextAlign.left,
+                          ),
+                        ),
+                      )
+                    ]),
+                  ),
+                ],
               ),
             ),
-          ),
-          //show list of users to add as friends
-          if (_searchText.isNotEmpty)
-            ListView.builder(
-              shrinkWrap: true,
-              itemCount: _searchResults().length,
-              itemBuilder: (context, index) {
-                final friendName = _searchResults()[index];
-                final isFriend = _selectedFriends.contains(friendName);
-                return ListTile(
-                  title: Text(friendName),
-                  trailing: isFriend
-                      ? IconButton(
-                          icon: Icon(Icons.remove),
-                          onPressed: () {},
-                        )
-                      : IconButton(
-                          icon: Icon(Icons.person_add_alt),
-                          onPressed: () {
-                            _addFriend(friendName);
-                          },
-                        ),
-                );
-              },
-            )
-          //otherwise show suggested friends
-          else if (_searchText.isEmpty)
-            Text(
-              'Suggested Friends:',
-              style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
-            ),
-          ListView.builder(
-            shrinkWrap: true,
-            itemCount: _suggestedNames.length,
-            itemBuilder: (context, index) {
-              final name = _suggestedNames[index];
-              final isFriend = _selectedFriends.contains(name);
-
-              return ListTile(
-                title: Text(name),
-                trailing: IconButton(
-                  icon: isFriend
-                      ? Icon(Icons.remove)
-                      : Icon(Icons.person_add_alt),
-                  onPressed: () {
-                    _toggleFriend(name);
-                  },
+            Center(
+              child: Container(
+                clipBehavior: Clip.hardEdge,
+                margin: EdgeInsets.only(top: 10.h),
+                width: 200.h,
+                height: 450.v,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(30),
+                  boxShadow: [
+                    BoxShadow(
+                      color: const Color.fromARGB(255, 117, 19, 12)
+                          .withOpacity(0.5),
+                      blurRadius: 5,
+                      offset: Offset(3, 7),
+                    ),
+                  ],
+                  color: Colors.white,
                 ),
-              );
-            },
-          )
-        ])));
-  }
-}
+                child: _searchText.isNotEmpty
+                    ? ListView.builder(
+                        itemCount: _searchResults().length,
+                        itemBuilder: (context, index) {
+                          final friendName = _searchResults()[index];
+                          final isFriend =
+                              _selectedFriends.contains(friendName);
+                          return ListTile(
+                              title: Row(
+                                children: [
+                                  Icon(Icons.mood),
+                                  SizedBox(width: 8),
+                                  Text(
+                                    friendName,
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                              trailing: IconButton(
+                                icon: isFriend
+                                    ? Icon(Icons.remove)
+                                    : Icon(Icons.person_add_alt),
+                                onPressed: () {
+                                  _toggleFriend(friendName);
+                                },
+                              ));
+                        },
+                      )
+                    : ListView.builder(
+                        itemCount: _suggestedNames.length,
+                        itemBuilder: (context, index) {
+                          final name = _suggestedNames[index];
+                          final isFriend = _selectedFriends.contains(name);
 
-class friendsList extends StatelessWidget {
-  @override
-  Widget build(BuildContext context) {
-    return Container(child: Center(child: Text('')));
+                          return ListTile(
+                              title: Row(
+                                children: [
+                                  Icon(Icons.mood),
+                                  SizedBox(width: 8),
+                                  Text(
+                                    name,
+                                    style:
+                                        TextStyle(fontWeight: FontWeight.bold),
+                                  ),
+                                ],
+                              ),
+                              trailing: IconButton(
+                                icon: isFriend
+                                    ? Icon(Icons.remove)
+                                    : Icon(Icons.person_add_alt),
+                                onPressed: () {
+                                  _toggleFriend(name);
+                                },
+                              ));
+                        },
+                      ),
+              ),
+            ),
+          ],
+        ),
+      ),
+      drawer: SideBar(),
+    ));
   }
 }
