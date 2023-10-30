@@ -1,4 +1,3 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'sideBar.dart';
 import 'package:http/http.dart' as http;
@@ -129,14 +128,14 @@ class _GlobalChallengeState extends State<globalChallenge> {
                 child: Column(
                   children: [
                     SizedBox(
-                      height: 300.v,
+                      height: 240.v,
                       width: double.maxFinite,
                       child: Stack(
-                        alignment: Alignment.bottomLeft,
+                        alignment: Alignment.topCenter,
                         children: [
                           // orange background
                           Container(
-                            height: 300.v,
+                            height: 220.v,
                             width: double.maxFinite,
                             margin: EdgeInsets.zero,
                             padding: EdgeInsets.zero,
@@ -153,9 +152,9 @@ class _GlobalChallengeState extends State<globalChallenge> {
                           Positioned(
                             child: Center(
                               child: Text(
-                                'Global Challenge #17',
+                                '\nGlobal Challenge #17',
                                 style: TextStyle(
-                                  fontSize: 28,
+                                  fontSize: 24,
                                   color: Colors.white,
                                   fontWeight: FontWeight.w900,
                                 ),
@@ -176,11 +175,15 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                       text: "17213",
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
+                                          color: Colors.black,
                                           fontSize: 15),
                                     ),
                                     TextSpan(
                                         text: " users have played",
-                                        style: TextStyle(fontSize: 15)),
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.black,
+                                        )),
                                   ],
                                 ),
                                 textAlign: TextAlign.left,
@@ -211,14 +214,16 @@ class _GlobalChallengeState extends State<globalChallenge> {
                   ],
                 ),
               ),
+              SizedBox(height: 30),
               Stack(
                 alignment: Alignment.bottomRight,
                 children: [
                   Container(
                     clipBehavior: Clip.hardEdge,
                     margin: EdgeInsets.only(top: 10.h),
-                    width: 200.h,
-                    height: 450.v,
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    width: 300.h,
+                    height: 400.v,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(50),
                       boxShadow: [
@@ -376,14 +381,14 @@ class _GlobalChallengeState extends State<globalChallenge> {
                             } else if (!snapshot.data! && response == true) {
                               return Column(children: [
                                 Container(
-                                    width: 200.h,
-                                    height: 450.v,
+                                    width: 300,
+                                    height: 300,
                                     child: Stats(tabLabels: tabLables))
                               ]);
                             } else {
                               return Column(
                                 children: [
-                                  SizedBox(height: 40),
+                                  SizedBox(height: 20),
                                   Center(
                                       child: Padding(
                                           padding: const EdgeInsets.only(
@@ -557,7 +562,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
             ],
           ),
         ),
-        drawer: SideBar(),
+        drawer: SideBar(username: widget.username),
       ),
     );
   }
