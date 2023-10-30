@@ -21,10 +21,10 @@ class MyApp extends StatelessWidget {
 
         routes: {
           '/global_challenge': (context) =>
-              globalChallenge(username: '', email: '', password: ''),
-          '/add_friend': (context) => addFriend(),
+              globalChallenge(username: 'jenny', email: '', password: ''),
+          '/add_friend': (context) => addFriend(username: 'jenny l'),
         },
         home: globalChallenge(
-            username: 'gh', email: 'gh@gmail.com', password: '0000000'));
+            username: 'jenny l', email: 'gh@gom', password: '0000000'));
   }
 }

@@ -98,23 +98,24 @@ class Stats extends StatelessWidget {
                           child: Center(
                         child: Column(children: [
                           Container(
-                            height: 240,
+                            height: 250,
+                            width: 500,
                             child: PieChart(
                               PieChartData(
                                 centerSpaceRadius: 0,
                                 sections: [
                                   PieChartSectionData(
-                                      value: 30,
+                                      value: 0,
                                       color: Colors.red,
                                       radius: 90,
                                       title: ''),
                                   PieChartSectionData(
-                                      value: 20,
+                                      value: 0,
                                       color: Colors.green,
                                       radius: 90,
                                       title: ''),
                                   PieChartSectionData(
-                                      value: 25,
+                                      value: 0,
                                       color: Colors.blue,
                                       radius: 90,
                                       title: ''),
@@ -160,7 +161,7 @@ class Stats extends StatelessWidget {
                           SizedBox(height: 10),
                           Container(
                             width: 250,
-                            height: 300,
+                            height: 250,
                             child: Center(
                               child: ListView.builder(
                                 physics: NeverScrollableScrollPhysics(),
@@ -248,7 +249,7 @@ class Stats extends StatelessWidget {
                                 },
                               ),
                             ),
-                          )
+                          ),
                         ]),
                       ));
                     } else if (index == 1) {
@@ -317,7 +318,7 @@ class Stats extends StatelessWidget {
                           SizedBox(height: 10),
                           Container(
                             width: 250,
-                            height: 300,
+                            height: 250,
                             child: Center(
                               child: ListView.builder(
                                 physics: NeverScrollableScrollPhysics(),
@@ -405,7 +406,7 @@ class Stats extends StatelessWidget {
                                 },
                               ),
                             ),
-                          )
+                          ),
                         ]),
                       ));
                     } else if (index == 2) {
@@ -473,7 +474,7 @@ class Stats extends StatelessWidget {
                           SizedBox(height: 10),
                           Container(
                             width: 250,
-                            height: 300,
+                            height: 250,
                             child: Center(
                               child: ListView.builder(
                                 physics: NeverScrollableScrollPhysics(),
@@ -561,7 +562,7 @@ class Stats extends StatelessWidget {
                                 },
                               ),
                             ),
-                          )
+                          ),
                         ]),
                       ));
                     }

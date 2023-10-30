@@ -1,8 +1,13 @@
 import 'package:flutter/material.dart';
-import 'package:verbatim_frontend/widgets/size.dart';
 
 class SideBar extends StatelessWidget {
   final Color primary = Color.fromARGB(255, 231, 111, 81);
+  final String username;
+
+  SideBar({
+    Key? key,
+    required this.username,
+  }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -22,13 +27,15 @@ class SideBar extends StatelessWidget {
                 child: Center(
                   child: ListTile(
                     title: Text(
-                      'Jenny Linsky',
+                      '$username',
                       style: TextStyle(color: Colors.white, fontSize: 20),
                     ),
                     leading: Icon(Icons.mood, color: Colors.white, size: 32),
-                    trailing: Icon(Icons.arrow_drop_down,
-                        color: Colors.white, size: 26),
-                    onTap: () {},
+                    trailing:
+                        Icon(Icons.settings, color: Colors.white, size: 26),
+                    onTap: () {
+                      handleTap(context, 2);
+                    },
                   ),
                 )),
           ),
@@ -214,8 +221,8 @@ void handleTap(BuildContext context, int index) {
     case 1: // "Group Name"
       Navigator.pushNamed(context, '/add_friend');
       break;
-    case 2: // "Friend Name"
-      Navigator.pushNamed(context, '/friend_name');
+    case 2: // "Settings"
+      Navigator.pushNamed(context, '/settings');
       break;
     // Add cases for other routes
   }

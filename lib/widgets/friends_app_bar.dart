@@ -14,7 +14,7 @@ class FriendsAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.transparent,
-      toolbarHeight: 150,
+      toolbarHeight: 100,
       elevation: 0,
       title: Container(
         height: 50,
