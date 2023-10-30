@@ -16,14 +16,15 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      navigatorKey: navigatorKey, // Set the navigatorKey
-      routes: {
-        '/global_challenge': (context) =>
-            globalChallenge(username: '', email: '', password: ''),
-        '/add_friend': (context) => addFriend(),
-      },
-      home: OnBoardingPage1(),
-    );
+        debugShowCheckedModeBanner: false,
+        navigatorKey: navigatorKey, // Set the navigatorKey
+
+        routes: {
+          '/global_challenge': (context) =>
+              globalChallenge(username: '', email: '', password: ''),
+          '/add_friend': (context) => addFriend(),
+        },
+        home: globalChallenge(
+            username: 'gh', email: 'gh@gmail.com', password: '0000000'));
   }
 }

@@ -7,7 +7,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:google_sign_in/google_sign_in.dart';
 
-
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
 
@@ -23,18 +22,32 @@ class _SignUpState extends State<SignUp> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
-  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email'], clientId: '297398575103-o3engamrir3bf4pupurvj8lm4mn0iuqt.apps.googleusercontent.com');
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+      scopes: ['email'],
+      clientId:
+          '297398575103-o3engamrir3bf4pupurvj8lm4mn0iuqt.apps.googleusercontent.com');
 
-  void signUp(BuildContext context, String firstName, String lastName, String username, String email, String password, String confirmPassword) async {
-
-    try{
+  void signUp(
+      BuildContext context,
+      String firstName,
+      String lastName,
+      String username,
+      String email,
+      String password,
+      String confirmPassword) async {
+    try {
       final response = await http.post(
         Uri.parse('http://localhost:8080/api/v1/register'),
         headers: <String, String>{
           'Content-Type': 'application/json',
         },
-        body: jsonEncode(
-            {'firstName': firstName, 'lastName': lastName, 'username': username, 'email': email, 'password': password}),
+        body: jsonEncode({
+          'firstName': firstName,
+          'lastName': lastName,
+          'username': username,
+          'email': email,
+          'password': password
+        }),
       );
 
       if (response.statusCode == 200) {
@@ -50,12 +63,10 @@ class _SignUpState extends State<SignUp> {
           ),
         );
         print('Sign-up successful');
-      }
-      else{
+      } else {
         print('Error during sign-up: ${response.statusCode.toString()}');
       }
-    }
-    catch(e){
+    } catch (e) {
       print('Error during sign-up: ${e.toString()}');
     }
   }
@@ -64,7 +75,8 @@ class _SignUpState extends State<SignUp> {
     try {
       final GoogleSignInAccount? account = await _googleSignIn.signIn();
 
-      if (account != null) {  // User sign-in is successful
+      if (account != null) {
+        // User sign-in is successful
         print('Google Sign-In successful');
         print('Sign up with Google: ${account.email}');
         // Navigate to the global challenge page
@@ -72,7 +84,8 @@ class _SignUpState extends State<SignUp> {
           context,
           MaterialPageRoute(
             builder: (context) => globalChallenge(
-              username: '',  // to be decided - give them suggestions of what to use as their username
+              username:
+                  '', // to be decided - give them suggestions of what to use as their username
               email: account.email,
               password: '',
             ),
@@ -90,11 +103,19 @@ class _SignUpState extends State<SignUp> {
 
   bool isValidEmail(String email) {
     // Use a regular expression to validate email format
-    final emailRegex = RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
+    final emailRegex = RegExp(
+        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
     return emailRegex.hasMatch(email);
   }
 
-  void validateUserInfo(BuildContext context, String firstName, String lastName, String username, String email, String password, String confirmedPassword) {
+  void validateUserInfo(
+      BuildContext context,
+      String firstName,
+      String lastName,
+      String username,
+      String email,
+      String password,
+      String confirmedPassword) {
     // Clear any previous validation errors
     setState(() {
       validationErrors.clear();
@@ -105,34 +126,40 @@ class _SignUpState extends State<SignUp> {
     validateField(username, "username", "Username is required");
     validateField(email, "email", "Email is required");
     validateField(password, "password", "Password is required");
-    validateField(confirmedPassword, "confirmedPassword", "Confirm your password");
+    validateField(
+        confirmedPassword, "confirmedPassword", "Confirm your password");
 
     // Check for specific validation rules
     if (firstName.isNotEmpty) {
       if (firstName.contains('@')) {
-        setValidationError("firstName", "First name should not contain the '@' character");
+        setValidationError(
+            "firstName", "First name should not contain the '@' character");
       }
     }
 
     if (lastName.isNotEmpty) {
       if (lastName.contains('@')) {
-        setValidationError("lastName", "Last name should not contain the '@' character");
+        setValidationError(
+            "lastName", "Last name should not contain the '@' character");
       }
     }
 
     if (username.isNotEmpty) {
       if (username.contains('@')) {
-        setValidationError("username", "Username should not contain the '@' character");
+        setValidationError(
+            "username", "Username should not contain the '@' character");
       }
     }
 
     if (email.isNotEmpty && !isValidEmail(email)) {
-      setValidationError("email", "The email you provided is invalid. Verify again.");
+      setValidationError(
+          "email", "The email you provided is invalid. Verify again.");
     }
 
     if (password.isNotEmpty) {
       if (password.length < 8) {
-        setValidationError("password", "Your password should be at least 8 characters long.");
+        setValidationError(
+            "password", "Your password should be at least 8 characters long.");
       }
     }
 
@@ -142,8 +169,10 @@ class _SignUpState extends State<SignUp> {
 
     if (validationErrors.isEmpty) {
       // Continue with sign-up
-      print('Successfully signed up with this info: $firstName, $lastName, $username, $email, $password, $confirmedPassword');
-      signUp(context, firstName, lastName, username, email, password, confirmedPassword);
+      print(
+          'Successfully signed up with this info: $firstName, $lastName, $username, $email, $password, $confirmedPassword');
+      signUp(context, firstName, lastName, username, email, password,
+          confirmedPassword);
     }
   }
 
@@ -192,7 +221,6 @@ class _SignUpState extends State<SignUp> {
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 80),
                 Padding(
                   padding: const EdgeInsets.only(left: 30.0),
@@ -223,9 +251,9 @@ class _SignUpState extends State<SignUp> {
                         obscureText: false,
                       ),
                       Container(
-                        child: getValidationErrorWidget('firstName') ?? Container(),
+                        child: getValidationErrorWidget('firstName') ??
+                            Container(),
                       ),
-
                       const SizedBox(height: 15),
                       MyTextField(
                         controller: lastNameController,
@@ -233,9 +261,9 @@ class _SignUpState extends State<SignUp> {
                         obscureText: false,
                       ),
                       Container(
-                        child: getValidationErrorWidget('lastName') ?? Container(),
+                        child:
+                            getValidationErrorWidget('lastName') ?? Container(),
                       ),
-
                       const SizedBox(height: 15),
                       MyTextField(
                         controller: usernameController,
@@ -243,9 +271,9 @@ class _SignUpState extends State<SignUp> {
                         obscureText: false,
                       ),
                       Container(
-                        child: getValidationErrorWidget('username') ?? Container(),
+                        child:
+                            getValidationErrorWidget('username') ?? Container(),
                       ),
-
                       const SizedBox(height: 15),
                       MyTextField(
                         controller: emailController,
@@ -255,7 +283,6 @@ class _SignUpState extends State<SignUp> {
                       Container(
                         child: getValidationErrorWidget('email') ?? Container(),
                       ),
-
                       const SizedBox(height: 15),
                       MyTextField(
                         controller: passwordController,
@@ -263,9 +290,9 @@ class _SignUpState extends State<SignUp> {
                         obscureText: true,
                       ),
                       Container(
-                        child: getValidationErrorWidget('password') ?? Container(),
+                        child:
+                            getValidationErrorWidget('password') ?? Container(),
                       ),
-
                       const SizedBox(height: 15),
                       MyTextField(
                         controller: confirmPasswordController,
@@ -273,41 +300,42 @@ class _SignUpState extends State<SignUp> {
                         obscureText: true,
                       ),
                       Container(
-                        child: getValidationErrorWidget('passwordMismatch') ?? Container(),
+                        child: getValidationErrorWidget('passwordMismatch') ??
+                            Container(),
                       ),
                     ],
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 5.0), // Adjust the left padding as needed
+                  padding: const EdgeInsets.only(
+                      left: 5.0), // Adjust the left padding as needed
                   child: Column(
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        const SizedBox(height: 25),
-                        MyButton(
-                          buttonText: 'Create account',
-                          hasButtonImage: false,
-                          onTap: () {
-                            validateUserInfo(
-                              context,
-                              firstNameController.text,
-                              lastNameController.text,
-                              usernameController.text,
-                              emailController.text,
-                              passwordController.text,
-                              confirmPasswordController.text,
-                            );
-                          },
-                        ),
-                        const SizedBox(height: 15),
-
-                        MyButton(
-                          buttonText: 'Sign up with Google',
-                          hasButtonImage: true,
-                          onTap: () {
-                            signUpWithGoogle();
-                          },
-                        ),
+                    crossAxisAlignment: CrossAxisAlignment.start,
+                    children: [
+                      const SizedBox(height: 25),
+                      MyButton(
+                        buttonText: 'Create account',
+                        hasButtonImage: false,
+                        onTap: () {
+                          validateUserInfo(
+                            context,
+                            firstNameController.text,
+                            lastNameController.text,
+                            usernameController.text,
+                            emailController.text,
+                            passwordController.text,
+                            confirmPasswordController.text,
+                          );
+                        },
+                      ),
+                      const SizedBox(height: 15),
+                      MyButton(
+                        buttonText: 'Sign up with Google',
+                        hasButtonImage: true,
+                        onTap: () {
+                          signUpWithGoogle();
+                        },
+                      ),
                     ],
                   ),
                 ),
