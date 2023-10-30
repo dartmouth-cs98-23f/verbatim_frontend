@@ -1,4 +1,3 @@
-import 'dart:ui' as ui;
 import 'package:flutter/material.dart';
 
 // NOT FULLY IMPLEMENTED YET (but added to most documents)
@@ -7,7 +6,8 @@ import 'package:flutter/material.dart';
 // code logic from dhi wise
 
 // Get window size
-MediaQueryData mediaQueryData = MediaQueryData.fromView(ui.window);
+MediaQueryData mediaQueryData = MediaQueryData.fromView(
+    WidgetsBinding.instance.platformDispatcher.views.single);
 
 const num WIDTH = 390;
 const num HEIGHT = 844;
