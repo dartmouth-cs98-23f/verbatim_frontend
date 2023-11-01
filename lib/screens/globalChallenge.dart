@@ -76,26 +76,47 @@ class _GlobalChallengeState extends State<globalChallenge> {
   final StreamController<bool> _streamController = StreamController<bool>();
   double progressValue = 0.0;
 
-  Future<void> _fetchData() async {
-    final fetchQuestions = await http
-        .get(Uri.parse('http://localhost:8080/api/v1/globalChallenge'));
+  Future<void> _fetchData(String username) async {
+    final url = Uri.parse('http://localhost:8080/api/v1/globalChallenge');
+    final headers = <String, String>{'Content-Type': 'application/json'};
+
+    final fetchQuestions =
+        await http.post(url, headers: headers, body: username);
 
     if (fetchQuestions.statusCode == 200) {
-      final Map<String, dynamic> data = json.decode(fetchQuestions.body);
+      print(fetchQuestions.body);
+      final Map<String, dynamic>? data = json.decode(fetchQuestions.body);
 
-      question1 = data['q1'];
+      question1 = data!['q1'];
+      print(question1);
       question2 = data['q2'];
+      print(question2);
       question3 = data['q3'];
+
       categoryQ1 = data['categoryQ1'];
       categoryQ2 = data['categoryQ2'];
       categoryQ3 = data['categoryQ3'];
+
+      // if null user has not yet submitted global response
+
+      if (data["responseQ1"] != null) {
+        print('HERE');
+        numVerbatimQ1 = data['numVerbatimQ1'];
+        numVerbatimQ2 = data['numVerbatimQ2'];
+        numVerbatimQ3 = data['numVerbatimQ3'];
+        statsQ1 = data['statsQ1'];
+        statsQ2 = data['statsQ2'];
+        statsQ3 = data['statsQ3'];
+        totalResponses = data['totalResponses'];
+        response = true;
+      }
     }
   }
 
   @override
   void initState() {
     super.initState();
-    _fetchData().then((_) {
+    _fetchData(widget.username).then((_) {
       setState(() {
         questions = [question1, question2, question3];
       });
