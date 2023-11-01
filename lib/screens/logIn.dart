@@ -1,6 +1,8 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/Components/my_textfield.dart';
+import 'package:verbatim_frontend/screens/signUp.dart';
 import '../Components/my_button.dart';
 import '../Components/my_button_no_image.dart';
 import 'draft.dart';
@@ -182,24 +184,18 @@ class _LogInState extends State<LogIn> {
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 70.0),
+                  padding: const EdgeInsets.only(top: 0.0),
                   child: Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Verbatim',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 32,
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.w700,
-                        height: 0.04,
-                        letterSpacing: 0.10,
-                      ),
+                    alignment: Alignment.topCenter,
+                    child: Image.asset(
+                      'lib/images/Logo.png', // Replace with the path to your image asset
+                      width: 150, // Set the width and height to your preference
+                      height: 120,
                     ),
                   ),
                 ),
 
-                const SizedBox(height: 200),
+                const SizedBox(height: 195),
                 Padding(
                   padding: const EdgeInsets.only(left: 5.0),
                   child: Column(
@@ -227,12 +223,38 @@ class _LogInState extends State<LogIn> {
                     ],
                   ),
                 ),
+
+                const SizedBox(height: 30),
+                Padding(
+                  padding: const EdgeInsets.only(left: 220.0), // Adjust the padding as needed
+                  child: RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'Forgot password?',
+                          style: TextStyle(
+                            color: Color(0xFF3C64B1),
+                            fontWeight: FontWeight.w700,
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              // Navigate to the sign-in page
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => SignUp(),  // This will be a forgot password page routing
+                              )
+                              );
+                            },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.only(left: 5.0), // Adjust the left padding as needed
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 80),
+                      const SizedBox(height: 30),
                       MyButtonNoImage(
                         buttonText: 'Sign-in',
                         onTap: () {

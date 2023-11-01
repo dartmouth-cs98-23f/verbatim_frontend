@@ -24,7 +24,7 @@ class MyButton extends StatelessWidget {
           decoration: ShapeDecoration(
             color: Color(0xFFE76F51),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(14),
             ),
           ),
           child: Material( // Use Material widget to enable ink splash
@@ -32,7 +32,9 @@ class MyButton extends StatelessWidget {
             child: InkWell(
               onTap: onTap,
               child: Row(
+                mainAxisSize: MainAxisSize.min,
                 mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
                     width: 25,

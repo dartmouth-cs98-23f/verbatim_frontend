@@ -219,7 +219,7 @@ class _SignUpState extends State<SignUp> {
                     ),
                   ),
                 ),
-                const SizedBox(height: 30),
+                const SizedBox(height: 50),
 
                 Padding(
                   padding: const EdgeInsets.only(left: 30.0),
@@ -253,7 +253,7 @@ class _SignUpState extends State<SignUp> {
                         child: getValidationErrorWidget('firstName') ??
                             Container(),
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 15),
                       MyTextField(
                         controller: lastNameController,
                         hintText: 'Last name',
@@ -263,7 +263,7 @@ class _SignUpState extends State<SignUp> {
                         child:
                         getValidationErrorWidget('lastName') ?? Container(),
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 15),
                       MyTextField(
                         controller: usernameController,
                         hintText: 'Username',
@@ -273,7 +273,7 @@ class _SignUpState extends State<SignUp> {
                         child:
                         getValidationErrorWidget('username') ?? Container(),
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 15),
                       MyTextField(
                         controller: emailController,
                         hintText: 'Email',
@@ -282,7 +282,7 @@ class _SignUpState extends State<SignUp> {
                       Container(
                         child: getValidationErrorWidget('email') ?? Container(),
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 15),
                       MyTextField(
                         controller: passwordController,
                         hintText: 'Password',
@@ -292,7 +292,7 @@ class _SignUpState extends State<SignUp> {
                         child:
                         getValidationErrorWidget('password') ?? Container(),
                       ),
-                      const SizedBox(height: 10),
+                      const SizedBox(height: 15),
                       MyTextField(
                         controller: confirmPasswordController,
                         hintText: 'Confirm Password',
@@ -311,7 +311,7 @@ class _SignUpState extends State<SignUp> {
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 15),
+                      const SizedBox(height: 25),
                       MyButtonNoImage(
                         buttonText: 'Create account',
                         onTap: () {
