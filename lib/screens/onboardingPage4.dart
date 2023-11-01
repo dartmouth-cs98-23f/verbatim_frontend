@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/screens/getStarted.dart';
+import 'package:verbatim_frontend/screens/signUp.dart';
 
 class OnBoardingPage4 extends StatelessWidget {
   const OnBoardingPage4({super.key});
@@ -7,7 +8,7 @@ class OnBoardingPage4 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFFFFF3EE),
       body: SafeArea(
         child: Column(
           children: [
@@ -17,24 +18,18 @@ class OnBoardingPage4 extends StatelessWidget {
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(top: 70.0),
+                        padding: const EdgeInsets.only(top: 60.0),  //Color(0xFFFFF3EE)
                         child: Align(
                           alignment: Alignment.center,
-                          child: Text(
-                            'Verbatim',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 32,
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.w700,
-                              height: 0.04,
-                              letterSpacing: 0.10,
-                            ),
+                          child: Image.asset(
+                            'lib/images/onboardingPage4Image.png', // Replace with the path to your image asset
+                            width: 454, // Set the width and height to your preference
+                            height: 354,
                           ),
                         ),
                       ),
 
-                      const SizedBox(height: 200),
+                      const SizedBox(height: 15),
                       Center(
                         child: Text(
                           'Custom \nChallenges',
@@ -100,7 +95,7 @@ class OnBoardingPage4 extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {
                       // Navigate to the 'Sign Up' page
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => GetStarted()));
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignUp()));
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Color(0xFFE76F51), // Background color
