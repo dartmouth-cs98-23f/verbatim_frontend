@@ -18,7 +18,7 @@ class FriendsAppBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: 0,
       title: Container(
         height: 50,
-        width: 140,
+        width: 160,
         alignment: Alignment(-2.0, 0),
         decoration: BoxDecoration(
           color: Colors.transparent,

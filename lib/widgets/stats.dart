@@ -76,6 +76,28 @@ class Stats extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // null case
+    if (statsQ1["secondMostPopular"] == null) {
+      statsQ1["secondMostPopular"] = ' ';
+    }
+    if (statsQ1["thirdMostPopular"] == null) {
+      statsQ1["thirdMostPopular"] = ' ';
+    }
+
+    if (statsQ2["secondMostPopular"] == null) {
+      statsQ2["secondMostPopular"] = ' ';
+    }
+
+    if (statsQ2["thirdMostPopular"] == null) {
+      statsQ2["thirdMostPopular"] = ' ';
+    }
+    if (statsQ3["secondMostPopular"] == null) {
+      statsQ3["secondMostPopular"] = ' ';
+    }
+
+    if (statsQ3["thirdMostPopular"] == null) {
+      statsQ3["thirdMostPopular"] = ' ';
+    }
     // calculations for pie chart
     double numTopResponses1 = statsQ1["numResponsesFirst"] +
         statsQ1["numResponsesSecond"] +
