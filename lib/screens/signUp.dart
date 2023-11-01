@@ -83,18 +83,41 @@ class _SignUpState extends State<SignUp> {
         // User sign-in is successful
         print('Google Sign-In successful');
         print('Sign up with Google: ${account.email}');
-        // Navigate to the global challenge page
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => globalChallenge(
-              username:
-              '', // to be decided - give them suggestions of what to use as their username
-              email: account.email,
-              password: '',
-            ),
-          ),
+
+        final response = await http.post(
+          Uri.parse('http://localhost:8080/api/v1/register'),
+          headers: <String, String>{
+            'Content-Type': 'application/json',
+          },
+
+          body: jsonEncode({
+            'firstName': '<unavailable>',
+            'lastName': '<unavailable>',
+            'username': '<unavailable>',
+            'email': account.email,
+            'password': ''
+          }),
         );
+
+        if (response.statusCode == 200) {
+          // Navigate to the global challenge page
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  globalChallenge(
+                    username:
+                    '',
+                    // to be decided - give them suggestions of what to use as their username
+                    email: account.email,
+                    password: '',
+                  ),
+            ),
+          );
+        }
+        else{
+          print('Error during sign-up with Google: ${response.statusCode.toString()}');
+        }
       } else {
         // User canceled the Google Sign-In process or encountered an error.
         print('Google Sign-In canceled or failed');
