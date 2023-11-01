@@ -36,7 +36,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
                   hintText: "Search User",
                   hintStyle: TextStyle(fontSize: 14.0),
                   border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(vertical: 15.0),
                 ),
                 textAlign: TextAlign.left,
               ),

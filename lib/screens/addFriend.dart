@@ -169,8 +169,6 @@ class _AddFriendState extends State<addFriend> {
                                             color:
                                                 Color.fromARGB(255, 6, 5, 5)),
                                         border: InputBorder.none,
-                                        contentPadding: EdgeInsets.symmetric(
-                                            vertical: 15.0),
                                       ),
                                       textAlign: TextAlign.left,
                                     ),

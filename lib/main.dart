@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:verbatim_frontend/screens/onboardingPage4.dart';
 import 'package:verbatim_frontend/screens/signUp.dart';
 import 'package:verbatim_frontend/screens/onboardingPage1.dart';
 import 'screens/globalChallenge.dart';
@@ -16,15 +17,18 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        navigatorKey: navigatorKey, // Set the navigatorKey
+      debugShowCheckedModeBanner: false,
+      navigatorKey: navigatorKey, // Set the navigatorKey
 
-        routes: {
-          '/global_challenge': (context) =>
-              globalChallenge(username: 'jenny', email: '', password: ''),
-          '/add_friend': (context) => addFriend(username: 'jenny l'),
-        },
-        home: globalChallenge(
-            username: 'jenny l', email: 'gh@gom', password: '0000000'));
+      routes: {
+        '/global_challenge': (context) => globalChallenge(
+            username: 'dd', email: 'dd@gmail.com', password: '0000000'),
+        '/add_friend': (context) => addFriend(username: 'jenny l'),
+      },
+      home: OnBoardingPage1(),
+
+      /* home: globalChallenge(
+            username: 'dd', email: 'dd@gmail.com', password: '0000000')*/
+    );
   }
 }
