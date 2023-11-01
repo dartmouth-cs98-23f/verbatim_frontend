@@ -25,10 +25,13 @@ class MyApp extends StatelessWidget {
             username: 'dd', email: 'dd@gmail.com', password: '0000000'),
         '/add_friend': (context) => addFriend(username: 'jenny l'),
       },
-      home: OnBoardingPage1(),
 
-      /* home: globalChallenge(
-            username: 'dd', email: 'dd@gmail.com', password: '0000000')*/
+      home: OnBoardingPage1(),
+      /*
+        home: globalChallenge(
+            username: 'evewening',
+            email: 'evewening@gmail.com',
+            password: '0000000')*/
     );
   }
 }

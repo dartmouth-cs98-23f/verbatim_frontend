@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'sideBar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:verbatim_frontend/widgets/friends_app_bar.dart';
+import 'package:verbatim_frontend/widgets/size.dart';
 
 class addFriend extends StatefulWidget {
   final String username;
