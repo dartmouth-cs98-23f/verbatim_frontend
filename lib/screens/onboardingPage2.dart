@@ -8,7 +8,7 @@ class OnBoardingPage2 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFFFFF3EE),
       body: SafeArea(
         child: Column(
           children: [
@@ -18,23 +18,18 @@ class OnBoardingPage2 extends StatelessWidget {
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(top: 70.0),
+                        padding: const EdgeInsets.only(top: 60.0),  //Color(0xFFFFF3EE)
                         child: Align(
                           alignment: Alignment.center,
-                          child: Text(
-                            'Verbatim',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 32,
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.w700,
-                              height: 0.04,
-                              letterSpacing: 0.10,
-                            ),
+                          child: Image.asset(
+                            'lib/images/onboardingPage2Image.png', // Replace with the path to your image asset
+                            width: 454, // Set the width and height to your preference
+                            height: 354,
                           ),
                         ),
                       ),
-                      const SizedBox(height: 200),
+
+                      const SizedBox(height: 15),
                       Center(
                         child: Text(
                           'Discover \nShared Vocabulary',
@@ -49,7 +44,7 @@ class OnBoardingPage2 extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 50),
+                      const SizedBox(height: 30),
                       Padding(
                         padding: const EdgeInsets.only(left: 30.0, right: 30.0),
                         child: Align(

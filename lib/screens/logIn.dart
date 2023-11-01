@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/Components/my_textfield.dart';
 import '../Components/my_button.dart';
+import '../Components/my_button_no_image.dart';
 import 'draft.dart';
 import 'globalChallenge.dart';
 import 'package:http/http.dart' as http;
@@ -174,7 +175,7 @@ class _LogInState extends State<LogIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFFFFF3EE),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Center(
@@ -232,9 +233,8 @@ class _LogInState extends State<LogIn> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 80),
-                      MyButton(
+                      MyButtonNoImage(
                         buttonText: 'Sign-in',
-                        hasButtonImage: false,
                         onTap: () {
                           validateUserInfo(
                             context,

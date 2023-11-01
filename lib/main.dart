@@ -24,7 +24,6 @@ class MyApp extends StatelessWidget {
               globalChallenge(username: '', email: '', password: ''),
           '/add_friend': (context) => addFriend(),
         },
-        home: globalChallenge(
-            username: 'gh', email: 'gh@gmail.com', password: '0000000'));
+        home: OnBoardingPage1());
   }
 }
