@@ -29,9 +29,43 @@ class _GlobalChallengeState extends State<globalChallenge> {
   String userResponse = '';
   List<String> userResponses = [];
   TextEditingController responseController = TextEditingController();
+  // Get questions and categories variables
   String question1 = "";
   String question2 = "";
   String question3 = "";
+  String categoryQ1 = "";
+  String categoryQ2 = "";
+  String categoryQ3 = "";
+  // Get Stats variables
+  int totalResponses = 0;
+  int numVerbatimQ1 = 0;
+  int numVerbatimQ2 = 0;
+  int numVerbatimQ3 = 0;
+  int numExactVerbatim = 0;
+  Map<String, dynamic> statsQ1 = {
+    "firstMostPopular": "",
+    "numResponsesFirst": 0,
+    "secondMostPopular": "",
+    "numResponsesSecond": 0,
+    "thirdMostPopular": "",
+    "numResponsesThird": 0,
+  };
+  Map<String, dynamic> statsQ2 = {
+    "firstMostPopular": "",
+    "numResponsesFirst": 0,
+    "secondMostPopular": "",
+    "numResponsesSecond": 0,
+    "thirdMostPopular": "",
+    "numResponsesThird": 0,
+  };
+  Map<String, dynamic> statsQ3 = {
+    "firstMostPopular": "",
+    "numResponsesFirst": 0,
+    "secondMostPopular": "",
+    "numResponsesSecond": 0,
+    "thirdMostPopular": "",
+    "numResponsesThird": 0,
+  };
 
   bool response = false;
   List<String> responses = List.filled(3, "");
@@ -52,6 +86,9 @@ class _GlobalChallengeState extends State<globalChallenge> {
       question1 = data['q1'];
       question2 = data['q2'];
       question3 = data['q3'];
+      categoryQ1 = data['categoryQ1'];
+      categoryQ2 = data['categoryQ2'];
+      categoryQ3 = data['categoryQ3'];
     }
   }
 
@@ -86,6 +123,14 @@ class _GlobalChallengeState extends State<globalChallenge> {
 
     if (response.statusCode == 200) {
       print('Responses sent successfully');
+      final Map<String, dynamic> stats = json.decode(response.body);
+      numVerbatimQ1 = stats['numVerbatimQ1'];
+      numVerbatimQ2 = stats['numVerbatimQ2'];
+      numVerbatimQ3 = stats['numVerbatimQ3'];
+      statsQ1 = stats['statsQ1'];
+      statsQ2 = stats['statsQ2'];
+      statsQ3 = stats['statsQ3'];
+      totalResponses = stats['totalResponses'];
     } else {
       print('Failed to send responses. Status code: ${response.statusCode}');
 
@@ -103,9 +148,9 @@ class _GlobalChallengeState extends State<globalChallenge> {
   Widget build(BuildContext context) {
     final String assetName = 'assets/img1.svg';
     List<String> tabLables = [
-      'Sports',
-      'Fruits',
-      'Costumes'
+      categoryQ1,
+      categoryQ2,
+      categoryQ3
     ]; //eventually need backend to send this in
 
     bool showText = true;
@@ -381,9 +426,14 @@ class _GlobalChallengeState extends State<globalChallenge> {
                             } else if (!snapshot.data! && response == true) {
                               return Column(children: [
                                 Container(
-                                    width: 300,
-                                    height: 300,
-                                    child: Stats(tabLabels: tabLables))
+                                    width: 300.h,
+                                    height: 400.v,
+                                    child: Stats(
+                                        totalResponses: totalResponses,
+                                        tabLabels: tabLables,
+                                        statsQ1: statsQ1,
+                                        statsQ2: statsQ2,
+                                        statsQ3: statsQ3))
                               ]);
                             } else {
                               return Column(

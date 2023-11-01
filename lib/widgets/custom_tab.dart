@@ -28,6 +28,7 @@ class _PlayTabState extends State<PlayTab> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      resizeToAvoidBottomInset: false,
       body: Container(
         height: 30,
         width: 100,
