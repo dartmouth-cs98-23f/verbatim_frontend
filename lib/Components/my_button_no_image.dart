@@ -18,11 +18,10 @@ class MyButtonNoImage extends StatelessWidget {
         child: Container(
           width: 333,
           height: 49,
-          padding: const EdgeInsets.symmetric(horizontal: 18),
           decoration: ShapeDecoration(
             color: Color(0xFFE76F51),
             shape: RoundedRectangleBorder(
-              borderRadius: BorderRadius.circular(20),
+              borderRadius: BorderRadius.circular(14),
             ),
           ),
           child: Material( // Use Material widget to enable ink splash
@@ -30,30 +29,34 @@ class MyButtonNoImage extends StatelessWidget {
             child: InkWell(
               onTap: onTap,
               child: Row(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.start,
+                crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    width: 35,
-                    height: 35,
+                    width: 105,
+                    height: 18,
                     decoration: BoxDecoration(
                       color: Color(0xFFE76F51),
                     ),
                   ),
                   SizedBox(width: 10),
                   Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      buttonText,
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontSize: 14,
-                        fontFamily: 'Mulish',
-                        fontWeight: FontWeight.w700,
-                        height: 1.0,
-                        letterSpacing: 0.30,
+                    alignment: Alignment.centerLeft,
+                    child: Center(
+                      child: Text(
+                        buttonText,
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontSize: 14,
+                          fontFamily: 'Mulish',
+                          fontWeight: FontWeight.w700,
+                          height: 1.0,
+                          letterSpacing: 0.30,
+                        ),
                       ),
                     ),
-                  ),
+                  )
                 ],
               ),
             ),

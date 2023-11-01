@@ -100,9 +100,9 @@ class OnBoardingPage3 extends StatelessWidget {
                       Navigator.of(context).push(MaterialPageRoute(builder: (context) => GetStarted()));
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Colors.white, // Background color
+                      primary: Color(0xFFFFF3EE), // Background color
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(0.0), // Rectangular shape
+                        borderRadius: BorderRadius.circular(13.0), // Rectangular shape
                       ),
                     ),
                     child: Text(
@@ -121,7 +121,7 @@ class OnBoardingPage3 extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       primary: Color(0xFFE76F51), // Background color
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(0.0), // Rectangular shape
+                        borderRadius: BorderRadius.circular(13.0), // Rectangular shape
                       ),
                     ),
                     child: Text(

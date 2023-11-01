@@ -13,7 +13,7 @@ class _OnBoardingPage1State extends State<OnBoardingPage1> {
   void initState() {
     super.initState();
     // Wait for 4 seconds and then navigate to the new page
-    Future.delayed(Duration(seconds: 5), () {
+    Future.delayed(Duration(seconds: 3), () {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) {
