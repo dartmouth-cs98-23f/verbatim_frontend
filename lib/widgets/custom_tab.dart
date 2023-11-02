@@ -19,10 +19,12 @@ class _PlayTabState extends State<PlayTab> {
   }
 
   void _toggleTabSelection(bool isFirstTabSelected) {
-    widget.onTabSelectionChanged(isFirstTabSelected);
-    setState(() {
-      _isFirstTabSelected = isFirstTabSelected;
-    });
+    if (_isFirstTabSelected != isFirstTabSelected) {
+      widget.onTabSelectionChanged(isFirstTabSelected);
+      setState(() {
+        _isFirstTabSelected = isFirstTabSelected;
+      });
+    }
   }
 
   @override
@@ -43,25 +45,39 @@ class _PlayTabState extends State<PlayTab> {
             ),
           ],
         ),
-        child: ToggleButtons(
+        child: Center(
+            child: ToggleButtons(
           isSelected: [_isFirstTabSelected, !_isFirstTabSelected],
-          selectedColor: Colors.black,
           fillColor: Colors.orange[800],
-          borderRadius: BorderRadius.circular(50),
+          renderBorder: false,
           onPressed: (int index) {
             _toggleTabSelection(index == 0);
           },
           children: [
-            Icon(
-              Icons.lightbulb,
-              color: Colors.black,
+            Container(
+              height: 30,
+              width: 50,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(50),
+              ),
+              child: Icon(
+                Icons.lightbulb,
+                color: Colors.black,
+              ),
             ),
-            Icon(
-              Icons.bar_chart,
-              color: Colors.black,
+            Container(
+              height: 30,
+              width: 50,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(50),
+              ),
+              child: Icon(
+                Icons.bar_chart,
+                color: Colors.black,
+              ),
             ),
           ],
-        ),
+        )),
       ),
     );
   }
