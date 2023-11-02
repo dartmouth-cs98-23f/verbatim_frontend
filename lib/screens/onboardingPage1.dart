@@ -13,11 +13,11 @@ class _OnBoardingPage1State extends State<OnBoardingPage1> {
   void initState() {
     super.initState();
     // Wait for 4 seconds and then navigate to the new page
-    Future.delayed(Duration(seconds: 4), () {
+    Future.delayed(Duration(seconds: 3), () {
       Navigator.of(context).pushReplacement(
         MaterialPageRoute(
           builder: (context) {
-            return OnBoardingPage2(); // Replace 'YourNextPage' with the actual page you want to navigate to.
+            return OnBoardingPage2();
           },
         ),
       );
@@ -27,20 +27,20 @@ class _OnBoardingPage1State extends State<OnBoardingPage1> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFFFFF3EE),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            Text(
-              'Verbatim',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 32,
-                fontFamily: 'Poppins',
-                fontWeight: FontWeight.w700,
-                height: 0.04,
-                letterSpacing: 0.10,
+            Padding(
+              padding: const EdgeInsets.only(top: 17.0),
+              child: Align(
+                alignment: Alignment.center,
+                child: Image.asset(
+                  'lib/images/Logo.png', // Replace with the path to your image asset
+                  width: 250, // Set the width and height to your preference
+                  height: 300,
+                ),
               ),
             ),
           ],

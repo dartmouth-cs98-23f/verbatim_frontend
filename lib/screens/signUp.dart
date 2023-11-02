@@ -1,11 +1,15 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
+import 'package:verbatim_frontend/Components/my_button_no_image.dart';
 import 'package:verbatim_frontend/Components/my_textfield.dart';
+import 'package:verbatim_frontend/screens/logIn.dart';
 import '../Components/my_button.dart';
 import 'globalChallenge.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:google_sign_in/google_sign_in.dart';
+// import 'package:google_sign_in/google_sign_in';
 
 class SignUp extends StatefulWidget {
   const SignUp({super.key});
@@ -25,7 +29,7 @@ class _SignUpState extends State<SignUp> {
   final GoogleSignIn _googleSignIn = GoogleSignIn(
       scopes: ['email'],
       clientId:
-          '297398575103-o3engamrir3bf4pupurvj8lm4mn0iuqt.apps.googleusercontent.com');
+      '297398575103-o3engamrir3bf4pupurvj8lm4mn0iuqt.apps.googleusercontent.com');
 
   void signUp(
       BuildContext context,
@@ -79,18 +83,41 @@ class _SignUpState extends State<SignUp> {
         // User sign-in is successful
         print('Google Sign-In successful');
         print('Sign up with Google: ${account.email}');
-        // Navigate to the global challenge page
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => globalChallenge(
-              username:
-                  '', // to be decided - give them suggestions of what to use as their username
-              email: account.email,
-              password: '',
-            ),
-          ),
+
+        final response = await http.post(
+          Uri.parse('http://localhost:8080/api/v1/register'),
+          headers: <String, String>{
+            'Content-Type': 'application/json',
+          },
+
+          body: jsonEncode({
+            'firstName': '<unavailable>',
+            'lastName': '<unavailable>',
+            'username': '<unavailable>',
+            'email': account.email,
+            'password': ''
+          }),
         );
+
+        if (response.statusCode == 200) {
+          // Navigate to the global challenge page
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  globalChallenge(
+                    username:
+                    '',
+                    // to be decided - give them suggestions of what to use as their username
+                    email: account.email,
+                    password: '',
+                  ),
+            ),
+          );
+        }
+        else{
+          print('Error during sign-up with Google: ${response.statusCode.toString()}');
+        }
       } else {
         // User canceled the Google Sign-In process or encountered an error.
         print('Google Sign-In canceled or failed');
@@ -104,7 +131,7 @@ class _SignUpState extends State<SignUp> {
   bool isValidEmail(String email) {
     // Use a regular expression to validate email format
     final emailRegex = RegExp(
-        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
+        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zAZ0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
     return emailRegex.hasMatch(email);
   }
 
@@ -198,30 +225,25 @@ class _SignUpState extends State<SignUp> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFFFFF3EE),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Center(
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 60.0),
+                  padding: const EdgeInsets.only(top: 0.0),
                   child: Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Verbatim',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 32,
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.w700,
-                        height: 0.04,
-                        letterSpacing: 0.10,
-                      ),
+                    alignment: Alignment.topCenter,
+                    child: Image.asset(
+                      'lib/images/Logo.png', // Replace with the path to your image asset
+                      width: 150, // Set the width and height to your preference
+                      height: 120,
                     ),
                   ),
                 ),
-                const SizedBox(height: 80),
+                const SizedBox(height: 50),
+
                 Padding(
                   padding: const EdgeInsets.only(left: 30.0),
                   child: Align(
@@ -262,7 +284,7 @@ class _SignUpState extends State<SignUp> {
                       ),
                       Container(
                         child:
-                            getValidationErrorWidget('lastName') ?? Container(),
+                        getValidationErrorWidget('lastName') ?? Container(),
                       ),
                       const SizedBox(height: 15),
                       MyTextField(
@@ -272,7 +294,7 @@ class _SignUpState extends State<SignUp> {
                       ),
                       Container(
                         child:
-                            getValidationErrorWidget('username') ?? Container(),
+                        getValidationErrorWidget('username') ?? Container(),
                       ),
                       const SizedBox(height: 15),
                       MyTextField(
@@ -291,7 +313,7 @@ class _SignUpState extends State<SignUp> {
                       ),
                       Container(
                         child:
-                            getValidationErrorWidget('password') ?? Container(),
+                        getValidationErrorWidget('password') ?? Container(),
                       ),
                       const SizedBox(height: 15),
                       MyTextField(
@@ -313,9 +335,8 @@ class _SignUpState extends State<SignUp> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       const SizedBox(height: 25),
-                      MyButton(
+                      MyButtonNoImage(
                         buttonText: 'Create account',
-                        hasButtonImage: false,
                         onTap: () {
                           validateUserInfo(
                             context,
@@ -328,13 +349,45 @@ class _SignUpState extends State<SignUp> {
                           );
                         },
                       ),
-                      const SizedBox(height: 15),
+                      const SizedBox(height: 10),
                       MyButton(
                         buttonText: 'Sign up with Google',
                         hasButtonImage: true,
                         onTap: () {
                           signUpWithGoogle();
                         },
+                      ),
+                      const SizedBox(height: 10),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25.0), // Adjust the padding as needed
+                        child: RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Already have an account? ',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              TextSpan(
+                                text: 'Sign in',
+                                style: TextStyle(
+                                  color: Color(0xFF3C64B1),
+                                  fontWeight: FontWeight.w700,// Blue color for the link
+                                ),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    // Navigate to the sign-in page
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => LogIn(),
+                                    )
+                                    );
+                                  },
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ],
                   ),
