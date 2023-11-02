@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'sideBar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:verbatim_frontend/widgets/size.dart';
 import 'package:verbatim_frontend/widgets/friends_app_bar.dart';
-
-import 'package:verbatim_frontend/widgets/custom_app_bar.dart';
+import 'package:verbatim_frontend/widgets/size.dart';
 
 class addFriend extends StatefulWidget {
+  final String username;
+
+  addFriend({
+    Key? key,
+    required this.username,
+  }) : super(key: key);
+
   @override
   _AddFriendState createState() => _AddFriendState();
 }
@@ -109,6 +114,7 @@ class _AddFriendState extends State<addFriend> {
 
     return SafeArea(
         child: Scaffold(
+      resizeToAvoidBottomInset: false,
       backgroundColor: Colors.orange,
       body: Container(
         color: Color.fromARGB(255, 255, 243, 238),
@@ -119,12 +125,12 @@ class _AddFriendState extends State<addFriend> {
               child: Column(
                 children: [
                   SizedBox(
-                    height: 300.v,
+                    height: 225,
                     width: double.maxFinite,
                     child: Stack(alignment: Alignment.bottomLeft, children: [
                       // orange background
                       Container(
-                        height: 300.v,
+                        height: 225,
                         width: double.maxFinite,
                         margin: EdgeInsets.zero,
                         padding: EdgeInsets.zero,
@@ -135,42 +141,48 @@ class _AddFriendState extends State<addFriend> {
                       ),
                       FriendsAppBar(),
 
-                      Align(
-                        alignment: Alignment.center,
-                        child: Container(
-                            width: 400,
-                            height: 22,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20),
-                            ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.search, color: Colors.black),
-                                Expanded(
-                                  child: Center(
+                      Padding(
+                        padding: EdgeInsets.only(
+                            top:
+                                20.0), // Adjust the top padding value as needed
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Container(
+                              width: 350,
+                              height: 30,
+                              decoration: BoxDecoration(
+                                color: Colors.white,
+                                borderRadius: BorderRadius.circular(20),
+                              ),
+                              child: Row(
+                                mainAxisAlignment: MainAxisAlignment.center,
+                                children: [
+                                  SizedBox(width: 8),
+                                  Icon(Icons.search, color: Colors.black),
+                                  SizedBox(width: 8),
+                                  Expanded(
                                     child: TextField(
                                       controller: _searchController,
                                       decoration: InputDecoration(
                                         hintText: "Search User",
                                         hintStyle: const TextStyle(
-                                            fontSize: 16.0,
-                                            color: Colors.black),
+                                            fontSize: 14.0,
+                                            color:
+                                                Color.fromARGB(255, 6, 5, 5)),
                                         border: InputBorder.none,
                                       ),
                                       textAlign: TextAlign.left,
                                     ),
-                                  ),
-                                )
-                              ],
-                            )),
+                                  )
+                                ],
+                              )),
+                        ),
                       ),
                       Align(
                         alignment: Alignment.bottomLeft,
                         child: Container(
-                          width: 152.h,
-                          margin: EdgeInsets.only(left: 32.h),
+                          width: 152,
+                          margin: EdgeInsets.only(left: 32),
                           child: RichText(
                             text: TextSpan(
                               children: [
@@ -187,6 +199,7 @@ class _AddFriendState extends State<addFriend> {
                                     text: "People you may know:",
                                     style: TextStyle(
                                       fontSize: 15,
+                                      color: Colors.black,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
@@ -204,9 +217,9 @@ class _AddFriendState extends State<addFriend> {
             Center(
               child: Container(
                 clipBehavior: Clip.hardEdge,
-                margin: EdgeInsets.only(top: 10.h),
-                width: 200.h,
-                height: 450.v,
+                margin: EdgeInsets.only(top: 10),
+                width: 300,
+                height: 300,
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(30),
                   boxShadow: [
@@ -281,7 +294,7 @@ class _AddFriendState extends State<addFriend> {
           ],
         ),
       ),
-      drawer: SideBar(),
+      drawer: SideBar(username: widget.username),
     ));
   }
 }

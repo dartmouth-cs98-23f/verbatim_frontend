@@ -1,4 +1,3 @@
-import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'sideBar.dart';
 import 'package:http/http.dart' as http;
@@ -30,9 +29,43 @@ class _GlobalChallengeState extends State<globalChallenge> {
   String userResponse = '';
   List<String> userResponses = [];
   TextEditingController responseController = TextEditingController();
+  // Get questions and categories variables
   String question1 = "";
   String question2 = "";
   String question3 = "";
+  String categoryQ1 = "";
+  String categoryQ2 = "";
+  String categoryQ3 = "";
+  // Get Stats variables
+  int totalResponses = 0;
+  int numVerbatimQ1 = 0;
+  int numVerbatimQ2 = 0;
+  int numVerbatimQ3 = 0;
+  int numExactVerbatim = 0;
+  Map<String, dynamic> statsQ1 = {
+    "firstMostPopular": "",
+    "numResponsesFirst": 0,
+    "secondMostPopular": "",
+    "numResponsesSecond": 0,
+    "thirdMostPopular": "",
+    "numResponsesThird": 0,
+  };
+  Map<String, dynamic> statsQ2 = {
+    "firstMostPopular": "",
+    "numResponsesFirst": 0,
+    "secondMostPopular": "",
+    "numResponsesSecond": 0,
+    "thirdMostPopular": "",
+    "numResponsesThird": 0,
+  };
+  Map<String, dynamic> statsQ3 = {
+    "firstMostPopular": "",
+    "numResponsesFirst": 0,
+    "secondMostPopular": "",
+    "numResponsesSecond": 0,
+    "thirdMostPopular": "",
+    "numResponsesThird": 0,
+  };
 
   bool response = false;
   List<String> responses = List.filled(3, "");
@@ -43,23 +76,47 @@ class _GlobalChallengeState extends State<globalChallenge> {
   final StreamController<bool> _streamController = StreamController<bool>();
   double progressValue = 0.0;
 
-  Future<void> _fetchData() async {
-    final fetchQuestions = await http
-        .get(Uri.parse('http://localhost:8080/api/v1/globalChallenge'));
+  Future<void> _fetchData(String username) async {
+    final url = Uri.parse('http://localhost:8080/api/v1/globalChallenge');
+    final headers = <String, String>{'Content-Type': 'application/json'};
+
+    final fetchQuestions =
+        await http.post(url, headers: headers, body: username);
 
     if (fetchQuestions.statusCode == 200) {
-      final Map<String, dynamic> data = json.decode(fetchQuestions.body);
+      print(fetchQuestions.body);
+      final Map<String, dynamic>? data = json.decode(fetchQuestions.body);
 
-      question1 = data['q1'];
+      question1 = data!['q1'];
+      print(question1);
       question2 = data['q2'];
+      print(question2);
       question3 = data['q3'];
+
+      categoryQ1 = data['categoryQ1'];
+      categoryQ2 = data['categoryQ2'];
+      categoryQ3 = data['categoryQ3'];
+
+      // if null user has not yet submitted global response
+
+      if (data["responseQ1"] != null) {
+        print('HERE');
+        numVerbatimQ1 = data['numVerbatimQ1'];
+        numVerbatimQ2 = data['numVerbatimQ2'];
+        numVerbatimQ3 = data['numVerbatimQ3'];
+        statsQ1 = data['statsQ1'];
+        statsQ2 = data['statsQ2'];
+        statsQ3 = data['statsQ3'];
+        totalResponses = data['totalResponses'];
+        response = true;
+      }
     }
   }
 
   @override
   void initState() {
     super.initState();
-    _fetchData().then((_) {
+    _fetchData(widget.username).then((_) {
       setState(() {
         questions = [question1, question2, question3];
       });
@@ -87,6 +144,14 @@ class _GlobalChallengeState extends State<globalChallenge> {
 
     if (response.statusCode == 200) {
       print('Responses sent successfully');
+      final Map<String, dynamic> stats = json.decode(response.body);
+      numVerbatimQ1 = stats['numVerbatimQ1'];
+      numVerbatimQ2 = stats['numVerbatimQ2'];
+      numVerbatimQ3 = stats['numVerbatimQ3'];
+      statsQ1 = stats['statsQ1'];
+      statsQ2 = stats['statsQ2'];
+      statsQ3 = stats['statsQ3'];
+      totalResponses = stats['totalResponses'];
     } else {
       print('Failed to send responses. Status code: ${response.statusCode}');
 
@@ -104,9 +169,9 @@ class _GlobalChallengeState extends State<globalChallenge> {
   Widget build(BuildContext context) {
     final String assetName = 'assets/img1.svg';
     List<String> tabLables = [
-      'Sports',
-      'Fruits',
-      'Costumes'
+      categoryQ1,
+      categoryQ2,
+      categoryQ3
     ]; //eventually need backend to send this in
 
     bool showText = true;
@@ -129,14 +194,14 @@ class _GlobalChallengeState extends State<globalChallenge> {
                 child: Column(
                   children: [
                     SizedBox(
-                      height: 300.v,
+                      height: 240.v,
                       width: double.maxFinite,
                       child: Stack(
-                        alignment: Alignment.bottomLeft,
+                        alignment: Alignment.topCenter,
                         children: [
                           // orange background
                           Container(
-                            height: 300.v,
+                            height: 220.v,
                             width: double.maxFinite,
                             margin: EdgeInsets.zero,
                             padding: EdgeInsets.zero,
@@ -153,9 +218,9 @@ class _GlobalChallengeState extends State<globalChallenge> {
                           Positioned(
                             child: Center(
                               child: Text(
-                                'Global Challenge #17',
+                                '\nGlobal Challenge #17',
                                 style: TextStyle(
-                                  fontSize: 28,
+                                  fontSize: 24,
                                   color: Colors.white,
                                   fontWeight: FontWeight.w900,
                                 ),
@@ -176,11 +241,15 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                       text: "17213",
                                       style: TextStyle(
                                           fontWeight: FontWeight.bold,
+                                          color: Colors.black,
                                           fontSize: 15),
                                     ),
                                     TextSpan(
                                         text: " users have played",
-                                        style: TextStyle(fontSize: 15)),
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.black,
+                                        )),
                                   ],
                                 ),
                                 textAlign: TextAlign.left,
@@ -211,14 +280,16 @@ class _GlobalChallengeState extends State<globalChallenge> {
                   ],
                 ),
               ),
+              SizedBox(height: 30),
               Stack(
                 alignment: Alignment.bottomRight,
                 children: [
                   Container(
                     clipBehavior: Clip.hardEdge,
                     margin: EdgeInsets.only(top: 10.h),
-                    width: 200.h,
-                    height: 450.v,
+                    padding: EdgeInsets.symmetric(horizontal: 10),
+                    width: 300.h,
+                    height: 400.v,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(50),
                       boxShadow: [
@@ -376,14 +447,19 @@ class _GlobalChallengeState extends State<globalChallenge> {
                             } else if (!snapshot.data! && response == true) {
                               return Column(children: [
                                 Container(
-                                    width: 200.h,
-                                    height: 450.v,
-                                    child: Stats(tabLabels: tabLables))
+                                    width: 300.h,
+                                    height: 400.v,
+                                    child: Stats(
+                                        totalResponses: totalResponses,
+                                        tabLabels: tabLables,
+                                        statsQ1: statsQ1,
+                                        statsQ2: statsQ2,
+                                        statsQ3: statsQ3))
                               ]);
                             } else {
                               return Column(
                                 children: [
-                                  SizedBox(height: 40),
+                                  SizedBox(height: 20),
                                   Center(
                                       child: Padding(
                                           padding: const EdgeInsets.only(
@@ -557,7 +633,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
             ],
           ),
         ),
-        drawer: SideBar(),
+        drawer: SideBar(username: widget.username),
       ),
     );
   }

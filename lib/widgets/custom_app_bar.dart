@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'size.dart';
+import 'package:verbatim_frontend/components/my_textfield.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   CustomAppBar({
@@ -14,32 +15,29 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   Widget build(BuildContext context) {
     return AppBar(
       backgroundColor: Colors.transparent,
-      toolbarHeight: 150,
+      toolbarHeight: 100,
       elevation: 0,
       title: Container(
-        height: 23,
         width: 140,
-        alignment: Alignment(-2.0, 0),
+        height: 25,
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
         ),
         child: Row(
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
+            SizedBox(width: 8),
             Icon(Icons.search, color: Colors.grey, size: 18),
+            SizedBox(width: 8),
             Expanded(
-              child: Center(
-                child: Padding(
-                  padding: const EdgeInsets.symmetric(vertical: 5),
-                  child: TextField(
-                    decoration: InputDecoration(
-                      hintText: "Search User",
-                      hintStyle: TextStyle(fontSize: 14.0),
-                      border: InputBorder.none,
-                    ),
-                    textAlign: TextAlign.left,
-                  ),
+              child: TextField(
+                decoration: InputDecoration(
+                  hintText: "Search User",
+                  hintStyle: TextStyle(fontSize: 14.0),
+                  border: InputBorder.none,
                 ),
+                textAlign: TextAlign.left,
               ),
             ),
           ],
