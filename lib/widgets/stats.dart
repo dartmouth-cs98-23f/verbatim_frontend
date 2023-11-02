@@ -7,17 +7,28 @@ class Friend {
   final String answer2;
   final String answer3;
 
-  Friend(
-      {required this.name,
-      required this.answer1,
-      required this.answer2,
-      required this.answer3});
+  Friend({
+    required this.name,
+    required this.answer1,
+    required this.answer2,
+    required this.answer3,
+  });
 }
 
 class Stats extends StatelessWidget {
   final List<String> tabLabels;
+  final Map<String, dynamic> statsQ1;
+  final Map<String, dynamic> statsQ2;
+  final Map<String, dynamic> statsQ3;
+  final int totalResponses;
 
-  Stats({required this.tabLabels});
+  Stats({
+    required this.tabLabels,
+    required this.totalResponses,
+    required this.statsQ1,
+    required this.statsQ2,
+    required this.statsQ3,
+  });
 
 // need to get this from backend
   final List<Friend> friends = [
@@ -65,6 +76,47 @@ class Stats extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    // null case
+    if (statsQ1["secondMostPopular"] == null) {
+      statsQ1["secondMostPopular"] = ' ';
+    }
+    if (statsQ1["thirdMostPopular"] == null) {
+      statsQ1["thirdMostPopular"] = ' ';
+    }
+
+    if (statsQ2["secondMostPopular"] == null) {
+      statsQ2["secondMostPopular"] = ' ';
+    }
+
+    if (statsQ2["thirdMostPopular"] == null) {
+      statsQ2["thirdMostPopular"] = ' ';
+    }
+    if (statsQ3["secondMostPopular"] == null) {
+      statsQ3["secondMostPopular"] = ' ';
+    }
+
+    if (statsQ3["thirdMostPopular"] == null) {
+      statsQ3["thirdMostPopular"] = ' ';
+    }
+    // calculations for pie chart
+    double numTopResponses1 = statsQ1["numResponsesFirst"] +
+        statsQ1["numResponsesSecond"] +
+        statsQ1["numResponsesThird"];
+
+    double numOther1 = totalResponses - numTopResponses1;
+
+    double numTopResponses2 = statsQ2["numResponsesFirst"] +
+        statsQ2["numResponsesSecond"] +
+        statsQ2["numResponsesThird"];
+
+    double numOther2 = totalResponses - numTopResponses2;
+
+    double numTopResponses3 = statsQ3["numResponsesFirst"] +
+        statsQ3["numResponsesSecond"] +
+        statsQ3["numResponsesThird"];
+
+    double numOther3 = totalResponses - numTopResponses3;
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
@@ -98,28 +150,29 @@ class Stats extends StatelessWidget {
                           child: Center(
                         child: Column(children: [
                           Container(
-                            height: 240,
+                            height: 250,
+                            width: 500,
                             child: PieChart(
                               PieChartData(
                                 centerSpaceRadius: 0,
                                 sections: [
                                   PieChartSectionData(
-                                      value: 30,
+                                      value: statsQ1["numResponsesFirst"],
                                       color: Colors.red,
                                       radius: 90,
                                       title: ''),
                                   PieChartSectionData(
-                                      value: 20,
+                                      value: statsQ1["numResponsesSecond"],
                                       color: Colors.green,
                                       radius: 90,
                                       title: ''),
                                   PieChartSectionData(
-                                      value: 25,
+                                      value: statsQ1["numResponsesThird"],
                                       color: Colors.blue,
                                       radius: 90,
                                       title: ''),
                                   PieChartSectionData(
-                                      value: 20,
+                                      value: numOther1,
                                       color: Colors.yellow,
                                       radius: 90,
                                       title: ''),
@@ -133,12 +186,13 @@ class Stats extends StatelessWidget {
                                 child: Legend(
                                   data: [
                                     LegendData(
-                                        title: 'Tennis', color: Colors.red),
+                                        title: statsQ1["firstMostPopular"],
+                                        color: Colors.red),
                                     LegendData(
-                                        title: 'Taekwondo',
+                                        title: statsQ1["secondMostPopular"],
                                         color: Colors.green),
                                     LegendData(
-                                        title: 'Table Tennis',
+                                        title: statsQ1["thirdMostPopular"],
                                         color: Colors.blue),
                                     LegendData(
                                         title: 'Other', color: Colors.yellow),
@@ -160,7 +214,7 @@ class Stats extends StatelessWidget {
                           SizedBox(height: 10),
                           Container(
                             width: 250,
-                            height: 300,
+                            height: 250,
                             child: Center(
                               child: ListView.builder(
                                 physics: NeverScrollableScrollPhysics(),
@@ -248,7 +302,7 @@ class Stats extends StatelessWidget {
                                 },
                               ),
                             ),
-                          )
+                          ),
                         ]),
                       ));
                     } else if (index == 1) {
@@ -262,22 +316,22 @@ class Stats extends StatelessWidget {
                                 centerSpaceRadius: 0,
                                 sections: [
                                   PieChartSectionData(
-                                      value: 30,
+                                      value: statsQ2["numResponsesFirst"],
                                       color: Colors.red,
                                       radius: 90,
                                       title: ''),
                                   PieChartSectionData(
-                                      value: 20,
+                                      value: statsQ2["numResponsesSecond"],
                                       color: Colors.green,
                                       radius: 90,
                                       title: ''),
                                   PieChartSectionData(
-                                      value: 25,
+                                      value: statsQ2["numResponsesThird"],
                                       color: Colors.blue,
                                       radius: 90,
                                       title: ''),
                                   PieChartSectionData(
-                                      value: 20,
+                                      value: numOther2,
                                       color: Colors.yellow,
                                       radius: 90,
                                       title: ''),
@@ -291,14 +345,16 @@ class Stats extends StatelessWidget {
                                 child: Legend(
                                   data: [
                                     LegendData(
-                                        title: 'Apple', color: Colors.red),
+                                        title: statsQ2["firstMostPopular"],
+                                        color: Colors.red),
                                     LegendData(
-                                        title: 'Grape', color: Colors.green),
+                                        title: statsQ2["secondMostPopular"],
+                                        color: Colors.green),
                                     LegendData(
-                                        title: 'Red Grape', color: Colors.blue),
+                                        title: statsQ2["thirdMostPopular"],
+                                        color: Colors.blue),
                                     LegendData(
-                                        title: 'Green Grape',
-                                        color: Colors.yellow),
+                                        title: 'Other', color: Colors.yellow),
                                   ],
                                 ),
                               )),
@@ -317,7 +373,7 @@ class Stats extends StatelessWidget {
                           SizedBox(height: 10),
                           Container(
                             width: 250,
-                            height: 300,
+                            height: 250,
                             child: Center(
                               child: ListView.builder(
                                 physics: NeverScrollableScrollPhysics(),
@@ -405,7 +461,7 @@ class Stats extends StatelessWidget {
                                 },
                               ),
                             ),
-                          )
+                          ),
                         ]),
                       ));
                     } else if (index == 2) {
@@ -419,22 +475,22 @@ class Stats extends StatelessWidget {
                                 centerSpaceRadius: 0,
                                 sections: [
                                   PieChartSectionData(
-                                      value: 30,
+                                      value: statsQ3["numResponsesFirst"],
                                       color: Colors.red,
                                       radius: 90,
                                       title: ''),
                                   PieChartSectionData(
-                                      value: 20,
+                                      value: statsQ3["numResponsesSecond"],
                                       color: Colors.green,
                                       radius: 90,
                                       title: ''),
                                   PieChartSectionData(
-                                      value: 25,
+                                      value: statsQ3["numResponsesThird"],
                                       color: Colors.blue,
                                       radius: 90,
                                       title: ''),
                                   PieChartSectionData(
-                                      value: 20,
+                                      value: numOther3,
                                       color: Colors.yellow,
                                       radius: 90,
                                       title: ''),
@@ -448,13 +504,16 @@ class Stats extends StatelessWidget {
                                 child: Legend(
                                   data: [
                                     LegendData(
-                                        title: 'Vampire', color: Colors.red),
+                                        title: statsQ3["firstMostPopular"],
+                                        color: Colors.red),
                                     LegendData(
-                                        title: 'Canoe', color: Colors.green),
+                                        title: statsQ3["secondMostPopular"],
+                                        color: Colors.green),
                                     LegendData(
-                                        title: 'Jungle', color: Colors.blue),
+                                        title: statsQ3["thirdMostPopular"],
+                                        color: Colors.blue),
                                     LegendData(
-                                        title: 'Juice', color: Colors.yellow),
+                                        title: 'Other', color: Colors.yellow),
                                   ],
                                 ),
                               )),
@@ -473,7 +532,7 @@ class Stats extends StatelessWidget {
                           SizedBox(height: 10),
                           Container(
                             width: 250,
-                            height: 300,
+                            height: 250,
                             child: Center(
                               child: ListView.builder(
                                 physics: NeverScrollableScrollPhysics(),
@@ -561,7 +620,7 @@ class Stats extends StatelessWidget {
                                 },
                               ),
                             ),
-                          )
+                          ),
                         ]),
                       ));
                     }
