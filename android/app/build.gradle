@@ -22,6 +22,8 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
+
+
 android {
     namespace "com.example.verbatim_frontend"
     compileSdkVersion flutter.compileSdkVersion
@@ -35,6 +37,9 @@ android {
     kotlinOptions {
         jvmTarget = '1.8'
     }
+
+
+ 
 
     sourceSets {
         main.java.srcDirs += 'src/main/kotlin'
@@ -57,6 +62,14 @@ android {
             // Signing with the debug keys for now, so `flutter run --release` works.
             signingConfig signingConfigs.debug
         }
+    }
+}
+
+android {
+    compileSdk = 34
+  
+    defaultConfig {
+        targetSdk = 34
     }
 }
 

@@ -1,7 +1,10 @@
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/Components/my_textfield.dart';
+import 'package:verbatim_frontend/screens/signUp.dart';
 import '../Components/my_button.dart';
+import '../Components/my_button_no_image.dart';
 import 'draft.dart';
 import 'globalChallenge.dart';
 import 'package:http/http.dart' as http;
@@ -84,20 +87,42 @@ class _LogInState extends State<LogIn> {
     try {
       final GoogleSignInAccount? account = await _googleSignIn.signIn();
 
-      if (account != null) {  // User sign-in is successful
+      if (account != null) {
+        // User sign-in is successful
         print('Google Sign-In successful');
         print('Sign up with Google: ${account.email}');
-        // Navigate to the desired screen after signing in
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => globalChallenge(
-              username: '',  // to be decided - give them suggestions of what to use as their username
-              email: account.email,
-              password: '',
-            ),
-          ),
+
+        final response = await http.post(
+          Uri.parse('http://localhost:8080/api/v1/register'),
+          headers: <String, String>{
+            'Content-Type': 'application/json',
+          },
+
+          body: jsonEncode({
+            'emailOrUsername': account.email,
+            'password': ''
+          }),
         );
+
+        if (response.statusCode == 200) {
+          // Navigate to the global challenge page
+          Navigator.push(
+            context,
+            MaterialPageRoute(
+              builder: (context) =>
+                  globalChallenge(
+                    username:
+                    '',
+                    // to be decided - give them suggestions of what to use as their username
+                    email: account.email,
+                    password: '',
+                  ),
+            ),
+          );
+        }
+        else{
+          print('Error during sign-up with Google: ${response.statusCode.toString()}');
+        }
       } else {
         // User canceled the Google Sign-In process or encountered an error.
         print('Google Sign-In canceled or failed');
@@ -174,31 +199,25 @@ class _LogInState extends State<LogIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Colors.white,
+      backgroundColor: Color(0xFFFFF3EE),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Center(
             child: Column(
               children: [
                 Padding(
-                  padding: const EdgeInsets.only(top: 70.0),
+                  padding: const EdgeInsets.only(top: 0.0),
                   child: Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Verbatim',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 32,
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.w700,
-                        height: 0.04,
-                        letterSpacing: 0.10,
-                      ),
+                    alignment: Alignment.topCenter,
+                    child: Image.asset(
+                      'lib/images/Logo.png', // Replace with the path to your image asset
+                      width: 150, // Set the width and height to your preference
+                      height: 120,
                     ),
                   ),
                 ),
 
-                const SizedBox(height: 200),
+                const SizedBox(height: 195),
                 Padding(
                   padding: const EdgeInsets.only(left: 5.0),
                   child: Column(
@@ -226,15 +245,40 @@ class _LogInState extends State<LogIn> {
                     ],
                   ),
                 ),
+
+                const SizedBox(height: 30),
+                Padding(
+                  padding: const EdgeInsets.only(left: 220.0), // Adjust the padding as needed
+                  child: RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'Forgot password?',
+                          style: TextStyle(
+                            color: Color(0xFF3C64B1),
+                            fontWeight: FontWeight.w700,
+                          ),
+                          recognizer: TapGestureRecognizer()
+                            ..onTap = () {
+                              // Navigate to the sign-in page
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => SignUp(),  // This will be a forgot password page routing
+                              )
+                              );
+                            },
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
                 Padding(
                   padding: const EdgeInsets.only(left: 5.0), // Adjust the left padding as needed
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      const SizedBox(height: 80),
-                      MyButton(
+                      const SizedBox(height: 30),
+                      MyButtonNoImage(
                         buttonText: 'Sign-in',
-                        hasButtonImage: false,
                         onTap: () {
                           validateUserInfo(
                             context,

@@ -72,9 +72,20 @@ flutter:
   # To add assets to your application, add an assets section, like this:
   assets:
      - lib/images/googleImage.png
+     - lib/images/Logo.png
+     - lib/images/onboardingPage2Image.png
+     - lib/images/onboardingPage3Image.png
+     - lib/images/onboardingPage4Image.png
      - assets/Logo.png
      - assets/img1.svg
      - assets/bird.png
+     - assets/Ellipse 41.png
+     - assets/Ellipse 42.png
+     - assets/Ellipse 48.png
+     - assets/Ellipse 49.png
+     - assets/Ellipse 54.png
+     - assets/Ellipse 55.png
+     - assets/Ellipse 65.png
 #     - images/a_dot_ham.jpeg
 
 
