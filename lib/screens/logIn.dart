@@ -1,6 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:verbatim_frontend/Components/my_textfield.dart';
 import 'package:verbatim_frontend/screens/signUp.dart';
 import '../Components/my_button.dart';
@@ -28,6 +29,8 @@ class _LogInState extends State<LogIn> {
 
   void logIn(BuildContext context, String email, String password) async {
     try {
+      final prefs = await SharedPreferences.getInstance();
+
       final response = await http.post(
         Uri.parse('http://localhost:8080/api/v1/login'),
         headers: <String, String>{
@@ -46,19 +49,15 @@ class _LogInState extends State<LogIn> {
           // Authentication successful
           String username = responseData['username'];
           String email = responseData['email'];
-          String password = responseData['password']; // You have the user's password, but you may not want to store it in the client.
+          String password = responseData['password'];
+
+          // Save the user info to the disk so that they can persist to other pages
+          prefs.setString('username', username);
+          prefs.setString('email', email);
+          prefs.setString('password', password);  // Do we need this to persist through the pages? Aren't the username and email enough?
 
           print("\nThe email is : ${email} \n The password is : ${password}");
-          // // Navigate to the global challenge page.
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => globalChallenge(
-          //       // email: email,
-          //       // password: password,
-          //     ),
-          //   ),
-          // );
+
           Navigator.push(
             context,
             MaterialPageRoute(

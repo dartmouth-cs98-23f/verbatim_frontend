@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/screens/onboardingPage1.dart';
+import 'package:verbatim_frontend/screens/signUp.dart';
 import 'screens/globalChallenge.dart';
 import 'screens/addFriend.dart';
 
@@ -23,13 +24,6 @@ class MyApp extends StatelessWidget {
             username: 'dd', email: 'dd@gmail.com', password: '0000000'),
         '/add_friend': (context) => addFriend(username: 'jenny l'),
       },
-
-      //    home: OnBoardingPage1(),
-
-      home: globalChallenge(
-          username: 'loiswening',
-          email: 'loiswening@gmail.com',
-          password: '0000000'),
-    );
+      home: OnBoardingPage1());
   }
 }
