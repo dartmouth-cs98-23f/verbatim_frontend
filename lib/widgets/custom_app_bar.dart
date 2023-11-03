@@ -27,15 +27,16 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
         child: Row(
           mainAxisAlignment: MainAxisAlignment.center,
           children: [
-            SizedBox(width: 8),
-            Icon(Icons.search, color: Colors.grey, size: 18),
-            SizedBox(width: 8),
+            SizedBox(height: 25, width: 8),
+            Icon(Icons.search, color: Colors.grey, size: 15),
+            SizedBox(height: 25, width: 8),
             Expanded(
               child: TextField(
                 decoration: InputDecoration(
                   hintText: "Search User",
                   hintStyle: TextStyle(fontSize: 14.0),
                   border: InputBorder.none,
+                  contentPadding: EdgeInsets.only(top: 0),
                 ),
                 textAlign: TextAlign.left,
               ),
