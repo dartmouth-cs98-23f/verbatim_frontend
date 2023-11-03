@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:verbatim_frontend/Components/my_button_no_image.dart';
 import 'package:verbatim_frontend/Components/my_textfield.dart';
 import 'package:verbatim_frontend/screens/logIn.dart';
@@ -26,6 +27,7 @@ class _SignUpState extends State<SignUp> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+
   final GoogleSignIn _googleSignIn = GoogleSignIn(
       scopes: ['email'],
       clientId:
@@ -40,6 +42,17 @@ class _SignUpState extends State<SignUp> {
       String password,
       String confirmPassword) async {
     try {
+      final prefs = await SharedPreferences.getInstance();
+
+      // Save the user info to the disk so that they can persist to other pages
+      prefs.setString('firstName', firstName);
+      prefs.setString('lastName', lastName);
+      prefs.setString('username', username);
+      prefs.setString('email', email);
+      prefs.setString('password', password);
+
+      print('Testing prefs: Email: ${prefs.getString('email')} while username is: ${prefs.getString('username')}');
+
       final response = await http.post(
         Uri.parse('http://localhost:8080/api/v1/register'),
         headers: <String, String>{
