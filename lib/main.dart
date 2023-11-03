@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:verbatim_frontend/screens/signUp.dart';
 import 'package:verbatim_frontend/screens/onboardingPage1.dart';
+import 'package:verbatim_frontend/screens/signUp.dart';
 import 'screens/globalChallenge.dart';
 import 'screens/addFriend.dart';
 import 'screens/settings.dart';
@@ -20,13 +20,13 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-        debugShowCheckedModeBanner: false,
-        navigatorKey: navigatorKey, // Set the navigatorKey
+      debugShowCheckedModeBanner: false,
+      navigatorKey: navigatorKey, // Set the navigatorKey
 
         routes: {
           '/global_challenge': (context) =>
               globalChallenge(username: '', email: '', password: ''),
-          '/add_friend': (context) => addFriend(),
+          '/add_friend': (context) => addFriend(username: 'jenny l'),
           '/settings': (context)=> settings(),
         },
         home: SignUp());

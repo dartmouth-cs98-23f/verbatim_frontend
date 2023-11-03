@@ -51,7 +51,7 @@ class GetStarted extends StatelessWidget {
                       Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignUp()));
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xFF1E4693), // Background color
+                      primary: Color(0xFFE76F51), // Background color
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(0.0), // Rectangular shape
                       ),

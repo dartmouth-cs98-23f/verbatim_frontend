@@ -1,12 +1,17 @@
 import 'package:flutter/material.dart';
 import 'sideBar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:verbatim_frontend/widgets/size.dart';
 import 'package:verbatim_frontend/widgets/friends_app_bar.dart';
-
-import 'package:verbatim_frontend/widgets/custom_app_bar.dart';
+import 'package:verbatim_frontend/widgets/size.dart';
 
 class addFriend extends StatefulWidget {
+  final String username;
+
+  addFriend({
+    Key? key,
+    required this.username,
+  }) : super(key: key);
+
   @override
   _AddFriendState createState() => _AddFriendState();
 }
@@ -109,179 +114,188 @@ class _AddFriendState extends State<addFriend> {
 
     return SafeArea(
         child: Scaffold(
-      backgroundColor: Colors.orange,
-      body: Container(
-        color: Color.fromARGB(255, 255, 243, 238),
-        child: Column(
-          children: [
-            SizedBox(
-              width: double.maxFinite,
-              child: Column(
-                children: [
-                  SizedBox(
-                    height: 300.v,
-                    width: double.maxFinite,
-                    child: Stack(alignment: Alignment.bottomLeft, children: [
-                      // orange background
-                      Container(
-                        height: 300.v,
+      resizeToAvoidBottomInset: true,
+      backgroundColor: Color.fromARGB(255, 255, 243, 238),
+      body: SingleChildScrollView(
+        child: Container(
+            color: Color.fromARGB(255, 255, 243, 238),
+            child: Column(
+              children: [
+                SizedBox(
+                  width: double.maxFinite,
+                  child: Column(
+                    children: [
+                      SizedBox(
+                        height: 240.v,
                         width: double.maxFinite,
-                        margin: EdgeInsets.zero,
-                        padding: EdgeInsets.zero,
-                        child: SvgPicture.asset(
-                          assetName,
-                          fit: BoxFit.fill,
-                        ),
-                      ),
-                      FriendsAppBar(),
-
-                      Align(
-                        alignment: Alignment.center,
-                        child: Container(
-                            width: 400,
-                            height: 22,
-                            decoration: BoxDecoration(
-                              color: Colors.white,
-                              borderRadius: BorderRadius.circular(20),
+                        child: Stack(alignment: Alignment.topCenter, children: [
+                          // orange background
+                          Container(
+                            height: 220.v,
+                            width: double.maxFinite,
+                            margin: EdgeInsets.zero,
+                            padding: EdgeInsets.zero,
+                            child: SvgPicture.asset(
+                              assetName,
+                              fit: BoxFit.fill,
                             ),
-                            child: Row(
-                              mainAxisAlignment: MainAxisAlignment.center,
-                              children: [
-                                Icon(Icons.search, color: Colors.black),
-                                Expanded(
-                                  child: Center(
-                                    child: TextField(
-                                      controller: _searchController,
-                                      decoration: InputDecoration(
-                                        hintText: "Search User",
-                                        hintStyle: const TextStyle(
-                                            fontSize: 16.0,
-                                            color: Colors.black),
-                                        border: InputBorder.none,
-                                      ),
-                                      textAlign: TextAlign.left,
-                                    ),
-                                  ),
-                                )
-                              ],
-                            )),
-                      ),
-                      Align(
-                        alignment: Alignment.bottomLeft,
-                        child: Container(
-                          width: 152.h,
-                          margin: EdgeInsets.only(left: 32.h),
-                          child: RichText(
-                            text: TextSpan(
-                              children: [
-                                if (_searchText.isNotEmpty)
-                                  TextSpan(
-                                    text: "Search Results",
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  )
-                                else
-                                  TextSpan(
-                                    text: "People you may know:",
-                                    style: TextStyle(
-                                      fontSize: 15,
-                                      fontWeight: FontWeight.bold,
-                                    ),
-                                  ),
-                              ],
-                            ),
-                            textAlign: TextAlign.left,
                           ),
-                        ),
-                      )
-                    ]),
-                  ),
-                ],
-              ),
-            ),
-            Center(
-              child: Container(
-                clipBehavior: Clip.hardEdge,
-                margin: EdgeInsets.only(top: 10.h),
-                width: 200.h,
-                height: 450.v,
-                decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(30),
-                  boxShadow: [
-                    BoxShadow(
-                      color: const Color.fromARGB(255, 117, 19, 12)
-                          .withOpacity(0.5),
-                      blurRadius: 5,
-                      offset: Offset(3, 7),
-                    ),
-                  ],
-                  color: Colors.white,
-                ),
-                child: _searchText.isNotEmpty
-                    ? ListView.builder(
-                        itemCount: _searchResults().length,
-                        itemBuilder: (context, index) {
-                          final friendName = _searchResults()[index];
-                          final isFriend =
-                              _selectedFriends.contains(friendName);
-                          return ListTile(
-                              title: Row(
-                                children: [
-                                  Icon(Icons.mood),
-                                  SizedBox(width: 8),
-                                  Text(
-                                    friendName,
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
-                                  ),
-                                ],
-                              ),
-                              trailing: IconButton(
-                                icon: isFriend
-                                    ? Icon(Icons.remove)
-                                    : Icon(Icons.person_add_alt),
-                                onPressed: () {
-                                  _toggleFriend(friendName);
-                                },
-                              ));
-                        },
-                      )
-                    : ListView.builder(
-                        itemCount: _suggestedNames.length,
-                        itemBuilder: (context, index) {
-                          final name = _suggestedNames[index];
-                          final isFriend = _selectedFriends.contains(name);
+                          FriendsAppBar(),
 
-                          return ListTile(
-                              title: Row(
-                                children: [
-                                  Icon(Icons.mood),
-                                  SizedBox(width: 8),
-                                  Text(
-                                    name,
-                                    style:
-                                        TextStyle(fontWeight: FontWeight.bold),
+                          Padding(
+                            padding: EdgeInsets.only(
+                                top:
+                                    20.0), // Adjust the top padding value as needed
+                            child: Align(
+                              alignment: Alignment.center,
+                              child: Container(
+                                  width: 350,
+                                  height: 30,
+                                  decoration: BoxDecoration(
+                                    color: Colors.white,
+                                    borderRadius: BorderRadius.circular(20),
                                   ),
-                                ],
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SizedBox(width: 8),
+                                      Icon(Icons.search, color: Colors.black),
+                                      SizedBox(width: 8),
+                                      Expanded(
+                                        child: TextField(
+                                          controller: _searchController,
+                                          decoration: InputDecoration(
+                                            hintText: "Search User",
+                                            hintStyle: const TextStyle(
+                                                fontSize: 14.0,
+                                                color: Color.fromARGB(
+                                                    255, 6, 5, 5)),
+                                            border: InputBorder.none,
+                                          ),
+                                          textAlign: TextAlign.left,
+                                        ),
+                                      )
+                                    ],
+                                  )),
+                            ),
+                          ),
+                          Align(
+                            alignment: Alignment.bottomLeft,
+                            child: Container(
+                              width: 200,
+                              margin: EdgeInsets.only(left: 32),
+                              child: RichText(
+                                text: TextSpan(
+                                  children: [
+                                    if (_searchText.isNotEmpty)
+                                      TextSpan(
+                                        text: "Search Results",
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      )
+                                    else
+                                      TextSpan(
+                                        text: "People you may know:",
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                                textAlign: TextAlign.left,
                               ),
-                              trailing: IconButton(
-                                icon: isFriend
-                                    ? Icon(Icons.remove)
-                                    : Icon(Icons.person_add_alt),
-                                onPressed: () {
-                                  _toggleFriend(name);
-                                },
-                              ));
-                        },
+                            ),
+                          )
+                        ]),
                       ),
-              ),
-            ),
-          ],
-        ),
+                    ],
+                  ),
+                ),
+                Center(
+                  child: Container(
+                    clipBehavior: Clip.hardEdge,
+                    margin: EdgeInsets.only(top: 10),
+                    width: 300,
+                    height: 300,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(30),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color.fromARGB(255, 117, 19, 12)
+                              .withOpacity(0.5),
+                          blurRadius: 5,
+                          offset: Offset(3, 7),
+                        ),
+                      ],
+                      color: Colors.white,
+                    ),
+                    child: _searchText.isNotEmpty
+                        ? ListView.builder(
+                            itemCount: _searchResults().length,
+                            itemBuilder: (context, index) {
+                              final friendName = _searchResults()[index];
+                              final isFriend =
+                                  _selectedFriends.contains(friendName);
+                              return ListTile(
+                                  title: Row(
+                                    children: [
+                                      Icon(Icons.mood),
+                                      SizedBox(width: 8),
+                                      Text(
+                                        friendName,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                  trailing: IconButton(
+                                    icon: isFriend
+                                        ? Icon(Icons.remove)
+                                        : Icon(Icons.person_add_alt),
+                                    onPressed: () {
+                                      _toggleFriend(friendName);
+                                    },
+                                  ));
+                            },
+                          )
+                        : ListView.builder(
+                            itemCount: _suggestedNames.length,
+                            itemBuilder: (context, index) {
+                              final name = _suggestedNames[index];
+                              final isFriend = _selectedFriends.contains(name);
+
+                              return ListTile(
+                                  title: Row(
+                                    children: [
+                                      Icon(Icons.mood),
+                                      SizedBox(width: 8),
+                                      Text(
+                                        name,
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
+                                      ),
+                                    ],
+                                  ),
+                                  trailing: IconButton(
+                                    icon: isFriend
+                                        ? Icon(Icons.remove)
+                                        : Icon(Icons.person_add_alt),
+                                    onPressed: () {
+                                      _toggleFriend(name);
+                                    },
+                                  ));
+                            },
+                          ),
+                  ),
+                ),
+              ],
+            )),
       ),
-      drawer: SideBar(),
+      drawer: SideBar(username: widget.username),
     ));
   }
 }
