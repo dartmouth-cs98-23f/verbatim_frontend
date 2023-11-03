@@ -1,12 +1,16 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:verbatim_frontend/screens/signUp.dart';
 import 'package:verbatim_frontend/screens/onboardingPage1.dart';
 import 'screens/globalChallenge.dart';
 import 'screens/addFriend.dart';
+import 'screens/settings.dart';
+import 'Components/shared_prefs.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
-void main() {
+Future<void> main() async {
+  await SharedPrefs().init();
   runApp(const MyApp());
 }
 
@@ -23,8 +27,10 @@ class MyApp extends StatelessWidget {
           '/global_challenge': (context) =>
               globalChallenge(username: '', email: '', password: ''),
           '/add_friend': (context) => addFriend(),
+          '/settings': (context)=> settings(),
         },
-        home: globalChallenge(
-            username: 'gh', email: 'gh@gmail.com', password: '0000000'));
+        home: SignUp());
+        // home: globalChallenge(
+        //     username: 'gh', email: 'gh@gmail.com', password: '0000000'));
   }
 }

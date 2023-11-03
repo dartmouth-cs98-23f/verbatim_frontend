@@ -9,6 +9,7 @@ import 'package:verbatim_frontend/widgets/size.dart';
 import 'package:verbatim_frontend/widgets/custom_tab.dart';
 import 'dart:async';
 import 'package:verbatim_frontend/widgets/stats.dart';
+import 'package:verbatim_frontend/Components/shared_prefs.dart';
 
 class globalChallenge extends StatefulWidget {
   final String email;
