@@ -7,7 +7,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:verbatim_frontend/Components/my_button_no_image.dart';
 import 'package:verbatim_frontend/Components/my_textfield.dart';
 import 'package:verbatim_frontend/screens/logIn.dart';
-import 'package:verbatim_frontend/screens/signupinErrorMessage.dart';
+import 'package:verbatim_frontend/screens/signupErrorMessage.dart';
 import '../Components/my_button.dart';
 import 'globalChallenge.dart';
 import 'package:http/http.dart' as http;
@@ -211,8 +211,8 @@ class _SignUpState extends State<SignUp> {
       setValidationError("email", "The email format is invalid. Verify again.");
     }
 
+    // Validate password
     if (password.isNotEmpty) {
-
       // Check password length and complexity (at least one uppercase letter, one lowercase letter, one number, and one special character)
       if (!passwordComplexity.hasMatch(password) || password.length < 8) {
         setValidationError("password", "Your password should be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and one of the following special characters: !, @, #, \$, %, ^, &, *");
@@ -223,6 +223,7 @@ class _SignUpState extends State<SignUp> {
       }
     }
 
+    // Validate there are no errors at all
     if (validationErrors.isEmpty) {
       // Continue with sign-up
       print('Successfully signed up with this info: $firstName, $lastName, $username, $email, $password, $confirmedPassword');

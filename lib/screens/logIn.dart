@@ -5,8 +5,9 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:verbatim_frontend/Components/my_textfield.dart';
+import 'package:verbatim_frontend/screens/forgotPassword.dart';
 import 'package:verbatim_frontend/screens/signUp.dart';
-import 'package:verbatim_frontend/screens/signupinErrorMessage.dart';
+import 'package:verbatim_frontend/screens/signupErrorMessage.dart';
 import '../Components/my_button.dart';
 import '../Components/my_button_no_image.dart';
 import 'draft.dart';
@@ -166,27 +167,6 @@ class _LogInState extends State<LogIn> {
     validateField(email, "email", "Email is required");
     validateField(password, "password", "Password is required");
 
-    // Check for specific validation rules
-    // if (email.isNotEmpty) {
-    //   if (email.contains('@')) {
-    //     // Treat it as an email else as a username
-    //     print('Treat the entry as an email else as a username');
-    //     return;
-    //   }
-    // }
-    //
-    // if (email.isNotEmpty && !isValidEmail(email)) {
-    //   setValidationError("email", "The email you provided is invalid. Verify again.");
-    //   return;
-    // }
-
-    if (password.isNotEmpty) {
-      if (password.length < 8) {
-        setValidationError("password", "Your password should be at least 8 characters long.");
-        return;
-      }
-    }
-
     print('here');
     // All validations passed; proceed with login
     logIn(context, email, password);
@@ -278,7 +258,7 @@ class _LogInState extends State<LogIn> {
                             ..onTap = () {
                               // Navigate to the sign-in page
                               Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => SignUp(),  // This will be a forgot password page routing
+                                builder: (context) => ForgotPassword(),  // This will be a forgot password page routing
                               )
                               );
                             },

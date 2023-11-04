@@ -1,10 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/screens/onboardingPage1.dart';
-import 'package:verbatim_frontend/screens/signUp.dart';
-import 'package:verbatim_frontend/screens/signupinErrorMessage.dart';
 import 'Components/defineRoutes.dart';
-import 'screens/globalChallenge.dart';
-import 'screens/addFriend.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -21,12 +17,10 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey, // Set the navigatorKey
-
-      routes: {
-        '/global_challenge': (context) => globalChallenge(
-            username: 'dd', email: 'dd@gmail.com', password: '0000000'),
-        '/add_friend': (context) => addFriend(username: 'jenny l'),
-      },
-      home: SignUp());
+      onGenerateRoute: Application.router.generator,
+      initialRoute: '/onboarding_page1',
+      home: OnBoardingPage1(),
+    );
   }
 }
+
