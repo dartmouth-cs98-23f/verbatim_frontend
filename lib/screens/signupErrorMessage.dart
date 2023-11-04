@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/screens/signUp.dart';
 
+import '../Components/my_button_no_image.dart';
+
 class SignupErrorMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
@@ -24,20 +26,17 @@ class SignupErrorMessage extends StatelessWidget {
                 ),
 
                 const SizedBox(height: 230),
-                Padding(
-                  padding: const EdgeInsets.only(left: 20.0),
-                  child: Align(
-                    alignment: Alignment.center,
-                    child: Text(
-                      'Oops, something went wrong!',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontFamily: 'Mulish',
-                        fontWeight: FontWeight.w700,
-                        height: 0.04,
-                        letterSpacing: 0.30,
-                      ),
+                Center(
+                  child: Text(
+                    'Oops, something went wrong!',
+                    textAlign: TextAlign.center,
+                    style: TextStyle(
+                      color: Color(0xFFE76F51),
+                      fontSize: 32,
+                      fontFamily: 'Mulish',
+                      fontWeight: FontWeight.w700,
+                      height: 1.5,
+                      letterSpacing: 0.30,
                     ),
                   ),
                 ),
@@ -63,23 +62,12 @@ class SignupErrorMessage extends StatelessWidget {
                 ),
 
                 const SizedBox(height: 25),
-                ElevatedButton(
-                  onPressed: () {
+                MyButtonNoImage(
+                  buttonText: 'Try Again',
+                  onTap: () {
                     // Navigate back to the 'SignUp' page
                     Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignUp()));
                   },
-                  style: ElevatedButton.styleFrom(
-                    primary: Color(0xFFE76F51),
-                    shape: RoundedRectangleBorder(
-                      borderRadius: BorderRadius.circular(13.0),
-                    ),
-                  ),
-                  child: Text(
-                    'Try Again',
-                    style: TextStyle(
-                      color: Colors.white,
-                    ),
-                  ),
                 ),
               ],
             ),
