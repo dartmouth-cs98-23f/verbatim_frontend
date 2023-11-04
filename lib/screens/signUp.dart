@@ -6,6 +6,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:verbatim_frontend/Components/my_button_no_image.dart';
 import 'package:verbatim_frontend/Components/my_textfield.dart';
 import 'package:verbatim_frontend/screens/logIn.dart';
+import 'package:verbatim_frontend/screens/signupinErrorMessage.dart';
 import '../Components/my_button.dart';
 import 'globalChallenge.dart';
 import 'package:http/http.dart' as http;
@@ -82,9 +83,21 @@ class _SignUpState extends State<SignUp> {
         print('Sign-up successful');
       } else {
         print('Error during sign-up: ${response.statusCode.toString()}');
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SignupErrorMessage(),
+          ),
+        );
       }
     } catch (e) {
       print('Error during sign-up: ${e.toString()}');
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SignupErrorMessage(),
+        ),
+      );
     }
   }
 
@@ -94,8 +107,16 @@ class _SignUpState extends State<SignUp> {
 
       if (account != null) {
         // User sign-in is successful
-        print('Google Sign-In successful');
-        print('Sign up with Google: ${account.email}');
+        final prefs = await SharedPreferences.getInstance();
+
+        // Save the user info to the disk so that they can persist to other pages
+        prefs.setString('firstName', '<unavailable>');
+        prefs.setString('lastName', '<unavailable>');
+        prefs.setString('username', '<unavailable>');
+        prefs.setString('email', account.email);
+        prefs.setString('password', '<unavailable>');
+
+        print('Testing prefs: Email: ${prefs.getString('email')} while username is: ${prefs.getString('username')}');
 
         final response = await http.post(
           Uri.parse('http://localhost:8080/api/v1/register'),
@@ -108,7 +129,7 @@ class _SignUpState extends State<SignUp> {
             'lastName': '<unavailable>',
             'username': '<unavailable>',
             'email': account.email,
-            'password': ''
+            'password': '<unavailable>'
           }),
         );
 
