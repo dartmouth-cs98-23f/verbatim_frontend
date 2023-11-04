@@ -1,9 +1,12 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:verbatim_frontend/Components/my_textfield.dart';
 import 'package:verbatim_frontend/screens/signUp.dart';
+import 'package:verbatim_frontend/screens/signupinErrorMessage.dart';
 import '../Components/my_button.dart';
 import '../Components/my_button_no_image.dart';
 import 'draft.dart';
@@ -54,32 +57,46 @@ class _LogInState extends State<LogIn> {
           // Save the user info to the disk so that they can persist to other pages
           prefs.setString('username', username);
           prefs.setString('email', email);
-          prefs.setString('password', password);  // Do we need this to persist through the pages? Aren't the username and email enough?
+          prefs.setString('password',
+              password); // Do we need this to persist through the pages? Aren't the username and email enough?
 
           print("\nThe email is : ${email} \n The password is : ${password}");
 
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => globalChallenge(
-                username: username,
-                email: email,
-                password: password,
-              ),
+              builder: (context) =>
+                  globalChallenge(
+                    username: username,
+                    email: email,
+                    password: password,
+                  ),
             ),
           );
 
           print('Log-in successful');
-        } else {
-          print('Authentication failed: Response data is null');
         }
-      } else {
-        print('Authentication failed: ${response.statusCode.toString()}');
       }
-    } catch (e) {
-      print('Error during authentication: ${e.toString()}');
+      else {
+        print('Error during sign-up: ${response.statusCode.toString()}');
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SignupErrorMessage(),
+          ),
+        );
+      }
     }
+    catch (e) {
+    print('Error during sign-up: ${e.toString()}');
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SignupErrorMessage(),
+      ),
+    );
   }
+}
 
 
   Future<void> signInWithGoogle() async {

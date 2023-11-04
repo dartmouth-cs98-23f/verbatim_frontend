@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/screens/onboardingPage1.dart';
 import 'package:verbatim_frontend/screens/signUp.dart';
+import 'package:verbatim_frontend/screens/signupinErrorMessage.dart';
+import 'Components/defineRoutes.dart';
 import 'screens/globalChallenge.dart';
 import 'screens/addFriend.dart';
 
@@ -8,6 +10,7 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 void main() {
   runApp(const MyApp());
+  defineRoutes();
 }
 
 class MyApp extends StatelessWidget {
@@ -24,6 +27,6 @@ class MyApp extends StatelessWidget {
             username: 'dd', email: 'dd@gmail.com', password: '0000000'),
         '/add_friend': (context) => addFriend(username: 'jenny l'),
       },
-      home: OnBoardingPage1());
+      home: SignUp());
   }
 }
