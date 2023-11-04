@@ -1,3 +1,4 @@
+import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -43,16 +44,6 @@ class _SignUpState extends State<SignUp> {
       String password,
       String confirmPassword) async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-
-      // Save the user info to the disk so that they can persist to other pages
-      prefs.setString('firstName', firstName);
-      prefs.setString('lastName', lastName);
-      prefs.setString('username', username);
-      prefs.setString('email', email);
-      prefs.setString('password', password);
-
-      print('Testing prefs: Email: ${prefs.getString('email')} while username is: ${prefs.getString('username')}');
 
       final response = await http.post(
         Uri.parse('http://localhost:8080/api/v1/register'),
@@ -69,7 +60,7 @@ class _SignUpState extends State<SignUp> {
       );
 
       if (response.statusCode == 200) {
-        // Successful sign-up: Navigate to the global
+        // Successful sign-up: Navigate to the global challenge page
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -107,17 +98,6 @@ class _SignUpState extends State<SignUp> {
 
       if (account != null) {
         // User sign-in is successful
-        final prefs = await SharedPreferences.getInstance();
-
-        // Save the user info to the disk so that they can persist to other pages
-        prefs.setString('firstName', '<unavailable>');
-        prefs.setString('lastName', '<unavailable>');
-        prefs.setString('username', '<unavailable>');
-        prefs.setString('email', account.email);
-        prefs.setString('password', '<unavailable>');
-
-        print('Testing prefs: Email: ${prefs.getString('email')} while username is: ${prefs.getString('username')}');
-
         final response = await http.post(
           Uri.parse('http://localhost:8080/api/v1/register'),
           headers: <String, String>{
@@ -162,13 +142,6 @@ class _SignUpState extends State<SignUp> {
     }
   }
 
-  bool isValidEmail(String email) {
-    // Use a regular expression to validate email format
-    final emailRegex = RegExp(
-        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zAZ0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
-    return emailRegex.hasMatch(email);
-  }
-
   void validateUserInfo(
       BuildContext context,
       String firstName,
@@ -187,52 +160,73 @@ class _SignUpState extends State<SignUp> {
     validateField(username, "username", "Username is required");
     validateField(email, "email", "Email is required");
     validateField(password, "password", "Password is required");
-    validateField(
-        confirmedPassword, "confirmedPassword", "Confirm your password");
+    validateField(confirmedPassword, "confirmedPassword", "Confirm your password");
 
     // Check for specific validation rules
+    final firstLastNamesValidCharacters = RegExp(r"^[a-zA-Z\s\-'_]+$");   // regex for validating first and last names
+    final usernameValidCharacters = RegExp(r'^[a-zA-Z0-9_]+$');   // regex for validating a username
+    final passwordComplexity = RegExp(r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).+$');    // regex for validating a password
+
     if (firstName.isNotEmpty) {
-      if (firstName.contains('@')) {
+      // Check for length
+      if (firstName.isEmpty || firstName.length > 50) {
         setValidationError(
-            "firstName", "First name should not contain the '@' character");
+            "firstName", "First name should be between 1 and 50 characters");
       }
+      // Check character set
+      if (!firstLastNamesValidCharacters.hasMatch(firstName)) {
+        setValidationError(
+        "firstName", "First name should only contain letters, spaces, hyphens, and apostrophes");
+        }
     }
 
     if (lastName.isNotEmpty) {
-      if (lastName.contains('@')) {
+      // Check for length
+      if (lastName.length > 50) {
         setValidationError(
-            "lastName", "Last name should not contain the '@' character");
+            "lastName", "Last name should be between 1 and 50 characters");
+      }
+      // Check character set
+      if (!firstLastNamesValidCharacters.hasMatch(lastName)) {
+        setValidationError(
+            "lastName", "Last name should only contain letters, spaces, hyphens, and apostrophes");
       }
     }
 
     if (username.isNotEmpty) {
-      if (username.contains('@')) {
+      // Check for length
+      if (username.length < 3 || username.length > 30) {
         setValidationError(
-            "username", "Username should not contain the '@' character");
+            "username", "Username should be between 3 and 30 characters");
+      }
+      // Check character set
+      if (!usernameValidCharacters.hasMatch(username)) {
+        setValidationError(
+            "username", "Username should only contain letters, numbers, and underscores");
       }
     }
 
-    if (email.isNotEmpty && !isValidEmail(email)) {
-      setValidationError(
-          "email", "The email you provided is invalid. Verify again.");
+    // Validate email
+    if (email.isNotEmpty && !EmailValidator.validate(email)) {
+      setValidationError("email", "The email format is invalid. Verify again.");
     }
 
     if (password.isNotEmpty) {
-      if (password.length < 8) {
-        setValidationError(
-            "password", "Your password should be at least 8 characters long.");
-      }
-    }
 
-    if (password.isNotEmpty && password != confirmedPassword) {
-      setValidationError("passwordMismatch", "Passwords do not match.");
+      // Check password length and complexity (at least one uppercase letter, one lowercase letter, one number, and one special character)
+      if (!passwordComplexity.hasMatch(password) || password.length < 8) {
+        setValidationError("password", "Your password should be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and one of the following special characters: !, @, #, \$, %, ^, &, *");
+      }
+      // Check password matches with the confirmed password
+      if (password.isNotEmpty && password != confirmedPassword) {
+        setValidationError("passwordMismatch", "Passwords do not match.");
+      }
     }
 
     if (validationErrors.isEmpty) {
       // Continue with sign-up
-      print(
-          'Successfully signed up with this info: $firstName, $lastName, $username, $email, $password, $confirmedPassword');
-      signUp(context, firstName, lastName, username, email, password,
+      print('Successfully signed up with this info: $firstName, $lastName, $username, $email, $password, $confirmedPassword');
+      signUp(context, firstName, lastName, username.toLowerCase(), email, password,
           confirmedPassword);
     }
   }
