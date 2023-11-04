@@ -23,7 +23,7 @@ class OnBoardingPage3 extends StatelessWidget {
                         child: Align(
                           alignment: Alignment.center,
                           child: Image.asset(
-                            'lib/images/onboardingPage3Image.png', // Replace with the path to your image asset
+                            'assets/onboardingPage3Image.png', // Replace with the path to your image asset
                             width: 454, // Set the width and height to your preference
                             height: 354,
                           ),

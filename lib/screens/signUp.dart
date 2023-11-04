@@ -265,7 +265,7 @@ class _SignUpState extends State<SignUp> {
                   child: Align(
                     alignment: Alignment.topCenter,
                     child: Image.asset(
-                      'lib/images/Logo.png', // Replace with the path to your image asset
+                      'assets/Logo.png', // Replace with the path to your image asset
                       width: 150, // Set the width and height to your preference
                       height: 120,
                     ),
