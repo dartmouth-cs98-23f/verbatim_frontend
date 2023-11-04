@@ -75,7 +75,7 @@ class SignupErrorMessage extends StatelessWidget {
                     ),
                   ),
                   child: Text(
-                    'Get Started',
+                    'Try Again',
                     style: TextStyle(
                       color: Colors.white,
                     ),
