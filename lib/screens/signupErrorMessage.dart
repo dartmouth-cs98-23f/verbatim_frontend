@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/screens/signUp.dart';
 
-import '../Components/my_button_no_image.dart';
+import '../widgets/my_button_no_image.dart';
 
 class SignupErrorMessage extends StatelessWidget {
   @override

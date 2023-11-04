@@ -1,10 +1,10 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
-import 'package:verbatim_frontend/Components/my_textfield.dart';
+import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'package:verbatim_frontend/screens/logIn.dart';
 import 'package:verbatim_frontend/screens/signupErrorMessage.dart';
-import '../Components/my_button_no_image.dart';
+import '../widgets/my_button_no_image.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
