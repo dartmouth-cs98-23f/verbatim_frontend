@@ -42,7 +42,7 @@ class MyButton extends StatelessWidget {
                     decoration: BoxDecoration(
                       image: hasButtonImage
                           ? DecorationImage(
-                        image: AssetImage('lib/images/googleImage.png'),
+                        image: AssetImage('assets/googleImage.png'),
                         fit: BoxFit.fill,
                       )
                           : null,

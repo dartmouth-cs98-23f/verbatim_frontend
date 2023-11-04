@@ -18,7 +18,7 @@ class SignupErrorMessage extends StatelessWidget {
                   child: Align(
                     alignment: Alignment.topCenter,
                     child: Image.asset(
-                      'lib/images/Logo.png',
+                      'assets/Logo.png',
                       width: 150,
                       height: 120,
                     ),
