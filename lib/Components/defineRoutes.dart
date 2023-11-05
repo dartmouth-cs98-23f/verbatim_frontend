@@ -1,4 +1,5 @@
 import 'package:fluro/fluro.dart';
+import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'package:verbatim_frontend/screens/forgotPassword.dart';
 import '../screens/globalChallenge.dart';
@@ -56,8 +57,8 @@ void defineRoutes() {
   );
 
   Application.router.define(
-    '/reset_password',
-    handler: resetPasswordHandler,
+    '/forgot_password',
+    handler: forgotPasswordHandler,
   );
 
   Application.router.define(
@@ -104,6 +105,12 @@ var logInHandler = Handler(
 
 var globalChallengeHandler = Handler(
   handlerFunc: (context, parameters) {
+
+    if(SharedPrefs().getEmail() == ''){
+      return LogIn();
+    }
+    print('In define routes, email is ${SharedPrefs().getEmail()}');
+
     return globalChallenge(
         username: 'dd',
         email: 'dd@gmail.com',
@@ -114,12 +121,18 @@ var globalChallengeHandler = Handler(
 
 var addFriendHandler = Handler(
   handlerFunc: (context, parameters) {
+    if(SharedPrefs().getEmail() == ''){
+      return LogIn();
+    }
     return addFriend(username: 'jenny l');
   },
 );
 
-var resetPasswordHandler = Handler(
+var forgotPasswordHandler = Handler(
   handlerFunc: (context, parameters) {
+    if(SharedPrefs().getEmail() == ''){
+      return LogIn();
+    }
     return ForgotPassword();
   },
 );

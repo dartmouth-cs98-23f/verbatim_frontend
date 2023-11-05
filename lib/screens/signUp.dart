@@ -45,7 +45,6 @@ class _SignUpState extends State<SignUp> {
       String password,
       String confirmPassword) async {
     try {
-
       final response = await http.post(
         Uri.parse('http://localhost:8080/api/v1/register'),
         headers: <String, String>{
