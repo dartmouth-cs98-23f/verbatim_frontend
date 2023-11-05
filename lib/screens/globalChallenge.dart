@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
 import 'sideBar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -8,7 +9,7 @@ import 'package:verbatim_frontend/widgets/size.dart';
 import 'package:verbatim_frontend/widgets/custom_tab.dart';
 import 'dart:async';
 import 'package:verbatim_frontend/widgets/stats.dart';
-import 'package:flutter/services.dart';
+import 'package:verbatim_frontend/Components/shared_prefs.dart';
 
 class globalChallenge extends StatefulWidget {
   final String email;

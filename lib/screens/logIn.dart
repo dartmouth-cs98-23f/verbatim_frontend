@@ -8,7 +8,7 @@ import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'package:verbatim_frontend/screens/forgotPassword.dart';
 import 'package:verbatim_frontend/screens/signUp.dart';
 import 'package:verbatim_frontend/screens/signupErrorMessage.dart';
-import '../widgets/my_button.dart';
+import '../widgets/my_button_with_image.dart';
 import '../widgets/my_button_no_image.dart';
 import 'draft.dart';
 import 'globalChallenge.dart';
