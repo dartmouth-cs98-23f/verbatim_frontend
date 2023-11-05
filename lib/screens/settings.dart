@@ -1,6 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/material.dart';
-import 'package:verbatim_frontend/Components/my_textfield.dart';
+import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'sideBar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
