@@ -1,10 +1,15 @@
+import 'dart:math';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:verbatim_frontend/Components/my_textfield.dart';
+import 'package:shared_preferences/shared_preferences.dart';
+import 'package:verbatim_frontend/widgets/my_textfield.dart';
+import 'package:verbatim_frontend/screens/forgotPassword.dart';
 import 'package:verbatim_frontend/screens/signUp.dart';
-import '../Components/my_button.dart';
-import '../Components/my_button_no_image.dart';
+import 'package:verbatim_frontend/screens/signupErrorMessage.dart';
+import '../widgets/my_button_with_image.dart';
+import '../widgets/my_button_no_image.dart';
 import 'draft.dart';
 import 'globalChallenge.dart';
 import 'package:http/http.dart' as http;
@@ -28,6 +33,8 @@ class _LogInState extends State<LogIn> {
 
   void logIn(BuildContext context, String email, String password) async {
     try {
+      final prefs = await SharedPreferences.getInstance();
+
       final response = await http.post(
         Uri.parse('http://localhost:8080/api/v1/login'),
         headers: <String, String>{
@@ -46,41 +53,51 @@ class _LogInState extends State<LogIn> {
           // Authentication successful
           String username = responseData['username'];
           String email = responseData['email'];
-          String password = responseData['password']; // You have the user's password, but you may not want to store it in the client.
+          String password = responseData['password'];
+
+          // Save the user info to the disk so that they can persist to other pages
+          prefs.setString('username', username);
+          prefs.setString('email', email);
+          prefs.setString('password',
+              password); // Do we need this to persist through the pages? Aren't the username and email enough?
 
           print("\nThe email is : ${email} \n The password is : ${password}");
-          // // Navigate to the global challenge page.
-          // Navigator.push(
-          //   context,
-          //   MaterialPageRoute(
-          //     builder: (context) => globalChallenge(
-          //       // email: email,
-          //       // password: password,
-          //     ),
-          //   ),
-          // );
+
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => globalChallenge(
-                username: username,
-                email: email,
-                password: password,
-              ),
+              builder: (context) =>
+                  globalChallenge(
+                    username: username,
+                    email: email,
+                    password: password,
+                  ),
             ),
           );
 
           print('Log-in successful');
-        } else {
-          print('Authentication failed: Response data is null');
         }
-      } else {
-        print('Authentication failed: ${response.statusCode.toString()}');
       }
-    } catch (e) {
-      print('Error during authentication: ${e.toString()}');
+      else {
+        print('Error during sign-up: ${response.statusCode.toString()}');
+        Navigator.push(
+          context,
+          MaterialPageRoute(
+            builder: (context) => SignupErrorMessage(),
+          ),
+        );
+      }
     }
+    catch (e) {
+    print('Error during sign-up: ${e.toString()}');
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => SignupErrorMessage(),
+      ),
+    );
   }
+}
 
 
   Future<void> signInWithGoogle() async {
@@ -150,27 +167,6 @@ class _LogInState extends State<LogIn> {
     validateField(email, "email", "Email is required");
     validateField(password, "password", "Password is required");
 
-    // Check for specific validation rules
-    // if (email.isNotEmpty) {
-    //   if (email.contains('@')) {
-    //     // Treat it as an email else as a username
-    //     print('Treat the entry as an email else as a username');
-    //     return;
-    //   }
-    // }
-    //
-    // if (email.isNotEmpty && !isValidEmail(email)) {
-    //   setValidationError("email", "The email you provided is invalid. Verify again.");
-    //   return;
-    // }
-
-    if (password.isNotEmpty) {
-      if (password.length < 8) {
-        setValidationError("password", "Your password should be at least 8 characters long.");
-        return;
-      }
-    }
-
     print('here');
     // All validations passed; proceed with login
     logIn(context, email, password);
@@ -210,7 +206,7 @@ class _LogInState extends State<LogIn> {
                   child: Align(
                     alignment: Alignment.topCenter,
                     child: Image.asset(
-                      'lib/images/Logo.png', // Replace with the path to your image asset
+                      'assets/Logo.png', // Replace with the path to your image asset
                       width: 150, // Set the width and height to your preference
                       height: 120,
                     ),
@@ -262,7 +258,7 @@ class _LogInState extends State<LogIn> {
                             ..onTap = () {
                               // Navigate to the sign-in page
                               Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => SignUp(),  // This will be a forgot password page routing
+                                builder: (context) => ForgotPassword(),  // This will be a forgot password page routing
                               )
                               );
                             },

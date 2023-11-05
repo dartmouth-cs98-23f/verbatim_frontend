@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'size.dart';
-import 'package:verbatim_frontend/components/my_textfield.dart';
+import 'package:verbatim_frontend/widgets/my_textfield.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   CustomAppBar({

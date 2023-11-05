@@ -1,12 +1,14 @@
 import 'package:flutter/material.dart';
 
-class MyButtonNoImage extends StatelessWidget {
+class MyButton extends StatelessWidget {
   final String buttonText;
+  final bool hasButtonImage;
   final Function()? onTap;
 
-  MyButtonNoImage({
+  MyButton({
     Key? key,
     required this.buttonText,
+    required this.hasButtonImage,
     required this.onTap,
   }) : super(key: key);
 
@@ -18,6 +20,7 @@ class MyButtonNoImage extends StatelessWidget {
         child: Container(
           width: 333,
           height: 49,
+          padding: const EdgeInsets.symmetric(horizontal: 18),
           decoration: ShapeDecoration(
             color: Color(0xFFE76F51),
             shape: RoundedRectangleBorder(
@@ -30,33 +33,37 @@ class MyButtonNoImage extends StatelessWidget {
               onTap: onTap,
               child: Row(
                 mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
                   Container(
-                    width: 105,
-                    height: 18,
+                    width: 25,
+                    height: 25,
                     decoration: BoxDecoration(
-                      color: Color(0xFFE76F51),
+                      image: hasButtonImage
+                          ? DecorationImage(
+                        image: AssetImage('assets/googleImage.png'),
+                        fit: BoxFit.fill,
+                      )
+                          : null,
+                      //color: Color(0xFFE76F51),
                     ),
                   ),
-                  SizedBox(width: 10),
+                  SizedBox(width: 15),
                   Align(
-                    alignment: Alignment.centerLeft,
-                    child: Center(
-                      child: Text(
-                        buttonText,
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontFamily: 'Mulish',
-                          fontWeight: FontWeight.w700,
-                          height: 1.0,
-                          letterSpacing: 0.30,
-                        ),
+                    alignment: Alignment.center,
+                    child: Text(
+                      buttonText,
+                      style: TextStyle(
+                        color: Colors.white,
+                        fontSize: 14,
+                        fontFamily: 'Mulish',
+                        fontWeight: FontWeight.w700,
+                        height: 1.0,
+                        letterSpacing: 0.30,
                       ),
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
