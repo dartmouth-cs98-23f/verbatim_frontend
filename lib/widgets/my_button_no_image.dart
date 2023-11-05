@@ -30,16 +30,9 @@ class MyButtonNoImage extends StatelessWidget {
               onTap: onTap,
               child: Row(
                 mainAxisSize: MainAxisSize.min,
-                mainAxisAlignment: MainAxisAlignment.start,
+                mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  Container(
-                    width: 105,
-                    height: 18,
-                    decoration: BoxDecoration(
-                      color: Color(0xFFE76F51),
-                    ),
-                  ),
                   SizedBox(width: 10),
                   Align(
                     alignment: Alignment.centerLeft,
