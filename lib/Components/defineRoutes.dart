@@ -9,7 +9,7 @@ import '../screens/onboardingPage3.dart';
 import '../screens/onboardingPage4.dart';
 import '../screens/signUp.dart';
 import '../screens/signupErrorMessage.dart';
-
+import '../screens/settings.dart';
 class Application {
   static FluroRouter router = FluroRouter();
 }
@@ -60,6 +60,13 @@ void defineRoutes() {
     handler: resetPasswordHandler,
   );
 
+
+  Application.router.define(
+    '/settings',
+    handler: settingsHandler,
+  );
+
+
   Application.router.define(
     '/signup_error_message',
     handler: signupErrorMessageHandler,
@@ -71,6 +78,10 @@ var onBoardingPage1Handler = Handler(
     return OnBoardingPage1();
   },
 );
+
+var settingsHandler = Handler(handlerFunc:((context, parameters) {
+  return settings();
+}));
 
 var onBoardingPage2Handler = Handler(
   handlerFunc: (context, parameters) {
