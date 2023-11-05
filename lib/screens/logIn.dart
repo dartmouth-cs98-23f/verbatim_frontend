@@ -8,6 +8,7 @@ import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'package:verbatim_frontend/screens/forgotPassword.dart';
 import 'package:verbatim_frontend/screens/signUp.dart';
 import 'package:verbatim_frontend/screens/signupErrorMessage.dart';
+import '../Components/shared_prefs.dart';
 import '../widgets/my_button_with_image.dart';
 import '../widgets/my_button_no_image.dart';
 import 'draft.dart';
@@ -56,10 +57,9 @@ class _LogInState extends State<LogIn> {
           String password = responseData['password'];
 
           // Save the user info to the disk so that they can persist to other pages
-          prefs.setString('username', username);
-          prefs.setString('email', email);
-          prefs.setString('password',
-              password); // Do we need this to persist through the pages? Aren't the username and email enough?
+          SharedPrefs().setEmail(email);
+          SharedPrefs().setUserName(username);
+          SharedPrefs().setPassword(password);
 
           print("\nThe email is : ${email} \n The password is : ${password}");
 
