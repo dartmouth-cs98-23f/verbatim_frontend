@@ -46,17 +46,14 @@ class _LogInState extends State<LogIn> {
         final responseData = json.decode(response.body);
 
         if (responseData != null) {
-          // Authentication successful
-          String username = responseData['username'];
-          String userEmail = responseData['email'];
-          String userPassword = responseData['password'];
-
-          // Save the user info to the disk so that they can persist to other pages
-          SharedPrefs().setEmail(userEmail);
-          SharedPrefs().setUserName(username);
-          SharedPrefs().setPassword(userPassword);
-
-          print("\nThe email is : $userEmail \n The password is : $userPassword");
+          // Authentication successful: Save the user info to the disk so that they can persist to other pages
+          SharedPrefs().setEmail(responseData['email']);
+          SharedPrefs().setUserName(responseData['username']);
+          SharedPrefs().setPassword(responseData['password']);
+          SharedPrefs().setFirstName(responseData['firstName']);
+          SharedPrefs().setLastName(responseData['lastName']);
+          SharedPrefs().setBio(responseData['bio']);
+          // SharedPrefs().setBio(responseData['profilePicture']);
 
           Navigator.push(
             context,
