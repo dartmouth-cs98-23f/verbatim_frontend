@@ -8,7 +8,6 @@ class SharedPrefs {
   static const String FirstName = "";
   static const String Bio = '';
   static const String Email = '';
-  
 
   static SharedPreferences? _sharedPrefs;
 
@@ -44,8 +43,8 @@ class SharedPrefs {
     return _sharedPrefs!.getString("firstname");
   }
 
-  void setBio(String bio) {
-    _sharedPrefs!.setString("bio", bio);
+  void setBio(String? bio) {
+    _sharedPrefs!.setString("bio", bio ?? '');
   }
 
   String? getBio() {
@@ -67,5 +66,4 @@ class SharedPrefs {
   String? getPassword() {
     return _sharedPrefs!.getString("password");
   }
-
 }
