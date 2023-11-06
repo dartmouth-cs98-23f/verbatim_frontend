@@ -105,32 +105,27 @@ var logInHandler = Handler(
 
 var globalChallengeHandler = Handler(
   handlerFunc: (context, parameters) {
-
-    if(SharedPrefs().getEmail() == ''){
+    if (SharedPrefs().getEmail() == '') {
       return LogIn();
     }
     print('In define routes, email is ${SharedPrefs().getEmail()}');
 
-    return globalChallenge(
-        username: 'dd',
-        email: 'dd@gmail.com',
-        password: '0000000'
-    );
+    return globalChallenge();
   },
 );
 
 var addFriendHandler = Handler(
   handlerFunc: (context, parameters) {
-    if(SharedPrefs().getEmail() == ''){
+    if (SharedPrefs().getEmail() == '') {
       return LogIn();
     }
-    return addFriend(username: 'jenny l');
+    return addFriend();
   },
 );
 
 var forgotPasswordHandler = Handler(
   handlerFunc: (context, parameters) {
-    if(SharedPrefs().getEmail() == ''){
+    if (SharedPrefs().getEmail() == '') {
       return LogIn();
     }
     return ForgotPassword();
@@ -142,4 +137,3 @@ var signupErrorMessageHandler = Handler(
     return SignupErrorMessage();
   },
 );
-
