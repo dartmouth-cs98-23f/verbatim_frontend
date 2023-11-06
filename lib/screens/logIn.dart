@@ -7,16 +7,22 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'package:verbatim_frontend/screens/forgotPassword.dart';
 import 'package:verbatim_frontend/screens/signUp.dart';
+<<<<<<< Updated upstream
 import 'package:verbatim_frontend/screens/signupErrorMessage.dart';
 import '../Components/shared_prefs.dart';
 import '../widgets/my_button_with_image.dart';
 import '../widgets/my_button_no_image.dart';
+=======
+import '../Components/my_button.dart';
+import '../Components/my_button_no_image.dart';
+import 'package:verbatim_frontend/Components/shared_prefs.dart';
+
+>>>>>>> Stashed changes
 import 'draft.dart';
 import 'globalChallenge.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:google_sign_in/google_sign_in.dart';
-
 
 class LogIn extends StatefulWidget {
   const LogIn({super.key});
@@ -30,7 +36,10 @@ class _LogInState extends State<LogIn> {
   Map<String, Text> validationErrors = {};
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
-  final GoogleSignIn _googleSignIn = GoogleSignIn(scopes: ['email'], clientId: '297398575103-o3engamrir3bf4pupurvj8lm4mn0iuqt.apps.googleusercontent.com');
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+      scopes: ['email'],
+      clientId:
+          '297398575103-o3engamrir3bf4pupurvj8lm4mn0iuqt.apps.googleusercontent.com');
 
   void logIn(BuildContext context, String email, String password) async {
     try {
@@ -54,24 +63,35 @@ class _LogInState extends State<LogIn> {
           // Authentication successful
           String username = responseData['username'];
           String email = responseData['email'];
+<<<<<<< Updated upstream
           String password = responseData['password'];
 
           // Save the user info to the disk so that they can persist to other pages
           SharedPrefs().setEmail(email);
           SharedPrefs().setUserName(username);
           SharedPrefs().setPassword(password);
+=======
+          String password = responseData[
+              'password']; // You have the user's password, but you may not want to store it in the client.
+>>>>>>> Stashed changes
 
           print("\nThe email is : ${email} \n The password is : ${password}");
 
           Navigator.push(
             context,
             MaterialPageRoute(
+<<<<<<< Updated upstream
               builder: (context) =>
                   globalChallenge(
                     username: username,
                     email: email,
                     password: password,
                   ),
+=======
+              builder: (context) => globalChallenge(
+                username: username,
+              ),
+>>>>>>> Stashed changes
             ),
           );
 
@@ -97,7 +117,10 @@ class _LogInState extends State<LogIn> {
       ),
     );
   }
+<<<<<<< Updated upstream
 }
+=======
+>>>>>>> Stashed changes
 
   Future<void> signInWithGoogle() async {
     try {
@@ -113,11 +136,7 @@ class _LogInState extends State<LogIn> {
           headers: <String, String>{
             'Content-Type': 'application/json',
           },
-
-          body: jsonEncode({
-            'emailOrUsername': account.email,
-            'password': ''
-          }),
+          body: jsonEncode({'emailOrUsername': account.email, 'password': ''}),
         );
 
         if (response.statusCode == 200) {
@@ -125,19 +144,15 @@ class _LogInState extends State<LogIn> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) =>
-                  globalChallenge(
-                    username:
-                    '',
-                    // to be decided - give them suggestions of what to use as their username
-                    email: account.email,
-                    password: '',
-                  ),
+              builder: (context) => globalChallenge(
+                username: '',
+                // to be decided - give them suggestions of what to use as their username
+              ),
             ),
           );
-        }
-        else{
-          print('Error during sign-up with Google: ${response.statusCode.toString()}');
+        } else {
+          print(
+              'Error during sign-up with Google: ${response.statusCode.toString()}');
         }
       } else {
         // User canceled the Google Sign-In process or encountered an error.
@@ -151,7 +166,8 @@ class _LogInState extends State<LogIn> {
 
   bool isValidEmail(String email) {
     // Use a regular expression to validate email format
-    final emailRegex = RegExp(r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
+    final emailRegex = RegExp(
+        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
     return emailRegex.hasMatch(email);
   }
 
@@ -166,6 +182,31 @@ class _LogInState extends State<LogIn> {
     validateField(email, "email", "Email is required");
     validateField(password, "password", "Password is required");
 
+<<<<<<< Updated upstream
+=======
+    // Check for specific validation rules
+    // if (email.isNotEmpty) {
+    //   if (email.contains('@')) {
+    //     // Treat it as an email else as a username
+    //     print('Treat the entry as an email else as a username');
+    //     return;
+    //   }
+    // }
+    //
+    // if (email.isNotEmpty && !isValidEmail(email)) {
+    //   setValidationError("email", "The email you provided is invalid. Verify again.");
+    //   return;
+    // }
+
+    if (password.isNotEmpty) {
+      if (password.length < 8) {
+        setValidationError(
+            "password", "Your password should be at least 8 characters long.");
+        return;
+      }
+    }
+
+>>>>>>> Stashed changes
     print('here');
     // All validations passed; proceed with login
     logIn(context, email, password);
@@ -211,7 +252,6 @@ class _LogInState extends State<LogIn> {
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 195),
                 Padding(
                   padding: const EdgeInsets.only(left: 5.0),
@@ -227,7 +267,6 @@ class _LogInState extends State<LogIn> {
                       Container(
                         child: getValidationErrorWidget('email') ?? Container(),
                       ),
-
                       const SizedBox(height: 25),
                       MyTextField(
                         controller: passwordController,
@@ -235,15 +274,16 @@ class _LogInState extends State<LogIn> {
                         obscureText: true,
                       ),
                       Container(
-                        child: getValidationErrorWidget('password') ?? Container(),
+                        child:
+                            getValidationErrorWidget('password') ?? Container(),
                       ),
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 30),
                 Padding(
-                  padding: const EdgeInsets.only(left: 220.0), // Adjust the padding as needed
+                  padding: const EdgeInsets.only(
+                      left: 220.0), // Adjust the padding as needed
                   child: RichText(
                     text: TextSpan(
                       children: [
@@ -257,9 +297,15 @@ class _LogInState extends State<LogIn> {
                             ..onTap = () {
                               // Navigate to the sign-in page
                               Navigator.of(context).push(MaterialPageRoute(
+<<<<<<< Updated upstream
                                 builder: (context) => ForgotPassword(),  // This will be a forgot password page routing
                               )
                               );
+=======
+                                builder: (context) =>
+                                    SignUp(), // This will be a forgot password page routing
+                              ));
+>>>>>>> Stashed changes
                             },
                         ),
                       ],
@@ -267,7 +313,8 @@ class _LogInState extends State<LogIn> {
                   ),
                 ),
                 Padding(
-                  padding: const EdgeInsets.only(left: 5.0), // Adjust the left padding as needed
+                  padding: const EdgeInsets.only(
+                      left: 5.0), // Adjust the left padding as needed
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [

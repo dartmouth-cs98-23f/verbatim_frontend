@@ -34,7 +34,7 @@ class _SignUpState extends State<SignUp> {
   final GoogleSignIn _googleSignIn = GoogleSignIn(
       scopes: ['email'],
       clientId:
-      '297398575103-o3engamrir3bf4pupurvj8lm4mn0iuqt.apps.googleusercontent.com');
+          '297398575103-o3engamrir3bf4pupurvj8lm4mn0iuqt.apps.googleusercontent.com');
 
   void signUp(
       BuildContext context,
@@ -66,8 +66,6 @@ class _SignUpState extends State<SignUp> {
           MaterialPageRoute(
             builder: (context) => globalChallenge(
               username: username,
-              email: email,
-              password: password,
             ),
           ),
         );
@@ -76,7 +74,7 @@ class _SignUpState extends State<SignUp> {
         SharedPrefs().setLastName(lastName);
         SharedPrefs().setPassword(password);
         SharedPrefs().setUserName(username);
-        
+
         print('Sign-up successful');
       } else {
         print('Error during sign-up: ${response.statusCode.toString()}');
@@ -109,7 +107,6 @@ class _SignUpState extends State<SignUp> {
           headers: <String, String>{
             'Content-Type': 'application/json',
           },
-
           body: jsonEncode({
             'firstName': '<unavailable>',
             'lastName': '<unavailable>',
@@ -124,19 +121,15 @@ class _SignUpState extends State<SignUp> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) =>
-                  globalChallenge(
-                    username:
-                    '',
-                    // to be decided - give them suggestions of what to use as their username
-                    email: account.email,
-                    password: '',
-                  ),
+              builder: (context) => globalChallenge(
+                username: '',
+                // to be decided - give them suggestions of what to use as their username
+              ),
             ),
           );
-        }
-        else{
-          print('Error during sign-up with Google: ${response.statusCode.toString()}');
+        } else {
+          print(
+              'Error during sign-up with Google: ${response.statusCode.toString()}');
         }
       } else {
         // User canceled the Google Sign-In process or encountered an error.
@@ -278,7 +271,6 @@ class _SignUpState extends State<SignUp> {
                   ),
                 ),
                 const SizedBox(height: 50),
-
                 Padding(
                   padding: const EdgeInsets.only(left: 30.0),
                   child: Align(
@@ -319,7 +311,7 @@ class _SignUpState extends State<SignUp> {
                       ),
                       Container(
                         child:
-                        getValidationErrorWidget('lastName') ?? Container(),
+                            getValidationErrorWidget('lastName') ?? Container(),
                       ),
                       const SizedBox(height: 15),
                       MyTextField(
@@ -329,7 +321,7 @@ class _SignUpState extends State<SignUp> {
                       ),
                       Container(
                         child:
-                        getValidationErrorWidget('username') ?? Container(),
+                            getValidationErrorWidget('username') ?? Container(),
                       ),
                       const SizedBox(height: 15),
                       MyTextField(
@@ -348,7 +340,7 @@ class _SignUpState extends State<SignUp> {
                       ),
                       Container(
                         child:
-                        getValidationErrorWidget('password') ?? Container(),
+                            getValidationErrorWidget('password') ?? Container(),
                       ),
                       const SizedBox(height: 15),
                       MyTextField(
@@ -394,7 +386,8 @@ class _SignUpState extends State<SignUp> {
                       ),
                       const SizedBox(height: 10),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 25.0), // Adjust the padding as needed
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 25.0), // Adjust the padding as needed
                         child: RichText(
                           text: TextSpan(
                             children: [
@@ -409,15 +402,16 @@ class _SignUpState extends State<SignUp> {
                                 text: 'Sign in',
                                 style: TextStyle(
                                   color: Color(0xFF3C64B1),
-                                  fontWeight: FontWeight.w700,// Blue color for the link
+                                  fontWeight: FontWeight
+                                      .w700, // Blue color for the link
                                 ),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
                                     // Navigate to the sign-in page
-                                    Navigator.of(context).push(MaterialPageRoute(
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
                                       builder: (context) => LogIn(),
-                                    )
-                                    );
+                                    ));
                                   },
                               ),
                             ],
