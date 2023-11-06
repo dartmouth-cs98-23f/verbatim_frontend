@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:verbatim_frontend/Components/shared_prefs.dart';
 
 class User {
   int id = 0;
@@ -44,16 +45,22 @@ class FriendAcceptOrDeclineRequest {
   }
 }
 
-class SideBar extends StatelessWidget {
-  final Color primary = Color.fromARGB(255, 231, 111, 81);
-  final String username;
-  Set<String> usernames = <String>{};
-  List<String> usernamesList = [];
+class SideBar extends StatefulWidget {
+  final String username = SharedPrefs().getUserName() ?? "";
 
   SideBar({
     Key? key,
-    required this.username,
   }) : super(key: key);
+
+  @override
+  _SideBarState createState() => _SideBarState();
+}
+
+class _SideBarState extends State<SideBar> {
+  final Color primary = Color.fromARGB(255, 231, 111, 81);
+
+  Set<String> friendRequestUsernames = <String>{};
+  List<String> usernamesList = [];
 
   Future<void> getFriends(String username) async {
     final url = Uri.parse('http://localhost:8080/api/v1/getFriends');
@@ -96,7 +103,7 @@ class SideBar extends StatelessWidget {
 
         for (var request in friendRequests) {
           String username = request['username'];
-          usernames.add(username);
+          friendRequestUsernames.add(username);
         }
       }
     } else {
@@ -135,8 +142,8 @@ class SideBar extends StatelessWidget {
   Widget build(BuildContext context) {
     return FutureBuilder<void>(
         future: Future.wait([
-          getFriends(username),
-          getFriendRequests(username),
+          getFriends(widget.username),
+          getFriendRequests(widget.username),
         ]),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -161,7 +168,7 @@ class SideBar extends StatelessWidget {
                         child: Center(
                           child: ListTile(
                             title: Text(
-                              '$username',
+                              widget.username,
                               style:
                                   TextStyle(color: Colors.white, fontSize: 20),
                             ),
@@ -258,7 +265,7 @@ class SideBar extends StatelessWidget {
                           fontSize: 18),
                     ),
                     trailing: Icon(Icons.add, color: Colors.black, size: 25),
-                    initiallyExpanded: true,
+                    //  initiallyExpanded: true,
                     shape: Border(),
                     children: <Widget>[
                       SizedBox(height: 10.0),
@@ -289,8 +296,9 @@ class SideBar extends StatelessWidget {
                           fontWeight: FontWeight.bold,
                           fontSize: 18),
                     ),
-                    trailing:
-                        Icon(Icons.pending, color: Colors.black, size: 25),
+                    trailing: friendRequestUsernames.isNotEmpty
+                        ? Icon(Icons.pending, color: Colors.orange, size: 25)
+                        : Icon(Icons.pending, color: Colors.black, size: 25),
                     shape: Border(),
                     children: <Widget>[
                       SizedBox(height: 10.0),
@@ -299,9 +307,10 @@ class SideBar extends StatelessWidget {
                         child: ListView.builder(
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
-                          itemCount: usernames.length,
+                          itemCount: friendRequestUsernames.length,
                           itemBuilder: (BuildContext context, int index) {
-                            List<String> requestsList = usernames.toList();
+                            List<String> requestsList =
+                                friendRequestUsernames.toList();
                             String requester = requestsList[index];
 
                             return ListTile(
@@ -319,10 +328,14 @@ class SideBar extends StatelessWidget {
                                 children: [
                                   GestureDetector(
                                     onTap: () {
-                                      print(username);
+                                      print(widget.username);
                                       print(requester);
                                       handleFriendRequests(
-                                          username, requester, true);
+                                          widget.username, requester, true);
+                                      setState(() {
+                                        friendRequestUsernames
+                                            .remove(requester);
+                                      });
                                     },
                                     child: Icon(Icons.check_box,
                                         color: Colors.black),
@@ -330,7 +343,11 @@ class SideBar extends StatelessWidget {
                                   GestureDetector(
                                     onTap: () {
                                       handleFriendRequests(
-                                          username, requester, false);
+                                          widget.username, requester, true);
+                                      setState(() {
+                                        friendRequestUsernames
+                                            .remove(requester);
+                                      });
                                     },
                                     child:
                                         Icon(Icons.cancel, color: Colors.black),
