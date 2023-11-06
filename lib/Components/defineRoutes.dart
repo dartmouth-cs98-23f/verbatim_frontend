@@ -125,9 +125,7 @@ var globalChallengeHandler = Handler(
       return LogIn();
     } else {
       print('\nEmail here in define routes: ${SharedPrefs().getEmail()}');
-      return globalChallenge(
-        username: SharedPrefs().getUserName() ?? 'dd'
-      );
+      return globalChallenge();
     }
   },
 );

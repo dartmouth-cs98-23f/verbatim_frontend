@@ -82,9 +82,7 @@ class OnBoardingPage4 extends StatelessWidget {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) => globalChallenge(
-                            username: SharedPrefs().getUserName() ?? ''
-                          ),
+                          builder: (context) => globalChallenge(),
                         ),
                       );
                     },
@@ -106,9 +104,7 @@ class OnBoardingPage4 extends StatelessWidget {
                     onPressed: () {
                       // Navigate to the 'Sign Up' page
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => globalChallenge(
-                          username: SharedPrefs().getUserName() ?? ''
-                        ),
+                        builder: (context) => globalChallenge(),
                       ));
                     },
                     style: ElevatedButton.styleFrom(
