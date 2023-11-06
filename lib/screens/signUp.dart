@@ -64,9 +64,7 @@ class _SignUpState extends State<SignUp> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => globalChallenge(
-              username: username,
-            ),
+            builder: (context) => globalChallenge(),
           ),
         );
         SharedPrefs().setEmail(email);
@@ -122,9 +120,9 @@ class _SignUpState extends State<SignUp> {
             context,
             MaterialPageRoute(
               builder: (context) => globalChallenge(
-                username: '',
-                // to be decided - give them suggestions of what to use as their username
-              ),
+
+                  // to be decided - give them suggestions of what to use as their username
+                  ),
             ),
           );
         } else {
@@ -159,12 +157,16 @@ class _SignUpState extends State<SignUp> {
     validateField(username, "username", "Username is required");
     validateField(email, "email", "Email is required");
     validateField(password, "password", "Password is required");
-    validateField(confirmedPassword, "confirmedPassword", "Confirm your password");
+    validateField(
+        confirmedPassword, "confirmedPassword", "Confirm your password");
 
     // Check for specific validation rules
-    final firstLastNamesValidCharacters = RegExp(r"^[a-zA-Z\s\-'_]+$");   // regex for validating first and last names
-    final usernameValidCharacters = RegExp(r'^[a-zA-Z0-9_]+$');   // regex for validating a username
-    final passwordComplexity = RegExp(r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).+$');    // regex for validating a password
+    final firstLastNamesValidCharacters = RegExp(
+        r"^[a-zA-Z\s\-'_]+$"); // regex for validating first and last names
+    final usernameValidCharacters =
+        RegExp(r'^[a-zA-Z0-9_]+$'); // regex for validating a username
+    final passwordComplexity = RegExp(
+        r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).+$'); // regex for validating a password
 
     if (firstName.isNotEmpty) {
       // Check for length
@@ -174,9 +176,9 @@ class _SignUpState extends State<SignUp> {
       }
       // Check character set
       if (!firstLastNamesValidCharacters.hasMatch(firstName)) {
-        setValidationError(
-        "firstName", "First name should only contain letters, spaces, hyphens, and apostrophes");
-        }
+        setValidationError("firstName",
+            "First name should only contain letters, spaces, hyphens, and apostrophes");
+      }
     }
 
     if (lastName.isNotEmpty) {
@@ -187,8 +189,8 @@ class _SignUpState extends State<SignUp> {
       }
       // Check character set
       if (!firstLastNamesValidCharacters.hasMatch(lastName)) {
-        setValidationError(
-            "lastName", "Last name should only contain letters, spaces, hyphens, and apostrophes");
+        setValidationError("lastName",
+            "Last name should only contain letters, spaces, hyphens, and apostrophes");
       }
     }
 
@@ -200,8 +202,8 @@ class _SignUpState extends State<SignUp> {
       }
       // Check character set
       if (!usernameValidCharacters.hasMatch(username)) {
-        setValidationError(
-            "username", "Username should only contain letters, numbers, and underscores");
+        setValidationError("username",
+            "Username should only contain letters, numbers, and underscores");
       }
     }
 
@@ -213,9 +215,14 @@ class _SignUpState extends State<SignUp> {
     // Validate password
     if (password.isNotEmpty) {
       // Check password length and complexity (at least one uppercase letter, one lowercase letter, one number, and one special character)
+      //COMMENTING THIS OUT FOR TESTING
+      /*
       if (!passwordComplexity.hasMatch(password) || password.length < 8) {
-        setValidationError("password", "Your password should be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and one of the following special characters: !, @, #, \$, %, ^, &, *");
+        setValidationError("password",
+            "Your password should be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and one of the following special characters: !, @, #, \$, %, ^, &, *");
       }
+      */
+
       // Check password matches with the confirmed password
       if (password.isNotEmpty && password != confirmedPassword) {
         setValidationError("passwordMismatch", "Passwords do not match.");
@@ -225,9 +232,10 @@ class _SignUpState extends State<SignUp> {
     // Validate there are no errors at all
     if (validationErrors.isEmpty) {
       // Continue with sign-up
-      print('Successfully signed up with this info: $firstName, $lastName, $username, $email, $password, $confirmedPassword');
-      signUp(context, firstName, lastName, username.toLowerCase(), email, password,
-          confirmedPassword);
+      print(
+          'Successfully signed up with this info: $firstName, $lastName, $username, $email, $password, $confirmedPassword');
+      signUp(context, firstName, lastName, username.toLowerCase(), email,
+          password, confirmedPassword);
     }
   }
 
