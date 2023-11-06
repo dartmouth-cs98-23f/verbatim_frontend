@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:verbatim_frontend/screens/globalChallenge.dart';
 import 'package:verbatim_frontend/screens/onboardingPage4.dart';
 
+import '../Components/shared_prefs.dart';
 import 'getStarted.dart';
+import 'logIn.dart';
 
 class OnBoardingPage3 extends StatelessWidget {
   const OnBoardingPage3({super.key});
@@ -23,7 +26,7 @@ class OnBoardingPage3 extends StatelessWidget {
                         child: Align(
                           alignment: Alignment.center,
                           child: Image.asset(
-                            'lib/images/onboardingPage3Image.png', // Replace with the path to your image asset
+                            'assets/onboardingPage3Image.png', // Replace with the path to your image asset
                             width: 454, // Set the width and height to your preference
                             height: 354,
                           ),
@@ -97,7 +100,9 @@ class OnBoardingPage3 extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {
                       // Navigate to the 'Sign Up' page
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => GetStarted()));
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => globalChallenge(),
+                      ));
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Color(0xFFFFF3EE), // Background color

@@ -1,6 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/screens/getStarted.dart';
 import 'package:verbatim_frontend/screens/signUp.dart';
+import 'package:verbatim_frontend/Components/shared_prefs.dart';
+import 'globalChallenge.dart';
+import 'logIn.dart';
 
 class OnBoardingPage4 extends StatelessWidget {
   const OnBoardingPage4({super.key});
@@ -22,7 +25,7 @@ class OnBoardingPage4 extends StatelessWidget {
                         child: Align(
                           alignment: Alignment.center,
                           child: Image.asset(
-                            'lib/images/onboardingPage4Image.png', // Replace with the path to your image asset
+                            'assets/onboardingPage4Image.png', // Replace with the path to your image asset
                             width: 454, // Set the width and height to your preference
                             height: 354,
                           ),
@@ -76,7 +79,12 @@ class OnBoardingPage4 extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {
                       // Navigate to the 'Sign Up' page
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => GetStarted()));
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) => globalChallenge(),
+                        ),
+                      );
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Color(0xFFFFF3EE), // Background color
@@ -95,7 +103,9 @@ class OnBoardingPage4 extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {
                       // Navigate to the 'Sign Up' page
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignUp()));
+                      Navigator.of(context).push(MaterialPageRoute(
+                        builder: (context) => globalChallenge(),
+                      ));
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Color(0xFFE76F51), // Background color

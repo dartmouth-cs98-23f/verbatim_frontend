@@ -1,17 +1,23 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:verbatim_frontend/screens/onboardingPage1.dart';
-import 'package:verbatim_frontend/screens/signUp.dart';
-import 'screens/globalChallenge.dart';
-import 'screens/addFriend.dart';
-import 'screens/settings.dart';
+import 'package:verbatim_frontend/screens/logIn.dart';
+import 'Components/defineRoutes.dart';
 import 'Components/shared_prefs.dart';
+import 'package:provider/provider.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
+  WidgetsFlutterBinding
+      .ensureInitialized(); // Ensure WidgetsBinding is initialized
   await SharedPrefs().init();
+  SharedPrefs().setEmail('');
+  SharedPrefs().setUserName('');
+  SharedPrefs().setPassword('');
+  SharedPrefs().setFirstName('');
+  SharedPrefs().setLastName('');
+  SharedPrefs().setBio('');
   runApp(const MyApp());
+  defineRoutes();
 }
 
 class MyApp extends StatelessWidget {
@@ -19,18 +25,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String username = SharedPrefs().getUserName() ?? "";
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey, // Set the navigatorKey
-
-        routes: {
-          '/global_challenge': (context) =>
-              globalChallenge(username: '', email: '', password: ''),
-          '/add_friend': (context) => addFriend(username: 'jenny l'),
-          '/settings': (context)=> settings(),
-        },
-        home: SignUp());
-        // home: globalChallenge(
-        //     username: 'gh', email: 'gh@gmail.com', password: '0000000'));
+      onGenerateRoute: Application.router.generator,
+      initialRoute: '/login',
+      home: LogIn(),
+    );
   }
 }
