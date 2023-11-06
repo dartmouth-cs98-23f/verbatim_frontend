@@ -3,7 +3,6 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
@@ -13,6 +12,7 @@ import '../widgets/my_button_with_image.dart';
 import 'globalChallenge.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'onboardingPage1.dart';
 // import 'package:google_sign_in/google_sign_in';
 
 class SignUp extends StatefulWidget {
@@ -63,9 +63,7 @@ class _SignUpState extends State<SignUp> {
         // Successful sign-up: Navigate to the global challenge page
         Navigator.push(
           context,
-          MaterialPageRoute(
-            builder: (context) => globalChallenge(),
-          ),
+          MaterialPageRoute(builder: (context) => OnBoardingPage1()),
         );
         SharedPrefs().setEmail(email);
         SharedPrefs().setFirstName(firstName);
@@ -79,7 +77,7 @@ class _SignUpState extends State<SignUp> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => SignupErrorMessage(),
+            builder: (context) => SignupErrorMessage(pageName: 'sign up'),
           ),
         );
       }
@@ -88,7 +86,7 @@ class _SignUpState extends State<SignUp> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => SignupErrorMessage(),
+          builder: (context) => SignupErrorMessage(pageName: 'sign up'),
         ),
       );
     }
@@ -119,10 +117,7 @@ class _SignUpState extends State<SignUp> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => globalChallenge(
-
-                  // to be decided - give them suggestions of what to use as their username
-                  ),
+              builder: (context) => globalChallenge(),
             ),
           );
         } else {
@@ -216,13 +211,15 @@ class _SignUpState extends State<SignUp> {
     if (password.isNotEmpty) {
       // Check password length and complexity (at least one uppercase letter, one lowercase letter, one number, and one special character)
 
-//COMMENTING THIS OUT FOR TESTING
-      /*
-      if (!passwordComplexity.hasMatch(password) || password.length < 8) {
-        setValidationError("password",
-            "Your password should be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and one of the following special characters: !, @, #, \$, %, ^, &, *");
+      // if (!passwordComplexity.hasMatch(password) || password.length < 8) {
+      //   setValidationError("password",
+      //       "Your password should be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and one of the following special characters: !, @, #, \$, %, ^, &, *");
+      // }
+
+      if (password.length < 8) {
+        setValidationError(
+            "password", "Your password should be at least 8 characters long.");
       }
-      */
 
       // Check password matches with the confirmed password
       if (password.isNotEmpty && password != confirmedPassword) {
@@ -235,8 +232,8 @@ class _SignUpState extends State<SignUp> {
       // Continue with sign-up
       print(
           'Successfully signed up with this info: $firstName, $lastName, $username, $email, $password, $confirmedPassword');
-      signUp(context, firstName, lastName, username.toLowerCase(), email,
-          password, confirmedPassword);
+      signUp(context, firstName, lastName, username.toLowerCase(),
+          email.toLowerCase(), password, confirmedPassword);
     }
   }
 
@@ -386,7 +383,7 @@ class _SignUpState extends State<SignUp> {
                         },
                       ),
                       const SizedBox(height: 10),
-                      MyButton(
+                      MyButtonWithImage(
                         buttonText: 'Sign up with Google',
                         hasButtonImage: true,
                         onTap: () {
