@@ -31,6 +31,7 @@ dependencies:
 
   flutter:
     sdk: flutter
+ 
   get: ^4.1.4
   fl_chart: ^0.40.0
   http: ^1.1.0
@@ -38,6 +39,8 @@ dependencies:
   flutter_signin_button: ^2.0.0
   flutter_svg: ^2.0.8
   flutter_svg_provider: ^1.0.6
+  provider: ^5.0.0 
+  
   
 
 
@@ -87,6 +90,8 @@ flutter:
      - assets/Ellipse 54.png
      - assets/Ellipse 55.png
      - assets/Ellipse 65.png
+     - assets/profile2.jpeg
+     - assets/editIcon.svg
 #     - images/a_dot_ham.jpeg
 
 
