@@ -81,9 +81,7 @@ class OnBoardingPage2 extends StatelessWidget {
                     onPressed: () {
                       // Navigate to the 'Sign Up' page
                       Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => globalChallenge(
-                          username: SharedPrefs().getUserName() ?? ''
-                        ),
+                        builder: (context) => globalChallenge(),
                       ));
                     },
                     style: ElevatedButton.styleFrom(

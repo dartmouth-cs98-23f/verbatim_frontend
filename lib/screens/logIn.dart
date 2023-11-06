@@ -61,9 +61,7 @@ class _LogInState extends State<LogIn> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => globalChallenge(
-                username: username,
-              ),
+              builder: (context) => globalChallenge(),
             ),
           );
           print('Log-in successful');
@@ -111,10 +109,7 @@ class _LogInState extends State<LogIn> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => globalChallenge(
-                username: '',
-                // to be decided - give them suggestions of what to use as their username
-              ),
+              builder: (context) => globalChallenge(),
             ),
           );
         } else {
