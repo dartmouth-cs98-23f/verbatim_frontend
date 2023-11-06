@@ -2,14 +2,19 @@ import 'package:fluro/fluro.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'package:verbatim_frontend/screens/forgotPassword.dart';
-import 'package:verbatim_frontend/screens/globalChallenge.dart';
-import 'package:verbatim_frontend/screens/logIn.dart';
-import 'package:verbatim_frontend/screens/onboardingPage1.dart';
-import 'package:verbatim_frontend/screens/onboardingPage2.dart';
-import 'package:verbatim_frontend/screens/onboardingPage3.dart';
-import 'package:verbatim_frontend/screens/onboardingPage4.dart';
-import 'package:verbatim_frontend/screens/signUp.dart';
-import 'package:verbatim_frontend/screens/signupErrorMessage.dart';
+
+import '../screens/globalChallenge.dart';
+import '../screens/logIn.dart';
+import '../screens/onboardingPage1.dart';
+import '../screens/onboardingPage2.dart';
+import '../screens/onboardingPage3.dart';
+import '../screens/onboardingPage4.dart';
+import '../screens/signUp.dart';
+import '../screens/signupErrorMessage.dart';
+import '../screens/settings.dart';
+
+
+
 
 class Application {
   static FluroRouter router = FluroRouter();
@@ -61,6 +66,13 @@ void defineRoutes() {
     handler: forgotPasswordHandler,
   );
 
+
+  Application.router.define(
+    '/settings',
+    handler: settingsHandler,
+  );
+
+
   Application.router.define(
     '/signup_error_message',
     handler: signupErrorMessageHandler,
@@ -76,6 +88,10 @@ var onBoardingPage1Handler = Handler(
     }
   },
 );
+
+var settingsHandler = Handler(handlerFunc:((context, parameters) {
+  return settings();
+}));
 
 var onBoardingPage2Handler = Handler(
   handlerFunc: (context, parameters) {

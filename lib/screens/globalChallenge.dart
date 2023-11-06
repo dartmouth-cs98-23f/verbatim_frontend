@@ -684,7 +684,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                 ],
               )),
         ),
-        drawer: SideBar(username: widget.username),
+        drawer: SideBar(),
       ),
     );
   }
