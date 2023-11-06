@@ -142,11 +142,7 @@ var addFriendHandler = Handler(
 
 var forgotPasswordHandler = Handler(
   handlerFunc: (context, parameters) {
-    if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
-      return LogIn();
-    } else {
-      return ForgotPassword();
-    }
+    return ForgotPassword();
   },
 );
 

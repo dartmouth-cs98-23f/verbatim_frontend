@@ -8,9 +8,12 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized(); // Ensure WidgetsBinding is initialized
   await SharedPrefs().init();
-  SharedPrefs().setEmail(''); // Reset email
-  SharedPrefs().setUserName(''); // Reset username
-  SharedPrefs().setPassword(''); // Reset password
+  SharedPrefs().setEmail('');
+  SharedPrefs().setUserName('');
+  SharedPrefs().setPassword('');
+  SharedPrefs().setFirstName('');
+  SharedPrefs().setLastName('');
+  SharedPrefs().setBio('');
   runApp(const MyApp());
   defineRoutes();
 }

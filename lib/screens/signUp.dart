@@ -154,8 +154,7 @@ class _SignUpState extends State<SignUp> {
     validateField(username, "username", "Username is required");
     validateField(email, "email", "Email is required");
     validateField(password, "password", "Password is required");
-    validateField(
-        confirmedPassword, "confirmedPassword", "Confirm your password");
+    validateField(confirmedPassword, "confirmedPassword", "Confirm your password");
 
     // Check for specific validation rules
     final firstLastNamesValidCharacters = RegExp(
@@ -212,11 +211,15 @@ class _SignUpState extends State<SignUp> {
     // Validate password
     if (password.isNotEmpty) {
       // Check password length and complexity (at least one uppercase letter, one lowercase letter, one number, and one special character)
-      //COMMENTING THIS OUT FOR TESTING
 
-      if (!passwordComplexity.hasMatch(password) || password.length < 8) {
+      // if (!passwordComplexity.hasMatch(password) || password.length < 8) {
+      //   setValidationError("password",
+      //       "Your password should be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and one of the following special characters: !, @, #, \$, %, ^, &, *");
+      // }
+
+      if (password.length < 8) {
         setValidationError("password",
-            "Your password should be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and one of the following special characters: !, @, #, \$, %, ^, &, *");
+            "Your password should be at least 8 characters long.");
       }
 
       // Check password matches with the confirmed password
@@ -228,9 +231,8 @@ class _SignUpState extends State<SignUp> {
     // Validate there are no errors at all
     if (validationErrors.isEmpty) {
       // Continue with sign-up
-      print(
-          'Successfully signed up with this info: $firstName, $lastName, $username, $email, $password, $confirmedPassword');
-      signUp(context, firstName, lastName, username.toLowerCase(), email,
+      print('Successfully signed up with this info: $firstName, $lastName, $username, $email, $password, $confirmedPassword');
+      signUp(context, firstName, lastName, username.toLowerCase(), email.toLowerCase(),
           password, confirmedPassword);
     }
   }
