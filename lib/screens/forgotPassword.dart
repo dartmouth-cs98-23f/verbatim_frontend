@@ -59,7 +59,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => SignupErrorMessage(),
+            builder: (context) => SignupErrorMessage(pageName: 'log in'),
           ),
         );
       }
@@ -69,7 +69,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => SignupErrorMessage(),
+          builder: (context) => SignupErrorMessage(pageName: 'log in'),
         ),
       );
     }

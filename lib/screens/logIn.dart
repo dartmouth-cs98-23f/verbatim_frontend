@@ -1,9 +1,7 @@
-import 'dart:math';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'package:verbatim_frontend/screens/forgotPassword.dart';
 import 'package:verbatim_frontend/screens/signUp.dart';
@@ -11,33 +9,28 @@ import 'package:verbatim_frontend/screens/signupErrorMessage.dart';
 import '../Components/shared_prefs.dart';
 import '../widgets/my_button_with_image.dart';
 import '../widgets/my_button_no_image.dart';
-import 'draft.dart';
 import 'globalChallenge.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:google_sign_in/google_sign_in.dart';
 
 class LogIn extends StatefulWidget {
-  const LogIn({super.key});
+  const LogIn({Key? key}) : super(key: key);
 
   @override
   State<LogIn> createState() => _LogInState();
 }
 
 class _LogInState extends State<LogIn> {
-  late String _backendResponse = "";
   Map<String, Text> validationErrors = {};
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final GoogleSignIn _googleSignIn = GoogleSignIn(
-      scopes: ['email'],
-      clientId:
-          '297398575103-o3engamrir3bf4pupurvj8lm4mn0iuqt.apps.googleusercontent.com');
+    scopes: ['email'],
+    clientId: '297398575103-o3engamrir3bf4pupurvj8lm4mn0iuqt.apps.googleusercontent.com',
+  );
 
   void logIn(BuildContext context, String email, String password) async {
     try {
-      final prefs = await SharedPreferences.getInstance();
-
       final response = await http.post(
         Uri.parse('http://localhost:8080/api/v1/login'),
         headers: <String, String>{
@@ -53,18 +46,14 @@ class _LogInState extends State<LogIn> {
         final responseData = json.decode(response.body);
 
         if (responseData != null) {
-          // Authentication successful
-          String username = responseData['username'];
-          String email = responseData['email'];
-
-          String password = responseData['password'];
-
-          // Save the user info to the disk so that they can persist to other pages
-          SharedPrefs().setEmail(email);
-          SharedPrefs().setUserName(username);
-          SharedPrefs().setPassword(password);
-
-          print("\nThe email is : ${email} \n The password is : ${password}");
+          // Authentication successful: Save the user info to the disk so that they can persist to other pages
+          SharedPrefs().setEmail(responseData['email']);
+          SharedPrefs().setUserName(responseData['username']);
+          SharedPrefs().setPassword(responseData['password']);
+          SharedPrefs().setFirstName(responseData['firstName']);
+          SharedPrefs().setLastName(responseData['lastName']);
+          SharedPrefs().setBio(responseData['bio']);
+          // SharedPrefs().setBio(responseData['profilePicture']);
 
           Navigator.push(
             context,
@@ -72,7 +61,6 @@ class _LogInState extends State<LogIn> {
               builder: (context) => globalChallenge(),
             ),
           );
-
           print('Log-in successful');
         }
       } else {
@@ -80,21 +68,22 @@ class _LogInState extends State<LogIn> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => SignupErrorMessage(),
+            builder: (context) => SignupErrorMessage(pageName: 'log in'),
           ),
         );
       }
     } catch (e) {
-      print('Error during sign-up: ${e.toString()}');
+      print('Error during sign-up: $e');
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => SignupErrorMessage(),
+          builder: (context) => SignupErrorMessage(pageName: 'log in'),
         ),
       );
     }
   }
 
+  // Sign in with Google functionality
   Future<void> signInWithGoogle() async {
     try {
       final GoogleSignInAccount? account = await _googleSignIn.signIn();
@@ -117,15 +106,11 @@ class _LogInState extends State<LogIn> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) => globalChallenge(
-
-                  // to be decided - give them suggestions of what to use as their username
-                  ),
+              builder: (context) => globalChallenge(),
             ),
           );
         } else {
-          print(
-              'Error during sign-up with Google: ${response.statusCode.toString()}');
+          print('Error during sign-up with Google: ${response.statusCode.toString()}');
         }
       } else {
         // User canceled the Google Sign-In process or encountered an error.
@@ -140,31 +125,8 @@ class _LogInState extends State<LogIn> {
   bool isValidEmail(String email) {
     // Use a regular expression to validate email format
     final emailRegex = RegExp(
-        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
+        r"^[a-zA-Z0-9.!#$%&'*+/=?^_`{|}~-]+@[a-zA-Z0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?(?:\.[a-zAZ0-9](?:[a-zA-Z0-9-]{0,253}[a-zA-Z0-9])?)*$");
     return emailRegex.hasMatch(email);
-  }
-
-  void validateUserInfo(BuildContext context, String email, String password) {
-    // Clear any previous validation errors
-    setState(() {
-      validationErrors.clear();
-    });
-    print('email is: ${email}');
-    print('password is: ${password}');
-
-    validateField(email, "email", "Email is required");
-    validateField(password, "password", "Password is required");
-
-    print('here');
-    // All validations passed; proceed with login
-    logIn(context, email, password);
-    print('after');
-  }
-
-  void validateField(String value, String fieldName, String errorMessage) {
-    if (value.isEmpty) {
-      setValidationError(fieldName, errorMessage);
-    }
   }
 
   void setValidationError(String field, String message) {
@@ -174,6 +136,27 @@ class _LogInState extends State<LogIn> {
         style: TextStyle(color: Colors.red),
       );
     });
+  }
+
+  void validateField(String value, String fieldName, String errorMessage) {
+    if (value.isEmpty) {
+      setValidationError(fieldName, errorMessage);
+    }
+  }
+
+  void validateUserInfo(BuildContext context, String email, String password) {
+    // Clear any previous validation errors
+    setState(() {
+      validationErrors.clear();
+    });
+
+    validateField(email, "email", "Email is required");
+    validateField(password, "password", "Password is required");
+
+    // All validations passed; proceed with login
+    if (validationErrors.isEmpty) {
+      logIn(context, email, password);
+    }
   }
 
   Widget? getValidationErrorWidget(String field) {
@@ -222,8 +205,7 @@ class _LogInState extends State<LogIn> {
                         obscureText: true,
                       ),
                       Container(
-                        child:
-                            getValidationErrorWidget('password') ?? Container(),
+                        child: getValidationErrorWidget('password') ?? Container(),
                       ),
                     ],
                   ),
@@ -245,8 +227,7 @@ class _LogInState extends State<LogIn> {
                             ..onTap = () {
                               // Navigate to the sign-in page
                               Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                    ForgotPassword(), // This will be a forgot password page routing
+                                builder: (context) => ForgotPassword(),  // This will be a forgot password page routing
                               ));
                             },
                         ),
@@ -272,12 +253,43 @@ class _LogInState extends State<LogIn> {
                         },
                       ),
                       const SizedBox(height: 20),
-                      MyButton(
+                      MyButtonWithImage(
                         buttonText: 'Sign in with Google',
                         hasButtonImage: true,
                         onTap: () {
                           signInWithGoogle();
                         },
+                      ),
+                      const SizedBox(height: 10),
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 25.0), // Adjust the padding as needed
+                        child: RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: "Don't have an account? ",
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.w700,
+                                ),
+                              ),
+                              TextSpan(
+                                text: 'Register',
+                                style: TextStyle(
+                                  color: Color(0xFF3C64B1),
+                                  fontWeight: FontWeight.w700, // Blue color for the link
+                                ),
+                                recognizer: TapGestureRecognizer()
+                                  ..onTap = () {
+                                    // Navigate to the sign-up page
+                                    Navigator.of(context).push(MaterialPageRoute(
+                                      builder: (context) => SignUp(),
+                                    ));
+                                  },
+                              ),
+                            ],
+                          ),
+                        ),
                       ),
                     ],
                   ),
