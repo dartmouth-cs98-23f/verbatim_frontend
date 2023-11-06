@@ -102,9 +102,7 @@ class OnBoardingPage3 extends StatelessWidget {
                       // Navigate to the 'Sign Up' page
                       Navigator.of(context).push(MaterialPageRoute(
                         builder: (context) => globalChallenge(
-                          username: SharedPrefs().getUserName() ?? '',
-                          email: SharedPrefs().getEmail() ?? '',
-                          password: SharedPrefs().getPassword() ?? '',
+                          username: SharedPrefs().getUserName() ?? ''
                         ),
                       ));
                     },

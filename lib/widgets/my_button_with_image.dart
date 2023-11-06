@@ -1,11 +1,11 @@
 import 'package:flutter/material.dart';
 
-class MyButton extends StatelessWidget {
+class MyButtonWithImage extends StatelessWidget {
   final String buttonText;
   final bool hasButtonImage;
   final Function()? onTap;
 
-  MyButton({
+  MyButtonWithImage({
     Key? key,
     required this.buttonText,
     required this.hasButtonImage,
