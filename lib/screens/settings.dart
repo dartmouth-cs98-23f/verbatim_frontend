@@ -13,6 +13,7 @@ import 'package:verbatim_frontend/widgets/custom_tab.dart';
 import 'dart:async';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/resetPassword.dart';
+import 'package:verbatim_frontend/widgets/testCustomBar.dart';
 
 //get the edits to send back as an acoount settings thing
 //getsignin -> look for input function to replace
@@ -90,68 +91,107 @@ class _SettingsState extends State<settings> {
                   child: Column(
                     children: [
                       SizedBox(
-                          width: double.maxFinite,
-                          child: Column(
-                            children: [
-                              SizedBox(
-                                height: 300.v,
-                                width: double.maxFinite,
-                                child: Stack(
-                                  alignment: Alignment.bottomLeft,
-                                  children: [
-                                    // orange background
-                                    Container(
-                                      height: 300.v,
-                                      width: double.maxFinite,
-                                      margin: EdgeInsets.zero,
-                                      padding: EdgeInsets.zero,
-                                      child: SvgPicture.asset(
-                                        assetName,
-                                        fit: BoxFit.fill,
-                                      ),
+                        width: double.maxFinite,
+                        child: Column(
+                          children: [
+                            SizedBox(
+                              height: 250.v,
+                              width: double.maxFinite,
+                              child: Stack(
+                                alignment: Alignment.bottomLeft,
+                                children: [
+                                  // orange background
+                                  Container(
+                                    height: 250.v,
+                                    width: double.maxFinite,
+                                    margin: EdgeInsets.zero,
+                                    padding: EdgeInsets.zero,
+                                    child: SvgPicture.asset(
+                                      assetName,
+                                      fit: BoxFit.fill,
                                     ),
+                                  ),
 
-                                    // app bar on top of background
-                                    CustomAppBar(),
+                                  // app bar on top of background
+                                  //CustomAppBar(),
+                                  testCustomBar(),
 
-                                    // 'Account Settings #'
-                                    const Positioned(
-                                      child: Center(
-                                        child: Text(
-                                          'Account Settings',
-                                          style: TextStyle(
-                                            fontSize: 28,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w900,
-                                          ),
+                                  // 'Account Settings #'
+                                  const Positioned(
+                                    child: Center(
+                                      child: Text(
+                                        'Account Settings',
+                                        style: TextStyle(
+                                          fontSize: 28,
+                                          color: Colors.white,
+                                          fontWeight: FontWeight.w900,
                                         ),
                                       ),
                                     ),
-                                  ],
-                                ),
-                              ),
-                            ],
-                          )),
+                                  ),
 
-                      Align(
-                        alignment:
-                            Alignment.centerLeft, // Align the image to the left
-                        child: Padding(
-                          padding:
-                              EdgeInsets.all(16.0), // Add appropriate padding
-                          child: ClipOval(
-                            child: Container(
-                              width:
-                                  100.0, // Adjust the width and height as needed
-                              height: 100.0,
-                              color:
-                                  Colors.blue, // Background color of the circle
-                              child: Image.asset(
-                                profile, // Replace with the path to your image in the assets directory
-                                fit: BoxFit.cover,
+                                  Positioned(
+                                    bottom: 0,
+                                    left: 30,
+                                    child: Stack(
+                                      children: [
+                                        Container(
+                                          child: Align(
+                                            alignment: Alignment
+                                                .centerLeft, // Align the image to the left
+                                            child: Padding(
+                                              padding: EdgeInsets.only(
+                                                  left: 0, top: 0),
+                                              child: Container(
+                                                width: 100,
+                                                height: 100,
+                                                decoration: BoxDecoration(
+                                                  shape: BoxShape.circle,
+                                                  border: Border.all(
+                                                    color: Color.fromARGB(
+                                                        255,
+                                                        255,
+                                                        243,
+                                                        238), // Color of the border
+                                                    width:
+                                                        2.0, // Width of the border
+                                                  ),
+                                                ),
+                                                child: ClipOval(
+                                                  child: Image.asset(
+                                                    profile, // Replace with the path to your image in the assets directory
+                                                    fit: BoxFit.cover,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+
+                                        //doesnt work because it goes beyond the profile dimensions
+                                        Positioned(
+                                          bottom: 25,
+                                          left:100,
+    
+                                          child: Container(
+                                            child: Padding(
+                                              
+                                                padding:
+                                                    EdgeInsets.only(top: 0,left: 0),
+                                                child: SvgPicture.asset(
+                                                  'assets/editIcon.svg',
+                                                  width: 24,
+                                                  height: 24,
+                                                )),
+                                          ),
+                                        ),
+                                      ],
+                                    ),
+                                  ),
+                                ],
                               ),
                             ),
-                          ),
+                          ],
                         ),
                       ),
 
@@ -164,7 +204,7 @@ class _SettingsState extends State<settings> {
                             child: RichText(
                                 text: TextSpan(
                               text: 'Reset password',
-                              style: TextStyle(
+                              style: const TextStyle(
                                 color: Color(0xFF3C64B1),
                                 fontWeight: FontWeight.w700,
                               ),
@@ -179,8 +219,8 @@ class _SettingsState extends State<settings> {
                       ),
 
                       const SizedBox(height: 42),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 30.0),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 30.0),
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
