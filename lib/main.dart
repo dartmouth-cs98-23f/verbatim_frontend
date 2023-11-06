@@ -1,12 +1,21 @@
 import 'package:flutter/material.dart';
-import 'package:verbatim_frontend/screens/onboardingPage1.dart';
+import 'package:verbatim_frontend/screens/logIn.dart';
 import 'Components/defineRoutes.dart';
 import 'Components/shared_prefs.dart';
+import 'package:provider/provider.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
+  WidgetsFlutterBinding
+      .ensureInitialized(); // Ensure WidgetsBinding is initialized
   await SharedPrefs().init();
+  SharedPrefs().setEmail('');
+  SharedPrefs().setUserName('');
+  SharedPrefs().setPassword('');
+  SharedPrefs().setFirstName('');
+  SharedPrefs().setLastName('');
+  SharedPrefs().setBio('');
   runApp(const MyApp());
   defineRoutes();
 }
@@ -16,13 +25,14 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String username = SharedPrefs().getUserName() ?? "";
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey, // Set the navigatorKey
       onGenerateRoute: Application.router.generator,
-      initialRoute: '/onboarding_page1',
-      home: OnBoardingPage1(),
+      initialRoute: '/login',
+      home: LogIn(),
     );
   }
 }
-
