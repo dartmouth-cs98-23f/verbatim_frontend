@@ -24,11 +24,12 @@ void reset(
   try {
     final response = await http.post(
       //need a rest password endpoint
-      Uri.parse('http://localhost:8080/api/v1/accountSettings'),
+      Uri.parse('http://localhost:8080/api/v1/resetPassword'),
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
       body: jsonEncode({
+        'username': SharedPrefs().getUserName(),
         'oldPassword': oldPassword,
         'newPassword': newPassword,
       }),
@@ -201,4 +202,7 @@ class _ResetPasswordState extends State<resetPassword> {
               ))),
     ));
   }
+
+  //validate that new password is not old password
+  //passwords match and they meet minimum requirements
 }
