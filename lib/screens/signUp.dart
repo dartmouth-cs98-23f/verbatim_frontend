@@ -215,7 +215,8 @@ class _SignUpState extends State<SignUp> {
     // Validate password
     if (password.isNotEmpty) {
       // Check password length and complexity (at least one uppercase letter, one lowercase letter, one number, and one special character)
-      //COMMENTING THIS OUT FOR TESTING
+
+//COMMENTING THIS OUT FOR TESTING
       /*
       if (!passwordComplexity.hasMatch(password) || password.length < 8) {
         setValidationError("password",

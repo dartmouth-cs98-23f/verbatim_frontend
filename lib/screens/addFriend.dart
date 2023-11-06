@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'sideBar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:verbatim_frontend/widgets/friends_app_bar.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:provider/provider.dart';
 
 // User class for when backend passes in users
 class User {
@@ -30,8 +32,26 @@ class User {
   }
 }
 
+class RequestedFriendsProvider extends ChangeNotifier {
+  // ignore: prefer_final_fields
+  List<String> _requestedFriends = []; //starts blank
+
+  List<String> get selectedFriends => _requestedFriends;
+
+  void toggleFriend(String friendName) {
+    if (_requestedFriends.contains(friendName)) {
+      //do nothing
+    } else {
+      _requestedFriends.add(
+          friendName); //add this name (maybe then wont need to call backend over and over again?)
+    }
+    notifyListeners();
+  }
+}
+
 class addFriend extends StatefulWidget {
   final String username = SharedPrefs().getUserName() ?? "";
+  // add URL check?
 
   addFriend({
     Key? key,
@@ -44,21 +64,21 @@ class addFriend extends StatefulWidget {
 class _AddFriendState extends State<addFriend> {
   final TextEditingController _searchController = TextEditingController();
   String _searchText = "";
-  bool usersFetched = false;
-  List<User> users = [];
-  List<String> userUsernames = [];
-  List<String> friendsUsernamesList = [];
-  List<String> requestingUsers = [];
-  // all of the user's that aren't friends with this user - need via backend
+  bool usersFetched = false; // only call users once per run
+  List<User> users = []; // all users
+  List<String> userUsernames = []; // all user usernames to display
+  List<String> friendsUsernamesList =
+      []; // friends (remove from user usernames)
+  List<String> requestingUsers =
+      []; // people who have requested current user (remove form user usernames)
+  List<String> myRequestedUsers_backend =
+      []; // GET THESE FROM THE BACKEND, THEN ADD THEM TO THE PROVIDER
 
-  List<String> _selectedFriends = [];
+// suggested - need to add the logic here - not yet implemented
+  List<String> _suggestedNames = [];
 
-// suggested - need to add some logic here
-  List<String> _suggestedNames = [
-    "Eve Wening",
-    "George Wening",
-  ];
-
+// get friend requests to build list of requesting users, to remove
+// from displayed users (to avoid crash on requesting again)
   Future<void> getFriendRequests(String username) async {
     final url = Uri.parse('http://localhost:8080/api/v1/getFriendRequests');
     final Map<String, String> headers = {
@@ -68,24 +88,49 @@ class _AddFriendState extends State<addFriend> {
     final response = await http.post(url, headers: headers, body: username);
 
     if (response.statusCode == 200) {
-      print('responses sent succesfully');
+      print('getfriendrequests responses sent succesfully');
 
       List<Map<String, dynamic>> friendRequests =
           List<Map<String, dynamic>>.from(json.decode(response.body));
       if (friendRequests.isNotEmpty) {
-        print(friendRequests);
-
         for (var request in friendRequests) {
           String username = request['username'];
           requestingUsers.add(username);
         }
-        print('this is requesting users $requestingUsers');
       }
     } else {
-      print(username);
       print('Failed to send responses. Status code: ${response.statusCode}');
     }
   }
+
+// get the friend requests that i have sent
+  Future<void> getUsersIHaveRequested(String username) async {
+    final url =
+        Uri.parse('http://localhost:8080/api/v1/getUsersIHaveRequested');
+    final Map<String, String> headers = {
+      'Content-Type': 'text/plain',
+    };
+
+    final response = await http.post(url, headers: headers, body: username);
+
+    if (response.statusCode == 200) {
+      print(
+          'myRequestedUsers_backend responses sent succesfully $myRequestedUsers_backend');
+
+      List<Map<String, dynamic>> myfriendRequests =
+          List<Map<String, dynamic>>.from(json.decode(response.body));
+      if (myfriendRequests.isNotEmpty) {
+        for (var request in myfriendRequests) {
+          String username = request['username'];
+          myRequestedUsers_backend.add(username);
+        }
+      }
+    } else {
+      print('Failed to send responses. Status code: ${response.statusCode}');
+    }
+  }
+
+  // get friends to remove from displayed users
 
   Future<void> getFriends(String username) async {
     final url = Uri.parse('http://localhost:8080/api/v1/getFriends');
@@ -102,13 +147,14 @@ class _AddFriendState extends State<addFriend> {
       friendsUsernamesList = friendsList.map((user) => user.username).toList();
 
       print('this is friends: $friendsUsernamesList');
-
       print(response);
     } else {
       print(username);
       print('Failed to send responses. Status code: ${response.statusCode}');
     }
   }
+
+// get all users to display
 
   Future<void> getUsers() async {
     final url = Uri.parse('http://localhost:8080/api/v1/users');
@@ -143,29 +189,28 @@ class _AddFriendState extends State<addFriend> {
       });
     });
     if (!usersFetched) {
-      getFriends(widget.username);
-      getUsers();
-      getFriendRequests(widget.username);
+      Future.wait([
+        getFriends(widget.username),
+        getUsers(),
+        getFriendRequests(widget.username),
+        getUsersIHaveRequested(widget.username),
+      ]).then((_) {
+        userUsernames
+            .removeWhere((item) => friendsUsernamesList.contains(item));
+        userUsernames.removeWhere((item) => requestingUsers.contains(item));
 
-      usersFetched = true;
+        usersFetched = true;
+
+        setState(() {});
+      });
     }
   }
 
   @override
   void dispose() {
     _searchController.dispose();
-    super.dispose();
-  }
 
-  void _toggleFriend(String friendName) {
-    setState(() {
-      if (_selectedFriends.contains(friendName)) {
-        _selectedFriends.remove(friendName);
-      } else {
-        _selectedFriends.add(friendName);
-        sendFriendRequest(widget.username, friendName);
-      }
-    });
+    super.dispose();
   }
 
   List<String> _searchResults() {
@@ -194,8 +239,11 @@ class _AddFriendState extends State<addFriend> {
   }
 
   Widget build(BuildContext context) {
-    userUsernames.removeWhere((item) => friendsUsernamesList.contains(item));
-    userUsernames.removeWhere((item) => requestingUsers.contains(item));
+    final requestedFriendsProvider =
+        Provider.of<RequestedFriendsProvider>(context);
+    final requestedFriends = requestedFriendsProvider.selectedFriends;
+    requestedFriends.addAll(myRequestedUsers_backend);
+
     final String assetName = 'assets/img1.svg';
 
     return SafeArea(
@@ -323,40 +371,43 @@ class _AddFriendState extends State<addFriend> {
                         ? ListView.builder(
                             itemCount: _searchResults().length,
                             itemBuilder: (context, index) {
-                              final friendName = _searchResults()[index];
-                              final isFriend =
-                                  _selectedFriends.contains(friendName);
+                              final name = _searchResults()[index];
+                              final isRequested =
+                                  requestedFriends.contains(name);
                               return ListTile(
-                                  title: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(Icons.mood),
-                                      SizedBox(width: 8),
-                                      Text(
-                                        friendName,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                  trailing: IconButton(
-                                    icon: isFriend
-                                        ? Icon(Icons.pending)
-                                        : requestingUsers.contains(friendName)
-                                            ? Icon(Icons.check_box,
-                                                color: Colors.black)
-                                            : Icon(Icons.person_add_alt),
-                                    onPressed: () {
-                                      _toggleFriend(friendName);
-                                    },
-                                  ));
+                                title: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    Icon(Icons.mood),
+                                    SizedBox(width: 8),
+                                    Text(
+                                      name,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
+                                    ),
+                                  ],
+                                ),
+                                trailing: IconButton(
+                                  icon: isRequested
+                                      ? Icon(Icons.pending)
+                                      : Icon(Icons.person_add_alt),
+                                  onPressed: () {
+                                    if (!isRequested) {
+                                      sendFriendRequest(widget.username, name);
+                                      requestedFriendsProvider
+                                          .toggleFriend(name);
+                                    }
+                                  },
+                                ),
+                              );
                             },
                           )
                         : ListView.builder(
                             itemCount: userUsernames.length,
                             itemBuilder: (context, index) {
                               final name = userUsernames[index];
-                              final isFriend = _selectedFriends.contains(name);
+                              final isRequested =
+                                  requestedFriends.contains(name);
 
                               return ListTile(
                                   title: Row(
@@ -371,14 +422,16 @@ class _AddFriendState extends State<addFriend> {
                                     ],
                                   ),
                                   trailing: IconButton(
-                                    icon: isFriend
+                                    icon: isRequested
                                         ? Icon(Icons.pending)
-                                        : requestingUsers.contains(name)
-                                            ? Icon(Icons.check_box,
-                                                color: Colors.black)
-                                            : Icon(Icons.person_add_alt),
+                                        : Icon(Icons.person_add_alt),
                                     onPressed: () {
-                                      _toggleFriend(name);
+                                      if (!isRequested) {
+                                        sendFriendRequest(
+                                            widget.username, name);
+                                        requestedFriendsProvider
+                                            .toggleFriend(name);
+                                      }
                                     },
                                   ));
                             },
@@ -388,7 +441,7 @@ class _AddFriendState extends State<addFriend> {
               ],
             )),
       ),
-      drawer: SideBar(username: widget.username),
+      drawer: SideBar(),
     ));
   }
 }
