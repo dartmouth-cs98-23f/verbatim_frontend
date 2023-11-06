@@ -32,6 +32,7 @@ class User {
   }
 }
 
+/*
 class RequestedFriendsProvider extends ChangeNotifier {
   // ignore: prefer_final_fields
   List<String> _requestedFriends = []; //starts blank
@@ -48,6 +49,7 @@ class RequestedFriendsProvider extends ChangeNotifier {
     notifyListeners();
   }
 }
+*/
 
 class addFriend extends StatefulWidget {
   final String username = SharedPrefs().getUserName() ?? "";
@@ -100,6 +102,15 @@ class _AddFriendState extends State<addFriend> {
       }
     } else {
       print('Failed to send responses. Status code: ${response.statusCode}');
+    }
+  }
+
+  void toggleFriend(String friendName) {
+    if (myRequestedUsers_backend.contains(friendName)) {
+      //do nothing
+    } else {
+      myRequestedUsers_backend.add(
+          friendName); //add this name (maybe then wont need to call backend over and over again?)
     }
   }
 
@@ -207,6 +218,28 @@ class _AddFriendState extends State<addFriend> {
   }
 
   @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+
+    if (!usersFetched) {
+      Future.wait([
+        getFriends(widget.username),
+        getUsers(),
+        getFriendRequests(widget.username),
+        getUsersIHaveRequested(widget.username),
+      ]).then((_) {
+        userUsernames
+            .removeWhere((item) => friendsUsernamesList.contains(item));
+        userUsernames.removeWhere((item) => requestingUsers.contains(item));
+
+        usersFetched = true;
+
+        setState(() {});
+      });
+    }
+  }
+
+  @override
   void dispose() {
     _searchController.dispose();
 
@@ -239,10 +272,13 @@ class _AddFriendState extends State<addFriend> {
   }
 
   Widget build(BuildContext context) {
+    /*
     final requestedFriendsProvider =
         Provider.of<RequestedFriendsProvider>(context);
     final requestedFriends = requestedFriendsProvider.selectedFriends;
-    requestedFriends.addAll(myRequestedUsers_backend);
+    */
+
+    //requestedFriends.addAll(myRequestedUsers_backend);
 
     final String assetName = 'assets/img1.svg';
 
@@ -373,7 +409,7 @@ class _AddFriendState extends State<addFriend> {
                             itemBuilder: (context, index) {
                               final name = _searchResults()[index];
                               final isRequested =
-                                  requestedFriends.contains(name);
+                                  myRequestedUsers_backend.contains(name);
                               return ListTile(
                                 title: Row(
                                   mainAxisSize: MainAxisSize.min,
@@ -394,8 +430,10 @@ class _AddFriendState extends State<addFriend> {
                                   onPressed: () {
                                     if (!isRequested) {
                                       sendFriendRequest(widget.username, name);
-                                      requestedFriendsProvider
-                                          .toggleFriend(name);
+
+                                      setState(() {
+                                        toggleFriend(name);
+                                      });
                                     }
                                   },
                                 ),
@@ -407,7 +445,7 @@ class _AddFriendState extends State<addFriend> {
                             itemBuilder: (context, index) {
                               final name = userUsernames[index];
                               final isRequested =
-                                  requestedFriends.contains(name);
+                                  myRequestedUsers_backend.contains(name);
 
                               return ListTile(
                                   title: Row(
@@ -429,8 +467,10 @@ class _AddFriendState extends State<addFriend> {
                                       if (!isRequested) {
                                         sendFriendRequest(
                                             widget.username, name);
-                                        requestedFriendsProvider
-                                            .toggleFriend(name);
+                                        setState(() {
+                                          toggleFriend(name);
+                                          myRequestedUsers_backend.add(name);
+                                        });
                                       }
                                     },
                                   ));
