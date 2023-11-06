@@ -7,17 +7,10 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'package:verbatim_frontend/screens/forgotPassword.dart';
 import 'package:verbatim_frontend/screens/signUp.dart';
-<<<<<<< Updated upstream
 import 'package:verbatim_frontend/screens/signupErrorMessage.dart';
 import '../Components/shared_prefs.dart';
 import '../widgets/my_button_with_image.dart';
 import '../widgets/my_button_no_image.dart';
-=======
-import '../Components/my_button.dart';
-import '../Components/my_button_no_image.dart';
-import 'package:verbatim_frontend/Components/shared_prefs.dart';
-
->>>>>>> Stashed changes
 import 'draft.dart';
 import 'globalChallenge.dart';
 import 'package:http/http.dart' as http;
@@ -63,42 +56,26 @@ class _LogInState extends State<LogIn> {
           // Authentication successful
           String username = responseData['username'];
           String email = responseData['email'];
-<<<<<<< Updated upstream
+
           String password = responseData['password'];
 
           // Save the user info to the disk so that they can persist to other pages
           SharedPrefs().setEmail(email);
           SharedPrefs().setUserName(username);
           SharedPrefs().setPassword(password);
-=======
-          String password = responseData[
-              'password']; // You have the user's password, but you may not want to store it in the client.
->>>>>>> Stashed changes
 
           print("\nThe email is : ${email} \n The password is : ${password}");
 
           Navigator.push(
             context,
             MaterialPageRoute(
-<<<<<<< Updated upstream
-              builder: (context) =>
-                  globalChallenge(
-                    username: username,
-                    email: email,
-                    password: password,
-                  ),
-=======
-              builder: (context) => globalChallenge(
-                username: username,
-              ),
->>>>>>> Stashed changes
+              builder: (context) => globalChallenge(),
             ),
           );
 
           print('Log-in successful');
         }
-      }
-      else {
+      } else {
         print('Error during sign-up: ${response.statusCode.toString()}');
         Navigator.push(
           context,
@@ -107,20 +84,16 @@ class _LogInState extends State<LogIn> {
           ),
         );
       }
+    } catch (e) {
+      print('Error during sign-up: ${e.toString()}');
+      Navigator.push(
+        context,
+        MaterialPageRoute(
+          builder: (context) => SignupErrorMessage(),
+        ),
+      );
     }
-    catch (e) {
-    print('Error during sign-up: ${e.toString()}');
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => SignupErrorMessage(),
-      ),
-    );
   }
-<<<<<<< Updated upstream
-}
-=======
->>>>>>> Stashed changes
 
   Future<void> signInWithGoogle() async {
     try {
@@ -145,9 +118,9 @@ class _LogInState extends State<LogIn> {
             context,
             MaterialPageRoute(
               builder: (context) => globalChallenge(
-                username: '',
-                // to be decided - give them suggestions of what to use as their username
-              ),
+
+                  // to be decided - give them suggestions of what to use as their username
+                  ),
             ),
           );
         } else {
@@ -182,31 +155,6 @@ class _LogInState extends State<LogIn> {
     validateField(email, "email", "Email is required");
     validateField(password, "password", "Password is required");
 
-<<<<<<< Updated upstream
-=======
-    // Check for specific validation rules
-    // if (email.isNotEmpty) {
-    //   if (email.contains('@')) {
-    //     // Treat it as an email else as a username
-    //     print('Treat the entry as an email else as a username');
-    //     return;
-    //   }
-    // }
-    //
-    // if (email.isNotEmpty && !isValidEmail(email)) {
-    //   setValidationError("email", "The email you provided is invalid. Verify again.");
-    //   return;
-    // }
-
-    if (password.isNotEmpty) {
-      if (password.length < 8) {
-        setValidationError(
-            "password", "Your password should be at least 8 characters long.");
-        return;
-      }
-    }
-
->>>>>>> Stashed changes
     print('here');
     // All validations passed; proceed with login
     logIn(context, email, password);
@@ -297,15 +245,9 @@ class _LogInState extends State<LogIn> {
                             ..onTap = () {
                               // Navigate to the sign-in page
                               Navigator.of(context).push(MaterialPageRoute(
-<<<<<<< Updated upstream
-                                builder: (context) => ForgotPassword(),  // This will be a forgot password page routing
-                              )
-                              );
-=======
                                 builder: (context) =>
-                                    SignUp(), // This will be a forgot password page routing
+                                    ForgotPassword(), // This will be a forgot password page routing
                               ));
->>>>>>> Stashed changes
                             },
                         ),
                       ],
