@@ -133,7 +133,7 @@ class SideBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder(
+    return FutureBuilder<void>(
         future: Future.wait([
           getFriends(username),
           getFriendRequests(username),
@@ -240,7 +240,7 @@ class SideBar extends StatelessWidget {
                                   fontSize: 15,
                                 ),
                               ),
-                              trailing: Icon(Icons.person, color: Colors.black),
+                              leading: Icon(Icons.person, color: Colors.black),
                               onTap: () {},
                             );
                           },
@@ -313,8 +313,7 @@ class SideBar extends StatelessWidget {
                                   fontSize: 15,
                                 ),
                               ),
-                              leading: Icon(Icons.person_add_alt,
-                                  color: Colors.black),
+                              leading: Icon(Icons.person, color: Colors.black),
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
@@ -325,14 +324,16 @@ class SideBar extends StatelessWidget {
                                       handleFriendRequests(
                                           username, requester, true);
                                     },
-                                    child: Icon(Icons.add),
+                                    child: Icon(Icons.check_box,
+                                        color: Colors.black),
                                   ),
                                   GestureDetector(
                                     onTap: () {
                                       handleFriendRequests(
                                           username, requester, false);
                                     },
-                                    child: Icon(Icons.remove),
+                                    child:
+                                        Icon(Icons.cancel, color: Colors.black),
                                   ),
                                 ],
                               ),
@@ -407,6 +408,5 @@ void handleTap(BuildContext context, int index) {
     case 2: // "Settings"
       Navigator.pushNamed(context, '/settings');
       break;
-    // Add cases for other routes
   }
 }

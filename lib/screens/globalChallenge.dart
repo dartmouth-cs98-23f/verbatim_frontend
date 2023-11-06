@@ -12,11 +12,10 @@ import 'package:verbatim_frontend/widgets/stats.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 
 class globalChallenge extends StatefulWidget {
-  final String username;
+  final String username = SharedPrefs().getUserName() ?? "";
 
   globalChallenge({
     Key? key,
-    required this.username,
   }) : super(key: key);
 
   @override
