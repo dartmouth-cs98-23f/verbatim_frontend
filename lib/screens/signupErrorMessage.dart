@@ -1,9 +1,23 @@
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/screens/signUp.dart';
-
 import '../widgets/my_button_no_image.dart';
+import 'logIn.dart';
 
 class SignupErrorMessage extends StatelessWidget {
+  final String pageName;
+
+  SignupErrorMessage({required this.pageName});
+
+  String getErrorMessage() {
+    if (pageName == 'sign up') {
+      return 'We encountered an error during sign-up. Please double-check your email and username.';
+    } else if (pageName == 'log in') {
+      return 'We encountered an error during log in. Please double-check your email and password.';
+    } else {
+      return 'Oops, something went wrong!';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -47,7 +61,7 @@ class SignupErrorMessage extends StatelessWidget {
                     children: [
                       const SizedBox(height: 20),
                       Text(
-                        'We encountered an error during sign-up/login. Please double-check your email and username.',
+                        getErrorMessage(), // Use the error message based on the pageName
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 16,
@@ -66,7 +80,7 @@ class SignupErrorMessage extends StatelessWidget {
                   buttonText: 'Try Again',
                   onTap: () {
                     // Navigate back to the 'SignUp' page
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignUp()));
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => LogIn()));
                   },
                 ),
               ],
@@ -77,4 +91,3 @@ class SignupErrorMessage extends StatelessWidget {
     );
   }
 }
-

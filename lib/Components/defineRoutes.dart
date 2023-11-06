@@ -1,6 +1,8 @@
 import 'package:fluro/fluro.dart';
+import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'package:verbatim_frontend/screens/forgotPassword.dart';
+
 import '../screens/globalChallenge.dart';
 import '../screens/logIn.dart';
 import '../screens/onboardingPage1.dart';
@@ -10,6 +12,10 @@ import '../screens/onboardingPage4.dart';
 import '../screens/signUp.dart';
 import '../screens/signupErrorMessage.dart';
 import '../screens/settings.dart';
+
+
+
+
 class Application {
   static FluroRouter router = FluroRouter();
 }
@@ -56,8 +62,8 @@ void defineRoutes() {
   );
 
   Application.router.define(
-    '/reset_password',
-    handler: resetPasswordHandler,
+    '/forgot_password',
+    handler: forgotPasswordHandler,
   );
 
 
@@ -75,7 +81,11 @@ void defineRoutes() {
 
 var onBoardingPage1Handler = Handler(
   handlerFunc: (context, parameters) {
-    return OnBoardingPage1();
+    if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
+      return LogIn();
+    } else {
+      return OnBoardingPage1();
+    }
   },
 );
 
@@ -85,20 +95,32 @@ var settingsHandler = Handler(handlerFunc:((context, parameters) {
 
 var onBoardingPage2Handler = Handler(
   handlerFunc: (context, parameters) {
-    return OnBoardingPage2();
+    if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
+      return LogIn();
+    } else {
+      return OnBoardingPage2();
+    }
   },
 );
 
 var onBoardingPage3Handler = Handler(
-  handlerFunc: (context, parameters) {
-    return OnBoardingPage3();
-  },
+    handlerFunc: (context, parameters) {
+      if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
+        return LogIn();
+      } else {
+        return OnBoardingPage3();
+      }
+    },
 );
 
 var onBoardingPage4Handler = Handler(
-  handlerFunc: (context, parameters) {
-    return OnBoardingPage4();
-  },
+    handlerFunc: (context, parameters) {
+      if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
+        return LogIn();
+      } else {
+        return OnBoardingPage4();
+      }
+    },
 );
 
 var signUpHandler = Handler(
@@ -115,21 +137,26 @@ var logInHandler = Handler(
 
 var globalChallengeHandler = Handler(
   handlerFunc: (context, parameters) {
-    return globalChallenge(
-        username: 'dd',
-        email: 'dd@gmail.com',
-        password: '0000000'
-    );
+    if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
+      return LogIn();
+    } else {
+      print('\nEmail here in define routes: ${SharedPrefs().getEmail()}');
+      return globalChallenge();
+    }
   },
 );
 
 var addFriendHandler = Handler(
   handlerFunc: (context, parameters) {
-    return addFriend(username: 'jenny l');
+    if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
+      return LogIn();
+    } else {
+      return addFriend();
+    }
   },
 );
 
-var resetPasswordHandler = Handler(
+var forgotPasswordHandler = Handler(
   handlerFunc: (context, parameters) {
     return ForgotPassword();
   },
@@ -137,7 +164,10 @@ var resetPasswordHandler = Handler(
 
 var signupErrorMessageHandler = Handler(
   handlerFunc: (context, parameters) {
-    return SignupErrorMessage();
+    if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
+      return LogIn();
+    } else {
+      return SignupErrorMessage(pageName: 'log in');
+    }
   },
 );
-

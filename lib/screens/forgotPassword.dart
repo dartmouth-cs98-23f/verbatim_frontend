@@ -59,7 +59,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => SignupErrorMessage(),
+            builder: (context) => SignupErrorMessage(pageName: 'log in'),
           ),
         );
       }
@@ -69,7 +69,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => SignupErrorMessage(),
+          builder: (context) => SignupErrorMessage(pageName: 'log in'),
         ),
       );
     }
@@ -138,7 +138,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 const SizedBox(height: 180),
                 Center(
                   child: Text(
-                    'Reset Your Password',
+                    'Set a New Password',
                     textAlign: TextAlign.center,
                     style: TextStyle(
                       color: Color(0xFFE76F51),
@@ -159,7 +159,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     children: [
                       const SizedBox(height: 20),
                       Text(
-                        'To reset your password, please enter your email address below. You will receive an email with instructions on how to reset your password.',
+                        'To set a new password, please enter your email address below. You will receive an email with instructions on how to reset your password.',
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 16,

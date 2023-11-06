@@ -12,20 +12,18 @@ import 'package:verbatim_frontend/widgets/stats.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 
 class globalChallenge extends StatefulWidget {
-  final String email;
-  final String username;
-  final String password;
+  final String username = SharedPrefs().getUserName() ?? "";
 
   globalChallenge({
     Key? key,
-    required this.username,
-    required this.email,
-    required this.password,
   }) : super(key: key);
 
   @override
   _GlobalChallengeState createState() => _GlobalChallengeState();
 }
+
+String email = SharedPrefs().getEmail() ?? "";
+String password = SharedPrefs().getPassword() ?? "";
 
 class _GlobalChallengeState extends State<globalChallenge> {
   String userResponse = '';
@@ -98,11 +96,11 @@ class _GlobalChallengeState extends State<globalChallenge> {
       categoryQ1 = data['categoryQ1'];
       categoryQ2 = data['categoryQ2'];
       categoryQ3 = data['categoryQ3'];
+      totalResponses = data['totalResponses'];
 
-      // if null user has not yet submitted global response
+      // if null, user has not yet submitted global response
 
       if (data["responseQ1"] != null) {
-        print('HERE');
         numVerbatimQ1 = data['numVerbatimQ1'];
         numVerbatimQ2 = data['numVerbatimQ2'];
         numVerbatimQ3 = data['numVerbatimQ3'];
@@ -293,7 +291,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                         margin: EdgeInsets.only(top: 10.h),
                         padding: EdgeInsets.symmetric(horizontal: 10),
                         width: 300.h,
-                        height: 400.v,
+                        height: 500.v,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
                           boxShadow: [
@@ -370,7 +368,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                                     });
                                                     sendUserResponses(
                                                       widget.username,
-                                                      widget.email,
+                                                      email,
                                                       userResponses,
                                                     );
                                                   }
@@ -409,7 +407,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                                     });
                                                     sendUserResponses(
                                                       widget.username,
-                                                      widget.email,
+                                                      email,
                                                       userResponses,
                                                     );
                                                   }
@@ -492,7 +490,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                   return Column(children: [
                                     Container(
                                         width: 300.h,
-                                        height: 400.v,
+                                        height: 500.v,
                                         child: Stats(
                                             totalResponses: totalResponses,
                                             tabLabels: tabLables,
@@ -686,7 +684,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                 ],
               )),
         ),
-        drawer: SideBar(username: widget.username),
+        drawer: SideBar(),
       ),
     );
   }
