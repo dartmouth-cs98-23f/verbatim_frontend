@@ -12,8 +12,7 @@ Future<void> main() async {
   await SharedPrefs().init();
   //the change notifier provider is necessary to make sure
   //that the user does not request friends twice if they reload the addFriends widget
-  runApp(ChangeNotifierProvider(
-      create: (context) => RequestedFriendsProvider(), child: const MyApp()));
+  runApp(const MyApp());
   defineRoutes();
 }
 
