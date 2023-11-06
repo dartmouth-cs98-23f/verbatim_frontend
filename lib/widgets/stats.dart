@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:verbatim_frontend/widgets/size.dart';
 
 class Friend {
   final String name;
@@ -150,7 +151,7 @@ class Stats extends StatelessWidget {
                           child: Center(
                         child: Column(children: [
                           Container(
-                            height: 250,
+                            height: 400.v,
                             width: 500,
                             child: PieChart(
                               PieChartData(
@@ -181,7 +182,7 @@ class Stats extends StatelessWidget {
                             ),
                           ),
                           Container(
-                              width: 200,
+                              width: 300.h,
                               child: Center(
                                 child: Legend(
                                   data: [
@@ -340,7 +341,7 @@ class Stats extends StatelessWidget {
                             ),
                           ),
                           Container(
-                              width: 250,
+                              width: 300.h,
                               child: Center(
                                 child: Legend(
                                   data: [
@@ -499,7 +500,7 @@ class Stats extends StatelessWidget {
                             ),
                           ),
                           Container(
-                              width: 200,
+                              width: 300.h,
                               child: Center(
                                 child: Legend(
                                   data: [
@@ -655,6 +656,7 @@ class Legend extends StatelessWidget {
     for (int i = 0; i < data.length; i += itemsPerRow) {
       final rowItems = data.sublist(i, i + itemsPerRow);
       final row = Row(
+        mainAxisAlignment: MainAxisAlignment.center,
         children: rowItems.map((item) {
           return Center(
               child: Row(

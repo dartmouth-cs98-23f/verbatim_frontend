@@ -57,8 +57,8 @@ void defineRoutes() {
   );
 
   Application.router.define(
-    '/reset_password',
-    handler: resetPasswordHandler,
+    '/forgot_password',
+    handler: forgotPasswordHandler,
   );
 
   Application.router.define(
@@ -126,9 +126,7 @@ var globalChallengeHandler = Handler(
     } else {
       print('\nEmail here in define routes: ${SharedPrefs().getEmail()}');
       return globalChallenge(
-        username: SharedPrefs().getUserName() ?? 'dd',
-        email: SharedPrefs().getEmail() ?? 'placeholder@gmail.com',
-        password: SharedPrefs().getPassword() ?? '123456Abc@',
+        username: SharedPrefs().getUserName() ?? 'dd'
       );
     }
   },
@@ -139,12 +137,12 @@ var addFriendHandler = Handler(
     if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
       return LogIn();
     } else {
-      return addFriend(username: SharedPrefs().getUserName()?? 'jenny l');
+      return addFriend();
     }
   },
 );
 
-var resetPasswordHandler = Handler(
+var forgotPasswordHandler = Handler(
   handlerFunc: (context, parameters) {
     if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
       return LogIn();

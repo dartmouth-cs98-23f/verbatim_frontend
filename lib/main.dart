@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/screens/logIn.dart';
-import 'package:verbatim_frontend/screens/onboardingPage1.dart';
-import 'package:verbatim_frontend/screens/signUp.dart';
 import 'Components/defineRoutes.dart';
 import 'Components/shared_prefs.dart';
 
@@ -22,6 +20,8 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    String username = SharedPrefs().getUserName() ?? "";
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey, // Set the navigatorKey
