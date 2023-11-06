@@ -74,7 +74,6 @@ class _LogInState extends State<LogIn> {
                   ),
             ),
           );
-
           print('Log-in successful');
         }
       }
@@ -83,7 +82,7 @@ class _LogInState extends State<LogIn> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => SignupErrorMessage(),
+            builder: (context) => SignupErrorMessage(pageName: 'log in'),
           ),
         );
       }
@@ -93,7 +92,7 @@ class _LogInState extends State<LogIn> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => SignupErrorMessage(),
+        builder: (context) => SignupErrorMessage(pageName: 'log in'),
       ),
     );
   }
@@ -161,16 +160,18 @@ class _LogInState extends State<LogIn> {
     setState(() {
       validationErrors.clear();
     });
-    print('email is: ${email}');
-    print('password is: ${password}');
+    print('\nemail is: ${SharedPrefs().getEmail()}');
+    print('password is: ${SharedPrefs().getPassword()}\n');
 
     validateField(email, "email", "Email is required");
     validateField(password, "password", "Password is required");
 
     print('here');
     // All validations passed; proceed with login
-    logIn(context, email, password);
-    print('after');
+    if (validationErrors.isEmpty) {
+      logIn(context, email, password);
+      print('after');
+    }
   }
 
   void validateField(String value, String fieldName, String errorMessage) {
@@ -291,6 +292,38 @@ class _LogInState extends State<LogIn> {
                           signInWithGoogle();
                         },
                       ),
+                      const SizedBox(height: 10),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 25.0), // Adjust the padding as needed
+                    child: RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: "Don't have an account? ",
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.w700,
+                            ),
+                          ),
+                          TextSpan(
+                            text: 'Register',
+                            style: TextStyle(
+                              color: Color(0xFF3C64B1),
+                              fontWeight: FontWeight.w700,// Blue color for the link
+                            ),
+                            recognizer: TapGestureRecognizer()
+                              ..onTap = () {
+                                // Navigate to the sign-in page
+                                Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => SignUp(),
+                                )
+                                );
+                              },
+                          ),
+                        ],
+                      ),
+                    ),
+                  ),
                     ],
                   ),
                 ),
