@@ -10,6 +10,7 @@ import 'package:verbatim_frontend/widgets/custom_tab.dart';
 import 'dart:async';
 import 'package:verbatim_frontend/widgets/stats.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
+import 'package:intl/intl.dart';
 
 class globalChallenge extends StatefulWidget {
   final String username = SharedPrefs().getUserName() ?? "";
@@ -167,6 +168,15 @@ class _GlobalChallengeState extends State<globalChallenge> {
 
   @override
   Widget build(BuildContext context) {
+    DateTime now = DateTime.now();
+    DateTime midnight =
+        DateTime(now.year, now.month, now.day + 1); // Set to next midnight
+
+    Duration timeUntilMidnight = midnight.difference(now);
+
+    String formattedTimeUntilMidnight =
+        DateFormat.Hms().format(DateTime(0).add(timeUntilMidnight));
+
     final String assetName = 'assets/img1.svg';
     List<String> tabLables = [
       categoryQ1,
@@ -656,7 +666,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                         width: 220,
                                         child: Center(
                                           child: Text(
-                                            'New Challenge in 13:04:16',
+                                            'New Challenge in $formattedTimeUntilMidnight',
                                             style: TextStyle(
                                               fontSize: 14,
                                               fontWeight: FontWeight.bold,
