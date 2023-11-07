@@ -343,7 +343,7 @@ class _SideBarState extends State<SideBar> {
                                   GestureDetector(
                                     onTap: () {
                                       handleFriendRequests(
-                                          widget.username, requester, true);
+                                          widget.username, requester, false);
                                       setState(() {
                                         friendRequestUsernames
                                             .remove(requester);

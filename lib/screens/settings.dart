@@ -113,8 +113,8 @@ class _SettingsState extends State<settings> {
                                   ),
 
                                   // app bar on top of background
-                                  //CustomAppBar(),
-                                  testCustomBar(),
+                                  CustomAppBar(),
+                                  // testCustomBar(),
 
                                   // 'Account Settings #'
                                   const Positioned(
