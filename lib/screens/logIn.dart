@@ -26,7 +26,8 @@ class _LogInState extends State<LogIn> {
   final passwordController = TextEditingController();
   final GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: ['email'],
-    clientId: '297398575103-o3engamrir3bf4pupurvj8lm4mn0iuqt.apps.googleusercontent.com',
+    clientId:
+        '297398575103-o3engamrir3bf4pupurvj8lm4mn0iuqt.apps.googleusercontent.com',
   );
 
   void logIn(BuildContext context, String email, String password) async {
@@ -44,6 +45,7 @@ class _LogInState extends State<LogIn> {
 
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
+        print(responseData);
 
         if (responseData != null) {
           // Authentication successful: Save the user info to the disk so that they can persist to other pages
@@ -110,7 +112,8 @@ class _LogInState extends State<LogIn> {
             ),
           );
         } else {
-          print('Error during sign-up with Google: ${response.statusCode.toString()}');
+          print(
+              'Error during sign-up with Google: ${response.statusCode.toString()}');
         }
       } else {
         // User canceled the Google Sign-In process or encountered an error.
@@ -205,7 +208,8 @@ class _LogInState extends State<LogIn> {
                         obscureText: true,
                       ),
                       Container(
-                        child: getValidationErrorWidget('password') ?? Container(),
+                        child:
+                            getValidationErrorWidget('password') ?? Container(),
                       ),
                     ],
                   ),
@@ -227,7 +231,8 @@ class _LogInState extends State<LogIn> {
                             ..onTap = () {
                               // Navigate to the sign-in page
                               Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) => ForgotPassword(),  // This will be a forgot password page routing
+                                builder: (context) =>
+                                    ForgotPassword(), // This will be a forgot password page routing
                               ));
                             },
                         ),
@@ -262,7 +267,8 @@ class _LogInState extends State<LogIn> {
                       ),
                       const SizedBox(height: 10),
                       Padding(
-                        padding: const EdgeInsets.symmetric(horizontal: 25.0), // Adjust the padding as needed
+                        padding: const EdgeInsets.symmetric(
+                            horizontal: 25.0), // Adjust the padding as needed
                         child: RichText(
                           text: TextSpan(
                             children: [
@@ -277,12 +283,14 @@ class _LogInState extends State<LogIn> {
                                 text: 'Register',
                                 style: TextStyle(
                                   color: Color(0xFF3C64B1),
-                                  fontWeight: FontWeight.w700, // Blue color for the link
+                                  fontWeight: FontWeight
+                                      .w700, // Blue color for the link
                                 ),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
                                     // Navigate to the sign-up page
-                                    Navigator.of(context).push(MaterialPageRoute(
+                                    Navigator.of(context)
+                                        .push(MaterialPageRoute(
                                       builder: (context) => SignUp(),
                                     ));
                                   },
