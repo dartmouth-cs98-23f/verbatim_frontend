@@ -50,9 +50,9 @@ class _LogInState extends State<LogIn> {
           SharedPrefs().setEmail(responseData['email']);
           SharedPrefs().setUserName(responseData['username']);
           SharedPrefs().setPassword(responseData['password']);
-          SharedPrefs().setFirstName(responseData['firstName']);
-          SharedPrefs().setLastName(responseData['lastName']);
-          SharedPrefs().setBio(responseData['bio']);
+          SharedPrefs().setFirstName(responseData['firstName']?? '');
+          SharedPrefs().setLastName(responseData['lastName']?? '');
+          SharedPrefs().setBio(responseData['bio'] ?? '');
           // SharedPrefs().setBio(responseData['profilePicture']);
 
           Navigator.push(
@@ -64,7 +64,7 @@ class _LogInState extends State<LogIn> {
           print('Log-in successful');
         }
       } else {
-        print('Error during sign-up: ${response.statusCode.toString()}');
+        print('Error during log-in: ${response.statusCode.toString()}');
         Navigator.push(
           context,
           MaterialPageRoute(
