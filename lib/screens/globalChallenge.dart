@@ -43,6 +43,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
   int numVerbatimQ2 = 0;
   int numVerbatimQ3 = 0;
   int numExactVerbatim = 0;
+  int preplaytotalResponses = 0;
 
   Map<String, dynamic> statsQ1 = {
     "firstMostPopular": "",
@@ -101,7 +102,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
       categoryQ1 = data['categoryQ1'];
       categoryQ2 = data['categoryQ2'];
       categoryQ3 = data['categoryQ3'];
-      totalResponses = data['totalResponses'];
+      preplaytotalResponses = data['totalResponses'];
 
       // if null, user has not yet submitted global response
 
@@ -151,7 +152,6 @@ class _GlobalChallengeState extends State<globalChallenge> {
       print('Responses sent successfully');
 
       final Map<String, dynamic> stats = json.decode(response.body);
-      print(stats);
 
       numVerbatimQ1 = stats['numVerbatimQ1'];
       numVerbatimQ2 = stats['numVerbatimQ2'];
@@ -160,7 +160,6 @@ class _GlobalChallengeState extends State<globalChallenge> {
       statsQ2 = stats['statsQ2'];
       statsQ3 = stats['statsQ3'];
       totalResponses = stats['totalResponses'];
-      print(statsQ1["friendResponses"]);
     } else {
       print('Failed to send responses. Status code: ${response.statusCode}');
 
