@@ -404,7 +404,26 @@ class _SideBarState extends State<SideBar> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 30),
+                  SizedBox(height: 10.0),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 5.0),
+                    child: Container(
+                      padding:
+                      EdgeInsets.symmetric(horizontal: 0.0, vertical: .1),
+                      child: ListTile(
+                        title: Text('Logout',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18)),
+                        leading: Icon(Icons.logout, color: Colors.black),
+                        onTap: () {
+                          Navigator.pushNamed(context, '/logout');
+                        },
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
                 ],
               ),
             );
@@ -424,6 +443,10 @@ void handleTap(BuildContext context, int index) {
       break;
     case 2: // "Settings"
       Navigator.pushNamed(context, '/settings');
+      break;
+
+    case 3: // "Logout"
+      Navigator.pushNamed(context, '/logout');
       break;
   }
 }

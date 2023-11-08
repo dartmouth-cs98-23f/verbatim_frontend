@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/screens/logIn.dart';
+import 'package:verbatim_frontend/screens/logout.dart';
 import 'Components/defineRoutes.dart';
 import 'Components/shared_prefs.dart';
 
