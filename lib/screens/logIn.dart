@@ -31,6 +31,12 @@ class _LogInState extends State<LogIn> {
   );
 
   void logIn(BuildContext context, String usernameOrEmail, String password) async {
+    // Save user's info to the database
+    saveUsersInfo(usernameOrEmail, password);
+  }
+
+  // Function to save user's info to the database
+  void saveUsersInfo(String usernameOrEmail, String password)async {
     try {
       final response = await http.post(
         Uri.parse('http://localhost:8080/api/v1/login'),
@@ -91,35 +97,9 @@ class _LogInState extends State<LogIn> {
       final GoogleSignInAccount? account = await _googleSignIn.signIn();
 
       if (account != null) {
-        // User sign-in is successful
-        print('Google Sign-In successful');
-        print('Sign up with Google: ${account.email}');
-
-        final response = await http.post(
-          Uri.parse('http://localhost:8080/api/v1/register'),
-          headers: <String, String>{
-            'Content-Type': 'application/json',
-          },
-          body: jsonEncode({'emailOrUsername': account.email, 'password': ''}),
-        );
-
-        if (response.statusCode == 200) {
-          // Navigate to the global challenge page
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => globalChallenge(),
-            ),
-          );
-        } else {
-          print(
-              'Error during sign-up with Google: ${response.statusCode.toString()}');
-        }
-      } else {
-        // User canceled the Google Sign-In process or encountered an error.
-        print('Google Sign-In canceled or failed');
+        saveUsersInfo(account.email, 'unavailable');
       }
-    } catch (error) {
+      } catch (error) {
       // Handle any errors that occur during the Google Sign-In process.
       print('Error during Google Sign-In: $error');
     }
