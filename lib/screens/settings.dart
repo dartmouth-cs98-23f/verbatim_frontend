@@ -1,6 +1,8 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:verbatim_frontend/screens/globalChallenge.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'sideBar.dart';
@@ -62,6 +64,12 @@ void edits(
   }
 }
 
+String getVal(String? fieldval, String currentval) {
+  String finalVal;
+  fieldval!.isEmpty ? finalVal = currentval : finalVal = fieldval;
+  return finalVal;
+}
+
 class settings extends StatefulWidget {
   const settings({super.key});
 
@@ -82,108 +90,107 @@ class _SettingsState extends State<settings> {
   @override
   Widget build(BuildContext context) {
 // TODO: implement build
+//SingleChildScrollView(
     return SafeArea(
         child: Scaffold(
-            resizeToAvoidBottomInset: false,
-            body: SafeArea(
-              child: Container(
-                  color: Color.fromARGB(255, 255, 243, 238),
+      resizeToAvoidBottomInset: false,
+      body: SingleChildScrollView(
+          child: SafeArea(
+        child: Container(
+            color: Color.fromARGB(255, 255, 243, 238),
+            child: Column(
+              children: [
+                SizedBox(
+                  width: double.maxFinite,
                   child: Column(
                     children: [
                       SizedBox(
+                        height: 250.v,
                         width: double.maxFinite,
-                        child: Column(
+                        child: Stack(
+                          alignment: Alignment.bottomLeft,
                           children: [
-                            SizedBox(
+                            // orange background
+                            Container(
                               height: 250.v,
                               width: double.maxFinite,
-                              child: Stack(
-                                alignment: Alignment.bottomLeft,
-                                children: [
-                                  // orange background
-                                  Container(
-                                    height: 250.v,
-                                    width: double.maxFinite,
-                                    margin: EdgeInsets.zero,
-                                    padding: EdgeInsets.zero,
-                                    child: SvgPicture.asset(
-                                      assetName,
-                                      fit: BoxFit.fill,
-                                    ),
+                              margin: EdgeInsets.zero,
+                              padding: EdgeInsets.zero,
+                              child: SvgPicture.asset(
+                                assetName,
+                                fit: BoxFit.fill,
+                              ),
+                            ),
+
+                            // app bar on top of background
+                            CustomAppBar(),
+                            //testCustomBar(),
+
+                            // 'Account Settings #'
+                            const Positioned(
+                              child: Center(
+                                child: Text(
+                                  'Account Settings',
+                                  style: TextStyle(
+                                    fontSize: 28,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w900,
                                   ),
+                                ),
+                              ),
+                            ),
 
-                                  // app bar on top of background
-                                  CustomAppBar(),
-                                  // testCustomBar(),
-
-                                  // 'Account Settings #'
-                                  const Positioned(
-                                    child: Center(
-                                      child: Text(
-                                        'Account Settings',
-                                        style: TextStyle(
-                                          fontSize: 28,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w900,
+                            Positioned(
+                              bottom: 0,
+                              left: 30,
+                              child: Stack(
+                                children: [
+                                  Container(
+                                    child: Align(
+                                      alignment: Alignment
+                                          .centerLeft, // Align the image to the left
+                                      child: Padding(
+                                        padding:
+                                            EdgeInsets.only(left: 0, top: 0),
+                                        child: Container(
+                                          width: 100,
+                                          height: 100,
+                                          decoration: BoxDecoration(
+                                            shape: BoxShape.circle,
+                                            border: Border.all(
+                                              color: Color.fromARGB(
+                                                  255,
+                                                  255,
+                                                  243,
+                                                  238), // Color of the border
+                                              width: 2.0, // Width of the border
+                                            ),
+                                          ),
+                                          child: ClipOval(
+                                            child: Image.asset(
+                                              profile, // Replace with the path to your image in the assets directory
+                                              fit: BoxFit.cover,
+                                            ),
+                                          ),
                                         ),
                                       ),
                                     ),
                                   ),
 
+                                  //doesnt work because it goes beyond the profile dimensions
                                   Positioned(
-                                    bottom: 0,
-                                    left: 30,
-                                    child: Stack(
-                                      children: [
-                                        Container(
-                                          child: Align(
-                                            alignment: Alignment
-                                                .centerLeft, // Align the image to the left
-                                            child: Padding(
-                                              padding: EdgeInsets.only(
-                                                  left: 0, top: 0),
-                                              child: Container(
-                                                width: 100,
-                                                height: 100,
-                                                decoration: BoxDecoration(
-                                                  shape: BoxShape.circle,
-                                                  border: Border.all(
-                                                    color: Color.fromARGB(
-                                                        255,
-                                                        255,
-                                                        243,
-                                                        238), // Color of the border
-                                                    width:
-                                                        2.0, // Width of the border
-                                                  ),
-                                                ),
-                                                child: ClipOval(
-                                                  child: Image.asset(
-                                                    profile, // Replace with the path to your image in the assets directory
-                                                    fit: BoxFit.cover,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ),
-                                        ),
 
-                                        //doesnt work because it goes beyond the profile dimensions
-                                        Positioned(
-                                          bottom: 25,
-                                          left: 100,
-                                          child: Container(
-                                            child: Padding(
-                                                padding: EdgeInsets.only(
-                                                    top: 0, left: 0),
-                                                child: SvgPicture.asset(
-                                                  'assets/editIcon.svg',
-                                                  width: 24,
-                                                  height: 24,
-                                                )),
-                                          ),
-                                        ),
-                                      ],
+                                    bottom: 25,
+                                    left: 100,
+                                    child: Container(
+                                      child: Padding(
+                                          padding:
+                                              EdgeInsets.only(top: 0, left: 0),
+                                          child: SvgPicture.asset(
+                                            'assets/editIcon.svg',
+                                            width: 24,
+                                            height: 24,
+                                          )),
                                     ),
                                   ),
                                 ],
@@ -192,180 +199,191 @@ class _SettingsState extends State<settings> {
                           ],
                         ),
                       ),
-
-                      //Reset password
-                      const SizedBox(height: 10),
-                      Align(
-                        alignment: Alignment.topLeft,
-                        child: Padding(
-                            padding: EdgeInsets.only(left: 30.0),
-                            child: RichText(
-                                text: TextSpan(
-                              text: 'Reset password',
-                              style: const TextStyle(
-                                color: Color(0xFF3C64B1),
-                                fontWeight: FontWeight.w700,
-                              ),
-                              recognizer: TapGestureRecognizer()
-                                ..onTap = () {
-                                  // Navigate to the sign-in page
-                                  Navigator.of(context).push(MaterialPageRoute(
-                                    builder: (context) => resetPassword(),
-                                  ));
-                                },
-                            ))),
-                      ),
-
-                      const SizedBox(height: 42),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 30.0),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'First Name',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontFamily: 'Mulish',
-                              fontWeight: FontWeight.w700,
-                              height: 0.04,
-                              letterSpacing: 0.30,
-                            ),
-                          ),
-                        ),
-                      ),
-
-                      const SizedBox(height: 20),
-                      MyTextField(
-                          controller: firstNameSettings,
-                          hintText: SharedPrefs().getFirstName() ?? "",
-                          obscureText: false),
-
-                      //last name
-                      const SizedBox(height: 42),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 30.0),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Last Name',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontFamily: 'Mulish',
-                              fontWeight: FontWeight.w700,
-                              height: 0.04,
-                              letterSpacing: 0.30,
-                            ),
-                          ),
-                        ),
-                      ),
-
-                      const SizedBox(height: 20),
-                      MyTextField(
-                          controller: lastNameSettings,
-                          hintText: SharedPrefs().getLastName() ?? "",
-                          obscureText: false),
-
-                      //username
-                      const SizedBox(height: 42),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 30.0),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Username',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontFamily: 'Mulish',
-                              fontWeight: FontWeight.w700,
-                              height: 0.04,
-                              letterSpacing: 0.30,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      MyTextField(
-                          controller: usernameSettings,
-                          hintText: SharedPrefs().getUserName() ?? "",
-                          obscureText: false),
-
-                      //bio
-                      const SizedBox(height: 42),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 30.0),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Bio',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontFamily: 'Mulish',
-                              fontWeight: FontWeight.w700,
-                              height: 0.04,
-                              letterSpacing: 0.30,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      MyTextField(
-                          controller: bioSettings,
-                          hintText: SharedPrefs().getBio() ?? "",
-                          obscureText: false),
-
-                      //email
-                      //bio
-                      const SizedBox(height: 42),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 30.0),
-                        child: Align(
-                          alignment: Alignment.centerLeft,
-                          child: Text(
-                            'Email',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 20,
-                              fontFamily: 'Mulish',
-                              fontWeight: FontWeight.w700,
-                              height: 0.04,
-                              letterSpacing: 0.30,
-                            ),
-                          ),
-                        ),
-                      ),
-                      const SizedBox(height: 20),
-                      MyTextField(
-                          controller: emailSettings,
-                          hintText: SharedPrefs().getEmail() ?? "",
-                          obscureText: false),
-
-                      Padding(
-                          padding: const EdgeInsets.only(left: 30.0),
-                          child: Column(
-                            children: [
-                              const SizedBox(height: 30),
-                              MyButtonNoImage(
-                                  buttonText: "Submit Changes",
-                                  onTap: () {
-                                    edits(
-                                      context,
-                                      firstNameSettings.text,
-                                      lastNameSettings.text,
-                                      SharedPrefs().getUserName() ?? "",
-                                      usernameSettings.text,
-                                      emailSettings.text,
-                                      bioSettings.text,
-                                      profile,
-                                    );
-                                  })
-                            ],
-                          ))
                     ],
-                  )),
-            )));
+                  ),
+                ),
+
+                //Reset password
+                const SizedBox(height: 10),
+                Align(
+                  alignment: Alignment.topLeft,
+                  child: Padding(
+                      padding: EdgeInsets.only(left: 30.0),
+                      child: RichText(
+                          text: TextSpan(
+                        text: 'Reset password',
+                        style: const TextStyle(
+                          color: Color(0xFF3C64B1),
+                          fontWeight: FontWeight.w700,
+                        ),
+                        recognizer: TapGestureRecognizer()
+                          ..onTap = () {
+                            // Navigate to the sign-in page
+                            Navigator.of(context).push(MaterialPageRoute(
+                              builder: (context) => ResetPassword(),
+                            ));
+                          },
+                      ))),
+                ),
+
+                const SizedBox(height: 42),
+                const Padding(
+                  padding: EdgeInsets.only(left: 30.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'First Name',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontFamily: 'Mulish',
+                        fontWeight: FontWeight.w700,
+                        height: 0.04,
+                        letterSpacing: 0.30,
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 20),
+                MyTextField(
+                    controller: firstNameSettings,
+                    hintText: SharedPrefs().getFirstName() ?? "",
+                    obscureText: false),
+
+                //last name
+                const SizedBox(height: 42),
+                Padding(
+                  padding: const EdgeInsets.only(left: 30.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Last Name',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontFamily: 'Mulish',
+                        fontWeight: FontWeight.w700,
+                        height: 0.04,
+                        letterSpacing: 0.30,
+                      ),
+                    ),
+                  ),
+                ),
+
+                const SizedBox(height: 20),
+                MyTextField(
+                    controller: lastNameSettings,
+                    hintText: SharedPrefs().getLastName() ?? "",
+                    obscureText: false),
+
+                //username
+                const SizedBox(height: 42),
+                Padding(
+                  padding: const EdgeInsets.only(left: 30.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Username',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontFamily: 'Mulish',
+                        fontWeight: FontWeight.w700,
+                        height: 0.04,
+                        letterSpacing: 0.30,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                MyTextField(
+                    controller: usernameSettings,
+                    hintText: SharedPrefs().getUserName() ?? "",
+                    obscureText: false),
+
+                //bio
+                const SizedBox(height: 42),
+                Padding(
+                  padding: const EdgeInsets.only(left: 30.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Bio',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontFamily: 'Mulish',
+                        fontWeight: FontWeight.w700,
+                        height: 0.04,
+                        letterSpacing: 0.30,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                MyTextField(
+                    controller: bioSettings,
+                    hintText: SharedPrefs().getBio() ?? "",
+                    obscureText: false),
+
+                //email
+                //bio
+                const SizedBox(height: 42),
+                Padding(
+                  padding: const EdgeInsets.only(left: 30.0),
+                  child: Align(
+                    alignment: Alignment.centerLeft,
+                    child: Text(
+                      'Email',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 20,
+                        fontFamily: 'Mulish',
+                        fontWeight: FontWeight.w700,
+                        height: 0.04,
+                        letterSpacing: 0.30,
+                      ),
+                    ),
+                  ),
+                ),
+                const SizedBox(height: 20),
+                MyTextField(
+                    controller: emailSettings,
+                    hintText: SharedPrefs().getEmail() ?? "",
+                    obscureText: false),
+
+                Padding(
+                    padding: const EdgeInsets.only(left: 30.0),
+                    child: Column(
+                      children: [
+                        const SizedBox(height: 30),
+                        MyButtonNoImage(
+                            buttonText: "Submit Changes",
+                            onTap: () {
+                              edits(
+                                context,
+                                getVal(firstNameSettings.text,
+                                    SharedPrefs().getFirstName() ?? ""),
+                                getVal(lastNameSettings.text,
+                                    SharedPrefs().getLastName() ?? ""),
+                                SharedPrefs().getUserName() ?? "",
+                                getVal(usernameSettings.text,
+                                    SharedPrefs().getUserName() ?? ""),
+                                getVal(emailSettings.text,
+                                    SharedPrefs().getEmail() ?? ""),
+                                getVal(bioSettings.text,
+                                    SharedPrefs().getBio() ?? ""),
+                                profile,
+                              );
+                            })
+                      ],
+                    ))
+              ],
+            )),
+      )),
+    ));
+
+    // );
   }
 }
