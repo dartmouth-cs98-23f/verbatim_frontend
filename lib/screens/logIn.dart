@@ -44,7 +44,7 @@ class _LogInState extends State<LogIn> {
           'Content-Type': 'application/json',
         },
         body: jsonEncode({
-          'emailOrUsername': usernameOrEmail,
+          'emailOrUsername': usernameOrEmail.toLowerCase(),
           'password': password,
         }),
       );
