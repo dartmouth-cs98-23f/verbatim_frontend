@@ -1,7 +1,6 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:verbatim_frontend/screens/globalChallenge.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
@@ -221,7 +220,7 @@ class _SettingsState extends State<settings> {
                           ..onTap = () {
                             // Navigate to the sign-in page
                             Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => resetPassword(),
+                              builder: (context) => ResetPassword(),
                             ));
                           },
                       ))),
