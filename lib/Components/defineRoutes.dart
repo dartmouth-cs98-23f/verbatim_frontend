@@ -2,6 +2,7 @@ import 'package:fluro/fluro.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'package:verbatim_frontend/screens/forgotPassword.dart';
+import 'package:verbatim_frontend/screens/logout.dart';
 
 import '../screens/globalChallenge.dart';
 import '../screens/logIn.dart';
@@ -77,6 +78,11 @@ void defineRoutes() {
     '/signup_error_message',
     handler: signupErrorMessageHandler,
   );
+
+  Application.router.define(
+    '/logout',
+    handler: logoutHandler,
+  );
 }
 
 var onBoardingPage1Handler = Handler(
@@ -89,9 +95,15 @@ var onBoardingPage1Handler = Handler(
   },
 );
 
-var settingsHandler = Handler(handlerFunc:((context, parameters) {
-  return settings();
-}));
+var settingsHandler = Handler(
+    handlerFunc:(context, parameters) {
+      if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
+        return LogIn();
+      } else {
+        return settings();
+      }
+    }
+);
 
 var onBoardingPage2Handler = Handler(
   handlerFunc: (context, parameters) {
@@ -140,7 +152,6 @@ var globalChallengeHandler = Handler(
     if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
       return LogIn();
     } else {
-      print('\nEmail here in define routes: ${SharedPrefs().getEmail()}');
       return globalChallenge();
     }
   },
@@ -168,6 +179,16 @@ var signupErrorMessageHandler = Handler(
       return LogIn();
     } else {
       return SignupErrorMessage(pageName: 'log in');
+    }
+  },
+);
+
+var logoutHandler = Handler(
+  handlerFunc: (context, parameters) {
+    if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
+      return LogIn();
+    } else {
+    return LogoutPage();
     }
   },
 );
