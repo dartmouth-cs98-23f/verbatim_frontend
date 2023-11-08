@@ -235,7 +235,8 @@ class Stats extends StatelessWidget {
                                                     child: ListTile(
                                                   title: Center(
                                                     child: Row(children: [
-                                                      Icon(Icons.person),
+                                                      Icon(
+                                                          Icons.account_circle),
                                                       RichText(
                                                         text: TextSpan(
                                                           style: DefaultTextStyle
@@ -271,7 +272,8 @@ class Stats extends StatelessWidget {
                                                     child: ListTile(
                                                       title: Center(
                                                         child: Row(children: [
-                                                          Icon(Icons.person),
+                                                          Icon(Icons
+                                                              .account_circle),
                                                           RichText(
                                                             text: TextSpan(
                                                               style: DefaultTextStyle
@@ -426,7 +428,8 @@ class Stats extends StatelessWidget {
                                                       child: ListTile(
                                                     title: Center(
                                                       child: Row(children: [
-                                                        Icon(Icons.person),
+                                                        Icon(Icons
+                                                            .account_circle),
                                                         RichText(
                                                           text: TextSpan(
                                                             style: DefaultTextStyle
@@ -464,7 +467,8 @@ class Stats extends StatelessWidget {
                                                       child: ListTile(
                                                         title: Center(
                                                           child: Row(children: [
-                                                            Icon(Icons.person),
+                                                            Icon(Icons
+                                                                .account_circle),
                                                             RichText(
                                                               text: TextSpan(
                                                                 style: DefaultTextStyle.of(
@@ -618,7 +622,8 @@ class Stats extends StatelessWidget {
                                                   child: ListTile(
                                                     title: Center(
                                                       child: Row(children: [
-                                                        Icon(Icons.person),
+                                                        Icon(Icons
+                                                            .account_circle),
                                                         RichText(
                                                           text: TextSpan(
                                                             style: DefaultTextStyle
@@ -657,7 +662,8 @@ class Stats extends StatelessWidget {
                                                     child: ListTile(
                                                       title: Center(
                                                         child: Row(children: [
-                                                          Icon(Icons.person),
+                                                          Icon(Icons
+                                                              .account_circle),
                                                           RichText(
                                                             text: TextSpan(
                                                               style: DefaultTextStyle

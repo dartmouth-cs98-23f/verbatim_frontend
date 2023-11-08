@@ -335,7 +335,6 @@ class _AddFriendState extends State<addFriend> {
                                         child: TextField(
                                           controller: _searchController,
                                           decoration: InputDecoration(
-                                            hintText: "Search User",
                                             hintStyle: const TextStyle(
                                                 fontSize: 14.0,
                                                 color: Color.fromARGB(
