@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+
 import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:verbatim_frontend/screens/globalChallenge.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
@@ -179,6 +180,7 @@ class _SettingsState extends State<settings> {
 
                                   //doesnt work because it goes beyond the profile dimensions
                                   Positioned(
+
                                     bottom: 25,
                                     left: 100,
                                     child: Container(
