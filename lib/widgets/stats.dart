@@ -193,7 +193,7 @@ class Stats extends StatelessWidget {
                               )),
                           SizedBox(height: 10),
                           Container(
-                            width: 250,
+                            width: 300,
                             height: 250,
                             child: friends.isEmpty
                                 ? Padding(
@@ -209,97 +209,106 @@ class Stats extends StatelessWidget {
                                     ))
                                 : Center(
                                     child: ListView.builder(
-                                    physics: NeverScrollableScrollPhysics(),
-                                    itemCount: friends.length,
-                                    itemBuilder: (context, index) {
-                                      final friend = friends[index];
-                                      final friendName = friend.name;
-                                      final friendAnswer1 = friend.answer1;
+                                      physics: NeverScrollableScrollPhysics(),
+                                      itemCount: friends.length,
+                                      itemBuilder: (context, index) {
+                                        final friend = friends[index];
+                                        final friendName = friend.name;
+                                        final friendAnswer1 = friend.answer1;
 
-                                      if (index.isEven) {
-                                        final nextIndex = index + 1;
-                                        final nextFriendName =
-                                            friends[nextIndex].name;
-                                        final nextAnswer =
-                                            friends[index + 1].answer1;
+                                        if (index.isEven) {
+                                          final nextIndex = index + 1;
+                                          final hasNextFriend =
+                                              nextIndex < friends.length;
 
-                                        return Center(
-                                          child: Row(
-                                            children: [
-                                              Expanded(
-                                                child: ListTile(
-                                                  title: Center(
-                                                    child: RichText(
-                                                      text: TextSpan(
-                                                        style:
-                                                            DefaultTextStyle.of(
-                                                                    context)
-                                                                .style,
-                                                        children: <TextSpan>[
-                                                          TextSpan(
-                                                            text:
-                                                                '$friendName: ',
-                                                            style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
+                                          final nextFriendName = hasNextFriend
+                                              ? friends[nextIndex].name
+                                              : '';
+                                          final nextAnswer = hasNextFriend
+                                              ? friends[nextIndex].answer1
+                                              : '';
+
+                                          return Center(
+                                            child: Row(
+                                              children: [
+                                                Expanded(
+                                                  child: ListTile(
+                                                    title: Center(
+                                                      child: RichText(
+                                                        text: TextSpan(
+                                                          style: DefaultTextStyle
+                                                                  .of(context)
+                                                              .style,
+                                                          children: <TextSpan>[
+                                                            TextSpan(
+                                                              text:
+                                                                  '$friendName: ',
+                                                              style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
                                                             ),
-                                                          ),
-                                                          TextSpan(
-                                                            text: friendAnswer1,
-                                                            style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .normal,
+                                                            TextSpan(
+                                                              text:
+                                                                  friendAnswer1,
+                                                              style: TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .normal,
+                                                              ),
                                                             ),
-                                                          ),
-                                                        ],
+                                                          ],
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
                                                 ),
-                                              ),
-                                              Expanded(
-                                                child: ListTile(
-                                                  title: Center(
-                                                    child: RichText(
-                                                      text: TextSpan(
-                                                        style:
-                                                            DefaultTextStyle.of(
-                                                                    context)
+                                                if (hasNextFriend)
+                                                  Expanded(
+                                                    child: ListTile(
+                                                      title: Center(
+                                                        child: RichText(
+                                                          text: TextSpan(
+                                                            style: DefaultTextStyle
+                                                                    .of(context)
                                                                 .style,
-                                                        children: <TextSpan>[
-                                                          TextSpan(
-                                                            text:
-                                                                '$nextFriendName: ',
-                                                            style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            ),
+                                                            children: <TextSpan>[
+                                                              TextSpan(
+                                                                text:
+                                                                    '$nextFriendName: ',
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                ),
+                                                              ),
+                                                              TextSpan(
+                                                                text:
+                                                                    nextAnswer,
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .normal,
+                                                                ),
+                                                              ),
+                                                            ],
                                                           ),
-                                                          TextSpan(
-                                                            text: nextAnswer,
-                                                            style: TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .normal,
-                                                            ),
-                                                          ),
-                                                        ],
+                                                        ),
                                                       ),
                                                     ),
                                                   ),
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        );
-                                      } else {
-                                        return SizedBox(); // return an empty widget for odd index to maintain even-odd pairs
-                                      }
-                                    },
-                                  )),
+                                              ],
+                                            ),
+                                          );
+                                        } else {
+                                          return SizedBox();
+                                        }
+                                      },
+                                    ),
+                                  ),
                           ),
                         ]),
                       ));
@@ -370,114 +379,124 @@ class Stats extends StatelessWidget {
                               )),
                           SizedBox(height: 10),
                           Container(
-                            width: 250,
-                            height: 250,
-                            child: friends.isEmpty
-                                ? Padding(
-                                    padding: EdgeInsets.only(top: 20.0),
-                                    child: Text(
-                                      "Add friends to see their answers!",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 25,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.orange,
+                              width: 300,
+                              height: 250,
+                              child: friends.isEmpty
+                                  ? Padding(
+                                      padding: EdgeInsets.only(top: 20.0),
+                                      child: Text(
+                                        "Add friends to see their answers!",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.orange,
+                                        ),
+                                      ))
+                                  : Center(
+                                      child: ListView.builder(
+                                        physics: NeverScrollableScrollPhysics(),
+                                        itemCount: friends.length,
+                                        itemBuilder: (context, index) {
+                                          final friend = friends[index];
+                                          final friendName = friend.name;
+                                          final friendAnswer1 = friend.answer1;
+
+                                          if (index.isEven) {
+                                            final nextIndex = index + 1;
+                                            final hasNextFriend =
+                                                nextIndex < friends.length;
+
+                                            final nextFriendName = hasNextFriend
+                                                ? friends[nextIndex].name
+                                                : '';
+                                            final nextAnswer = hasNextFriend
+                                                ? friends[nextIndex].answer1
+                                                : '';
+
+                                            return Center(
+                                              child: Row(
+                                                children: [
+                                                  Expanded(
+                                                    child: ListTile(
+                                                      title: Center(
+                                                        child: RichText(
+                                                          text: TextSpan(
+                                                            style: DefaultTextStyle
+                                                                    .of(context)
+                                                                .style,
+                                                            children: <TextSpan>[
+                                                              TextSpan(
+                                                                text:
+                                                                    '$friendName: ',
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                ),
+                                                              ),
+                                                              TextSpan(
+                                                                text:
+                                                                    friendAnswer1,
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .normal,
+                                                                ),
+                                                              ),
+                                                            ],
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                  ),
+                                                  if (hasNextFriend)
+                                                    Expanded(
+                                                      child: ListTile(
+                                                        title: Center(
+                                                          child: RichText(
+                                                            text: TextSpan(
+                                                              style: DefaultTextStyle
+                                                                      .of(context)
+                                                                  .style,
+                                                              children: <TextSpan>[
+                                                                TextSpan(
+                                                                  text:
+                                                                      '$nextFriendName: ',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                  ),
+                                                                ),
+                                                                TextSpan(
+                                                                  text:
+                                                                      nextAnswer,
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .normal,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                ],
+                                              ),
+                                            );
+                                          } else {
+                                            return SizedBox();
+                                          }
+                                        },
                                       ),
-                                    ))
-                                : Center(
-                                    child: ListView.builder(
-                                      physics: NeverScrollableScrollPhysics(),
-                                      itemCount: friends.length,
-                                      itemBuilder: (context, index) {
-                                        final friend = friends[index];
-                                        final friendName = friend.name;
-                                        final friendAnswer1 = friend.answer1;
-
-                                        if (index.isEven) {
-                                          final nextIndex = index + 1;
-                                          final nextFriendName =
-                                              friends[nextIndex].name;
-                                          final nextAnswer =
-                                              friends[index + 1].answer1;
-
-                                          return Center(
-                                            child: Row(
-                                              children: [
-                                                Expanded(
-                                                  child: ListTile(
-                                                    title: Center(
-                                                      child: RichText(
-                                                        text: TextSpan(
-                                                          style: DefaultTextStyle
-                                                                  .of(context)
-                                                              .style,
-                                                          children: <TextSpan>[
-                                                            TextSpan(
-                                                              text:
-                                                                  '$friendName: ',
-                                                              style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                              ),
-                                                            ),
-                                                            TextSpan(
-                                                              text:
-                                                                  friendAnswer1,
-                                                              style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .normal,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                                Expanded(
-                                                  child: ListTile(
-                                                    title: Center(
-                                                      child: RichText(
-                                                        text: TextSpan(
-                                                          style: DefaultTextStyle
-                                                                  .of(context)
-                                                              .style,
-                                                          children: <TextSpan>[
-                                                            TextSpan(
-                                                              text:
-                                                                  '$nextFriendName: ',
-                                                              style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                              ),
-                                                            ),
-                                                            TextSpan(
-                                                              text: nextAnswer,
-                                                              style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .normal,
-                                                              ),
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    ),
-                                                  ),
-                                                ),
-                                              ],
-                                            ),
-                                          );
-                                        } else {
-                                          return SizedBox(); // return an empty widget for odd index to maintain even-odd pairs
-                                        }
-                                      },
-                                    ),
-                                  ),
-                          ),
+                                    )),
                         ]),
                       ));
                     } else if (index == 2) {
@@ -547,7 +566,7 @@ class Stats extends StatelessWidget {
                               )),
                           SizedBox(height: 10),
                           Container(
-                            width: 250,
+                            width: 300,
                             height: 250,
                             child: friends.isEmpty
                                 ? Padding(
@@ -568,14 +587,19 @@ class Stats extends StatelessWidget {
                                       itemBuilder: (context, index) {
                                         final friend = friends[index];
                                         final friendName = friend.name;
-                                        final friendAnswer3 = friend.answer3;
+                                        final friendAnswer1 = friend.answer1;
 
                                         if (index.isEven) {
                                           final nextIndex = index + 1;
-                                          final nextFriendName =
-                                              friends[nextIndex].name;
-                                          final nextAnswer =
-                                              friends[index + 1].answer3;
+                                          final hasNextFriend =
+                                              nextIndex < friends.length;
+
+                                          final nextFriendName = hasNextFriend
+                                              ? friends[nextIndex].name
+                                              : '';
+                                          final nextAnswer = hasNextFriend
+                                              ? friends[nextIndex].answer1
+                                              : '';
 
                                           return Center(
                                             child: Row(
@@ -600,7 +624,7 @@ class Stats extends StatelessWidget {
                                                             ),
                                                             TextSpan(
                                                               text:
-                                                                  friendAnswer3,
+                                                                  friendAnswer1,
                                                               style: TextStyle(
                                                                 fontWeight:
                                                                     FontWeight
@@ -613,43 +637,47 @@ class Stats extends StatelessWidget {
                                                     ),
                                                   ),
                                                 ),
-                                                Expanded(
-                                                  child: ListTile(
-                                                    title: Center(
-                                                      child: RichText(
-                                                        text: TextSpan(
-                                                          style: DefaultTextStyle
-                                                                  .of(context)
-                                                              .style,
-                                                          children: <TextSpan>[
-                                                            TextSpan(
-                                                              text:
-                                                                  '$nextFriendName: ',
-                                                              style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
+                                                if (hasNextFriend)
+                                                  Expanded(
+                                                    child: ListTile(
+                                                      title: Center(
+                                                        child: RichText(
+                                                          text: TextSpan(
+                                                            style: DefaultTextStyle
+                                                                    .of(context)
+                                                                .style,
+                                                            children: <TextSpan>[
+                                                              TextSpan(
+                                                                text:
+                                                                    '$nextFriendName: ',
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                ),
                                                               ),
-                                                            ),
-                                                            TextSpan(
-                                                              text: nextAnswer,
-                                                              style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .normal,
+                                                              TextSpan(
+                                                                text:
+                                                                    nextAnswer,
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .normal,
+                                                                ),
                                                               ),
-                                                            ),
-                                                          ],
+                                                            ],
+                                                          ),
                                                         ),
                                                       ),
                                                     ),
                                                   ),
-                                                ),
                                               ],
                                             ),
                                           );
                                         } else {
-                                          return SizedBox(); // return an empty widget for odd index to maintain even-odd pairs
+                                          return SizedBox();
                                         }
                                       },
                                     ),
