@@ -3,7 +3,6 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
-
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'sideBar.dart';
 import 'package:http/http.dart' as http;
@@ -161,28 +160,29 @@ class _ResetPasswordState extends State<resetPassword> {
                                   height: 0.04,
                                   letterSpacing: 0.30,
                                 ),
-                              ),
-                            ),
-                          ),
-                          const SizedBox(height: 20),
-                          MyTextField(
-                              controller: oldPassword,
-                              hintText: 'confirm password',
-                              obscureText: true),
 
-                          Padding(
-                              padding: const EdgeInsets.only(left: 30.0),
-                              child: Column(
-                                children: [
-                                  const SizedBox(height: 30),
-                                  MyButtonNoImage(
-                                      buttonText: "Submit",
-                                      onTap: () {
-                                        reset(context, oldPassword.text,
-                                            newPassword.text);
-                                      })
-                                ],
-                              ))
+                                const SizedBox(height: 20),
+                                MyTextField(
+                                    controller: confirmPassword,
+                                    hintText: 'confirm password',
+                                    obscureText: true),
+
+                                Padding(
+                                    padding: const EdgeInsets.only(left: 30.0),
+                                    child: Column(
+                                      children: [
+                                        const SizedBox(height: 30),
+                                        MyButtonNoImage(
+                                            buttonText: "Submit",
+                                            onTap: () {
+                                              reset(
+                                                context,
+                                                oldPassword.text,
+                                                newPassword.text
+                                              );
+                                        })
+                                      ],
+                                    ))
                         ],
                       ))
                 ],
@@ -193,3 +193,4 @@ class _ResetPasswordState extends State<resetPassword> {
   //validate that new password is not old password
   //passwords match and they meet minimum requirements
 }
+
