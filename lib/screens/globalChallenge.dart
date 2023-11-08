@@ -10,6 +10,7 @@ import 'package:verbatim_frontend/widgets/custom_tab.dart';
 import 'dart:async';
 import 'package:verbatim_frontend/widgets/stats.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
+import 'package:intl/intl.dart';
 
 class globalChallenge extends StatefulWidget {
   final String username = SharedPrefs().getUserName() ?? "";
@@ -42,6 +43,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
   int numVerbatimQ2 = 0;
   int numVerbatimQ3 = 0;
   int numExactVerbatim = 0;
+
   Map<String, dynamic> statsQ1 = {
     "firstMostPopular": "",
     "numResponsesFirst": 0,
@@ -49,6 +51,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
     "numResponsesSecond": 0,
     "thirdMostPopular": "",
     "numResponsesThird": 0,
+    "friendResponses": [],
   };
   Map<String, dynamic> statsQ2 = {
     "firstMostPopular": "",
@@ -57,6 +60,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
     "numResponsesSecond": 0,
     "thirdMostPopular": "",
     "numResponsesThird": 0,
+    "friendResponses": [],
   };
   Map<String, dynamic> statsQ3 = {
     "firstMostPopular": "",
@@ -65,6 +69,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
     "numResponsesSecond": 0,
     "thirdMostPopular": "",
     "numResponsesThird": 0,
+    "friendResponses": [],
   };
 
   bool response = false;
@@ -144,7 +149,10 @@ class _GlobalChallengeState extends State<globalChallenge> {
 
     if (response.statusCode == 200) {
       print('Responses sent successfully');
+
       final Map<String, dynamic> stats = json.decode(response.body);
+      print(stats);
+
       numVerbatimQ1 = stats['numVerbatimQ1'];
       numVerbatimQ2 = stats['numVerbatimQ2'];
       numVerbatimQ3 = stats['numVerbatimQ3'];
@@ -152,6 +160,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
       statsQ2 = stats['statsQ2'];
       statsQ3 = stats['statsQ3'];
       totalResponses = stats['totalResponses'];
+      print(statsQ1["friendResponses"]);
     } else {
       print('Failed to send responses. Status code: ${response.statusCode}');
 
@@ -167,6 +176,15 @@ class _GlobalChallengeState extends State<globalChallenge> {
 
   @override
   Widget build(BuildContext context) {
+    DateTime now = DateTime.now();
+    DateTime midnight =
+        DateTime(now.year, now.month, now.day + 1); // Set to next midnight
+
+    Duration timeUntilMidnight = midnight.difference(now);
+
+    String formattedTimeUntilMidnight =
+        DateFormat.Hms().format(DateTime(0).add(timeUntilMidnight));
+
     final String assetName = 'assets/img1.svg';
     List<String> tabLables = [
       categoryQ1,
@@ -656,7 +674,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                         width: 220,
                                         child: Center(
                                           child: Text(
-                                            'New Challenge in 13:04:16',
+                                            'New Challenge in $formattedTimeUntilMidnight',
                                             style: TextStyle(
                                               fontSize: 14,
                                               fontWeight: FontWeight.bold,

@@ -14,15 +14,7 @@ import 'package:verbatim_frontend/widgets/custom_tab.dart';
 import 'dart:async';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 
-
-
-
-void reset(
-  BuildContext context,
-  String newPassword,
-  String oldPassword
-
-) async {
+void reset(BuildContext context, String newPassword, String oldPassword) async {
   try {
     final response = await http.post(
       //need a rest password endpoint
@@ -62,7 +54,7 @@ class _ResetPasswordState extends State<resetPassword> {
   Widget build(BuildContext context) {
     final String assetName = 'assets/img1.svg';
     return SafeArea(
-      child: Scaffold(
+        child: Scaffold(
       resizeToAvoidBottomInset: false,
       backgroundColor: Color.fromARGB(255, 255, 243, 238),
       body: SingleChildScrollView(
@@ -90,9 +82,7 @@ class _ResetPasswordState extends State<resetPassword> {
                                     fit: BoxFit.fill,
                                   ),
                                 ),
-
                                 CustomAppBar(),
-
                                 const Positioned(
                                     child: Center(
                                   child: Text(
@@ -103,79 +93,74 @@ class _ResetPasswordState extends State<resetPassword> {
                                         fontWeight: FontWeight.w900),
                                   ),
                                 )),
-                                
-
-                   
                               ],
                             ),
                           ),
-                                       //field form boxes
-                                SizedBox(height: 30),
-                                const Padding(
-                                  padding: EdgeInsets.only(left: 30.0),
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      'Old password',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 20,
-                                        fontFamily: 'Mulish',
-                                        fontWeight: FontWeight.w700,
-                                        height: 0.04,
-                                        letterSpacing: 0.30,
-                                      ),
-                                    ),
-                                  ),
+                          //field form boxes
+                          SizedBox(height: 30),
+                          const Padding(
+                            padding: EdgeInsets.only(left: 30.0),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                'Old password',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20,
+                                  fontFamily: 'Mulish',
+                                  fontWeight: FontWeight.w700,
+                                  height: 0.04,
+                                  letterSpacing: 0.30,
                                 ),
-                                const SizedBox(height: 20),
-                                MyTextField(
-                                    controller: oldPassword,
-                                    hintText: 'current password',
-                                    obscureText: true),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          MyTextField(
+                              controller: oldPassword,
+                              hintText: 'current password',
+                              obscureText: true),
 
-                                const SizedBox(height: 30),
-                                const Padding(
-                                  padding: EdgeInsets.only(left: 30.0),
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      'New password',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 20,
-                                        fontFamily: 'Mulish',
-                                        fontWeight: FontWeight.w700,
-                                        height: 0.04,
-                                        letterSpacing: 0.30,
-                                      ),
-                                    ),
-                                  ),
+                          const SizedBox(height: 30),
+                          const Padding(
+                            padding: EdgeInsets.only(left: 30.0),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                'New password',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20,
+                                  fontFamily: 'Mulish',
+                                  fontWeight: FontWeight.w700,
+                                  height: 0.04,
+                                  letterSpacing: 0.30,
                                 ),
-                                const SizedBox(height: 20),
-                                MyTextField(
-                                    controller: newPassword,
-                                    hintText: 'new password',
-                                    obscureText: true),
+                              ),
+                            ),
+                          ),
+                          const SizedBox(height: 20),
+                          MyTextField(
+                              controller: newPassword,
+                              hintText: 'new password',
+                              obscureText: true),
 
-                                const SizedBox(height: 30),
-                                const Padding(
-                                  padding: EdgeInsets.only(left: 30.0),
-                                  child: Align(
-                                    alignment: Alignment.centerLeft,
-                                    child: Text(
-                                      'Confirm password',
-                                      style: TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 20,
-                                        fontFamily: 'Mulish',
-                                        fontWeight: FontWeight.w700,
-                                        height: 0.04,
-                                        letterSpacing: 0.30,
-                                      ),
-                                    ),
-                                  ),
+                          const SizedBox(height: 30),
+                          const Padding(
+                            padding: EdgeInsets.only(left: 30.0),
+                            child: Align(
+                              alignment: Alignment.centerLeft,
+                              child: Text(
+                                'Confirm password',
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 20,
+                                  fontFamily: 'Mulish',
+                                  fontWeight: FontWeight.w700,
+                                  height: 0.04,
+                                  letterSpacing: 0.30,
                                 ),
+
                                 const SizedBox(height: 20),
                                 MyTextField(
                                     controller: confirmPassword,
