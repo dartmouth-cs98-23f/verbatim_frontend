@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/screens/logIn.dart';
 import 'Components/defineRoutes.dart';
 import 'Components/shared_prefs.dart';
-import 'package:provider/provider.dart';
+
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
