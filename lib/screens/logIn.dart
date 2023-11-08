@@ -22,7 +22,7 @@ class LogIn extends StatefulWidget {
 
 class _LogInState extends State<LogIn> {
   Map<String, Text> validationErrors = {};
-  final emailController = TextEditingController();
+  final usernameEmailController = TextEditingController();
   final passwordController = TextEditingController();
   final GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: ['email'],
@@ -30,7 +30,7 @@ class _LogInState extends State<LogIn> {
         '297398575103-o3engamrir3bf4pupurvj8lm4mn0iuqt.apps.googleusercontent.com',
   );
 
-  void logIn(BuildContext context, String email, String password) async {
+  void logIn(BuildContext context, String usernameOrEmail, String password) async {
     try {
       final response = await http.post(
         Uri.parse('http://localhost:8080/api/v1/login'),
@@ -38,7 +38,7 @@ class _LogInState extends State<LogIn> {
           'Content-Type': 'application/json',
         },
         body: jsonEncode({
-          'emailOrUsername': email,
+          'emailOrUsername': usernameOrEmail,
           'password': password,
         }),
       );
@@ -194,8 +194,8 @@ class _LogInState extends State<LogIn> {
                     children: [
                       const SizedBox(height: 29),
                       MyTextField(
-                        controller: emailController,
-                        hintText: 'Email',
+                        controller: usernameEmailController,
+                        hintText: 'Email or Username',
                         obscureText: false,
                       ),
                       Container(
@@ -252,7 +252,7 @@ class _LogInState extends State<LogIn> {
                         onTap: () {
                           validateUserInfo(
                             context,
-                            emailController.text,
+                            usernameEmailController.text,
                             passwordController.text,
                           );
                         },
