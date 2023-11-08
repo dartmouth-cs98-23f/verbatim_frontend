@@ -133,7 +133,25 @@ class _GlobalChallengeState extends State<globalChallenge> {
       String username, String email, List<String> userResponses) async {
     final url = Uri.parse('http://localhost:8080/api/v1/submitGlobalResponse');
     final headers = <String, String>{'Content-Type': 'application/json'};
-    print(userResponses);
+
+    final modifiedResponses = userResponses.map((response) {
+      final responseWithoutPunctuation =
+          response.replaceAll(RegExp(r'[^\w\s]'), '');
+
+      final words = responseWithoutPunctuation.split(' ');
+
+      final capitalizedWords = words.map((word) {
+        if (word.isNotEmpty) {
+          return word[0].toUpperCase() + word.substring(1);
+        }
+        return word;
+      });
+
+      // Join the words back into a sentence
+      return capitalizedWords.join(' ');
+    }).toList();
+
+    print(modifiedResponses);
     print(username);
     print(email);
 
@@ -142,9 +160,9 @@ class _GlobalChallengeState extends State<globalChallenge> {
       headers: headers,
       body: json.encode({
         'username': username,
-        'responseQ1': userResponses[0],
-        'responseQ2': userResponses[1],
-        'responseQ3': userResponses[2]
+        'responseQ1': modifiedResponses[0],
+        'responseQ2': modifiedResponses[1],
+        'responseQ3': modifiedResponses[2]
       }),
     );
 
