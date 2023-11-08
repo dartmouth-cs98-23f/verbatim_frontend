@@ -33,7 +33,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
             Expanded(
               child: TextField(
                 decoration: InputDecoration(
-                  hintText: "Search User",
                   hintStyle: TextStyle(fontSize: 14.0),
                   border: InputBorder.none,
                   contentPadding: EdgeInsets.only(top: 0),
