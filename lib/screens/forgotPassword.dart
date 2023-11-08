@@ -159,7 +159,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     children: [
                       const SizedBox(height: 20),
                       Text(
-                        'To set a new password, please enter your email address below. You will receive an email with instructions on how to reset your password.',
+                        'To set a new password, please enter your email address below. You will receive an email with instructions on how to set a new password.',
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 16,
