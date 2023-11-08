@@ -7,7 +7,7 @@ import 'package:verbatim_frontend/widgets/friends_app_bar.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:provider/provider.dart';
+
 
 // User class for when backend passes in users
 class User {
