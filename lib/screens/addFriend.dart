@@ -8,7 +8,6 @@ import 'package:verbatim_frontend/widgets/size.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-
 // User class for when backend passes in users
 class User {
   int id = 0;
@@ -272,14 +271,6 @@ class _AddFriendState extends State<addFriend> {
   }
 
   Widget build(BuildContext context) {
-    /*
-    final requestedFriendsProvider =
-        Provider.of<RequestedFriendsProvider>(context);
-    final requestedFriends = requestedFriendsProvider.selectedFriends;
-    */
-
-    //requestedFriends.addAll(myRequestedUsers_backend);
-
     final String assetName = 'assets/img1.svg';
 
     return SafeArea(
