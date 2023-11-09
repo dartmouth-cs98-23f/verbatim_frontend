@@ -4,7 +4,6 @@ import 'package:verbatim_frontend/screens/logout.dart';
 import 'Components/defineRoutes.dart';
 import 'Components/shared_prefs.dart';
 
-
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
@@ -26,7 +25,6 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String username = SharedPrefs().getUserName() ?? "";
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
