@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 import 'package:verbatim_frontend/screens/logIn.dart';
 import 'package:verbatim_frontend/screens/logout.dart';
 import 'Components/defineRoutes.dart';
@@ -10,12 +11,15 @@ Future<void> main() async {
   WidgetsFlutterBinding
       .ensureInitialized(); // Ensure WidgetsBinding is initialized
   await SharedPrefs().init();
-  SharedPrefs().setEmail('');
-  SharedPrefs().setUserName('');
-  SharedPrefs().setPassword('');
-  SharedPrefs().setFirstName('');
-  SharedPrefs().setLastName('');
-  SharedPrefs().setBio('');
+  // SharedPrefs().setEmail('');
+  // SharedPrefs().setUserName('');
+  // SharedPrefs().setPassword('');
+  // SharedPrefs().setFirstName('');
+  // SharedPrefs().setLastName('');
+  // SharedPrefs().setBio('');
+
+  // new changes to solve the refresh issue
+
   runApp(const MyApp());
   defineRoutes();
 }
@@ -30,7 +34,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey, // Set the navigatorKey
       onGenerateRoute: Application.router.generator,
-      initialRoute: '/login',
+      initialRoute: SharedPrefs().getCurrentPage() ?? '/login',
       home: LogIn(),
     );
   }

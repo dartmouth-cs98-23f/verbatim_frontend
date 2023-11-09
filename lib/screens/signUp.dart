@@ -73,16 +73,18 @@ class _SignUpState extends State<SignUp> {
       );
 
       if (response.statusCode == 200) {
-        // Successful sign-up: Navigate to the global challenge page
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => OnBoardingPage1()),
-        );
+        // Save the user's info in the shared prefs
         SharedPrefs().setEmail(email);
         SharedPrefs().setFirstName(firstName);
         SharedPrefs().setLastName(lastName);
         SharedPrefs().setPassword(password);
         SharedPrefs().setUserName(username);
+
+        // Successful sign-up: Navigate to the global challenge page
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => OnBoardingPage1()),
+        );
 
         print('Sign-up successful');
       } else {

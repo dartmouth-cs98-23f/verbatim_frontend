@@ -24,6 +24,7 @@ class _LogoutPageState extends State<LogoutPage> {
     SharedPrefs().setFirstName('');
     SharedPrefs().setLastName('');
     SharedPrefs().setBio('');
+    SharedPrefs().setCurrentPage('/login');
 
     // Navigate to the login page after logout
     Navigator.push(
@@ -103,7 +104,7 @@ class _LogoutPageState extends State<LogoutPage> {
                         Navigator.pop(context);
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Color(0xFFFFF3EE), // Background color
+                        primary: Color(0xFFE76F51), // Background color
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(13.0), // Rectangular shape
                         ),
@@ -111,7 +112,7 @@ class _LogoutPageState extends State<LogoutPage> {
                       child: Text(
                         'Go Back',
                         style: TextStyle(
-                          color: Colors.black,
+                          color: Colors.white,
                         ),
                       ),
                     ),
@@ -123,7 +124,7 @@ class _LogoutPageState extends State<LogoutPage> {
                         logout(context);
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Color(0xFFE76F51), // Background color
+                        primary: Color(0xFFFFF3EE), // Background color
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(13.0), // Rectangular shape
                         ),
@@ -131,7 +132,7 @@ class _LogoutPageState extends State<LogoutPage> {
                       child: Text(
                         'Log Out',
                         style: TextStyle(
-                          color: Colors.white,
+                          color: Colors.black,
                         ),
                       ),
                     ),

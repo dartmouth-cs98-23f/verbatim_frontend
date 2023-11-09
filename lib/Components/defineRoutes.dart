@@ -90,6 +90,8 @@ var onBoardingPage1Handler = Handler(
     if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
       return LogIn();
     } else {
+      // Update the current page in the shared prefs
+      SharedPrefs().setCurrentPage('/onboarding_page1');
       return OnBoardingPage1();
     }
   },
@@ -100,6 +102,8 @@ var settingsHandler = Handler(
       if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
         return LogIn();
       } else {
+        // Update the current page in the shared prefs
+        SharedPrefs().setCurrentPage('/settings');
         return settings();
       }
     }
@@ -110,6 +114,8 @@ var onBoardingPage2Handler = Handler(
     if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
       return LogIn();
     } else {
+      // Update the current page in the shared prefs
+      SharedPrefs().setCurrentPage('/onboarding_page2');
       return OnBoardingPage2();
     }
   },
@@ -120,6 +126,8 @@ var onBoardingPage3Handler = Handler(
       if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
         return LogIn();
       } else {
+        // Update the current page in the shared prefs
+        SharedPrefs().setCurrentPage('/onboarding_page3');
         return OnBoardingPage3();
       }
     },
@@ -130,6 +138,8 @@ var onBoardingPage4Handler = Handler(
       if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
         return LogIn();
       } else {
+        // Update the current page in the shared prefs
+        SharedPrefs().setCurrentPage('/onboarding_page4');
         return OnBoardingPage4();
       }
     },
@@ -137,12 +147,16 @@ var onBoardingPage4Handler = Handler(
 
 var signUpHandler = Handler(
   handlerFunc: (context, parameters) {
+    // Update the current page in the shared prefs
+    SharedPrefs().setCurrentPage('/signup');
     return SignUp();
   },
 );
 
 var logInHandler = Handler(
   handlerFunc: (context, parameters) {
+    // Update the current page in the shared prefs
+    SharedPrefs().setCurrentPage('/login');
     return LogIn();
   },
 );
@@ -152,6 +166,8 @@ var globalChallengeHandler = Handler(
     if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
       return LogIn();
     } else {
+      // Update the current page in the shared prefs
+      SharedPrefs().setCurrentPage('/global_challenge');
       return globalChallenge();
     }
   },
@@ -162,6 +178,8 @@ var addFriendHandler = Handler(
     if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
       return LogIn();
     } else {
+      // Update the current page in the shared prefs
+      SharedPrefs().setCurrentPage('/add_friend');
       return addFriend();
     }
   },
@@ -169,6 +187,8 @@ var addFriendHandler = Handler(
 
 var forgotPasswordHandler = Handler(
   handlerFunc: (context, parameters) {
+    // Update the current page in the shared prefs
+    SharedPrefs().setCurrentPage('/forgot_password');
     return ForgotPassword();
   },
 );
@@ -178,6 +198,8 @@ var signupErrorMessageHandler = Handler(
     if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
       return LogIn();
     } else {
+      // Update the current page in the shared prefs
+      SharedPrefs().setCurrentPage('/signup_error_message');
       return SignupErrorMessage(pageName: 'log in');
     }
   },
@@ -188,7 +210,9 @@ var logoutHandler = Handler(
     if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
       return LogIn();
     } else {
-    return LogoutPage();
+      // Update the current page in the shared prefs
+      SharedPrefs().setCurrentPage('/logout');
+      return LogoutPage();
     }
   },
 );
