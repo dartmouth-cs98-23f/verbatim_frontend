@@ -43,6 +43,19 @@ class _SignUpState extends State<SignUp> {
       String username,
       String email,
       String password,
+      String confirmPassword) {
+
+    saveUsersInfo(context, firstName, lastName, username, email, password, confirmPassword);
+
+  }
+
+  // Function to save user's info to the database
+  void saveUsersInfo(BuildContext context,
+      String firstName,
+      String lastName,
+      String username,
+      String email,
+      String password,
       String confirmPassword) async {
     try {
       final response = await http.post(
@@ -60,16 +73,18 @@ class _SignUpState extends State<SignUp> {
       );
 
       if (response.statusCode == 200) {
-        // Successful sign-up: Navigate to the global challenge page
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => OnBoardingPage1()),
-        );
+        // Save the user's info in the shared prefs
         SharedPrefs().setEmail(email);
         SharedPrefs().setFirstName(firstName);
         SharedPrefs().setLastName(lastName);
         SharedPrefs().setPassword(password);
         SharedPrefs().setUserName(username);
+
+        // Successful sign-up: Navigate to the global challenge page
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => OnBoardingPage1()),
+        );
 
         print('Sign-up successful');
       } else {
@@ -92,46 +107,23 @@ class _SignUpState extends State<SignUp> {
     }
   }
 
+  // Function to sign up with Google
   Future<void> signUpWithGoogle() async {
-    try {
       final GoogleSignInAccount? account = await _googleSignIn.signIn();
 
       if (account != null) {
-        // User sign-in is successful
-        final response = await http.post(
-          Uri.parse('http://localhost:8080/api/v1/register'),
-          headers: <String, String>{
-            'Content-Type': 'application/json',
-          },
-          body: jsonEncode({
-            'firstName': '<unavailable>',
-            'lastName': '<unavailable>',
-            'username': '<unavailable>',
-            'email': account.email,
-            'password': '<unavailable>'
-          }),
-        );
-
-        if (response.statusCode == 200) {
-          // Navigate to the global challenge page
-          Navigator.push(
+        saveUsersInfo(
             context,
-            MaterialPageRoute(
-              builder: (context) => globalChallenge(),
-            ),
-          );
-        } else {
-          print(
-              'Error during sign-up with Google: ${response.statusCode.toString()}');
-        }
-      } else {
-        // User canceled the Google Sign-In process or encountered an error.
-        print('Google Sign-In canceled or failed');
+            '<unavailable>',
+            '<unavailable>',
+            '<unavailable>',
+            account.email,
+            'unavailable',
+            'unavailable');
       }
-    } catch (error) {
-      // Handle any errors that occur during the Google Sign-In process.
-      print('Error during Google Sign-In: $error');
-    }
+      else{
+        print('\nThe google account is not found.');
+      }
   }
 
   void validateUserInfo(
