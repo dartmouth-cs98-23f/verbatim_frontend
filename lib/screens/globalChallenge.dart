@@ -109,7 +109,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
       categoryQ3 = data['categoryQ3'];
       totalResponses = data['totalResponses'];
 
-      // if null, user has not yet submitted global response
+      // if null, user has not yet submitted global response - if not null we NEED this for page refresh to still work
 
       if (data["responseQ1"] != null) {
         numVerbatimQ1 = data['numVerbatimQ1'];
@@ -181,7 +181,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
         return word;
       });
 
-      // Join the words back into a sentence
+// join them back into list<string>
       return capitalizedWords.join(' ');
     }).toList();
 
@@ -239,8 +239,6 @@ class _GlobalChallengeState extends State<globalChallenge> {
       print(
           'this is verbatasticUsers from send user responses $verbatasticUsers');
 
-      //  await getVerbatimedWord();
-
       responded = true;
     } else {
       print('Failed to send responses. Status code: ${response.statusCode}');
@@ -255,22 +253,6 @@ class _GlobalChallengeState extends State<globalChallenge> {
     });
   }
 
-  Future<void> getVerbatimedWord() async {
-    final Iterable<String> verbatimedQuestion = verbatasticUsers.keys.toList();
-    final String questionNumber = verbatimedQuestion.first;
-
-    verbatasticUsernames = verbatasticUsers[questionNumber]!;
-
-    final String responseIndex =
-        questionNumber.isNotEmpty ? questionNumber[1] : "";
-    final int? index = int.tryParse(responseIndex);
-
-    if (index != null) {
-      verbatimedWord = modResponse[index - 1];
-      print('this is verbatimed word $verbatimedWord');
-    }
-  }
-
   @override
   Widget build(BuildContext context) {
     DateTime now = DateTime.now();
@@ -283,11 +265,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
         DateFormat.Hms().format(DateTime(0).add(timeUntilMidnight));
 
     final String assetName = 'assets/img1.svg';
-    List<String> tabLables = [
-      categoryQ1,
-      categoryQ2,
-      categoryQ3
-    ]; //eventually need backend to send this in
+    List<String> tabLables = [categoryQ1, categoryQ2, categoryQ3];
 
     bool showText = true;
     updateProgress();
@@ -454,8 +432,6 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                           ),
                                         ),
                                         SizedBox(height: 40.0),
-                                        //not sure why this focus isn't listening - smth to figure out for next term maybe?
-
                                         ElevatedButton(
                                           style: ElevatedButton.styleFrom(
                                             backgroundColor:
@@ -477,11 +453,8 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                               responseController.clear();
                                               if (currentQuestionIndex <= 1) {
                                                 updateProgress();
-                                                // If not the last question, go to the next question.
                                                 currentQuestionIndex += 1;
                                               } else {
-                                                // If the last question, set 'response' to true
-
                                                 sendUserResponses(
                                                   widget.username,
                                                   email,
@@ -583,13 +556,14 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                       builder: (context, snapshot) {
                                         if (snapshot.connectionState ==
                                             ConnectionState.waiting) {
-                                          // Loading indicator
+                                          // load indicator j to make it wait
                                           return CircularProgressIndicator();
                                         } else if (snapshot.hasError) {
-                                          // Handle the error
+                                          // aka cross ur fingers
                                           return Text(
                                               'Error: ${snapshot.error}');
                                         } else {
+                                          // display verbatastic data
                                           return Column(
                                             children: [
                                               Verbatastic(
@@ -605,21 +579,6 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                       },
                                     );
                                   }
-
-/*
-                                    return Column(children: [
-                                      Container(
-                                          width: 300.h,
-                                          height: 500.v,
-                                          child: Verbatastic(
-                                            verbatimedWord: verbatimedWord,
-                                            formattedTimeUntilMidnight:
-                                                formattedTimeUntilMidnight,
-                                            verbatasticUsernames:
-                                                verbatasticUsernames,
-                                          ))
-                                    ]);
-*/
                                 }),
                           ],
                         ),
