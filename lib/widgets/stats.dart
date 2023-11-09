@@ -392,7 +392,7 @@ class Stats extends StatelessWidget {
                                   ? Padding(
                                       padding: EdgeInsets.only(top: 20.0),
                                       child: Text(
-                                        "Add friends to see their answers!",
+                                        "None of your friends have played today. Add friends to see their answers!",
                                         textAlign: TextAlign.center,
                                         style: TextStyle(
                                           fontSize: 25,
@@ -586,7 +586,7 @@ class Stats extends StatelessWidget {
                                 ? Padding(
                                     padding: EdgeInsets.only(top: 20.0),
                                     child: Text(
-                                      "Add friends to see their answers!",
+                                      "None of your friends have played today. Add friends to see their answers!",
                                       textAlign: TextAlign.center,
                                       style: TextStyle(
                                         fontSize: 25,
