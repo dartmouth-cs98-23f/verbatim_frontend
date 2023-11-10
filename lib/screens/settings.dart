@@ -168,7 +168,7 @@ class _SettingsState extends State<settings> {
                                           ),
                                           child: ClipOval(
                                             child: Image.asset(
-                                              profile, // Replace with the path to your image in the assets directory
+                                              profile,
                                               fit: BoxFit.cover,
                                             ),
                                           ),
@@ -179,7 +179,6 @@ class _SettingsState extends State<settings> {
 
                                   //doesnt work because it goes beyond the profile dimensions
                                   Positioned(
-
                                     bottom: 25,
                                     left: 100,
                                     child: Container(
