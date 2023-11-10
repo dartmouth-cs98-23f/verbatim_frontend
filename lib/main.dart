@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/screens/logIn.dart';
 import 'Components/defineRoutes.dart';
 import 'Components/shared_prefs.dart';
+import 'package:flutter_web_plugins/url_strategy.dart';
 
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -16,6 +17,7 @@ Future<void> main() async {
   SharedPrefs().setFirstName('');
   SharedPrefs().setLastName('');
   SharedPrefs().setBio('');
+  usePathUrlStrategy();
   runApp(const MyApp());
   defineRoutes();
 }
@@ -26,8 +28,9 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     String username = SharedPrefs().getUserName() ?? "";
-
+   
     return MaterialApp(
+      
       debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey, // Set the navigatorKey
       onGenerateRoute: Application.router.generator,
