@@ -33,6 +33,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey, // Set the navigatorKey
       onGenerateRoute: Application.router.generator,
+
       initialRoute: SharedPrefs().getCurrentPage() ?? '/login',
       home: LogIn(),
     );

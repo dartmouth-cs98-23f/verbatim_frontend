@@ -407,7 +407,7 @@ class Stats extends StatelessWidget {
                                         itemBuilder: (context, index) {
                                           final friend = friends[index];
                                           final friendName = friend.name;
-                                          final friendAnswer1 = friend.answer1;
+                                          final friendAnswer2 = friend.answer2;
 
                                           if (index.isEven) {
                                             final nextIndex = index + 1;
@@ -418,7 +418,7 @@ class Stats extends StatelessWidget {
                                                 ? friends[nextIndex].name
                                                 : '';
                                             final nextAnswer = hasNextFriend
-                                                ? friends[nextIndex].answer1
+                                                ? friends[nextIndex].answer2
                                                 : '';
 
                                             return Center(
@@ -448,7 +448,7 @@ class Stats extends StatelessWidget {
                                                               ),
                                                               TextSpan(
                                                                 text:
-                                                                    friendAnswer1,
+                                                                    friendAnswer2,
                                                                 style:
                                                                     TextStyle(
                                                                   fontWeight:
@@ -601,7 +601,7 @@ class Stats extends StatelessWidget {
                                       itemBuilder: (context, index) {
                                         final friend = friends[index];
                                         final friendName = friend.name;
-                                        final friendAnswer1 = friend.answer1;
+                                        final friendAnswer3 = friend.answer3;
 
                                         if (index.isEven) {
                                           final nextIndex = index + 1;
@@ -612,7 +612,7 @@ class Stats extends StatelessWidget {
                                               ? friends[nextIndex].name
                                               : '';
                                           final nextAnswer = hasNextFriend
-                                              ? friends[nextIndex].answer1
+                                              ? friends[nextIndex].answer3
                                               : '';
 
                                           return Center(
@@ -642,7 +642,7 @@ class Stats extends StatelessWidget {
                                                               ),
                                                               TextSpan(
                                                                 text:
-                                                                    friendAnswer1,
+                                                                    friendAnswer3,
                                                                 style:
                                                                     TextStyle(
                                                                   fontWeight:
