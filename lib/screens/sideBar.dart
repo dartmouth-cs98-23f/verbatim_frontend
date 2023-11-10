@@ -46,8 +46,6 @@ class FriendAcceptOrDeclineRequest {
 }
 
 class SideBar extends StatefulWidget {
-  final String username = SharedPrefs().getUserName() ?? "";
-
   SideBar({
     Key? key,
   }) : super(key: key);
@@ -57,6 +55,8 @@ class SideBar extends StatefulWidget {
 }
 
 class _SideBarState extends State<SideBar> {
+  String username = SharedPrefs().getUserName() ?? "";
+
   final Color primary = Color.fromARGB(255, 231, 111, 81);
 
   Set<String> friendRequestUsernames = <String>{};
@@ -132,10 +132,11 @@ class _SideBarState extends State<SideBar> {
 
   @override
   Widget build(BuildContext context) {
+    username = SharedPrefs().getUserName() ?? "";
     return FutureBuilder<void>(
         future: Future.wait([
-          getFriends(widget.username),
-          getFriendRequests(widget.username),
+          getFriends(username),
+          getFriendRequests(username),
         ]),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -160,7 +161,7 @@ class _SideBarState extends State<SideBar> {
                         child: Center(
                           child: ListTile(
                             title: Text(
-                              widget.username,
+                              username,
                               style:
                                   TextStyle(color: Colors.white, fontSize: 20),
                             ),
@@ -321,7 +322,7 @@ class _SideBarState extends State<SideBar> {
                                   GestureDetector(
                                     onTap: () {
                                       handleFriendRequests(
-                                          widget.username, requester, true);
+                                          username, requester, true);
                                       setState(() {
                                         friendRequestUsernames
                                             .remove(requester);
@@ -333,7 +334,7 @@ class _SideBarState extends State<SideBar> {
                                   GestureDetector(
                                     onTap: () {
                                       handleFriendRequests(
-                                          widget.username, requester, false);
+                                          username, requester, false);
                                       setState(() {
                                         friendRequestUsernames
                                             .remove(requester);
