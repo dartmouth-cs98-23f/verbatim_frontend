@@ -31,28 +31,8 @@ class User {
   }
 }
 
-/*
-class RequestedFriendsProvider extends ChangeNotifier {
-  // ignore: prefer_final_fields
-  List<String> _requestedFriends = []; //starts blank
-
-  List<String> get selectedFriends => _requestedFriends;
-
-  void toggleFriend(String friendName) {
-    if (_requestedFriends.contains(friendName)) {
-      //do nothing
-    } else {
-      _requestedFriends.add(
-          friendName); //add this name (maybe then wont need to call backend over and over again?)
-    }
-    notifyListeners();
-  }
-}
-*/
-
 class addFriend extends StatefulWidget {
   final String username = SharedPrefs().getUserName() ?? "";
-  // add URL check?
 
   addFriend({
     Key? key,
@@ -108,8 +88,7 @@ class _AddFriendState extends State<addFriend> {
     if (myRequestedUsers_backend.contains(friendName)) {
       //do nothing
     } else {
-      myRequestedUsers_backend.add(
-          friendName); //add this name (maybe then wont need to call backend over and over again?)
+      myRequestedUsers_backend.add(friendName);
     }
   }
 
@@ -155,11 +134,7 @@ class _AddFriendState extends State<addFriend> {
       final List<dynamic> data = json.decode(response.body);
       List<User> friendsList = data.map((item) => User.fromJson(item)).toList();
       friendsUsernamesList = friendsList.map((user) => user.username).toList();
-
-      print('this is friends: $friendsUsernamesList');
-      print(response);
     } else {
-      print(username);
       print('Failed to send responses. Status code: ${response.statusCode}');
     }
   }
@@ -185,7 +160,7 @@ class _AddFriendState extends State<addFriend> {
         users = userList;
       });
     } else {
-      print("failureeeeee");
+      print("failure");
     }
   }
 
@@ -199,6 +174,7 @@ class _AddFriendState extends State<addFriend> {
       });
     });
     if (!usersFetched) {
+      // wait to load
       Future.wait([
         getFriends(widget.username),
         getUsers(),
@@ -216,6 +192,7 @@ class _AddFriendState extends State<addFriend> {
     }
   }
 
+// check for changes
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -245,12 +222,14 @@ class _AddFriendState extends State<addFriend> {
     super.dispose();
   }
 
+// search feature control (adjust if necessary)
   List<String> _searchResults() {
     return userUsernames
         .where((item) => item.toLowerCase().contains(_searchText.toLowerCase()))
         .toList();
   }
 
+// send friendrequest to backend
   Future<void> sendFriendRequest(
       String requestingUsername, String requestedUsername) async {
     final url = Uri.parse('http://localhost:8080/api/v1/addFriend');
@@ -264,7 +243,6 @@ class _AddFriendState extends State<addFriend> {
         }));
     if (response.statusCode == 200) {
       print('responses sent succesfully');
-      print("'$requestingUsername' has requested '$requestedUsername'");
     } else {
       print('Failed to send responses. Status code: ${response.statusCode}');
     }
@@ -301,12 +279,11 @@ class _AddFriendState extends State<addFriend> {
                               fit: BoxFit.fill,
                             ),
                           ),
+                          // app bar for add friend page
                           FriendsAppBar(),
 
                           Padding(
-                            padding: EdgeInsets.only(
-                                top:
-                                    20.0), // Adjust the top padding value as needed
+                            padding: EdgeInsets.only(top: 20.0),
                             child: Align(
                               alignment: Alignment.center,
                               child: Container(
@@ -316,6 +293,8 @@ class _AddFriendState extends State<addFriend> {
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(20),
                                   ),
+
+                                  // search bar
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -339,6 +318,8 @@ class _AddFriendState extends State<addFriend> {
                                   )),
                             ),
                           ),
+
+                          // search results
                           Align(
                             alignment: Alignment.bottomLeft,
                             child: Container(
@@ -356,6 +337,7 @@ class _AddFriendState extends State<addFriend> {
                                         ),
                                       )
                                     else
+                                      // to display "suggested friends" once logic is implemented
                                       TextSpan(
                                         text: "People you may know:",
                                         style: TextStyle(
@@ -375,6 +357,8 @@ class _AddFriendState extends State<addFriend> {
                     ],
                   ),
                 ),
+
+                // box in which search results will appear
                 Center(
                   child: Container(
                     clipBehavior: Clip.hardEdge,
@@ -393,6 +377,8 @@ class _AddFriendState extends State<addFriend> {
                       ],
                       color: Colors.white,
                     ),
+
+                    // when user searches, display relevant items
                     child: _searchText.isNotEmpty
                         ? ListView.builder(
                             itemCount: _searchResults().length,
@@ -413,12 +399,15 @@ class _AddFriendState extends State<addFriend> {
                                     ),
                                   ],
                                 ),
+
+                                // icon displayed is dependent on whether you have requested this user.
                                 trailing: IconButton(
                                   icon: isRequested
                                       ? Icon(Icons.pending)
                                       : Icon(Icons.person_add_alt),
                                   onPressed: () {
                                     if (!isRequested) {
+                                      // prevent user from sending friend requests twice!
                                       sendFriendRequest(widget.username, name);
 
                                       setState(() {
@@ -459,7 +448,8 @@ class _AddFriendState extends State<addFriend> {
                                             widget.username, name);
                                         setState(() {
                                           toggleFriend(name);
-                                          myRequestedUsers_backend.add(name);
+                                          myRequestedUsers_backend.add(
+                                              name); // keeps the icon from changing if you navigate away from the page
                                         });
                                       }
                                     },
