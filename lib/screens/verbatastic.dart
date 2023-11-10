@@ -75,7 +75,7 @@ class Verbatastic extends StatelessWidget {
                   ),
                 )
               : Container(
-                  width: min(verbatasticUsernames!.length + 1, 6) * 35,
+                  width: min(verbatasticUsernames!.length + 1, 6) * 40,
                   height: 48,
                   child: Stack(
                     children: [
@@ -112,7 +112,10 @@ class Verbatastic extends StatelessWidget {
                     ]
                   : [
                       TextSpan(
-                        text: 'You, ',
+                        text: 'You' +
+                            (verbatasticUsernames!.length == 1
+                                ? ' and '
+                                : ', '),
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 14,
@@ -127,14 +130,15 @@ class Verbatastic extends StatelessWidget {
                                   ? ', '
                                   : i < verbatasticUsernames!.length - 1
                                       ? ' and '
-                                      : ' '),
+                                      : ''),
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 14,
                           ),
                         ),
                       TextSpan(
-                        text: 'all said ',
+                        text:
+                            '${verbatasticUsernames!.length == 1 ? ' both ' : ' all '}said ',
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 14,
