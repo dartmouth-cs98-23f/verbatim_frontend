@@ -95,13 +95,12 @@ class _GlobalChallengeState extends State<globalChallenge> {
         await http.post(url, headers: headers, body: username);
 
     if (fetchQuestions.statusCode == 200) {
-      print(fetchQuestions.body);
       final Map<String, dynamic>? data = json.decode(fetchQuestions.body);
 
       question1 = data!['q1'];
-      print(question1);
+
       question2 = data['q2'];
-      print(question2);
+
       question3 = data['q3'];
 
       categoryQ1 = data['categoryQ1'];
@@ -133,22 +132,12 @@ class _GlobalChallengeState extends State<globalChallenge> {
           if (firstEntry != null) {
             verbatimedWord = firstEntry.key;
             verbatasticUsernames = firstEntry.value;
-
-            print("First key: $verbatimedWord");
-            print("First value: $verbatasticUsernames");
           } else {
             print("The first entry is null");
           }
         } else {
           print("verbatasticUsers is empty");
         }
-
-        print(
-            'this is verbatasticUsers from send user responses $verbatasticUsers');
-
-        print('this is verbatasticUsers from _fetchdata $verbatasticUsers');
-        print(
-            'this is data from _fetchdata global response when user has played $data');
       }
     }
   }
@@ -185,9 +174,6 @@ class _GlobalChallengeState extends State<globalChallenge> {
       return capitalizedWords.join(' ');
     }).toList();
 
-    print(modifiedResponses);
-    print(username);
-    print(email);
     modResponse = modifiedResponses;
 
     final response = await http.post(
@@ -205,7 +191,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
       print('Responses sent successfully');
 
       final Map<String, dynamic> stats = json.decode(response.body);
-      print(stats);
+
       numVerbatimQ1 = stats['numVerbatimQ1'];
       numVerbatimQ2 = stats['numVerbatimQ2'];
       numVerbatimQ3 = stats['numVerbatimQ3'];
@@ -217,6 +203,9 @@ class _GlobalChallengeState extends State<globalChallenge> {
             return MapEntry(key, (value as List).cast<String>());
           }) ??
           {};
+      setState(() {
+        responded = true;
+      });
 
       if (verbatasticUsers.isNotEmpty) {
         final MapEntry<String, List<String>?>? firstEntry =
@@ -225,9 +214,6 @@ class _GlobalChallengeState extends State<globalChallenge> {
         if (firstEntry != null) {
           verbatimedWord = firstEntry.key;
           verbatasticUsernames = firstEntry.value;
-
-          print("First key: $verbatimedWord");
-          print("First value: $verbatasticUsernames");
         } else {
           print("The first entry is null");
         }
@@ -236,14 +222,10 @@ class _GlobalChallengeState extends State<globalChallenge> {
       }
 
       totalResponses = stats['totalResponses'];
-      print(
-          'this is verbatasticUsers from send user responses $verbatasticUsers');
 
       responded = true;
     } else {
       print('Failed to send responses. Status code: ${response.statusCode}');
-
-      print('Response body: ${response.body}');
     }
   }
 
@@ -557,7 +539,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                         if (snapshot.connectionState ==
                                             ConnectionState.waiting) {
                                           // load indicator j to make it wait
-                                          return CircularProgressIndicator();
+                                          return const CircularProgressIndicator();
                                         } else if (snapshot.hasError) {
                                           // aka cross ur fingers
                                           return Text(
