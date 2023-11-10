@@ -12,6 +12,7 @@ import '../widgets/my_button_no_image.dart';
 import 'globalChallenge.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:verbatim_frontend/widgets/size.dart';
 
 class LogIn extends StatefulWidget {
   const LogIn({Key? key}) : super(key: key);
@@ -22,7 +23,7 @@ class LogIn extends StatefulWidget {
 
 class _LogInState extends State<LogIn> {
   Map<String, Text> validationErrors = {};
-  final emailController = TextEditingController();
+  final usernameEmailController = TextEditingController();
   final passwordController = TextEditingController();
   final GoogleSignIn _googleSignIn = GoogleSignIn(
     scopes: ['email'],
@@ -30,7 +31,14 @@ class _LogInState extends State<LogIn> {
         '297398575103-o3engamrir3bf4pupurvj8lm4mn0iuqt.apps.googleusercontent.com',
   );
 
-  void logIn(BuildContext context, String email, String password) async {
+  void logIn(
+      BuildContext context, String usernameOrEmail, String password) async {
+    // Save user's info to the database
+    saveUsersInfo(usernameOrEmail, password);
+  }
+
+  // Function to save user's info to the database
+  void saveUsersInfo(String usernameOrEmail, String password) async {
     try {
       final response = await http.post(
         Uri.parse('http://localhost:8080/api/v1/login'),
@@ -38,7 +46,7 @@ class _LogInState extends State<LogIn> {
           'Content-Type': 'application/json',
         },
         body: jsonEncode({
-          'emailOrUsername': email,
+          'emailOrUsername': usernameOrEmail.toLowerCase(),
           'password': password,
         }),
       );
@@ -52,9 +60,9 @@ class _LogInState extends State<LogIn> {
           SharedPrefs().setEmail(responseData['email']);
           SharedPrefs().setUserName(responseData['username']);
           SharedPrefs().setPassword(responseData['password']);
-          SharedPrefs().setFirstName(responseData['firstName']);
-          SharedPrefs().setLastName(responseData['lastName']);
-          SharedPrefs().setBio(responseData['bio']);
+          SharedPrefs().setFirstName(responseData['firstName'] ?? '');
+          SharedPrefs().setLastName(responseData['lastName'] ?? '');
+          SharedPrefs().setBio(responseData['bio'] ?? '');
           // SharedPrefs().setBio(responseData['profilePicture']);
 
           Navigator.push(
@@ -66,7 +74,7 @@ class _LogInState extends State<LogIn> {
           print('Log-in successful');
         }
       } else {
-        print('Error during sign-up: ${response.statusCode.toString()}');
+        print('Error during log-in: ${response.statusCode.toString()}');
         Navigator.push(
           context,
           MaterialPageRoute(
@@ -91,33 +99,7 @@ class _LogInState extends State<LogIn> {
       final GoogleSignInAccount? account = await _googleSignIn.signIn();
 
       if (account != null) {
-        // User sign-in is successful
-        print('Google Sign-In successful');
-        print('Sign up with Google: ${account.email}');
-
-        final response = await http.post(
-          Uri.parse('http://localhost:8080/api/v1/register'),
-          headers: <String, String>{
-            'Content-Type': 'application/json',
-          },
-          body: jsonEncode({'emailOrUsername': account.email, 'password': ''}),
-        );
-
-        if (response.statusCode == 200) {
-          // Navigate to the global challenge page
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => globalChallenge(),
-            ),
-          );
-        } else {
-          print(
-              'Error during sign-up with Google: ${response.statusCode.toString()}');
-        }
-      } else {
-        // User canceled the Google Sign-In process or encountered an error.
-        print('Google Sign-In canceled or failed');
+        saveUsersInfo(account.email, 'unavailable');
       }
     } catch (error) {
       // Handle any errors that occur during the Google Sign-In process.
@@ -180,13 +162,13 @@ class _LogInState extends State<LogIn> {
                   child: Align(
                     alignment: Alignment.topCenter,
                     child: Image.asset(
-                      'assets/Logo.png', // Replace with the path to your image asset
-                      width: 150, // Set the width and height to your preference
-                      height: 120,
+                      'assets/Logo.png',
+                      width: 200,
+                      height: 160,
                     ),
                   ),
                 ),
-                const SizedBox(height: 195),
+                SizedBox(height: 195.v),
                 Padding(
                   padding: const EdgeInsets.only(left: 5.0),
                   child: Column(
@@ -194,8 +176,8 @@ class _LogInState extends State<LogIn> {
                     children: [
                       const SizedBox(height: 29),
                       MyTextField(
-                        controller: emailController,
-                        hintText: 'Email',
+                        controller: usernameEmailController,
+                        hintText: 'Email or Username',
                         obscureText: false,
                       ),
                       Container(
@@ -215,9 +197,7 @@ class _LogInState extends State<LogIn> {
                   ),
                 ),
                 const SizedBox(height: 30),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 220.0), // Adjust the padding as needed
+                Center(
                   child: RichText(
                     text: TextSpan(
                       children: [
@@ -240,11 +220,9 @@ class _LogInState extends State<LogIn> {
                     ),
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 5.0), // Adjust the left padding as needed
+                Center(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const SizedBox(height: 30),
                       MyButtonNoImage(
@@ -252,7 +230,7 @@ class _LogInState extends State<LogIn> {
                         onTap: () {
                           validateUserInfo(
                             context,
-                            emailController.text,
+                            usernameEmailController.text,
                             passwordController.text,
                           );
                         },
@@ -266,9 +244,7 @@ class _LogInState extends State<LogIn> {
                         },
                       ),
                       const SizedBox(height: 10),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 25.0), // Adjust the padding as needed
+                      Center(
                         child: RichText(
                           text: TextSpan(
                             children: [
@@ -302,6 +278,7 @@ class _LogInState extends State<LogIn> {
                     ],
                   ),
                 ),
+                SizedBox(height: 20),
               ],
             ),
           ),
