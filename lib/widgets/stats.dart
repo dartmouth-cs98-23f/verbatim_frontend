@@ -130,7 +130,7 @@ class Stats extends StatelessWidget {
                           child: Center(
                         child: Column(children: [
                           Container(
-                            height: 400.v,
+                            height: 300.v,
                             width: 500,
                             child: PieChart(
                               PieChartData(
@@ -330,7 +330,7 @@ class Stats extends StatelessWidget {
                           child: Center(
                         child: Column(children: [
                           Container(
-                            height: 240,
+                            height: 300.v,
                             child: PieChart(
                               PieChartData(
                                 centerSpaceRadius: 0,
@@ -526,7 +526,7 @@ class Stats extends StatelessWidget {
                           child: Center(
                         child: Column(children: [
                           Container(
-                            height: 240,
+                            height: 300.v,
                             child: PieChart(
                               PieChartData(
                                 centerSpaceRadius: 0,
