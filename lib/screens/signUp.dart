@@ -36,21 +36,15 @@ class _SignUpState extends State<SignUp> {
       clientId:
           '297398575103-o3engamrir3bf4pupurvj8lm4mn0iuqt.apps.googleusercontent.com');
 
-  void signUp(
-      BuildContext context,
-      String firstName,
-      String lastName,
-      String username,
-      String email,
-      String password,
-      String confirmPassword) {
-
-    saveUsersInfo(context, firstName, lastName, username, email, password, confirmPassword);
-
+  void signUp(BuildContext context, String firstName, String lastName,
+      String username, String email, String password, String confirmPassword) {
+    saveUsersInfo(context, firstName, lastName, username, email, password,
+        confirmPassword);
   }
 
   // Function to save user's info to the database
-  void saveUsersInfo(BuildContext context,
+  void saveUsersInfo(
+      BuildContext context,
       String firstName,
       String lastName,
       String username,
@@ -109,21 +103,14 @@ class _SignUpState extends State<SignUp> {
 
   // Function to sign up with Google
   Future<void> signUpWithGoogle() async {
-      final GoogleSignInAccount? account = await _googleSignIn.signIn();
+    final GoogleSignInAccount? account = await _googleSignIn.signIn();
 
-      if (account != null) {
-        saveUsersInfo(
-            context,
-            '<unavailable>',
-            '<unavailable>',
-            '<unavailable>',
-            account.email,
-            'unavailable',
-            'unavailable');
-      }
-      else{
-        print('\nThe google account is not found.');
-      }
+    if (account != null) {
+      saveUsersInfo(context, '<unavailable>', '<unavailable>', '<unavailable>',
+          account.email, 'unavailable', 'unavailable');
+    } else {
+      print('\nThe google account is not found.');
+    }
   }
 
   void validateUserInfo(
@@ -353,11 +340,9 @@ class _SignUpState extends State<SignUp> {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 5.0), // Adjust the left padding as needed
+                Center(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const SizedBox(height: 25),
                       MyButtonNoImage(
@@ -383,9 +368,7 @@ class _SignUpState extends State<SignUp> {
                         },
                       ),
                       const SizedBox(height: 10),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 25.0), // Adjust the padding as needed
+                      Center(
                         child: RichText(
                           text: TextSpan(
                             children: [
@@ -401,7 +384,7 @@ class _SignUpState extends State<SignUp> {
                                 style: TextStyle(
                                   color: Color(0xFF3C64B1),
                                   fontWeight: FontWeight
-                                      .w700, // Blue color for the link
+                                      .w800, // Blue color for the link
                                 ),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
@@ -416,6 +399,7 @@ class _SignUpState extends State<SignUp> {
                           ),
                         ),
                       ),
+                      SizedBox(height: 20),
                     ],
                   ),
                 ),
