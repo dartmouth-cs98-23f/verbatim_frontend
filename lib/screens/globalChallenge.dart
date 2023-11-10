@@ -14,8 +14,6 @@ import 'package:intl/intl.dart';
 import 'verbatastic.dart';
 
 class globalChallenge extends StatefulWidget {
-  final String username = SharedPrefs().getUserName() ?? "";
-
   globalChallenge({
     Key? key,
   }) : super(key: key);
@@ -28,6 +26,7 @@ String email = SharedPrefs().getEmail() ?? "";
 String password = SharedPrefs().getPassword() ?? "";
 
 class _GlobalChallengeState extends State<globalChallenge> {
+  String username = SharedPrefs().getUserName() ?? "";
   String userResponse = '';
   List<String> userResponses = [];
   TextEditingController responseController = TextEditingController();
@@ -145,7 +144,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
   @override
   void initState() {
     super.initState();
-    _fetchData(widget.username).then((_) {
+    _fetchData(username).then((_) {
       setState(() {
         questions = [question1, question2, question3];
       });
@@ -237,6 +236,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
 
   @override
   Widget build(BuildContext context) {
+    username = SharedPrefs().getUserName() ?? "";
     DateTime now = DateTime.now();
     DateTime midnight =
         DateTime(now.year, now.month, now.day + 1); // Set to next midnight
@@ -438,7 +438,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                                 currentQuestionIndex += 1;
                                               } else {
                                                 sendUserResponses(
-                                                  widget.username,
+                                                  username,
                                                   email,
                                                   userResponses,
                                                 );
@@ -534,7 +534,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                     ]);
                                   } else {
                                     return FutureBuilder<void>(
-                                      future: _fetchData(widget.username),
+                                      future: _fetchData(username),
                                       builder: (context, snapshot) {
                                         if (snapshot.connectionState ==
                                             ConnectionState.waiting) {

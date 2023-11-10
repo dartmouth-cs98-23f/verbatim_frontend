@@ -32,8 +32,6 @@ class User {
 }
 
 class addFriend extends StatefulWidget {
-  final String username = SharedPrefs().getUserName() ?? "";
-
   addFriend({
     Key? key,
   }) : super(key: key);
@@ -43,6 +41,7 @@ class addFriend extends StatefulWidget {
 }
 
 class _AddFriendState extends State<addFriend> {
+  String username = SharedPrefs().getUserName() ?? "";
   final TextEditingController _searchController = TextEditingController();
   String _searchText = "";
   bool usersFetched = false; // only call users once per run
@@ -152,7 +151,7 @@ class _AddFriendState extends State<addFriend> {
           data.map((item) => User.fromJson(item)).toList();
 
       userUsernames = userList
-          .where((user) => user.username != widget.username)
+          .where((user) => user.username != username)
           .map((user) => user.username)
           .toList();
 
@@ -176,10 +175,10 @@ class _AddFriendState extends State<addFriend> {
     if (!usersFetched) {
       // wait to load
       Future.wait([
-        getFriends(widget.username),
+        getFriends(username),
         getUsers(),
-        getFriendRequests(widget.username),
-        getUsersIHaveRequested(widget.username),
+        getFriendRequests(username),
+        getUsersIHaveRequested(username),
       ]).then((_) {
         userUsernames
             .removeWhere((item) => friendsUsernamesList.contains(item));
@@ -199,10 +198,10 @@ class _AddFriendState extends State<addFriend> {
 
     if (!usersFetched) {
       Future.wait([
-        getFriends(widget.username),
+        getFriends(username),
         getUsers(),
-        getFriendRequests(widget.username),
-        getUsersIHaveRequested(widget.username),
+        getFriendRequests(username),
+        getUsersIHaveRequested(username),
       ]).then((_) {
         userUsernames
             .removeWhere((item) => friendsUsernamesList.contains(item));
@@ -249,6 +248,8 @@ class _AddFriendState extends State<addFriend> {
   }
 
   Widget build(BuildContext context) {
+    String username = SharedPrefs().getUserName() ?? "";
+
     final String assetName = 'assets/img1.svg';
 
     return SafeArea(
@@ -408,7 +409,7 @@ class _AddFriendState extends State<addFriend> {
                                   onPressed: () {
                                     if (!isRequested) {
                                       // prevent user from sending friend requests twice!
-                                      sendFriendRequest(widget.username, name);
+                                      sendFriendRequest(username, name);
 
                                       setState(() {
                                         toggleFriend(name);
@@ -444,8 +445,7 @@ class _AddFriendState extends State<addFriend> {
                                         : Icon(Icons.person_add_alt),
                                     onPressed: () {
                                       if (!isRequested) {
-                                        sendFriendRequest(
-                                            widget.username, name);
+                                        sendFriendRequest(username, name);
                                         setState(() {
                                           toggleFriend(name);
                                           myRequestedUsers_backend.add(
