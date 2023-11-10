@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:verbatim_frontend/widgets/size.dart';
 
 class Verbatastic extends StatelessWidget {
   final String verbatimedWord;
@@ -57,43 +58,44 @@ class Verbatastic extends StatelessWidget {
         ),
         SizedBox(height: 10),
         Center(
-          child: verbatasticUsernames!.isEmpty
-              ? Container(
-                  width: 100,
-                  height: 48,
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        top: 0,
-                        left: 30.0,
-                        child: Image.asset(
-                          'assets/Ellipse ${41}.png',
-                          height: 48,
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              : Container(
-                  width: min(verbatasticUsernames!.length + 1, 6) * 35,
-                  height: 48,
-                  child: Stack(
-                    children: [
-                      for (int i = 0;
-                          i < min(verbatasticUsernames!.length + 1, 6);
-                          i++)
+            child: verbatasticUsernames!.isEmpty
+                ? Container(
+                    width: 100,
+                    height: 48,
+                    child: Stack(
+                      children: [
                         Positioned(
                           top: 0,
-                          left: 30.0 * i,
+                          left: 30.0,
                           child: Image.asset(
-                            'assets/Ellipse ${41 + i}.png',
+                            'assets/Ellipse ${41}.png',
                             height: 48,
                           ),
                         ),
-                    ],
-                  ),
-                ),
-        ),
+                      ],
+                    ),
+                  )
+                : Center(
+                    child: Container(
+                      width: min(verbatasticUsernames!.length + 1, 6) * 38,
+                      height: 45,
+                      child: Stack(
+                        children: [
+                          for (int i = 0;
+                              i < min(verbatasticUsernames!.length + 1, 6);
+                              i++)
+                            Positioned(
+                              top: 0,
+                              left: 30.0 * i,
+                              child: Image.asset(
+                                'assets/Ellipse ${41 + i}.png',
+                                height: 45,
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  )),
         SizedBox(height: 10),
         Container(
           width: 200,
@@ -112,7 +114,10 @@ class Verbatastic extends StatelessWidget {
                     ]
                   : [
                       TextSpan(
-                        text: 'You, ',
+                        text: 'You' +
+                            (verbatasticUsernames!.length == 1
+                                ? ' and '
+                                : ', '),
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 14,
@@ -127,14 +132,15 @@ class Verbatastic extends StatelessWidget {
                                   ? ', '
                                   : i < verbatasticUsernames!.length - 1
                                       ? ' and '
-                                      : ' '),
+                                      : ''),
                           style: TextStyle(
                             color: Colors.black,
                             fontSize: 14,
                           ),
                         ),
                       TextSpan(
-                        text: 'all said ',
+                        text:
+                            '${verbatasticUsernames!.length == 1 ? ' both ' : ' all '}said ',
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 14,
@@ -155,14 +161,21 @@ class Verbatastic extends StatelessWidget {
         SizedBox(height: 10),
         Center(
           child: Container(
-            width: 100,
+            width: 100.h,
             height: 55,
             child: Stack(
               children: [
-                Image.asset('assets/Ellipse 41.png'),
                 Positioned(
                   top: 0,
-                  left: 30,
+                  right: (80.h - 45),
+                  child: Image.asset(
+                    'assets/Ellipse 41.png',
+                    height: 55,
+                  ),
+                ),
+                Positioned(
+                  top: 0,
+                  left: (80.h - 45),
                   child: Image.asset('assets/Ellipse 47.png', height: 55),
                 ),
               ],

@@ -75,12 +75,7 @@ class _SideBarState extends State<SideBar> {
       final List<dynamic> data = json.decode(response.body);
       List<User> friendsList = data.map((item) => User.fromJson(item)).toList();
       usernamesList = friendsList.map((user) => user.username).toList();
-
-      print('this is friends: $usernamesList');
-
-      print(response);
     } else {
-      print(username);
       print('Failed to send responses. Status code: ${response.statusCode}');
     }
   }
@@ -107,7 +102,6 @@ class _SideBarState extends State<SideBar> {
         }
       }
     } else {
-      print(username);
       print('Failed to send responses. Status code: ${response.statusCode}');
     }
   }
@@ -131,9 +125,7 @@ class _SideBarState extends State<SideBar> {
 
     if (response.statusCode == 200) {
       print('responses sent succesfully');
-      print(response);
     } else {
-      print(username);
       print('Failed to send responses. Status code: ${response.statusCode}');
     }
   }
@@ -328,8 +320,6 @@ class _SideBarState extends State<SideBar> {
                                 children: [
                                   GestureDetector(
                                     onTap: () {
-                                      print(widget.username);
-                                      print(requester);
                                       handleFriendRequests(
                                           widget.username, requester, true);
                                       setState(() {
@@ -409,7 +399,7 @@ class _SideBarState extends State<SideBar> {
                     padding: EdgeInsets.symmetric(horizontal: 5.0),
                     child: Container(
                       padding:
-                      EdgeInsets.symmetric(horizontal: 0.0, vertical: .1),
+                          EdgeInsets.symmetric(horizontal: 0.0, vertical: .1),
                       child: ListTile(
                         title: Text('Logout',
                             style: TextStyle(
