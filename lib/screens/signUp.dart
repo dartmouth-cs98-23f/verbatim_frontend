@@ -36,7 +36,14 @@ class _SignUpState extends State<SignUp> {
       clientId:
           '297398575103-o3engamrir3bf4pupurvj8lm4mn0iuqt.apps.googleusercontent.com');
 
-  void signUp(
+  void signUp(BuildContext context, String firstName, String lastName,
+      String username, String email, String password, String confirmPassword) {
+    saveUsersInfo(context, firstName, lastName, username, email, password,
+        confirmPassword);
+  }
+
+  // Function to save user's info to the database
+  void saveUsersInfo(
       BuildContext context,
       String firstName,
       String lastName,
@@ -60,16 +67,18 @@ class _SignUpState extends State<SignUp> {
       );
 
       if (response.statusCode == 200) {
-        // Successful sign-up: Navigate to the global challenge page
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => OnBoardingPage1()),
-        );
+        // Save the user's info in the shared prefs
         SharedPrefs().setEmail(email);
         SharedPrefs().setFirstName(firstName);
         SharedPrefs().setLastName(lastName);
         SharedPrefs().setPassword(password);
         SharedPrefs().setUserName(username);
+
+        // Successful sign-up: Navigate to the global challenge page
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => OnBoardingPage1()),
+        );
 
         print('Sign-up successful');
       } else {
@@ -92,45 +101,15 @@ class _SignUpState extends State<SignUp> {
     }
   }
 
+  // Function to sign up with Google
   Future<void> signUpWithGoogle() async {
-    try {
-      final GoogleSignInAccount? account = await _googleSignIn.signIn();
+    final GoogleSignInAccount? account = await _googleSignIn.signIn();
 
-      if (account != null) {
-        // User sign-in is successful
-        final response = await http.post(
-          Uri.parse('http://localhost:8080/api/v1/register'),
-          headers: <String, String>{
-            'Content-Type': 'application/json',
-          },
-          body: jsonEncode({
-            'firstName': '<unavailable>',
-            'lastName': '<unavailable>',
-            'username': '<unavailable>',
-            'email': account.email,
-            'password': '<unavailable>'
-          }),
-        );
-
-        if (response.statusCode == 200) {
-          // Navigate to the global challenge page
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => globalChallenge(),
-            ),
-          );
-        } else {
-          print(
-              'Error during sign-up with Google: ${response.statusCode.toString()}');
-        }
-      } else {
-        // User canceled the Google Sign-In process or encountered an error.
-        print('Google Sign-In canceled or failed');
-      }
-    } catch (error) {
-      // Handle any errors that occur during the Google Sign-In process.
-      print('Error during Google Sign-In: $error');
+    if (account != null) {
+      saveUsersInfo(context, '<unavailable>', '<unavailable>', '<unavailable>',
+          account.email, 'unavailable', 'unavailable');
+    } else {
+      print('\nThe google account is not found.');
     }
   }
 
@@ -361,11 +340,9 @@ class _SignUpState extends State<SignUp> {
                     ],
                   ),
                 ),
-                Padding(
-                  padding: const EdgeInsets.only(
-                      left: 5.0), // Adjust the left padding as needed
+                Center(
                   child: Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
+                    crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
                       const SizedBox(height: 25),
                       MyButtonNoImage(
@@ -391,9 +368,7 @@ class _SignUpState extends State<SignUp> {
                         },
                       ),
                       const SizedBox(height: 10),
-                      Padding(
-                        padding: const EdgeInsets.symmetric(
-                            horizontal: 25.0), // Adjust the padding as needed
+                      Center(
                         child: RichText(
                           text: TextSpan(
                             children: [
@@ -409,7 +384,7 @@ class _SignUpState extends State<SignUp> {
                                 style: TextStyle(
                                   color: Color(0xFF3C64B1),
                                   fontWeight: FontWeight
-                                      .w700, // Blue color for the link
+                                      .w800, // Blue color for the link
                                 ),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
@@ -424,6 +399,7 @@ class _SignUpState extends State<SignUp> {
                           ),
                         ),
                       ),
+                      SizedBox(height: 20),
                     ],
                   ),
                 ),

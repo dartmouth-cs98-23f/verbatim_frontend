@@ -11,10 +11,9 @@ import 'dart:async';
 import 'package:verbatim_frontend/widgets/stats.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:intl/intl.dart';
+import 'verbatastic.dart';
 
 class globalChallenge extends StatefulWidget {
-  final String username = SharedPrefs().getUserName() ?? "";
-
   globalChallenge({
     Key? key,
   }) : super(key: key);
@@ -27,6 +26,7 @@ String email = SharedPrefs().getEmail() ?? "";
 String password = SharedPrefs().getPassword() ?? "";
 
 class _GlobalChallengeState extends State<globalChallenge> {
+  String username = SharedPrefs().getUserName() ?? "";
   String userResponse = '';
   List<String> userResponses = [];
   TextEditingController responseController = TextEditingController();
@@ -43,6 +43,11 @@ class _GlobalChallengeState extends State<globalChallenge> {
   int numVerbatimQ2 = 0;
   int numVerbatimQ3 = 0;
   int numExactVerbatim = 0;
+
+  Map<String, List<String>?> verbatasticUsers = {};
+  List<String>? verbatasticUsernames = [];
+  List<String> modResponse = [];
+  String verbatimedWord = "";
 
   Map<String, dynamic> statsQ1 = {
     "firstMostPopular": "",
@@ -72,7 +77,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
     "friendResponses": [],
   };
 
-  bool response = false;
+  bool responded = false;
   List<String> responses = List.filled(3, "");
   String fetchQuestions = "";
   int currentQuestionIndex = 0;
@@ -89,13 +94,12 @@ class _GlobalChallengeState extends State<globalChallenge> {
         await http.post(url, headers: headers, body: username);
 
     if (fetchQuestions.statusCode == 200) {
-      print(fetchQuestions.body);
       final Map<String, dynamic>? data = json.decode(fetchQuestions.body);
 
       question1 = data!['q1'];
-      print(question1);
+
       question2 = data['q2'];
-      print(question2);
+
       question3 = data['q3'];
 
       categoryQ1 = data['categoryQ1'];
@@ -103,7 +107,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
       categoryQ3 = data['categoryQ3'];
       totalResponses = data['totalResponses'];
 
-      // if null, user has not yet submitted global response
+      // if null, user has not yet submitted global response - if not null we NEED this for page refresh to still work
 
       if (data["responseQ1"] != null) {
         numVerbatimQ1 = data['numVerbatimQ1'];
@@ -113,7 +117,26 @@ class _GlobalChallengeState extends State<globalChallenge> {
         statsQ2 = data['statsQ2'];
         statsQ3 = data['statsQ3'];
         totalResponses = data['totalResponses'];
-        response = true;
+        responded = true;
+        verbatasticUsers = (data["verbatasticUsers"] as Map<String, dynamic>?)
+                ?.map((key, value) {
+              return MapEntry(key, (value as List).cast<String>());
+            }) ??
+            {};
+
+        if (verbatasticUsers.isNotEmpty) {
+          final MapEntry<String, List<String>?>? firstEntry =
+              verbatasticUsers.entries.first;
+
+          if (firstEntry != null) {
+            verbatimedWord = firstEntry.key;
+            verbatasticUsernames = firstEntry.value;
+          } else {
+            print("The first entry is null");
+          }
+        } else {
+          print("verbatasticUsers is empty");
+        }
       }
     }
   }
@@ -121,7 +144,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
   @override
   void initState() {
     super.initState();
-    _fetchData(widget.username).then((_) {
+    _fetchData(username).then((_) {
       setState(() {
         questions = [question1, question2, question3];
       });
@@ -132,18 +155,34 @@ class _GlobalChallengeState extends State<globalChallenge> {
       String username, String email, List<String> userResponses) async {
     final url = Uri.parse('http://localhost:8080/api/v1/submitGlobalResponse');
     final headers = <String, String>{'Content-Type': 'application/json'};
-    print(userResponses);
-    print(username);
-    print(email);
+
+    final modifiedResponses = userResponses.map((response) {
+      final responseWithoutPunctuation =
+          response.replaceAll(RegExp(r'[^\w\s]'), '');
+
+      final words = responseWithoutPunctuation.split(' ');
+
+      final capitalizedWords = words.map((word) {
+        if (word.isNotEmpty) {
+          return word[0].toUpperCase() + word.substring(1);
+        }
+        return word;
+      });
+
+// join them back into list<string>
+      return capitalizedWords.join(' ');
+    }).toList();
+
+    modResponse = modifiedResponses;
 
     final response = await http.post(
       url,
       headers: headers,
       body: json.encode({
         'username': username,
-        'responseQ1': userResponses[0],
-        'responseQ2': userResponses[1],
-        'responseQ3': userResponses[2]
+        'responseQ1': modifiedResponses[0],
+        'responseQ2': modifiedResponses[1],
+        'responseQ3': modifiedResponses[2]
       }),
     );
 
@@ -151,7 +190,6 @@ class _GlobalChallengeState extends State<globalChallenge> {
       print('Responses sent successfully');
 
       final Map<String, dynamic> stats = json.decode(response.body);
-      print(stats);
 
       numVerbatimQ1 = stats['numVerbatimQ1'];
       numVerbatimQ2 = stats['numVerbatimQ2'];
@@ -159,12 +197,34 @@ class _GlobalChallengeState extends State<globalChallenge> {
       statsQ1 = stats['statsQ1'];
       statsQ2 = stats['statsQ2'];
       statsQ3 = stats['statsQ3'];
+      verbatasticUsers = (stats["verbatasticUsers"] as Map<String, dynamic>?)
+              ?.map((key, value) {
+            return MapEntry(key, (value as List).cast<String>());
+          }) ??
+          {};
+      setState(() {
+        responded = true;
+      });
+
+      if (verbatasticUsers.isNotEmpty) {
+        final MapEntry<String, List<String>?>? firstEntry =
+            verbatasticUsers.entries.first;
+
+        if (firstEntry != null) {
+          verbatimedWord = firstEntry.key;
+          verbatasticUsernames = firstEntry.value;
+        } else {
+          print("The first entry is null");
+        }
+      } else {
+        print("verbatasticUsers is empty");
+      }
+
       totalResponses = stats['totalResponses'];
-      print(statsQ1["friendResponses"]);
+
+      responded = true;
     } else {
       print('Failed to send responses. Status code: ${response.statusCode}');
-
-      print('Response body: ${response.body}');
     }
   }
 
@@ -176,6 +236,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
 
   @override
   Widget build(BuildContext context) {
+    username = SharedPrefs().getUserName() ?? "";
     DateTime now = DateTime.now();
     DateTime midnight =
         DateTime(now.year, now.month, now.day + 1); // Set to next midnight
@@ -186,11 +247,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
         DateFormat.Hms().format(DateTime(0).add(timeUntilMidnight));
 
     final String assetName = 'assets/img1.svg';
-    List<String> tabLables = [
-      categoryQ1,
-      categoryQ2,
-      categoryQ3
-    ]; //eventually need backend to send this in
+    List<String> tabLables = [categoryQ1, categoryQ2, categoryQ3];
 
     bool showText = true;
     updateProgress();
@@ -325,373 +382,191 @@ class _GlobalChallengeState extends State<globalChallenge> {
                         child: Column(
                           children: [
                             StreamBuilder<bool>(
-                              stream: _streamController.stream,
-                              initialData: true,
-                              builder: (context, snapshot) {
-                                if (snapshot.data! && response == false) {
-                                  return Column(
-                                    children: [
-                                      SizedBox(height: 30),
-                                      Text(
-                                        questions[currentQuestionIndex],
-                                        style: TextStyle(
-                                          fontSize: 18,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      ),
-                                      SizedBox(height: 30.0),
-                                      Container(
-                                        padding: EdgeInsets.symmetric(
-                                            horizontal: 20.0),
-                                        child: TextField(
-                                          controller: responseController,
-                                          onChanged: (value) {
-                                            setState(() {
-                                              userResponse = value;
-                                            });
-                                          },
-                                          decoration: InputDecoration(
-                                            hintText:
-                                                'Type your answer here...',
+                                stream: _streamController.stream,
+                                initialData: true,
+                                builder: (context, snapshot) {
+                                  if (snapshot.data! && responded == false) {
+                                    return Column(
+                                      children: [
+                                        SizedBox(height: 30),
+                                        Text(
+                                          questions[currentQuestionIndex],
+                                          style: TextStyle(
+                                            fontSize: 18,
+                                            fontWeight: FontWeight.bold,
                                           ),
                                         ),
-                                      ),
-                                      SizedBox(height: 40.0),
-                                      //not sure why this focus isn't listening - smth to figure out for next term maybe?
-                                      Focus(
-                                        child: RawKeyboardListener(
-                                            focusNode: FocusNode(),
-                                            onKey: (RawKeyEvent event) {
-                                              print(
-                                                  'Key event: ${event.logicalKey}');
-                                              if (event.logicalKey ==
-                                                  LogicalKeyboardKey.enter) {
-                                                print(
-                                                    'Key event: ${event.logicalKey}');
+                                        SizedBox(height: 30.0),
+                                        Container(
+                                          padding: EdgeInsets.symmetric(
+                                              horizontal: 20.0),
+                                          child: TextField(
+                                            controller: responseController,
+                                            onChanged: (value) {
+                                              setState(() {
+                                                userResponse = value;
+                                              });
+                                            },
+                                            decoration: InputDecoration(
+                                              hintText:
+                                                  'Type your answer here...',
+                                            ),
+                                          ),
+                                        ),
+                                        SizedBox(height: 40.0),
+                                        ElevatedButton(
+                                          style: ElevatedButton.styleFrom(
+                                            backgroundColor:
+                                                const Color.fromARGB(
+                                                    255, 255, 106, 0),
+                                            foregroundColor: Colors.white,
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(30),
+                                            ),
+                                            minimumSize: Size(150, 40),
+                                            padding: EdgeInsets.all(16),
+                                          ),
+                                          onPressed: () {
+                                            setState(() {
+                                              userResponse =
+                                                  responseController.text;
+                                              userResponses.add(userResponse);
+                                              responseController.clear();
+                                              if (currentQuestionIndex <= 1) {
+                                                updateProgress();
+                                                currentQuestionIndex += 1;
+                                              } else {
+                                                sendUserResponses(
+                                                  username,
+                                                  email,
+                                                  userResponses,
+                                                );
                                                 setState(() {
-                                                  userResponse =
-                                                      responseController.text;
-                                                  userResponses
-                                                      .add(userResponse);
-                                                  responseController.clear();
-                                                  if (currentQuestionIndex <=
-                                                      1) {
-                                                    updateProgress();
-                                                    // If not the last question, go to the next question.
-                                                    currentQuestionIndex += 1;
-                                                  } else {
-                                                    // If the last question, set 'response' to true to submit.
-                                                    setState(() {
-                                                      response = true;
-                                                    });
-                                                    sendUserResponses(
-                                                      widget.username,
-                                                      email,
-                                                      userResponses,
-                                                    );
-                                                  }
+                                                  responded = true;
                                                 });
                                               }
-                                            },
-                                            child: ElevatedButton(
-                                              style: ElevatedButton.styleFrom(
-                                                backgroundColor:
-                                                    const Color.fromARGB(
-                                                        255, 255, 106, 0),
-                                                foregroundColor: Colors.white,
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(30),
-                                                ),
-                                                minimumSize: Size(150, 40),
-                                                padding: EdgeInsets.all(16),
-                                              ),
-                                              onPressed: () {
-                                                setState(() {
-                                                  userResponse =
-                                                      responseController.text;
-                                                  userResponses
-                                                      .add(userResponse);
-                                                  responseController.clear();
-                                                  if (currentQuestionIndex <=
-                                                      1) {
-                                                    updateProgress();
-                                                    // If not the last question, go to the next question.
-                                                    currentQuestionIndex += 1;
-                                                  } else {
-                                                    // If the last question, set 'response' to true to submit.
-                                                    setState(() {
-                                                      response = true;
-                                                    });
-                                                    sendUserResponses(
-                                                      widget.username,
-                                                      email,
-                                                      userResponses,
-                                                    );
-                                                  }
-                                                });
-                                              },
-                                              child: Text(
-                                                currentQuestionIndex == 2
-                                                    ? 'Submit'
-                                                    : 'Next',
-                                              ),
-                                            )),
-                                      ),
-                                      SizedBox(height: 20),
-                                      Container(
-                                        width: 200,
-                                        child: LinearProgressIndicator(
-                                          value: progressValue,
-                                          backgroundColor: Colors.grey[300],
-                                          valueColor:
-                                              AlwaysStoppedAnimation<Color>(
-                                                  Colors.orange),
-                                          minHeight: 10,
-                                        ),
-                                      ),
-                                    ],
-                                  );
-                                } else if (response == false) {
-                                  return Column(
-                                    children: [
-                                      SizedBox(height: 20.0),
-                                      Column(
-                                        children: [
-                                          SizedBox(height: 50),
-                                          Center(
-                                            child: Text(
-                                              'Play the',
-                                              style: TextStyle(
-                                                fontSize: 30,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.orange,
-                                              ),
-                                            ),
-                                          ),
-                                          Center(
-                                            child: Text(
-                                              'challenge',
-                                              style: TextStyle(
-                                                fontSize: 30,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.orange,
-                                              ),
-                                            ),
-                                          ),
-                                          Center(
-                                            child: Text(
-                                              'to see ',
-                                              style: TextStyle(
-                                                fontSize: 30,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.orange,
-                                              ),
-                                            ),
-                                          ),
-                                          Center(
-                                            child: Text(
-                                              'Global Stats!',
-                                              style: TextStyle(
-                                                fontSize: 30,
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.orange,
-                                              ),
-                                            ),
-                                          ),
-                                        ],
-                                      ),
-                                    ],
-                                  );
-                                } else if (!snapshot.data! &&
-                                    response == true) {
-                                  return Column(children: [
-                                    Container(
-                                        width: 300.h,
-                                        height: 500.v,
-                                        child: Stats(
-                                            totalResponses: totalResponses,
-                                            tabLabels: tabLables,
-                                            statsQ1: statsQ1,
-                                            statsQ2: statsQ2,
-                                            statsQ3: statsQ3))
-                                  ]);
-                                } else {
-                                  return Column(
-                                    children: [
-                                      SizedBox(height: 20),
-                                      Center(
-                                          child: Padding(
-                                              padding: const EdgeInsets.only(
-                                                  right: 100.0),
-                                              child: RichText(
-                                                text: TextSpan(
-                                                  children: [
-                                                    TextSpan(
-                                                      text: 'Verba',
-                                                      style: TextStyle(
-                                                          color: Colors.orange,
-                                                          fontSize: 24,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                    TextSpan(
-                                                      text: '-tastic!',
-                                                      style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 24,
-                                                          fontWeight:
-                                                              FontWeight.bold),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ))),
-                                      SizedBox(height: 10),
-                                      Container(
-                                        width: 200,
-                                        height: 48,
-                                        child: Stack(
-                                          children: [
-                                            Image.asset('assets/Ellipse 41.png',
-                                                height: 48),
-                                            Positioned(
-                                              top: 0,
-                                              left: 30,
-                                              child: Image.asset(
-                                                  'assets/Ellipse 42.png',
-                                                  height: 48),
-                                            ),
-                                            Positioned(
-                                              top: 0,
-                                              left: 60,
-                                              child: Image.asset(
-                                                  'assets/Ellipse 48.png',
-                                                  height: 48),
-                                            ),
-                                            Positioned(
-                                              top: 0,
-                                              left: 90,
-                                              child: Image.asset(
-                                                  'assets/Ellipse 49.png',
-                                                  height: 48),
-                                            ),
-                                            Positioned(
-                                              top: 0,
-                                              left: 120,
-                                              child: Image.asset(
-                                                  'assets/Ellipse 54.png',
-                                                  height: 48),
-                                            ),
-                                            Positioned(
-                                              top: 0,
-                                              left: 150,
-                                              child: Image.asset(
-                                                  'assets/Ellipse 65.png',
-                                                  height: 48),
-                                            ),
-                                          ],
-                                        ),
-                                      ),
-                                      SizedBox(height: 10),
-                                      Container(
-                                          width: 200,
-                                          child: RichText(
-                                            text: TextSpan(
-                                              children: [
-                                                TextSpan(
-                                                  text:
-                                                      'You, Reggie, Sarah, Anne, Clara, Jane, and John all said ',
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 14,
-                                                  ),
-                                                ),
-                                                TextSpan(
-                                                  text: 'Tennis',
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                              ],
-                                            ),
-                                          )),
-                                      SizedBox(height: 10),
-                                      Center(
-                                          child: Container(
-                                        width: 100,
-                                        height: 55,
-                                        child: Stack(
-                                          children: [
-                                            Image.asset(
-                                                'assets/Ellipse 54.png'),
-                                            Positioned(
-                                              top: 0,
-                                              left: 30,
-                                              child: Image.asset(
-                                                'assets/Ellipse 55.png',
-                                                height: 55,
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      )),
-                                      SizedBox(height: 10),
-                                      Container(
-                                          width: 220,
-                                          child: Center(
-                                              child: RichText(
-                                            text: TextSpan(
-                                              children: [
-                                                TextSpan(
-                                                  text:
-                                                      'You were most similar to Sarah today, with a ',
-                                                  style: TextStyle(
-                                                    color: Colors.black,
-                                                    fontSize: 14,
-                                                  ),
-                                                ),
-                                                TextSpan(
-                                                  text: '97%',
-                                                  style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 14,
-                                                      fontWeight:
-                                                          FontWeight.bold),
-                                                ),
-                                                TextSpan(
-                                                    text: ' similarity score!',
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 14,
-                                                    )),
-                                              ],
-                                            ),
-                                          ))),
-                                      SizedBox(height: 20.0),
-                                      Container(
-                                        width: 220,
-                                        child: Center(
+                                            });
+                                          },
                                           child: Text(
-                                            'New Challenge in $formattedTimeUntilMidnight',
-                                            style: TextStyle(
-                                              fontSize: 14,
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                                            currentQuestionIndex == 2
+                                                ? 'Submit'
+                                                : 'Next',
                                           ),
                                         ),
-                                      )
-                                    ],
-                                  );
-                                }
-                              },
-                            ),
+                                        SizedBox(height: 20),
+                                        Container(
+                                          width: 200,
+                                          child: LinearProgressIndicator(
+                                            value: progressValue,
+                                            backgroundColor: Colors.grey[300],
+                                            valueColor:
+                                                AlwaysStoppedAnimation<Color>(
+                                                    Colors.orange),
+                                            minHeight: 10,
+                                          ),
+                                        ),
+                                      ],
+                                    );
+                                  } else if (responded == false) {
+                                    return Column(
+                                      children: [
+                                        SizedBox(height: 20.0),
+                                        Column(
+                                          children: [
+                                            SizedBox(height: 50),
+                                            Center(
+                                              child: Text(
+                                                'Play the',
+                                                style: TextStyle(
+                                                  fontSize: 30,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.orange,
+                                                ),
+                                              ),
+                                            ),
+                                            Center(
+                                              child: Text(
+                                                'challenge',
+                                                style: TextStyle(
+                                                  fontSize: 30,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.orange,
+                                                ),
+                                              ),
+                                            ),
+                                            Center(
+                                              child: Text(
+                                                'to see ',
+                                                style: TextStyle(
+                                                  fontSize: 30,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.orange,
+                                                ),
+                                              ),
+                                            ),
+                                            Center(
+                                              child: Text(
+                                                'Global Stats!',
+                                                style: TextStyle(
+                                                  fontSize: 30,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Colors.orange,
+                                                ),
+                                              ),
+                                            ),
+                                          ],
+                                        ),
+                                      ],
+                                    );
+                                  } else if (!snapshot.data! &&
+                                      responded == true) {
+                                    return Column(children: [
+                                      Container(
+                                          width: 300.h,
+                                          height: 500.v,
+                                          child: Stats(
+                                              totalResponses: totalResponses,
+                                              tabLabels: tabLables,
+                                              statsQ1: statsQ1,
+                                              statsQ2: statsQ2,
+                                              statsQ3: statsQ3))
+                                    ]);
+                                  } else {
+                                    return FutureBuilder<void>(
+                                      future: _fetchData(username),
+                                      builder: (context, snapshot) {
+                                        if (snapshot.connectionState ==
+                                            ConnectionState.waiting) {
+                                          // load indicator j to make it wait
+                                          return const CircularProgressIndicator();
+                                        } else if (snapshot.hasError) {
+                                          // aka cross ur fingers
+                                          return Text(
+                                              'Error: ${snapshot.error}');
+                                        } else {
+                                          // display verbatastic data
+                                          return Column(
+                                            children: [
+                                              Verbatastic(
+                                                verbatimedWord: verbatimedWord,
+                                                formattedTimeUntilMidnight:
+                                                    formattedTimeUntilMidnight,
+                                                verbatasticUsernames:
+                                                    verbatasticUsernames,
+                                              ),
+                                            ],
+                                          );
+                                        }
+                                      },
+                                    );
+                                  }
+                                }),
                           ],
                         ),
                       ),
                       Visibility(
-                        visible: !response,
+                        visible: !responded,
                         child: Image.asset(
                           'assets/bird.png',
                           width: 83,

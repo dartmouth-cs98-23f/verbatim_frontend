@@ -46,8 +46,6 @@ class FriendAcceptOrDeclineRequest {
 }
 
 class SideBar extends StatefulWidget {
-  final String username = SharedPrefs().getUserName() ?? "";
-
   SideBar({
     Key? key,
   }) : super(key: key);
@@ -57,6 +55,8 @@ class SideBar extends StatefulWidget {
 }
 
 class _SideBarState extends State<SideBar> {
+  String username = SharedPrefs().getUserName() ?? "";
+
   final Color primary = Color.fromARGB(255, 231, 111, 81);
 
   Set<String> friendRequestUsernames = <String>{};
@@ -75,12 +75,7 @@ class _SideBarState extends State<SideBar> {
       final List<dynamic> data = json.decode(response.body);
       List<User> friendsList = data.map((item) => User.fromJson(item)).toList();
       usernamesList = friendsList.map((user) => user.username).toList();
-
-      print('this is friends: $usernamesList');
-
-      print(response);
     } else {
-      print(username);
       print('Failed to send responses. Status code: ${response.statusCode}');
     }
   }
@@ -107,7 +102,6 @@ class _SideBarState extends State<SideBar> {
         }
       }
     } else {
-      print(username);
       print('Failed to send responses. Status code: ${response.statusCode}');
     }
   }
@@ -131,19 +125,18 @@ class _SideBarState extends State<SideBar> {
 
     if (response.statusCode == 200) {
       print('responses sent succesfully');
-      print(response);
     } else {
-      print(username);
       print('Failed to send responses. Status code: ${response.statusCode}');
     }
   }
 
   @override
   Widget build(BuildContext context) {
+    username = SharedPrefs().getUserName() ?? "";
     return FutureBuilder<void>(
         future: Future.wait([
-          getFriends(widget.username),
-          getFriendRequests(widget.username),
+          getFriends(username),
+          getFriendRequests(username),
         ]),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -168,7 +161,7 @@ class _SideBarState extends State<SideBar> {
                         child: Center(
                           child: ListTile(
                             title: Text(
-                              widget.username,
+                              username,
                               style:
                                   TextStyle(color: Colors.white, fontSize: 20),
                             ),
@@ -328,10 +321,8 @@ class _SideBarState extends State<SideBar> {
                                 children: [
                                   GestureDetector(
                                     onTap: () {
-                                      print(widget.username);
-                                      print(requester);
                                       handleFriendRequests(
-                                          widget.username, requester, true);
+                                          username, requester, true);
                                       setState(() {
                                         friendRequestUsernames
                                             .remove(requester);
@@ -343,7 +334,7 @@ class _SideBarState extends State<SideBar> {
                                   GestureDetector(
                                     onTap: () {
                                       handleFriendRequests(
-                                          widget.username, requester, false);
+                                          username, requester, false);
                                       setState(() {
                                         friendRequestUsernames
                                             .remove(requester);
@@ -404,7 +395,26 @@ class _SideBarState extends State<SideBar> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 30),
+                  SizedBox(height: 10.0),
+                  Container(
+                    padding: EdgeInsets.symmetric(horizontal: 5.0),
+                    child: Container(
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 0.0, vertical: .1),
+                      child: ListTile(
+                        title: Text('Logout',
+                            style: TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18)),
+                        leading: Icon(Icons.logout, color: Colors.black),
+                        onTap: () {
+                          Navigator.pushNamed(context, '/logout');
+                        },
+                      ),
+                    ),
+                  ),
+                  SizedBox(height: 20),
                 ],
               ),
             );
@@ -424,6 +434,10 @@ void handleTap(BuildContext context, int index) {
       break;
     case 2: // "Settings"
       Navigator.pushNamed(context, '/settings');
+      break;
+
+    case 3: // "Logout"
+      Navigator.pushNamed(context, '/logout');
       break;
   }
 }
