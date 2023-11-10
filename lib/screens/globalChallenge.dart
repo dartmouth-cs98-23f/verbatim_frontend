@@ -217,6 +217,9 @@ class _GlobalChallengeState extends State<globalChallenge> {
             return MapEntry(key, (value as List).cast<String>());
           }) ??
           {};
+      setState(() {
+        responded = true;
+      });
 
       if (verbatasticUsers.isNotEmpty) {
         final MapEntry<String, List<String>?>? firstEntry =
@@ -225,9 +228,6 @@ class _GlobalChallengeState extends State<globalChallenge> {
         if (firstEntry != null) {
           verbatimedWord = firstEntry.key;
           verbatasticUsernames = firstEntry.value;
-
-          print("First key: $verbatimedWord");
-          print("First value: $verbatasticUsernames");
         } else {
           print("The first entry is null");
         }
@@ -557,7 +557,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                         if (snapshot.connectionState ==
                                             ConnectionState.waiting) {
                                           // load indicator j to make it wait
-                                          return CircularProgressIndicator();
+                                          return const CircularProgressIndicator();
                                         } else if (snapshot.hasError) {
                                           // aka cross ur fingers
                                           return Text(
