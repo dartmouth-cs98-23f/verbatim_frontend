@@ -237,31 +237,35 @@ class Stats extends StatelessWidget {
                                                     child: Row(children: [
                                                       Icon(
                                                           Icons.account_circle),
-                                                      RichText(
-                                                        text: TextSpan(
-                                                          style: DefaultTextStyle
-                                                                  .of(context)
-                                                              .style,
-                                                          children: <TextSpan>[
-                                                            TextSpan(
-                                                              text:
-                                                                  '$friendName: ',
-                                                              style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
+                                                      Flexible(
+                                                        child: RichText(
+                                                          text: TextSpan(
+                                                            style: DefaultTextStyle
+                                                                    .of(context)
+                                                                .style,
+                                                            children: <TextSpan>[
+                                                              TextSpan(
+                                                                text:
+                                                                    '$friendName: ',
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .bold,
+                                                                ),
                                                               ),
-                                                            ),
-                                                            TextSpan(
-                                                              text:
-                                                                  friendAnswer1,
-                                                              style: TextStyle(
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .normal,
+                                                              TextSpan(
+                                                                text:
+                                                                    friendAnswer1,
+                                                                style:
+                                                                    TextStyle(
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .normal,
+                                                                ),
                                                               ),
-                                                            ),
-                                                          ],
+                                                            ],
+                                                          ),
                                                         ),
                                                       ),
                                                     ]),
@@ -274,35 +278,37 @@ class Stats extends StatelessWidget {
                                                         child: Row(children: [
                                                           Icon(Icons
                                                               .account_circle),
-                                                          RichText(
-                                                            text: TextSpan(
-                                                              style: DefaultTextStyle
-                                                                      .of(context)
-                                                                  .style,
-                                                              children: <TextSpan>[
-                                                                TextSpan(
-                                                                  text:
-                                                                      '$nextFriendName: ',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
+                                                          Flexible(
+                                                            child: RichText(
+                                                              text: TextSpan(
+                                                                style: DefaultTextStyle.of(
+                                                                        context)
+                                                                    .style,
+                                                                children: <TextSpan>[
+                                                                  TextSpan(
+                                                                    text:
+                                                                        '$nextFriendName: ',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                    ),
                                                                   ),
-                                                                ),
-                                                                TextSpan(
-                                                                  text:
-                                                                      nextAnswer,
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .normal,
+                                                                  TextSpan(
+                                                                    text:
+                                                                        nextAnswer,
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .normal,
+                                                                    ),
                                                                   ),
-                                                                ),
-                                                              ],
+                                                                ],
+                                                              ),
                                                             ),
-                                                          ),
+                                                          )
                                                         ]),
                                                       ),
                                                     ),
@@ -430,35 +436,37 @@ class Stats extends StatelessWidget {
                                                       child: Row(children: [
                                                         Icon(Icons
                                                             .account_circle),
-                                                        RichText(
-                                                          text: TextSpan(
-                                                            style: DefaultTextStyle
-                                                                    .of(context)
-                                                                .style,
-                                                            children: <TextSpan>[
-                                                              TextSpan(
-                                                                text:
-                                                                    '$friendName: ',
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
+                                                        Flexible(
+                                                          child: RichText(
+                                                            text: TextSpan(
+                                                              style: DefaultTextStyle
+                                                                      .of(context)
+                                                                  .style,
+                                                              children: <TextSpan>[
+                                                                TextSpan(
+                                                                  text:
+                                                                      '$friendName: ',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                              TextSpan(
-                                                                text:
-                                                                    friendAnswer2,
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal,
+                                                                TextSpan(
+                                                                  text:
+                                                                      friendAnswer2,
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .normal,
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                            ],
+                                                              ],
+                                                            ),
                                                           ),
-                                                        ),
+                                                        )
                                                       ]),
                                                     ),
                                                   )),
@@ -469,35 +477,35 @@ class Stats extends StatelessWidget {
                                                           child: Row(children: [
                                                             Icon(Icons
                                                                 .account_circle),
-                                                            RichText(
-                                                              text: TextSpan(
-                                                                style: DefaultTextStyle.of(
-                                                                        context)
-                                                                    .style,
-                                                                children: <TextSpan>[
-                                                                  TextSpan(
-                                                                    text:
-                                                                        '$nextFriendName: ',
-                                                                    style:
-                                                                        TextStyle(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
+                                                            Flexible(
+                                                              child: RichText(
+                                                                text: TextSpan(
+                                                                  style: DefaultTextStyle.of(
+                                                                          context)
+                                                                      .style,
+                                                                  children: <TextSpan>[
+                                                                    TextSpan(
+                                                                      text:
+                                                                          '$nextFriendName: ',
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight.bold,
+                                                                      ),
                                                                     ),
-                                                                  ),
-                                                                  TextSpan(
-                                                                    text:
-                                                                        nextAnswer,
-                                                                    style:
-                                                                        TextStyle(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .normal,
+                                                                    TextSpan(
+                                                                      text:
+                                                                          nextAnswer,
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight.normal,
+                                                                      ),
                                                                     ),
-                                                                  ),
-                                                                ],
+                                                                  ],
+                                                                ),
                                                               ),
-                                                            ),
+                                                            )
                                                           ]),
                                                         ),
                                                       ),
@@ -624,35 +632,37 @@ class Stats extends StatelessWidget {
                                                       child: Row(children: [
                                                         Icon(Icons
                                                             .account_circle),
-                                                        RichText(
-                                                          text: TextSpan(
-                                                            style: DefaultTextStyle
-                                                                    .of(context)
-                                                                .style,
-                                                            children: <TextSpan>[
-                                                              TextSpan(
-                                                                text:
-                                                                    '$friendName: ',
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
+                                                        Flexible(
+                                                          child: RichText(
+                                                            text: TextSpan(
+                                                              style: DefaultTextStyle
+                                                                      .of(context)
+                                                                  .style,
+                                                              children: <TextSpan>[
+                                                                TextSpan(
+                                                                  text:
+                                                                      '$friendName: ',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                              TextSpan(
-                                                                text:
-                                                                    friendAnswer3,
-                                                                style:
-                                                                    TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal,
+                                                                TextSpan(
+                                                                  text:
+                                                                      friendAnswer3,
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .normal,
+                                                                  ),
                                                                 ),
-                                                              ),
-                                                            ],
+                                                              ],
+                                                            ),
                                                           ),
-                                                        ),
+                                                        )
                                                       ]),
                                                     ),
                                                   ),
@@ -664,35 +674,37 @@ class Stats extends StatelessWidget {
                                                         child: Row(children: [
                                                           Icon(Icons
                                                               .account_circle),
-                                                          RichText(
-                                                            text: TextSpan(
-                                                              style: DefaultTextStyle
-                                                                      .of(context)
-                                                                  .style,
-                                                              children: <TextSpan>[
-                                                                TextSpan(
-                                                                  text:
-                                                                      '$nextFriendName: ',
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
+                                                          Flexible(
+                                                            child: RichText(
+                                                              text: TextSpan(
+                                                                style: DefaultTextStyle.of(
+                                                                        context)
+                                                                    .style,
+                                                                children: <TextSpan>[
+                                                                  TextSpan(
+                                                                    text:
+                                                                        '$nextFriendName: ',
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                    ),
                                                                   ),
-                                                                ),
-                                                                TextSpan(
-                                                                  text:
-                                                                      nextAnswer,
-                                                                  style:
-                                                                      TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .normal,
+                                                                  TextSpan(
+                                                                    text:
+                                                                        nextAnswer,
+                                                                    style:
+                                                                        TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .normal,
+                                                                    ),
                                                                   ),
-                                                                ),
-                                                              ],
+                                                                ],
+                                                              ),
                                                             ),
-                                                          ),
+                                                          )
                                                         ]),
                                                       ),
                                                     ),
@@ -735,7 +747,7 @@ class Legend extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final itemsPerRow = 2;
+    final itemsPerRow = 1;
 
     final rows = <Widget>[];
     for (int i = 0; i < data.length; i += itemsPerRow) {
@@ -743,23 +755,25 @@ class Legend extends StatelessWidget {
       final row = Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: rowItems.map((item) {
-          return Center(
-              child: Row(
-            children: <Widget>[
-              Container(
-                width: 20,
-                height: 20,
-                color: item.color,
-              ),
-              SizedBox(width: 5),
-              Text(item.title),
-              SizedBox(width: 10),
-            ],
-          ));
+          return Flexible(
+              child: Center(
+                  child: Row(
+                children: <Widget>[
+                  Container(
+                    width: 20,
+                    height: 20,
+                    color: item.color,
+                  ),
+                  SizedBox(width: 5),
+                  Text(item.title),
+                  SizedBox(width: 5),
+                ],
+              )),
+              flex: 0);
         }).toList(),
       );
       rows.add(row);
-      rows.add(SizedBox(height: 10));
+      rows.add(SizedBox(height: 5));
     }
 
     return Center(child: Column(children: rows));
