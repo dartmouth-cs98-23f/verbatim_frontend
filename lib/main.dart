@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
+import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/screens/logIn.dart';
 import 'package:verbatim_frontend/screens/logout.dart';
 import 'Components/defineRoutes.dart';
@@ -20,6 +21,8 @@ Future<void> main() async {
 
   // new changes to solve the refresh issue
 
+  String environment = String.fromEnvironment('FLUTTER_BACKEND_ENV', defaultValue: 'dev');
+  BackendService.loadProperties(environment);
   runApp(const MyApp());
   defineRoutes();
 }
