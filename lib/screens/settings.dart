@@ -58,6 +58,7 @@ void edits(
       SharedPrefs().setBio(bio);
       SharedPrefs().setEmail(email);
       SharedPrefs().setUserName(newUsername);
+      _showSuccessDialog(context);
     }
   } catch (error) {
     print('Sorry cannot edit account settings:$error');
@@ -68,6 +69,56 @@ String getVal(String? fieldval, String currentval) {
   String finalVal;
   fieldval!.isEmpty ? finalVal = currentval : finalVal = fieldval;
   return finalVal;
+}
+
+void _showSuccessDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0), // Set the corner radius
+        ),
+        backgroundColor:
+            Color.fromARGB(255, 255, 243, 238), // Set the background color
+        title: RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: 'Verba',
+                style: TextStyle(
+                    color: Colors.orange,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold),
+              ),
+              TextSpan(
+                text: '-tastic!',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+        ),
+        content: Text(
+          'Your changes have been recorded!',
+          style: TextStyle(color: Colors.black), // Set text color
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(); // Close the dialog
+            },
+            child: Text(
+              'OK',
+              style: TextStyle(color: Colors.blue), // Set button text color
+            ),
+          ),
+        ],
+      );
+    },
+  );
 }
 
 class settings extends StatefulWidget {

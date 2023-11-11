@@ -13,6 +13,7 @@ import 'package:verbatim_frontend/widgets/custom_tab.dart';
 import 'dart:async';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 
+
 void reset(BuildContext context, String newPassword, String oldPassword) async {
   try {
     final response = await http.post(
@@ -37,6 +38,7 @@ void reset(BuildContext context, String newPassword, String oldPassword) async {
   }
 }
 
+
 class ResetPassword extends StatefulWidget {
   const ResetPassword({super.key});
 
@@ -45,9 +47,116 @@ class ResetPassword extends StatefulWidget {
 }
 
 class _ResetPasswordState extends State<ResetPassword> {
+
+  Map<String, Text> validationErrors = {};
+
   final oldPassword = TextEditingController();
   final newPassword = TextEditingController();
   final confirmPassword = TextEditingController();
+
+  void _showSuccessDialog(BuildContext context) {
+  showDialog(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        shape: RoundedRectangleBorder(
+          borderRadius: BorderRadius.circular(10.0), // Set the corner radius
+        ),
+        backgroundColor:
+            Color.fromARGB(255, 255, 243, 238), // Set the background color
+        title: RichText(
+          text: TextSpan(
+            children: [
+              TextSpan(
+                text: 'Verba',
+                style: TextStyle(
+                    color: Colors.orange,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold),
+              ),
+              TextSpan(
+                text: '-tastic!',
+                style: TextStyle(
+                    color: Colors.black,
+                    fontSize: 24,
+                    fontWeight: FontWeight.bold),
+              ),
+            ],
+          ),
+        ),
+        content: Text(
+          'Your changes have been recorded!',
+          style: TextStyle(color: Colors.black), // Set text color
+        ),
+        actions: [
+          TextButton(
+            onPressed: () {
+              Navigator.of(context).pop(); // Close the dialog
+            },
+            child: Text(
+              'OK',
+              style: TextStyle(color: Colors.blue), // Set button text color
+            ),
+          ),
+        ],
+      );
+    },
+  );
+}
+
+void reset(
+    BuildContext context, String newPassword, String oldPassword) async {
+    try {
+      final response = await http.post(
+        //need a reset password endpoint
+        Uri.parse('http://localhost:8080/api/v1/resetPassword'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'username': SharedPrefs().getUserName(),
+          'oldPassword': oldPassword,
+          'newPassword': newPassword,
+        }),
+      );
+      // do something to verify the response,
+      if (response.statusCode == 200) {
+        // get the account info to display as dummy text
+        SharedPrefs().setPassword(newPassword);
+        _showSuccessDialog(context);
+      }
+    } catch (error) {
+      print('Sorry, cannot edit account settings: $error');
+    }
+  }
+
+  bool isValid(
+      String oldPassword, String newPassword, String confirmedPassword) {
+    if (oldPassword == newPassword) {
+      setValidationError("passwordResetError",
+          "New passwords can not be the same as new passowrd");
+      return false;
+    }
+
+    if (newPassword.isNotEmpty && newPassword != confirmedPassword) {
+      setValidationError("passwordMismatch", "Passwords do not match.");
+      return false;
+    }
+    if(SharedPrefs().getPassword()!= oldPassword){
+      setValidationError("incorrectPassword", "Incorrect value for currrent password");
+      return false;
+    }
+    return true;
+  }
+
+  void setValidationError(String field, String message) {
+    setState(() {
+      validationErrors[field] = Text(
+        message,
+        style: TextStyle(color: Colors.red),
+      );
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
