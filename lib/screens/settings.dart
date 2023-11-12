@@ -421,10 +421,10 @@ class _SettingsState extends State<settings> {
                                 SharedPrefs().getUserName() ?? "",
                                 getVal(usernameSettings.text,
                                     SharedPrefs().getUserName() ?? ""),
-                                getVal(emailSettings.text,
-                                    SharedPrefs().getEmail() ?? ""),
                                 getVal(bioSettings.text,
                                     SharedPrefs().getBio() ?? ""),
+                                getVal(emailSettings.text,
+                                    SharedPrefs().getEmail() ?? ""),
                                 profile,
                               );
                             })
