@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:verbatim_frontend/BackendService.dart';
 import 'sideBar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -153,7 +154,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
 
   Future<void> sendUserResponses(
       String username, String email, List<String> userResponses) async {
-    final url = Uri.parse('http://localhost:8080/api/v1/submitGlobalResponse');
+    final url = Uri.parse(BackendService.getBackendUrl() + 'submitGlobalResponse');
     final headers = <String, String>{'Content-Type': 'application/json'};
 
     final modifiedResponses = userResponses.map((response) {
