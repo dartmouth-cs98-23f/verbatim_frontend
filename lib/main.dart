@@ -10,6 +10,9 @@ Future<void> main() async {
       .ensureInitialized(); // Ensure WidgetsBinding is initialized
   await SharedPrefs().init();
 
+  //String environment = String.fromEnvironment('FLUTTER_BACKEND_ENV', defaultValue: 'dev');
+  //BackendService.loadProperties(environment);
+
   runApp(const MyApp());
   defineRoutes();
 }
