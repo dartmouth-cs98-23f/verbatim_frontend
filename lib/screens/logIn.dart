@@ -3,13 +3,10 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
-import 'package:verbatim_frontend/screens/forgotPassword.dart';
-import 'package:verbatim_frontend/screens/signUp.dart';
 import 'package:verbatim_frontend/screens/signupErrorMessage.dart';
 import '../Components/shared_prefs.dart';
 import '../widgets/my_button_with_image.dart';
 import '../widgets/my_button_no_image.dart';
-import 'globalChallenge.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:verbatim_frontend/widgets/size.dart';
@@ -64,7 +61,6 @@ class _LogInState extends State<LogIn> {
           SharedPrefs().setLastName(responseData['lastName'] ?? '');
           SharedPrefs().setBio(responseData['bio'] ?? '');
           // SharedPrefs().setBio(responseData['profilePicture']);
-          //
           Navigator.pushNamed(context, '/global_challenge');
           print('Log-in successful');
         }

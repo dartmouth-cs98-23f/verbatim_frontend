@@ -1,11 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:shared_preferences/shared_preferences.dart';
-import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/screens/logIn.dart';
-import 'package:verbatim_frontend/screens/logout.dart';
 import 'Components/defineRoutes.dart';
 import 'Components/shared_prefs.dart';
-import 'package:flutter_web_plugins/url_strategy.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -13,10 +9,6 @@ Future<void> main() async {
   WidgetsFlutterBinding
       .ensureInitialized(); // Ensure WidgetsBinding is initialized
   await SharedPrefs().init();
-
-
-  String environment = String.fromEnvironment('FLUTTER_BACKEND_ENV', defaultValue: 'dev');
-  BackendService.loadProperties(environment);
 
   runApp(const MyApp());
   defineRoutes();
