@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'package:verbatim_frontend/screens/forgotPassword.dart';
 import 'package:verbatim_frontend/screens/signUp.dart';
@@ -41,7 +42,8 @@ class _LogInState extends State<LogIn> {
   void saveUsersInfo(String usernameOrEmail, String password) async {
     try {
       final response = await http.post(
-        Uri.parse('http://localhost:8080/api/v1/login'),
+        Uri.parse(BackendService.getBackendUrl() + 'login'),
+
         headers: <String, String>{
           'Content-Type': 'application/json',
         },

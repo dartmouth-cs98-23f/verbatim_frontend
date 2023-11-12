@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/screens/globalChallenge.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
@@ -36,7 +37,7 @@ void edits(
 ) async {
   try {
     final response = await http.post(
-      Uri.parse('http://localhost:8080/api/v1/accountSettings'),
+      Uri.parse(BackendService.getBackendUrl() + 'accountSettings'),
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
