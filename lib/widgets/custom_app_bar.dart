@@ -25,21 +25,11 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
           borderRadius: BorderRadius.circular(10),
         ),
         child: Row(
-          mainAxisAlignment: MainAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.start,
           children: [
             SizedBox(height: 25, width: 8),
             Icon(Icons.search, color: Colors.grey, size: 15),
             SizedBox(height: 25, width: 8),
-            Expanded(
-              child: TextField(
-                decoration: InputDecoration(
-                  hintStyle: TextStyle(fontSize: 14.0),
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.only(top: 0),
-                ),
-                textAlign: TextAlign.left,
-              ),
-            ),
           ],
         ),
       ),
