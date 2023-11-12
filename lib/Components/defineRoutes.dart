@@ -3,7 +3,6 @@ import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'package:verbatim_frontend/screens/forgotPassword.dart';
 import 'package:verbatim_frontend/screens/logout.dart';
-
 import '../screens/globalChallenge.dart';
 import '../screens/logIn.dart';
 import '../screens/onboardingPage1.dart';
@@ -13,9 +12,6 @@ import '../screens/onboardingPage4.dart';
 import '../screens/signUp.dart';
 import '../screens/signupErrorMessage.dart';
 import '../screens/settings.dart';
-
-
-
 
 class Application {
   static FluroRouter router = FluroRouter();
@@ -67,12 +63,10 @@ void defineRoutes() {
     handler: forgotPasswordHandler,
   );
 
-
   Application.router.define(
     '/settings',
     handler: settingsHandler,
   );
-
 
   Application.router.define(
     '/signup_error_message',
