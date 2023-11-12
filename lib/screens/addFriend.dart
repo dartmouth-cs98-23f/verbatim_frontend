@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'sideBar.dart';
@@ -60,7 +61,7 @@ class _AddFriendState extends State<addFriend> {
 // get friend requests to build list of requesting users, to remove
 // from displayed users (to avoid crash on requesting again)
   Future<void> getFriendRequests(String username) async {
-    final url = Uri.parse('http://localhost:8080/api/v1/getFriendRequests');
+    final url = Uri.parse(BackendService.getBackendUrl() + 'getFriendRequests');
     final Map<String, String> headers = {
       'Content-Type': 'text/plain',
     };

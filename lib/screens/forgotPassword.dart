@@ -1,6 +1,7 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
+import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'package:verbatim_frontend/screens/logIn.dart';
 import 'package:verbatim_frontend/screens/signupErrorMessage.dart';
@@ -24,7 +25,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     try {
       validateField(email, "email", "Email is required");
       final response = await http.post(
-        Uri.parse('http://localhost:8080/api/v1/resetPassword'),
+        Uri.parse(BackendService.getBackendUrl() + 'resetPassword'),
         headers: <String, String>{
           'Content-Type': 'application/json',
         },

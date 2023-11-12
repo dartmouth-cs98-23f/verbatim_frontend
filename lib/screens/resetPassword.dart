@@ -1,6 +1,7 @@
 import 'package:flutter/widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'sideBar.dart';
@@ -18,7 +19,7 @@ void reset(BuildContext context, String newPassword, String oldPassword) async {
   try {
     final response = await http.post(
       //need a reset password endpoint
-      Uri.parse('http://localhost:8080/api/v1/resetPassword'),
+      Uri.parse(BackendService.getBackendUrl() + 'resetPassword'),
       headers: <String, String>{
         'Content-Type': 'application/json',
       },

@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
@@ -53,7 +54,7 @@ class _SignUpState extends State<SignUp> {
       String confirmPassword) async {
     try {
       final response = await http.post(
-        Uri.parse('http://localhost:8080/api/v1/register'),
+        Uri.parse(BackendService.getBackendUrl() + 'register'),
         headers: <String, String>{
           'Content-Type': 'application/json',
         },
