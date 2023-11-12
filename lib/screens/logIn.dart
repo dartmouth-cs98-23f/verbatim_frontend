@@ -242,7 +242,7 @@ class _LogInState extends State<LogIn> {
                         buttonText: 'Sign in with Google',
                         hasButtonImage: true,
                         onTap: () {
-                          signInWithGoogle();
+                          // signInWithGoogle();
                         },
                       ),
                       const SizedBox(height: 10),
