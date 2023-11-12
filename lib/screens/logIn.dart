@@ -4,13 +4,10 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
-import 'package:verbatim_frontend/screens/forgotPassword.dart';
-import 'package:verbatim_frontend/screens/signUp.dart';
 import 'package:verbatim_frontend/screens/signupErrorMessage.dart';
 import '../Components/shared_prefs.dart';
 import '../widgets/my_button_with_image.dart';
 import '../widgets/my_button_no_image.dart';
-import 'globalChallenge.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:verbatim_frontend/widgets/size.dart';
@@ -66,32 +63,22 @@ class _LogInState extends State<LogIn> {
           SharedPrefs().setLastName(responseData['lastName'] ?? '');
           SharedPrefs().setBio(responseData['bio'] ?? '');
           // SharedPrefs().setBio(responseData['profilePicture']);
-
-          Navigator.push(
-            context,
-            MaterialPageRoute(
-              builder: (context) => globalChallenge(),
-            ),
-          );
+          Navigator.pushNamed(context, '/global_challenge');
           print('Log-in successful');
         }
       } else {
         print('Error during log-in: ${response.statusCode.toString()}');
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => SignupErrorMessage(pageName: 'log in'),
-          ),
-        );
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) =>
+              SignupErrorMessage(pageName: 'log in'),
+        ));
       }
     } catch (e) {
       print('Error during sign-up: $e');
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => SignupErrorMessage(pageName: 'log in'),
-        ),
-      );
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) =>
+            SignupErrorMessage(pageName: 'log in'),
+      ));
     }
   }
 
@@ -211,11 +198,8 @@ class _LogInState extends State<LogIn> {
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
-                              // Navigate to the sign-in page
-                              Navigator.of(context).push(MaterialPageRoute(
-                                builder: (context) =>
-                                    ForgotPassword(), // This will be a forgot password page routing
-                              ));
+                              // Navigate to the Forgot password page
+                              Navigator.pushNamed(context, '/forgot_password');
                             },
                         ),
                       ],
@@ -242,7 +226,7 @@ class _LogInState extends State<LogIn> {
                         buttonText: 'Sign in with Google',
                         hasButtonImage: true,
                         onTap: () {
-                          signInWithGoogle();
+                          // signInWithGoogle();
                         },
                       ),
                       const SizedBox(height: 10),
@@ -267,10 +251,7 @@ class _LogInState extends State<LogIn> {
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
                                     // Navigate to the sign-up page
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                      builder: (context) => SignUp(),
-                                    ));
+                                    Navigator.pushNamed(context, '/signup');
                                   },
                               ),
                             ],
