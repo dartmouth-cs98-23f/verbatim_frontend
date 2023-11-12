@@ -78,13 +78,8 @@ class OnBoardingPage4 extends StatelessWidget {
                 children: [
                   ElevatedButton(
                     onPressed: () {
-                      // Navigate to the 'Sign Up' page
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => globalChallenge(),
-                        ),
-                      );
+                      // Navigate to the 'Global Challenge' page
+                      Navigator.pushNamed(context, '/global_challenge');
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Color(0xFFFFF3EE), // Background color
@@ -102,10 +97,8 @@ class OnBoardingPage4 extends StatelessWidget {
 
                   ElevatedButton(
                     onPressed: () {
-                      // Navigate to the 'Sign Up' page
-                      Navigator.of(context).push(MaterialPageRoute(
-                        builder: (context) => globalChallenge(),
-                      ));
+                      // Navigate to the 'Global Challenge' page
+                      Navigator.pushNamed(context, '/global_challenge');
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Color(0xFFE76F51), // Background color
