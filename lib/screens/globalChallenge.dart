@@ -38,6 +38,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
   String categoryQ1 = "";
   String categoryQ2 = "";
   String categoryQ3 = "";
+  int id = 0;
   // Get Stats variables
   int totalResponses = 0;
   int numVerbatimQ1 = 0;
@@ -102,6 +103,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
       question2 = data['q2'];
 
       question3 = data['q3'];
+      //id = data['id'];
 
       categoryQ1 = data['categoryQ1'];
       categoryQ2 = data['categoryQ2'];
@@ -154,7 +156,8 @@ class _GlobalChallengeState extends State<globalChallenge> {
 
   Future<void> sendUserResponses(
       String username, String email, List<String> userResponses) async {
-    final url = Uri.parse(BackendService.getBackendUrl() + 'submitGlobalResponse');
+    final url =
+        Uri.parse(BackendService.getBackendUrl() + 'submitGlobalResponse');
     final headers = <String, String>{'Content-Type': 'application/json'};
 
     final modifiedResponses = userResponses.map((response) {
@@ -165,7 +168,8 @@ class _GlobalChallengeState extends State<globalChallenge> {
 
       final capitalizedWords = words.map((word) {
         if (word.isNotEmpty) {
-          return word[0].toUpperCase() + word.substring(1);
+          return word[0].toUpperCase() +
+              word.substring(1).trim(); // trim shld remove whitespaces
         }
         return word;
       });
@@ -237,6 +241,8 @@ class _GlobalChallengeState extends State<globalChallenge> {
 
   @override
   Widget build(BuildContext context) {
+    // String idString = id.toString();
+
     username = SharedPrefs().getUserName() ?? "";
     DateTime now = DateTime.now();
     DateTime midnight =
@@ -365,7 +371,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                       Container(
                         clipBehavior: Clip.hardEdge,
                         margin: EdgeInsets.only(top: 10.h),
-                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        //    padding: EdgeInsets.symmetric(horizontal: 10),
                         width: 300.h,
                         height: 500.v,
                         decoration: BoxDecoration(
@@ -531,7 +537,8 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                               tabLabels: tabLables,
                                               statsQ1: statsQ1,
                                               statsQ2: statsQ2,
-                                              statsQ3: statsQ3))
+                                              statsQ3: statsQ3,
+                                              questions: questions))
                                     ]);
                                   } else {
                                     return FutureBuilder<void>(

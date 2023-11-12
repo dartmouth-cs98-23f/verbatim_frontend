@@ -23,17 +23,17 @@ class OnBoardingPage2 extends StatelessWidget {
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(top: 60.0),  //Color(0xFFFFF3EE)
+                        padding: const EdgeInsets.only(
+                            top: 60.0), //Color(0xFFFFF3EE)
                         child: Align(
                           alignment: Alignment.center,
                           child: Image.asset(
-                            'assets/onboardingPage2Image.png', // Replace with the path to your image asset
-                            width: 454, // Set the width and height to your preference
+                            'assets/onboardingPage2Image.png',
+                            width: 454,
                             height: 354,
                           ),
                         ),
                       ),
-
                       const SizedBox(height: 15),
                       Center(
                         child: Text(
@@ -85,7 +85,8 @@ class OnBoardingPage2 extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       primary: Color(0xFFFFF3EE), // Background color
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(13.0), // Rectangular shape
+                        borderRadius:
+                            BorderRadius.circular(13.0), // Rectangular shape
                       ),
                     ),
                     child: Text(
@@ -95,7 +96,6 @@ class OnBoardingPage2 extends StatelessWidget {
                       ),
                     ),
                   ),
-
                   ElevatedButton(
                     onPressed: () {
                       // Navigate to the 'on-boarding page 3' page
@@ -104,7 +104,8 @@ class OnBoardingPage2 extends StatelessWidget {
                     style: ElevatedButton.styleFrom(
                       primary: Color(0xFFE76F51), // Background color
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(13.0), // Rectangular shape
+                        borderRadius:
+                            BorderRadius.circular(13.0), // Rectangular shape
                       ),
                     ),
                     child: Text(
