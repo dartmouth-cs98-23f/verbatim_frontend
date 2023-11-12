@@ -364,7 +364,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                       Container(
                         clipBehavior: Clip.hardEdge,
                         margin: EdgeInsets.only(top: 10.h),
-                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        //   padding: EdgeInsets.symmetric(horizontal: 10),
                         width: 300.h,
                         height: 500.v,
                         decoration: BoxDecoration(
@@ -523,6 +523,11 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                       responded == true) {
                                     return Column(children: [
                                       Container(
+                                          decoration: BoxDecoration(
+                                            borderRadius:
+                                                BorderRadius.circular(50),
+                                            color: Colors.white,
+                                          ),
                                           width: 300.h,
                                           height: 500.v,
                                           child: Stats(
@@ -530,7 +535,8 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                               tabLabels: tabLables,
                                               statsQ1: statsQ1,
                                               statsQ2: statsQ2,
-                                              statsQ3: statsQ3))
+                                              statsQ3: statsQ3,
+                                              questions: questions))
                                     ]);
                                   } else {
                                     return FutureBuilder<void>(

@@ -22,6 +22,7 @@ class Stats extends StatelessWidget {
   final Map<String, dynamic> statsQ2;
   final Map<String, dynamic> statsQ3;
   final int totalResponses;
+  final List<String> questions;
 
   Stats({
     required this.tabLabels,
@@ -29,6 +30,7 @@ class Stats extends StatelessWidget {
     required this.statsQ1,
     required this.statsQ2,
     required this.statsQ3,
+    required this.questions,
   });
 
   List<Friend> convertStatsToFriends(Map<String, dynamic> stats) {
@@ -97,15 +99,35 @@ class Stats extends StatelessWidget {
 
     double numOther3 = totalResponses - numTopResponses3;
 
+    const MaterialColor myOrangeColor = MaterialColor(
+      0xFFF3EE,
+      <int, Color>{
+        50: Color(0xFFFAFAFA),
+        100: Color(0xFFF5F5F5),
+        200: Color(0xFFEEEEEE),
+        300: Color(0xFFE0E0E0),
+        350: Color(0xFFD6D6D6),
+        400: Color(0xFFBDBDBD),
+        500: Color(0xFF9E9E9E),
+        600: Color(0xFF757575),
+        700: Color(0xFF616161),
+        800: Color(0xFF424242),
+        850: Color(0xFF303030), // only for background color in dark theme
+        900: Color(0xFF212121),
+      },
+    );
+
     return MaterialApp(
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
         splashColor: Colors.transparent,
         hoverColor: Colors.transparent,
+        primarySwatch: myOrangeColor,
       ),
       home: DefaultTabController(
         length: tabLabels.length,
         child: Scaffold(
+            backgroundColor: Colors.transparent,
             appBar: AppBar(
               backgroundColor: Colors.transparent,
               elevation: 0,
@@ -116,22 +138,42 @@ class Stats extends StatelessWidget {
                 labelColor: Colors.orange,
                 indicatorPadding: EdgeInsets.zero,
                 indicatorSize: TabBarIndicatorSize.label,
-                tabs: tabLabels.map((label) => Tab(text: label)).toList(),
+                tabs: tabLabels
+                    .map((label) => Tab(
+                          child: Container(
+                            //    padding: EdgeInsets.symmetric(horizontal: 4.0),
+                            child: Text(
+                              label,
+                              overflow: TextOverflow.ellipsis,
+                            ),
+                          ),
+                        ))
+                    .toList(),
+                //  tabs: tabLabels.map((label) => Tab(text: label).toList(),
               ),
             ),
             body: TabBarView(
               children: tabLabels
                   .asMap()
                   .map((index, label) {
-                    Widget tabContent = Center(child: Text('Default Content'));
+                    Widget tabContent = Center(child: Text(''));
 
                     if (index == 0) {
                       tabContent = SingleChildScrollView(
                           child: Center(
                         child: Column(children: [
+                          SizedBox(height: 10),
+                          Text(
+                            questions[0],
+                            style: TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                           Container(
-                            height: 400.v,
-                            width: 500,
+                            color: Colors.white,
+                            width: 300.h,
+                            height: 350.v,
                             child: PieChart(
                               PieChartData(
                                 centerSpaceRadius: 0,
@@ -139,22 +181,22 @@ class Stats extends StatelessWidget {
                                   PieChartSectionData(
                                       value: statsQ1["numResponsesFirst"],
                                       color: Colors.red,
-                                      radius: 90,
+                                      radius: 80,
                                       title: ''),
                                   PieChartSectionData(
                                       value: statsQ1["numResponsesSecond"],
                                       color: Colors.green,
-                                      radius: 90,
+                                      radius: 80,
                                       title: ''),
                                   PieChartSectionData(
                                       value: statsQ1["numResponsesThird"],
                                       color: Colors.blue,
-                                      radius: 90,
+                                      radius: 80,
                                       title: ''),
                                   PieChartSectionData(
                                       value: numOther1,
                                       color: Colors.yellow,
-                                      radius: 90,
+                                      radius: 80,
                                       title: ''),
                                 ],
                               ),
@@ -207,17 +249,15 @@ class Stats extends StatelessWidget {
                                         color: Colors.orange,
                                       ),
                                     ))
-                                : Center(
-                                    child: ListView.builder(
-                                      physics: NeverScrollableScrollPhysics(),
-                                      itemCount: friends.length,
-                                      itemBuilder: (context, index) {
-                                        final friend = friends[index];
+                                : Column(
+                                    children: friends.asMap().entries.map(
+                                      (entry) {
+                                        final friend = entry.value;
                                         final friendName = friend.name;
                                         final friendAnswer1 = friend.answer1;
 
-                                        if (index.isEven) {
-                                          final nextIndex = index + 1;
+                                        if (entry.key.isEven) {
+                                          final nextIndex = entry.key + 1;
                                           final hasNextFriend =
                                               nextIndex < friends.length;
 
@@ -320,7 +360,7 @@ class Stats extends StatelessWidget {
                                           return SizedBox();
                                         }
                                       },
-                                    ),
+                                    ).toList(),
                                   ),
                           ),
                         ]),
