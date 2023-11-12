@@ -52,6 +52,7 @@ class _SignUpState extends State<SignUp> {
       String email,
       String password,
       String confirmPassword) async {
+    print("Sign up url is: "+BackendService.getBackendUrl());
     try {
       final response = await http.post(
         Uri.parse(BackendService.getBackendUrl() + 'register'),
@@ -66,6 +67,7 @@ class _SignUpState extends State<SignUp> {
           'password': password
         }),
       );
+
 
       if (response.statusCode == 200) {
         // Save the user's info in the shared prefs
@@ -365,7 +367,7 @@ class _SignUpState extends State<SignUp> {
                         buttonText: 'Sign up with Google',
                         hasButtonImage: true,
                         onTap: () {
-                          signUpWithGoogle();
+                          // signUpWithGoogle();
                         },
                       ),
                       const SizedBox(height: 10),
