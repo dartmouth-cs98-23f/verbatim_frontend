@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/screens/logIn.dart';
+import 'BackendService.dart';
 import 'Components/defineRoutes.dart';
 import 'Components/shared_prefs.dart';
 
@@ -10,8 +11,9 @@ Future<void> main() async {
       .ensureInitialized(); // Ensure WidgetsBinding is initialized
   await SharedPrefs().init();
 
-  //String environment = String.fromEnvironment('FLUTTER_BACKEND_ENV', defaultValue: 'dev');
-  //BackendService.loadProperties(environment);
+  const String environment = const String.fromEnvironment('FLUTTER_BACKEND_ENV', defaultValue: 'dev');
+  print("env in main is: "+environment);
+  BackendService.loadProperties(environment);
 
   runApp(const MyApp());
   defineRoutes();

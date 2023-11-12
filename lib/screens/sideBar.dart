@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:verbatim_frontend/BackendService.dart';
 import 'dart:convert';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 
@@ -108,7 +109,7 @@ class _SideBarState extends State<SideBar> {
 
   Future<void> handleFriendRequests(
       String username, String requester, bool accept) async {
-    final url = Uri.parse('http://localhost:8080/api/v1/handleFriendRequest');
+    final url = Uri.parse(BackendService.getBackendUrl() + 'handleFriendRequest');
     final Map<String, String> headers = {
       'Content-Type': 'application/json',
     };

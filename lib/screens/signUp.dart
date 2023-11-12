@@ -3,6 +3,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
+import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
@@ -51,9 +52,10 @@ class _SignUpState extends State<SignUp> {
       String email,
       String password,
       String confirmPassword) async {
+    print("Sign up url is: "+BackendService.getBackendUrl());
     try {
       final response = await http.post(
-        Uri.parse('http://localhost:8080/api/v1/register'),
+        Uri.parse(BackendService.getBackendUrl() + 'register'),
         headers: <String, String>{
           'Content-Type': 'application/json',
         },
@@ -65,6 +67,7 @@ class _SignUpState extends State<SignUp> {
           'password': password
         }),
       );
+
 
       if (response.statusCode == 200) {
         // Save the user's info in the shared prefs
@@ -357,7 +360,7 @@ class _SignUpState extends State<SignUp> {
                         buttonText: 'Sign up with Google',
                         hasButtonImage: true,
                         onTap: () {
-                          signUpWithGoogle();
+                          // signUpWithGoogle();
                         },
                       ),
                       const SizedBox(height: 10),
