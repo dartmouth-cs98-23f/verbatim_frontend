@@ -15,8 +15,8 @@ Future<void> main() async {
   await SharedPrefs().init();
 
 
-  //String environment = String.fromEnvironment('FLUTTER_BACKEND_ENV', defaultValue: 'dev');
-  //BackendService.loadProperties(environment);
+  const String environment = const String.fromEnvironment('FLUTTER_BACKEND_ENV', defaultValue: 'dev');
+  BackendService.loadProperties(environment);
 
   runApp(const MyApp());
   defineRoutes();
