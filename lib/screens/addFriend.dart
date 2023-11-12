@@ -60,7 +60,7 @@ class _AddFriendState extends State<addFriend> {
 // get friend requests to build list of requesting users, to remove
 // from displayed users (to avoid crash on requesting again)
   Future<void> getFriendRequests(String username) async {
-    final url = Uri.parse('http://localhost:8080/api/v1/getFriendRequests');
+    final url = Uri.parse('https://verbatim-backend-ad94f6ae4b2e.herokuapp.com/api/v1/getFriendRequests');
     final Map<String, String> headers = {
       'Content-Type': 'text/plain',
     };
@@ -94,7 +94,7 @@ class _AddFriendState extends State<addFriend> {
 // get the friend requests that i have sent
   Future<void> getUsersIHaveRequested(String username) async {
     final url =
-        Uri.parse('http://localhost:8080/api/v1/getUsersIHaveRequested');
+        Uri.parse('https://verbatim-backend-ad94f6ae4b2e.herokuapp.com/api/v1/getUsersIHaveRequested');
     final Map<String, String> headers = {
       'Content-Type': 'text/plain',
     };
@@ -121,7 +121,7 @@ class _AddFriendState extends State<addFriend> {
   // get friends to remove from displayed users
 
   Future<void> getFriends(String username) async {
-    final url = Uri.parse('http://localhost:8080/api/v1/getFriends');
+    final url = Uri.parse('https://verbatim-backend-ad94f6ae4b2e.herokuapp.com/api/v1/getFriends');
     final Map<String, String> headers = {
       'Content-Type': 'text/plain',
     };
@@ -141,7 +141,7 @@ class _AddFriendState extends State<addFriend> {
 // get all users to display
 
   Future<void> getUsers() async {
-    final url = Uri.parse('http://localhost:8080/api/v1/users');
+    final url = Uri.parse('https://verbatim-backend-ad94f6ae4b2e.herokuapp.com/api/v1/users');
 
     final response = await http.get(url);
     if (response.statusCode == 200) {
@@ -231,7 +231,7 @@ class _AddFriendState extends State<addFriend> {
 // send friendrequest to backend
   Future<void> sendFriendRequest(
       String requestingUsername, String requestedUsername) async {
-    final url = Uri.parse('http://localhost:8080/api/v1/addFriend');
+    final url = Uri.parse('https://verbatim-backend-ad94f6ae4b2e.herokuapp.com/api/v1/addFriend');
     final headers = <String, String>{'Content-Type': 'application/json'};
 
     final response = await http.post(url,

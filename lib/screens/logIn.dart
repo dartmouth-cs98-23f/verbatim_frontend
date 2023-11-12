@@ -1,7 +1,7 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+// import 'package:google_sign_in/google_sign_in.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'package:verbatim_frontend/screens/forgotPassword.dart';
 import 'package:verbatim_frontend/screens/signUp.dart';
@@ -25,11 +25,11 @@ class _LogInState extends State<LogIn> {
   Map<String, Text> validationErrors = {};
   final usernameEmailController = TextEditingController();
   final passwordController = TextEditingController();
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
-    scopes: ['email'],
-    clientId:
-        '297398575103-o3engamrir3bf4pupurvj8lm4mn0iuqt.apps.googleusercontent.com',
-  );
+  // final GoogleSignIn _googleSignIn = GoogleSignIn(
+  //   scopes: ['email'],
+  //   clientId:
+  //       '297398575103-o3engamrir3bf4pupurvj8lm4mn0iuqt.apps.googleusercontent.com',
+  // );
 
   void logIn(
       BuildContext context, String usernameOrEmail, String password) async {
@@ -41,7 +41,7 @@ class _LogInState extends State<LogIn> {
   void saveUsersInfo(String usernameOrEmail, String password) async {
     try {
       final response = await http.post(
-        Uri.parse('http://localhost:8080/api/v1/login'),
+        Uri.parse('https://verbatim-backend-ad94f6ae4b2e.herokuapp.com/api/v1/login'),
         headers: <String, String>{
           'Content-Type': 'application/json',
         },
@@ -94,18 +94,18 @@ class _LogInState extends State<LogIn> {
   }
 
   // Sign in with Google functionality
-  Future<void> signInWithGoogle() async {
-    try {
-      final GoogleSignInAccount? account = await _googleSignIn.signIn();
+  // Future<void> signInWithGoogle() async {
+  //   try {
+  //     final GoogleSignInAccount? account = await _googleSignIn.signIn();
 
-      if (account != null) {
-        saveUsersInfo(account.email, 'unavailable');
-      }
-    } catch (error) {
-      // Handle any errors that occur during the Google Sign-In process.
-      print('Error during Google Sign-In: $error');
-    }
-  }
+  //     if (account != null) {
+  //       saveUsersInfo(account.email, 'unavailable');
+  //     }
+  //   } catch (error) {
+  //     // Handle any errors that occur during the Google Sign-In process.
+  //     print('Error during Google Sign-In: $error');
+  //   }
+  // }
 
   bool isValidEmail(String email) {
     // Use a regular expression to validate email format
@@ -240,7 +240,7 @@ class _LogInState extends State<LogIn> {
                         buttonText: 'Sign in with Google',
                         hasButtonImage: true,
                         onTap: () {
-                          signInWithGoogle();
+                          // signInWithGoogle();
                         },
                       ),
                       const SizedBox(height: 10),

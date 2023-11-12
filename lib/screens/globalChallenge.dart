@@ -87,7 +87,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
   double progressValue = 0.0;
 
   Future<void> _fetchData(String username) async {
-    final url = Uri.parse('http://localhost:8080/api/v1/globalChallenge');
+    final url = Uri.parse('https://verbatim-backend-ad94f6ae4b2e.herokuapp.com/api/v1/globalChallenge');
     final headers = <String, String>{'Content-Type': 'application/json'};
 
     final fetchQuestions =
@@ -153,7 +153,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
 
   Future<void> sendUserResponses(
       String username, String email, List<String> userResponses) async {
-    final url = Uri.parse('http://localhost:8080/api/v1/submitGlobalResponse');
+    final url = Uri.parse('https://verbatim-backend-ad94f6ae4b2e.herokuapp.com/api/v1/submitGlobalResponse');
     final headers = <String, String>{'Content-Type': 'application/json'};
 
     final modifiedResponses = userResponses.map((response) {

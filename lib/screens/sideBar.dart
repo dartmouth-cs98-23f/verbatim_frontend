@@ -63,7 +63,7 @@ class _SideBarState extends State<SideBar> {
   List<String> usernamesList = [];
 
   Future<void> getFriends(String username) async {
-    final url = Uri.parse('http://localhost:8080/api/v1/getFriends');
+    final url = Uri.parse('https://verbatim-backend-ad94f6ae4b2e.herokuapp.com/api/v1/getFriends');
     final Map<String, String> headers = {
       'Content-Type': 'text/plain',
     };
@@ -81,7 +81,7 @@ class _SideBarState extends State<SideBar> {
   }
 
   Future<void> getFriendRequests(String username) async {
-    final url = Uri.parse('http://localhost:8080/api/v1/getFriendRequests');
+    final url = Uri.parse('https://verbatim-backend-ad94f6ae4b2e.herokuapp.com/api/v1/getFriendRequests');
     final Map<String, String> headers = {
       'Content-Type': 'text/plain',
     };
@@ -108,7 +108,7 @@ class _SideBarState extends State<SideBar> {
 
   Future<void> handleFriendRequests(
       String username, String requester, bool accept) async {
-    final url = Uri.parse('http://localhost:8080/api/v1/handleFriendRequest');
+    final url = Uri.parse('https://verbatim-backend-ad94f6ae4b2e.herokuapp.com/api/v1/handleFriendRequest');
     final Map<String, String> headers = {
       'Content-Type': 'application/json',
     };
