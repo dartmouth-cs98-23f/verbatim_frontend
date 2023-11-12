@@ -74,30 +74,23 @@ class _SignUpState extends State<SignUp> {
         SharedPrefs().setPassword(password);
         SharedPrefs().setUserName(username);
 
-        // Successful sign-up: Navigate to the global challenge page
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => OnBoardingPage1()),
-        );
+        // Successful sign-up: Navigate to the 'OnBoardingPage1' page
+        Navigator.pushNamed(context, '/onboarding_page1');
 
         print('Sign-up successful');
       } else {
         print('Error during sign-up: ${response.statusCode.toString()}');
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => SignupErrorMessage(pageName: 'sign up'),
-          ),
-        );
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) =>
+              SignupErrorMessage(pageName: 'sign up'),
+        ));
       }
     } catch (e) {
       print('Error during sign-up: ${e.toString()}');
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => SignupErrorMessage(pageName: 'sign up'),
-        ),
-      );
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) =>
+            SignupErrorMessage(pageName: 'sign up'),
+      ));
     }
   }
 
@@ -389,10 +382,7 @@ class _SignUpState extends State<SignUp> {
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
                                     // Navigate to the sign-in page
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                      builder: (context) => LogIn(),
-                                    ));
+                                    Navigator.pushNamed(context, '/login');
                                   },
                               ),
                             ],
