@@ -56,7 +56,7 @@ class Verbatastic extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: 10),
+        SizedBox(height: 65.v),
         Center(
             child: verbatasticUsernames!.isEmpty
                 ? Container(
@@ -100,6 +100,7 @@ class Verbatastic extends StatelessWidget {
         Container(
           width: 200,
           child: RichText(
+            textAlign: TextAlign.center,
             text: TextSpan(
               children: verbatasticUsernames!.isEmpty
                   ? [
@@ -108,7 +109,7 @@ class Verbatastic extends StatelessWidget {
                             "Wow, you're unique! No other users have submitted any of these responses.",
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 14,
+                          fontSize: 16,
                         ),
                       ),
                     ]
@@ -120,7 +121,7 @@ class Verbatastic extends StatelessWidget {
                                 : ', '),
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 14,
+                          fontSize: 16,
                         ),
                       ),
                       for (int i = 0;
@@ -135,7 +136,7 @@ class Verbatastic extends StatelessWidget {
                                       : ''),
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 14,
+                            fontSize: 16,
                           ),
                         ),
                       TextSpan(
@@ -143,14 +144,14 @@ class Verbatastic extends StatelessWidget {
                             '${verbatasticUsernames!.length == 1 ? ' both ' : ' all '}said ',
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 14,
+                          fontSize: 16,
                         ),
                       ),
                       TextSpan(
                         text: verbatimedWord,
                         style: TextStyle(
                           color: Colors.black,
-                          fontSize: 14,
+                          fontSize: 17,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
@@ -158,7 +159,9 @@ class Verbatastic extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: 10),
+
+        // section commented out until we implement 'similarity scores' :(
+        /*
         Center(
           child: Container(
             width: 100.h,
@@ -226,7 +229,8 @@ class Verbatastic extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: 20.0),
+        */
+        SizedBox(height: 50.v),
         Container(
           width: 220,
           child: Center(

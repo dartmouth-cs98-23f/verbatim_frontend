@@ -215,13 +215,19 @@ class _SettingsState extends State<settings> {
                                                   255,
                                                   243,
                                                   238), // Color of the border
-                                              width: 2.0, // Width of the border
+                                              width: 2.0,
                                             ),
                                           ),
-                                          child: ClipOval(
-                                            child: Image.asset(
-                                              profile,
-                                              fit: BoxFit.cover,
+                                          child: Container(
+                                            width: 20,
+                                            height: 20,
+                                            child: ClipOval(
+                                              child: Image.asset(
+                                                profile,
+                                                width: 20,
+                                                height: 20,
+                                                fit: BoxFit.cover,
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -404,32 +410,31 @@ class _SettingsState extends State<settings> {
                     hintText: SharedPrefs().getEmail() ?? "",
                     obscureText: false),
 
-                Padding(
-                    padding: const EdgeInsets.only(left: 30.0),
+                Center(
                     child: Column(
-                      children: [
-                        const SizedBox(height: 30),
-                        MyButtonNoImage(
-                            buttonText: "Submit Changes",
-                            onTap: () {
-                              edits(
-                                context,
-                                getVal(firstNameSettings.text,
-                                    SharedPrefs().getFirstName() ?? ""),
-                                getVal(lastNameSettings.text,
-                                    SharedPrefs().getLastName() ?? ""),
-                                SharedPrefs().getUserName() ?? "",
-                                getVal(usernameSettings.text,
-                                    SharedPrefs().getUserName() ?? ""),
-                                getVal(bioSettings.text,
-                                    SharedPrefs().getBio() ?? ""),
-                                getVal(emailSettings.text,
-                                    SharedPrefs().getEmail() ?? ""),
-                                profile,
-                              );
-                            })
-                      ],
-                    ))
+                  children: [
+                    const SizedBox(height: 30),
+                    MyButtonNoImage(
+                        buttonText: "Submit Changes",
+                        onTap: () {
+                          edits(
+                            context,
+                            getVal(firstNameSettings.text,
+                                SharedPrefs().getFirstName() ?? ""),
+                            getVal(lastNameSettings.text,
+                                SharedPrefs().getLastName() ?? ""),
+                            SharedPrefs().getUserName() ?? "",
+                            getVal(usernameSettings.text,
+                                SharedPrefs().getUserName() ?? ""),
+                            getVal(
+                                bioSettings.text, SharedPrefs().getBio() ?? ""),
+                            getVal(emailSettings.text,
+                                SharedPrefs().getEmail() ?? ""),
+                            profile,
+                          );
+                        })
+                  ],
+                ))
               ],
             )),
       )),
