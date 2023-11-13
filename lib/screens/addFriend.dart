@@ -1,13 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'sideBar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:verbatim_frontend/widgets/friends_app_bar.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
 // User class for when backend passes in users
 class User {
@@ -95,7 +95,7 @@ class _AddFriendState extends State<addFriend> {
 // get the friend requests that i have sent
   Future<void> getUsersIHaveRequested(String username) async {
     final url =
-        Uri.parse('http://localhost:8080/api/v1/getUsersIHaveRequested');
+        Uri.parse(BackendService.getBackendUrl() + 'getUsersIHaveRequested');
     final Map<String, String> headers = {
       'Content-Type': 'text/plain',
     };
@@ -122,7 +122,7 @@ class _AddFriendState extends State<addFriend> {
   // get friends to remove from displayed users
 
   Future<void> getFriends(String username) async {
-    final url = Uri.parse('http://localhost:8080/api/v1/getFriends');
+    final url = Uri.parse(BackendService.getBackendUrl() + 'getFriends');
     final Map<String, String> headers = {
       'Content-Type': 'text/plain',
     };
@@ -142,7 +142,7 @@ class _AddFriendState extends State<addFriend> {
 // get all users to display
 
   Future<void> getUsers() async {
-    final url = Uri.parse('http://localhost:8080/api/v1/users');
+    final url = Uri.parse(BackendService.getBackendUrl() + 'users');
 
     final response = await http.get(url);
     if (response.statusCode == 200) {
@@ -232,7 +232,7 @@ class _AddFriendState extends State<addFriend> {
 // send friendrequest to backend
   Future<void> sendFriendRequest(
       String requestingUsername, String requestedUsername) async {
-    final url = Uri.parse('http://localhost:8080/api/v1/addFriend');
+    final url = Uri.parse(BackendService.getBackendUrl() + 'addFriend');
     final headers = <String, String>{'Content-Type': 'application/json'};
 
     final response = await http.post(url,

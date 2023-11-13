@@ -94,7 +94,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
   double progressValue = 0.0;
 
   Future<void> _fetchData(String username) async {
-    final url = Uri.parse('http://localhost:8080/api/v1/globalChallenge');
+    final url = Uri.parse(BackendService.getBackendUrl() + 'globalChallenge');
     final headers = <String, String>{'Content-Type': 'application/json'};
 
     final fetchQuestions =
