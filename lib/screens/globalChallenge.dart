@@ -38,12 +38,18 @@ class _GlobalChallengeState extends State<globalChallenge> {
   String categoryQ1 = "";
   String categoryQ2 = "";
   String categoryQ3 = "";
+  int id = 0;
   // Get Stats variables
   int totalResponses = 0;
   int numVerbatimQ1 = 0;
   int numVerbatimQ2 = 0;
   int numVerbatimQ3 = 0;
   int numExactVerbatim = 0;
+  // keep user responses to send to stats
+  String responseQ1 = "";
+  String responseQ2 = "";
+  String responseQ3 = "";
+  List<String> responses123 = [];
 
   Map<String, List<String>?> verbatasticUsers = {};
   List<String>? verbatasticUsernames = [];
@@ -102,6 +108,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
       question2 = data['q2'];
 
       question3 = data['q3'];
+      id = data['globalChallengeId'];
 
       categoryQ1 = data['categoryQ1'];
       categoryQ2 = data['categoryQ2'];
@@ -111,6 +118,12 @@ class _GlobalChallengeState extends State<globalChallenge> {
       // if null, user has not yet submitted global response - if not null we NEED this for page refresh to still work
 
       if (data["responseQ1"] != null) {
+        // get responses
+
+        responseQ1 = data['responseQ1'];
+        id = data['globalChallengeId'];
+        responseQ2 = data['responseQ2'];
+        responseQ3 = data['responseQ3'];
         numVerbatimQ1 = data['numVerbatimQ1'];
         numVerbatimQ2 = data['numVerbatimQ2'];
         numVerbatimQ3 = data['numVerbatimQ3'];
@@ -119,6 +132,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
         statsQ3 = data['statsQ3'];
         totalResponses = data['totalResponses'];
         responded = true;
+        responses123 = [responseQ1, responseQ2, responseQ3];
         verbatasticUsers = (data["verbatasticUsers"] as Map<String, dynamic>?)
                 ?.map((key, value) {
               return MapEntry(key, (value as List).cast<String>());
@@ -154,19 +168,25 @@ class _GlobalChallengeState extends State<globalChallenge> {
 
   Future<void> sendUserResponses(
       String username, String email, List<String> userResponses) async {
-    final url = Uri.parse(BackendService.getBackendUrl() + 'submitGlobalResponse');
+    final url =
+        Uri.parse(BackendService.getBackendUrl() + 'submitGlobalResponse');
     final headers = <String, String>{'Content-Type': 'application/json'};
 
     final modifiedResponses = userResponses.map((response) {
       final responseWithoutPunctuation =
           response.replaceAll(RegExp(r'[^\w\s]'), '');
 
-      final words = responseWithoutPunctuation.split(' ');
+      final words = responseWithoutPunctuation
+          .split(' ')
+          .where((word) => word.isNotEmpty); // shld fix the whitespace thing
 
       final capitalizedWords = words.map((word) {
         if (word.isNotEmpty) {
-          return word[0].toUpperCase() + word.substring(1);
+          final trimmed = word.trim();
+
+          return trimmed[0].toUpperCase() + trimmed.substring(1);
         }
+
         return word;
       });
 
@@ -174,7 +194,8 @@ class _GlobalChallengeState extends State<globalChallenge> {
       return capitalizedWords.join(' ');
     }).toList();
 
-    modResponse = modifiedResponses;
+//make sure we can send responses to stats on the first go
+    responses123 = modifiedResponses;
 
     final response = await http.post(
       url,
@@ -237,6 +258,8 @@ class _GlobalChallengeState extends State<globalChallenge> {
 
   @override
   Widget build(BuildContext context) {
+    String idString = id.toString();
+
     username = SharedPrefs().getUserName() ?? "";
     DateTime now = DateTime.now();
     DateTime midnight =
@@ -296,7 +319,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                               Positioned(
                                 child: Center(
                                   child: Text(
-                                    'Global Challenge #17',
+                                    'Global Challenge #$idString',
                                     style: TextStyle(
                                       fontSize: 24,
                                       color: Colors.white,
@@ -365,7 +388,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                       Container(
                         clipBehavior: Clip.hardEdge,
                         margin: EdgeInsets.only(top: 10.h),
-                        padding: EdgeInsets.symmetric(horizontal: 10),
+                        //    padding: EdgeInsets.symmetric(horizontal: 10),
                         width: 300.h,
                         height: 500.v,
                         decoration: BoxDecoration(
@@ -531,7 +554,9 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                               tabLabels: tabLables,
                                               statsQ1: statsQ1,
                                               statsQ2: statsQ2,
-                                              statsQ3: statsQ3))
+                                              statsQ3: statsQ3,
+                                              questions: questions,
+                                              responses: responses123))
                                     ]);
                                   } else {
                                     return FutureBuilder<void>(
