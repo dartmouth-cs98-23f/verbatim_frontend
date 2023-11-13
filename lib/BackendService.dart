@@ -6,7 +6,7 @@ class BackendService {
 
   static Future<void> loadProperties(String environment) async {
 
-    String content = await rootBundle.loadString('config.properties');
+    String content = await rootBundle.loadString('assets/config.properties');
     final properties = content.split('\n');
 
     for (var property in properties) {
