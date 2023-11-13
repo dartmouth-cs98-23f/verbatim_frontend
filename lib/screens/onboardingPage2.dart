@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/screens/getStarted.dart';
 import 'package:verbatim_frontend/screens/onboardingPage3.dart';
 import 'package:verbatim_frontend/screens/signUp.dart';
-
+import 'package:verbatim_frontend/widgets/size.dart';
 import '../Components/shared_prefs.dart';
 import 'globalChallenge.dart';
 import 'logIn.dart';
@@ -24,17 +24,16 @@ class OnBoardingPage2 extends StatelessWidget {
                     children: [
                       Padding(
                         padding: const EdgeInsets.only(
-                            top: 60.0), //Color(0xFFFFF3EE)
+                            top: 30.0), //Color(0xFFFFF3EE)
                         child: Align(
                           alignment: Alignment.center,
                           child: Image.asset(
                             'assets/onboardingPage2Image.png',
-                            width: 454,
-                            height: 354,
+                            width: 454.v,
+                            height: 354.v,
                           ),
                         ),
                       ),
-                      const SizedBox(height: 15),
                       Center(
                         child: Text(
                           'Discover \nShared Vocabulary',
@@ -49,7 +48,7 @@ class OnBoardingPage2 extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 30),
+                      SizedBox(height: 30.v),
                       Padding(
                         padding: const EdgeInsets.only(left: 30.0, right: 30.0),
                         child: Align(
@@ -73,7 +72,7 @@ class OnBoardingPage2 extends StatelessWidget {
               ),
             ),
             Padding(
-              padding: const EdgeInsets.all(40.0),
+              padding: const EdgeInsets.all(15.0),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
