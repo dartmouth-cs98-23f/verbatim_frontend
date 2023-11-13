@@ -49,6 +49,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
   String responseQ1 = "";
   String responseQ2 = "";
   String responseQ3 = "";
+  List<String> responses123 = [];
 
   Map<String, List<String>?> verbatasticUsers = {};
   List<String>? verbatasticUsernames = [];
@@ -107,7 +108,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
       question2 = data['q2'];
 
       question3 = data['q3'];
-      //id = data['globalChallengeId'];
+      id = data['globalChallengeId'];
 
       categoryQ1 = data['categoryQ1'];
       categoryQ2 = data['categoryQ2'];
@@ -119,6 +120,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
       if (data["responseQ1"] != null) {
         // get responses
         responseQ1 = data['responseQ1'];
+        id = data['globalChallengeId'];
         responseQ2 = data['responseQ2'];
         responseQ3 = data['responseQ3'];
         numVerbatimQ1 = data['numVerbatimQ1'];
@@ -186,7 +188,8 @@ class _GlobalChallengeState extends State<globalChallenge> {
       return capitalizedWords.join(' ');
     }).toList();
 
-    modResponse = modifiedResponses;
+//make sure we can send responses to stats on the first go
+    responses123 = modifiedResponses;
 
     final response = await http.post(
       url,
@@ -249,7 +252,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
 
   @override
   Widget build(BuildContext context) {
-    // String idString = id.toString();
+    String idString = id.toString();
 
     username = SharedPrefs().getUserName() ?? "";
     DateTime now = DateTime.now();
@@ -263,7 +266,6 @@ class _GlobalChallengeState extends State<globalChallenge> {
 
     final String assetName = 'assets/img1.svg';
     List<String> tabLables = [categoryQ1, categoryQ2, categoryQ3];
-    List<String> responses123 = [responseQ1, responseQ2, responseQ3];
 
     bool showText = true;
     updateProgress();
@@ -311,7 +313,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                               Positioned(
                                 child: Center(
                                   child: Text(
-                                    'Global Challenge ',
+                                    'Global Challenge #$idString',
                                     style: TextStyle(
                                       fontSize: 24,
                                       color: Colors.white,
