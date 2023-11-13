@@ -12,7 +12,7 @@ Future<void> main() async {
   await SharedPrefs().init();
 
   const String environment =
-      const String.fromEnvironment('FLUTTER_BACKEND_ENV', defaultValue: 'dev');
+      const String.fromEnvironment('FLUTTER_BACKEND_ENV', defaultValue: 'prod');
   print("env in main is: " + environment);
   BackendService.loadProperties(environment);
 
