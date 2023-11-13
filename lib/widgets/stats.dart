@@ -23,6 +23,7 @@ class Stats extends StatelessWidget {
   final Map<String, dynamic> statsQ3;
   final int totalResponses;
   final List<String> questions;
+  final List<String> responses;
 
   Stats({
     required this.tabLabels,
@@ -31,6 +32,7 @@ class Stats extends StatelessWidget {
     required this.statsQ2,
     required this.statsQ3,
     required this.questions,
+    required this.responses,
   });
 
   List<Friend> convertStatsToFriends(Map<String, dynamic> stats) {
@@ -116,6 +118,11 @@ class Stats extends StatelessWidget {
         900: Color(0xFF212121),
       },
     );
+/*
+    String yourAnswer1 = responses[0];
+    String yourAnswer2 = responses[1];
+    String yourAnswer3 = responses[2];
+    */
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -218,6 +225,24 @@ class Stats extends StatelessWidget {
                                 ),
                               )),
                           SizedBox(height: 20),
+
+                          /*
+                          Container(
+                            padding: EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  'You Said: ',
+                                  style: TextStyle(
+                                    fontSize: 18.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          */
                           Container(
                               width: 200,
                               child: Center(
@@ -365,6 +390,14 @@ class Stats extends StatelessWidget {
                       tabContent = SingleChildScrollView(
                           child: Center(
                         child: Column(children: [
+                          const SizedBox(height: 10),
+                          Text(
+                            questions[1],
+                            style: const TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                           Container(
                             width: 300.h,
                             height: 350.v,
@@ -560,6 +593,14 @@ class Stats extends StatelessWidget {
                       tabContent = SingleChildScrollView(
                           child: Center(
                         child: Column(children: [
+                          const SizedBox(height: 10),
+                          Text(
+                            questions[2],
+                            style: const TextStyle(
+                              fontSize: 16.0,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
                           Container(
                             height: 300.v,
                             child: PieChart(
