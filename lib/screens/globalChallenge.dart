@@ -45,6 +45,10 @@ class _GlobalChallengeState extends State<globalChallenge> {
   int numVerbatimQ2 = 0;
   int numVerbatimQ3 = 0;
   int numExactVerbatim = 0;
+  // keep user responses to send to stats
+  String responseQ1 = "";
+  String responseQ2 = "";
+  String responseQ3 = "";
 
   Map<String, List<String>?> verbatasticUsers = {};
   List<String>? verbatasticUsernames = [];
@@ -103,7 +107,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
       question2 = data['q2'];
 
       question3 = data['q3'];
-      //id = data['id'];
+      //id = data['globalChallengeId'];
 
       categoryQ1 = data['categoryQ1'];
       categoryQ2 = data['categoryQ2'];
@@ -113,6 +117,10 @@ class _GlobalChallengeState extends State<globalChallenge> {
       // if null, user has not yet submitted global response - if not null we NEED this for page refresh to still work
 
       if (data["responseQ1"] != null) {
+        // get responses
+        responseQ1 = data['responseQ1'];
+        responseQ2 = data['responseQ2'];
+        responseQ3 = data['responseQ3'];
         numVerbatimQ1 = data['numVerbatimQ1'];
         numVerbatimQ2 = data['numVerbatimQ2'];
         numVerbatimQ3 = data['numVerbatimQ3'];
@@ -255,6 +263,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
 
     final String assetName = 'assets/img1.svg';
     List<String> tabLables = [categoryQ1, categoryQ2, categoryQ3];
+    List<String> responses123 = [responseQ1, responseQ2, responseQ3];
 
     bool showText = true;
     updateProgress();
@@ -302,7 +311,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                               Positioned(
                                 child: Center(
                                   child: Text(
-                                    'Global Challenge #17',
+                                    'Global Challenge ',
                                     style: TextStyle(
                                       fontSize: 24,
                                       color: Colors.white,
@@ -539,7 +548,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                               statsQ2: statsQ2,
                                               statsQ3: statsQ3,
                                               questions: questions,
-                                              responses: userResponses))
+                                              responses: responses123))
                                     ]);
                                   } else {
                                     return FutureBuilder<void>(

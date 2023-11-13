@@ -118,11 +118,10 @@ class Stats extends StatelessWidget {
         900: Color(0xFF212121),
       },
     );
-/*
+
     String yourAnswer1 = responses[0];
     String yourAnswer2 = responses[1];
     String yourAnswer3 = responses[2];
-    */
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -224,25 +223,22 @@ class Stats extends StatelessWidget {
                                   ],
                                 ),
                               )),
-                          SizedBox(height: 20),
-
-                          /*
+                          SizedBox(height: 15.v),
                           Container(
                             padding: EdgeInsets.all(16.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
-                                  'You Said: ',
+                                  "You Said: '$yourAnswer1'",
                                   style: TextStyle(
-                                    fontSize: 18.0,
+                                    fontSize: 16.0,
                                     fontWeight: FontWeight.bold,
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          */
                           Container(
                               width: 200,
                               child: Center(
@@ -448,7 +444,22 @@ class Stats extends StatelessWidget {
                                   ],
                                 ),
                               )),
-                          SizedBox(height: 20),
+                          SizedBox(height: 15.v),
+                          Container(
+                            padding: EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "You Said: '$yourAnswer2'",
+                                  style: TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                           Container(
                               width: 200,
                               child: Center(
@@ -650,7 +661,22 @@ class Stats extends StatelessWidget {
                                   ],
                                 ),
                               )),
-                          SizedBox(height: 20),
+                          SizedBox(height: 15.v),
+                          Container(
+                            padding: EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "You Said: '$yourAnswer3'",
+                                  style: TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
                           Container(
                               width: 200,
                               child: Center(
