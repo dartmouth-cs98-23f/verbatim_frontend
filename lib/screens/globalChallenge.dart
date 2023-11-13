@@ -176,14 +176,17 @@ class _GlobalChallengeState extends State<globalChallenge> {
       final responseWithoutPunctuation =
           response.replaceAll(RegExp(r'[^\w\s]'), '');
 
-      final words = responseWithoutPunctuation.split(' ');
+      final words = responseWithoutPunctuation
+          .split(' ')
+          .where((word) => word.isNotEmpty); // shld fix the whitespace thing
 
       final capitalizedWords = words.map((word) {
         if (word.isNotEmpty) {
-          word = word.trim();
-          return word[0].toUpperCase() +
-              word.substring(1).trim(); // trim shld remove whitespaces
+          final trimmed = word.trim();
+
+          return trimmed[0].toUpperCase() + trimmed.substring(1);
         }
+
         return word;
       });
 
