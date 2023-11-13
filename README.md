@@ -1,4 +1,4 @@
-# Verbatim frontend 
+# Verbatim frontend
 
 ## Description
 
