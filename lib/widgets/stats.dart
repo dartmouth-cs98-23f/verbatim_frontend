@@ -163,14 +163,18 @@ class Stats extends StatelessWidget {
 
                     if (index == 0) {
                       tabContent = SingleChildScrollView(
-                          child: Center(
+                          child: Container(
                         child: Column(children: [
                           const SizedBox(height: 10),
-                          Text(
-                            questions[0],
-                            style: const TextStyle(
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.bold,
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Text(
+                              questions[0],
+                              style: const TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                           Container(
@@ -384,14 +388,18 @@ class Stats extends StatelessWidget {
                       ));
                     } else if (index == 1) {
                       tabContent = SingleChildScrollView(
-                          child: Center(
+                          child: Container(
                         child: Column(children: [
                           const SizedBox(height: 10),
-                          Text(
-                            questions[1],
-                            style: const TextStyle(
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.bold,
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Text(
+                              questions[1],
+                              style: const TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                           Container(
@@ -602,14 +610,18 @@ class Stats extends StatelessWidget {
                       ));
                     } else if (index == 2) {
                       tabContent = SingleChildScrollView(
-                          child: Center(
+                          child: Container(
                         child: Column(children: [
                           const SizedBox(height: 10),
-                          Text(
-                            questions[2],
-                            style: const TextStyle(
-                              fontSize: 16.0,
-                              fontWeight: FontWeight.bold,
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Text(
+                              questions[2],
+                              style: const TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                           Container(
