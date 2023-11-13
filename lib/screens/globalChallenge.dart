@@ -538,7 +538,8 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                               statsQ1: statsQ1,
                                               statsQ2: statsQ2,
                                               statsQ3: statsQ3,
-                                              questions: questions))
+                                              questions: questions,
+                                              responses: userResponses))
                                     ]);
                                   } else {
                                     return FutureBuilder<void>(
