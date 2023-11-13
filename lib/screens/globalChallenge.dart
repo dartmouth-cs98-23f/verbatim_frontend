@@ -119,6 +119,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
 
       if (data["responseQ1"] != null) {
         // get responses
+
         responseQ1 = data['responseQ1'];
         id = data['globalChallengeId'];
         responseQ2 = data['responseQ2'];
@@ -131,6 +132,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
         statsQ3 = data['statsQ3'];
         totalResponses = data['totalResponses'];
         responded = true;
+        responses123 = [responseQ1, responseQ2, responseQ3];
         verbatasticUsers = (data["verbatasticUsers"] as Map<String, dynamic>?)
                 ?.map((key, value) {
               return MapEntry(key, (value as List).cast<String>());
@@ -178,6 +180,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
 
       final capitalizedWords = words.map((word) {
         if (word.isNotEmpty) {
+          word = word.trim();
           return word[0].toUpperCase() +
               word.substring(1).trim(); // trim shld remove whitespaces
         }
