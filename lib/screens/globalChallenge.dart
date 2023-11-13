@@ -413,11 +413,15 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                     return Column(
                                       children: [
                                         SizedBox(height: 30),
-                                        Text(
-                                          questions[currentQuestionIndex],
-                                          style: TextStyle(
-                                            fontSize: 18,
-                                            fontWeight: FontWeight.bold,
+                                        Padding(
+                                          padding: const EdgeInsets.symmetric(
+                                              horizontal: 16.0),
+                                          child: Text(
+                                            questions[currentQuestionIndex],
+                                            style: TextStyle(
+                                              fontSize: 18,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                         ),
                                         SizedBox(height: 30.0),
