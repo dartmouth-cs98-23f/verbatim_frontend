@@ -137,7 +137,7 @@ class _SettingsState extends State<settings> {
   final bioSettings = TextEditingController();
   final emailSettings = TextEditingController();
   final String assetName = 'assets/img1.svg';
-  final String profile = 'assets/profile2.jpeg';
+  final String profile = 'assets/profile_pic.png';
 
   @override
   Widget build(BuildContext context) {
@@ -205,8 +205,8 @@ class _SettingsState extends State<settings> {
                                         padding:
                                             EdgeInsets.only(left: 0, top: 0),
                                         child: Container(
-                                          width: 100,
-                                          height: 100,
+                                          width: 60,
+                                          height: 60,
                                           decoration: BoxDecoration(
                                             shape: BoxShape.circle,
                                             border: Border.all(
@@ -219,13 +219,13 @@ class _SettingsState extends State<settings> {
                                             ),
                                           ),
                                           child: Container(
-                                            width: 20,
-                                            height: 20,
+                                            width: 5,
+                                            height: 5,
                                             child: ClipOval(
                                               child: Image.asset(
                                                 profile,
-                                                width: 20,
-                                                height: 20,
+                                                width: 5,
+                                                height: 5,
                                                 fit: BoxFit.cover,
                                               ),
                                             ),
