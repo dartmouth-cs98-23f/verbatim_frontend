@@ -36,7 +36,7 @@ dependencies:
     sdk: flutter
  
   get: ^4.1.4
-  fl_chart: ^0.40.0
+  fl_chart: ^0.64.0
   http: ^1.1.0
   google_sign_in: ^6.1.5
   flutter_signin_button: ^2.0.0
@@ -95,14 +95,16 @@ flutter:
      - assets/Ellipse 46.png
      - assets/Ellipse 47.png
      - assets/profile2.jpeg
+     - assets/profile_pic.png
      - assets/editIcon.svg
+
      - assets/friends.svg
      - assets/globalChallenges.svg
      - assets/default.jpeg
      - assets/streak.svg
      - assets/customChallenges.svg
+     - assets/config.properties
 
-    
 #     - images/a_dot_ham.jpeg
 
 

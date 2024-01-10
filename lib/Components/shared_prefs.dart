@@ -47,8 +47,8 @@ class SharedPrefs {
     return _sharedPrefs!.getString("firstname");
   }
 
-  void setBio(String? bio) {
-    _sharedPrefs!.setString("bio", bio ?? '');
+  void setBio(String bio) {
+    _sharedPrefs!.setString("bio", bio);
   }
 
   String? getBio() {

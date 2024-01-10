@@ -110,7 +110,7 @@ void reset(
     try {
       final response = await http.post(
         //need a reset password endpoint
-        Uri.parse('http://localhost:8080/api/v1/resetPassword'),
+        Uri.parse(BackendService.getBackendUrl() + 'resetPassword'),
         headers: <String, String>{
           'Content-Type': 'application/json',
         },

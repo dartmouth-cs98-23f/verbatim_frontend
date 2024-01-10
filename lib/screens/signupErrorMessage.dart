@@ -12,7 +12,7 @@ class SignupErrorMessage extends StatelessWidget {
     if (pageName == 'sign up') {
       return 'We encountered an error during sign-up. Please double-check your email and username.';
     } else if (pageName == 'log in') {
-      return 'We encountered an error during log in. Please double-check your email and password.';
+      return 'We encountered an error during log in. Please double-check your email or username and password.';
     } else {
       return 'Oops, something went wrong!';
     }
