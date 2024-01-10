@@ -96,6 +96,13 @@ flutter:
      - assets/Ellipse 47.png
      - assets/profile2.jpeg
      - assets/editIcon.svg
+     - assets/friends.svg
+     - assets/globalChallenges.svg
+     - assets/default.jpeg
+     - assets/streak.svg
+     - assets/customChallenges.svg
+
+    
 #     - images/a_dot_ham.jpeg
 
 
