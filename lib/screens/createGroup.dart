@@ -44,6 +44,9 @@ class createGroup extends StatefulWidget {
 
 class _CreateGroupState extends State<createGroup> {
   String username = SharedPrefs().getUserName() ?? "";
+  bool isCreated = false; // in the beginning, the group isn't created
+  TextEditingController responseController = TextEditingController();
+  String userResponse = '';
 
   // search controller
   final TextEditingController _searchController = TextEditingController();
@@ -141,10 +144,9 @@ class _CreateGroupState extends State<createGroup> {
         child: Scaffold(
       backgroundColor: Color.fromARGB(255, 255, 243, 238),
       body: SingleChildScrollView(
-        child: Container(
-            color: Color.fromARGB(255, 255, 243, 238),
-            child: Column(
-              children: [
+          child: Container(
+              color: Color.fromARGB(255, 255, 243, 238),
+              child: Column(children: [
                 SizedBox(
                   width: double.maxFinite,
                   child: Column(children: [
@@ -166,43 +168,50 @@ class _CreateGroupState extends State<createGroup> {
                           // appbar on top of orange background
                           createGroupAppBar(),
 
-                          Padding(
-                            padding: EdgeInsets.only(top: 20.0),
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Container(
-                                  width: 350,
-                                  height: 30,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(20),
-                                  ), // search bar
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      SizedBox(width: 8),
-                                      Icon(Icons.search, color: Colors.black),
-                                      SizedBox(width: 8),
-                                      Expanded(
-                                        child: TextField(
-                                          controller: _searchController,
-                                          decoration: InputDecoration(
-                                            hintStyle: const TextStyle(
-                                                fontSize: 14.0,
-                                                color: Color.fromARGB(
-                                                    255, 6, 5, 5)),
-                                            border: InputBorder.none,
+                          // don't show the search bar in 'nameGroup' mode
+                          Visibility(
+                            visible: !isCreated,
+                            child: Padding(
+                              padding: EdgeInsets.only(top: 20.0),
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Container(
+                                    width: 350,
+                                    height: 30,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(20),
+                                    ), // search bar
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        SizedBox(width: 8),
+                                        Icon(Icons.search, color: Colors.black),
+                                        SizedBox(width: 8),
+                                        Expanded(
+                                          child: TextField(
+                                            controller: _searchController,
+                                            decoration: InputDecoration(
+                                              hintStyle: const TextStyle(
+                                                  fontSize: 14.0,
+                                                  color: Color.fromARGB(
+                                                      255, 6, 5, 5)),
+                                              border: InputBorder.none,
+                                            ),
+                                            textAlign: TextAlign.left,
                                           ),
-                                          textAlign: TextAlign.left,
-                                        ),
-                                      )
-                                    ],
-                                  )),
+                                        )
+                                      ],
+                                    )),
+                              ),
                             ),
-                          ),
+                          )
                         ]))
                   ]),
                 ),
+
+                // constant background
                 Center(
                   child: Container(
                       clipBehavior: Clip.hardEdge,
@@ -221,118 +230,176 @@ class _CreateGroupState extends State<createGroup> {
                         ],
                         color: Colors.white,
                       ),
+                      child: Column(
+                        children: [
+                          // first stage: adding users
+                          if (!isCreated)
+                            Expanded(
 
-                      // when user searches, display relevant items
-                      child: _searchText.isNotEmpty
-                          // search text isn't empty, so show them the matches
-                          ? ListView.builder(
-                              itemCount: _searchResults().length,
-                              itemBuilder: (context, index) {
-                                final name = _searchResults()[
-                                    index]; //username of each listing
-                                final isAdded = addedUsernames.contains(
-                                    name); // bool to control whether you have already added them
-                                return ListTile(
-                                  title: Row(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Icon(Icons.mood), // prof pic of user
-                                      SizedBox(width: 8),
-                                      Text(
-                                        name,
-                                        style: TextStyle(
-                                            fontWeight: FontWeight.bold),
-                                      ),
-                                    ],
-                                  ),
-                                  trailing: IconButton(
-                                    icon:
-                                        isAdded // if they're added then show this
-                                            ? Icon(Icons.pending)
-                                            : Icon(Icons.person_add_alt),
-                                    onPressed: () {
-                                      if (!isAdded) {
-                                        // prevent user from sending friend requests twice!
-
-                                        setState(() {
-                                          toggleFriend(name);
-                                        });
-                                      } else {
-                                        setState(() {
-                                          toggleFriend(name);
-                                        });
-                                      }
-                                    },
-                                  ),
-
-                                  // icon displayed is dependent on whether you have requested this user.
-                                );
-                              },
-                            )
-                          // search text is empty so show them the 'recents' etc'
-                          : Column(
-                              crossAxisAlignment: CrossAxisAlignment.start,
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                  Padding(
-                                      padding: const EdgeInsets.only(
-                                          left: 12.0, top: 14.0),
-                                      child: Text(
-                                        "All Friends",
-                                        style: TextStyle(
-                                          fontSize: 15,
-                                          fontWeight: FontWeight.bold,
-                                        ),
-                                      )),
-                                  Expanded(
-                                    child: ListView.builder(
-                                      itemCount: friendsUsernamesList.length,
-                                      itemBuilder: (context, index) {
-                                        final name =
-                                            friendsUsernamesList[index];
-                                        final isAdded = addedUsernames.contains(
-                                            name); // bool to control whether you have already added them
-
-                                        return ListTile(
-                                          title: Row(
-                                            children: [
-                                              Icon(Icons.mood),
-                                              SizedBox(width: 8),
-                                              Text(
-                                                name,
-                                                style: TextStyle(
-                                                    fontWeight:
-                                                        FontWeight.bold),
+                                // if you are searching for friends, display those results
+                                child: _searchText.isNotEmpty
+                                    ? ListView.builder(
+                                        itemCount: _searchResults().length,
+                                        itemBuilder: (context, index) {
+                                          final name = _searchResults()[
+                                              index]; //username of each listing
+                                          final isAdded =
+                                              addedUsernames.contains(name);
+                                          if (!isCreated) {
+                                            // bool to control whether you have already added them
+                                            return ListTile(
+                                              title: Row(
+                                                mainAxisSize: MainAxisSize.min,
+                                                children: [
+                                                  Icon(Icons
+                                                      .mood), // prof pic of user
+                                                  SizedBox(width: 8),
+                                                  Text(
+                                                    name,
+                                                    style: TextStyle(
+                                                        fontWeight:
+                                                            FontWeight.bold),
+                                                  ),
+                                                ],
                                               ),
-                                            ],
-                                          ),
-                                          trailing: IconButton(
-                                            icon:
-                                                isAdded // if they're added then show this
-                                                    ? Icon(Icons.pending)
-                                                    : Icon(
-                                                        Icons.person_add_alt),
-                                            onPressed: () {
-                                              if (!isAdded) {
-                                                // prevent user from sending friend requests twice!
+                                              trailing: IconButton(
+                                                icon:
+                                                    isAdded // if they're added then show this
+                                                        ? Icon(Icons.pending)
+                                                        : Icon(Icons
+                                                            .person_add_alt),
+                                                onPressed: () {
+                                                  if (!isAdded) {
+                                                    // prevent user from sending friend requests twice!
 
-                                                setState(() {
-                                                  toggleFriend(name);
-                                                });
-                                              } else {
-                                                setState(() {
-                                                  toggleFriend(name);
-                                                });
-                                              }
-                                            },
-                                          ),
-                                        );
-                                      },
-                                    ),
-                                  )
-                                ])),
+                                                    setState(() {
+                                                      toggleFriend(name);
+                                                    });
+                                                  } else {
+                                                    setState(() {
+                                                      toggleFriend(name);
+                                                    });
+                                                  }
+                                                },
+                                              ),
+
+                                              // icon displayed is dependent on whether you have requested this user.
+                                            );
+                                          }
+                                        },
+                                      )
+                                    // if not searching, display all friends
+                                    : Column(
+                                        crossAxisAlignment:
+                                            CrossAxisAlignment.start,
+                                        mainAxisAlignment:
+                                            MainAxisAlignment.start,
+                                        children: [
+                                            Padding(
+                                                padding: const EdgeInsets.only(
+                                                    left: 12.0, top: 14.0),
+                                                child: Text(
+                                                  "All Friends",
+                                                  style: TextStyle(
+                                                    fontSize: 15,
+                                                    fontWeight: FontWeight.bold,
+                                                  ),
+                                                )),
+                                            Expanded(
+                                              child: ListView.builder(
+                                                itemCount:
+                                                    friendsUsernamesList.length,
+                                                itemBuilder: (context, index) {
+                                                  final name =
+                                                      friendsUsernamesList[
+                                                          index];
+                                                  final isAdded =
+                                                      addedUsernames.contains(
+                                                          name); // bool to control whether you have already added them
+
+                                                  return ListTile(
+                                                    title: Row(
+                                                      children: [
+                                                        Icon(Icons.mood),
+                                                        SizedBox(width: 8),
+                                                        Text(
+                                                          name,
+                                                          style: TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold),
+                                                        ),
+                                                      ],
+                                                    ),
+                                                    trailing: IconButton(
+                                                      icon:
+                                                          isAdded // if they're added then show this
+                                                              ? Icon(
+                                                                  Icons.pending)
+                                                              : Icon(Icons
+                                                                  .person_add_alt),
+                                                      onPressed: () {
+                                                        if (!isAdded) {
+                                                          // prevent user from sending friend requests twice
+                                                          setState(() {
+                                                            toggleFriend(name);
+                                                          });
+                                                        } else {
+                                                          setState(() {
+                                                            toggleFriend(name);
+                                                          });
+                                                        }
+                                                      },
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            )
+                                          ]))
+                          else
+                            // if it is created then you are making your group!
+                            Column(children: [
+                              SizedBox(height: 30),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0),
+                                child: Text(
+                                  'Word! Give your group a name!',
+                                  style: TextStyle(
+                                    fontSize: 22,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 30.0),
+                              Container(
+                                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                                child: TextField(
+                                  controller: responseController,
+                                  onChanged: (value) {
+                                    setState(() {
+                                      userResponse = value;
+                                    });
+                                  },
+                                  decoration: InputDecoration(
+                                    hintText: 'Type your group name here...',
+                                  ),
+                                ),
+                              ),
+                              SizedBox(height: 30.0),
+                              Text(
+                                'Added Usernames: $addedUsernames ',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                ),
+                              ),
+                            ]),
+                        ],
+                      )),
                 ),
+
                 SizedBox(height: 16.0),
+
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
@@ -361,7 +428,9 @@ class _CreateGroupState extends State<createGroup> {
                     ElevatedButton(
                       onPressed: () {
                         print('here is added: $addedUsernames');
-                        handleTap(context, 1, addedUsernames);
+                        setState(() {
+                          isCreated = true; // shift content
+                        });
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFFE76F51),
@@ -381,9 +450,7 @@ class _CreateGroupState extends State<createGroup> {
                     ),
                   ],
                 )
-              ],
-            )),
-      ),
+              ]))),
       drawer: SideBar(),
     ));
   }
@@ -395,10 +462,13 @@ void handleTap(BuildContext context, int index, List<String> addedUsernames) {
       // ignore: prefer_typing_uninitialized_variables
       Navigator.pushNamed(context, '/global_challenge');
       break;
+
+    /**
     case 1: // "Group Name"
       Navigator.pushNamed(context, '/name_group',
           arguments: {'addedUsernames': addedUsernames});
 
       break;
+      **/
   }
 }
