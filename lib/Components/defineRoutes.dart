@@ -1,6 +1,8 @@
 import 'package:fluro/fluro.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/addFriend.dart';
+import 'package:verbatim_frontend/screens/createGroup.dart';
+import 'package:verbatim_frontend/screens/nameGroup.dart';
 import 'package:verbatim_frontend/screens/forgotPassword.dart';
 import 'package:verbatim_frontend/screens/logout.dart';
 import '../screens/globalChallenge.dart';
@@ -77,11 +79,23 @@ void defineRoutes() {
     '/logout',
     handler: logoutHandler,
   );
+
+  Application.router.define(
+    '/create_group',
+    handler: createGroupHandler,
+  );
+
+  Application.router.define(
+    '/name_group',
+    handler: nameGroupHandler,
+  );
 }
 
 var onBoardingPage1Handler = Handler(
   handlerFunc: (context, parameters) {
-    if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
+    if (SharedPrefs().getEmail() == '' ||
+        SharedPrefs().getUserName() == '' ||
+        SharedPrefs().getPassword() == '') {
       return LogIn();
     } else {
       // Update the current page in the shared prefs
@@ -91,21 +105,23 @@ var onBoardingPage1Handler = Handler(
   },
 );
 
-var settingsHandler = Handler(
-    handlerFunc:(context, parameters) {
-      if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
-        return LogIn();
-      } else {
-        // Update the current page in the shared prefs
-        SharedPrefs().setCurrentPage('/settings');
-        return settings();
-      }
-    }
-);
+var settingsHandler = Handler(handlerFunc: (context, parameters) {
+  if (SharedPrefs().getEmail() == '' ||
+      SharedPrefs().getUserName() == '' ||
+      SharedPrefs().getPassword() == '') {
+    return LogIn();
+  } else {
+    // Update the current page in the shared prefs
+    SharedPrefs().setCurrentPage('/settings');
+    return settings();
+  }
+});
 
 var onBoardingPage2Handler = Handler(
   handlerFunc: (context, parameters) {
-    if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
+    if (SharedPrefs().getEmail() == '' ||
+        SharedPrefs().getUserName() == '' ||
+        SharedPrefs().getPassword() == '') {
       return LogIn();
     } else {
       // Update the current page in the shared prefs
@@ -116,27 +132,31 @@ var onBoardingPage2Handler = Handler(
 );
 
 var onBoardingPage3Handler = Handler(
-    handlerFunc: (context, parameters) {
-      if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
-        return LogIn();
-      } else {
-        // Update the current page in the shared prefs
-        SharedPrefs().setCurrentPage('/onboarding_page3');
-        return OnBoardingPage3();
-      }
-    },
+  handlerFunc: (context, parameters) {
+    if (SharedPrefs().getEmail() == '' ||
+        SharedPrefs().getUserName() == '' ||
+        SharedPrefs().getPassword() == '') {
+      return LogIn();
+    } else {
+      // Update the current page in the shared prefs
+      SharedPrefs().setCurrentPage('/onboarding_page3');
+      return OnBoardingPage3();
+    }
+  },
 );
 
 var onBoardingPage4Handler = Handler(
-    handlerFunc: (context, parameters) {
-      if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
-        return LogIn();
-      } else {
-        // Update the current page in the shared prefs
-        SharedPrefs().setCurrentPage('/onboarding_page4');
-        return OnBoardingPage4();
-      }
-    },
+  handlerFunc: (context, parameters) {
+    if (SharedPrefs().getEmail() == '' ||
+        SharedPrefs().getUserName() == '' ||
+        SharedPrefs().getPassword() == '') {
+      return LogIn();
+    } else {
+      // Update the current page in the shared prefs
+      SharedPrefs().setCurrentPage('/onboarding_page4');
+      return OnBoardingPage4();
+    }
+  },
 );
 
 var signUpHandler = Handler(
@@ -157,7 +177,9 @@ var logInHandler = Handler(
 
 var globalChallengeHandler = Handler(
   handlerFunc: (context, parameters) {
-    if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
+    if (SharedPrefs().getEmail() == '' ||
+        SharedPrefs().getUserName() == '' ||
+        SharedPrefs().getPassword() == '') {
       return LogIn();
     } else {
       // Update the current page in the shared prefs
@@ -169,12 +191,44 @@ var globalChallengeHandler = Handler(
 
 var addFriendHandler = Handler(
   handlerFunc: (context, parameters) {
-    if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
+    if (SharedPrefs().getEmail() == '' ||
+        SharedPrefs().getUserName() == '' ||
+        SharedPrefs().getPassword() == '') {
       return LogIn();
     } else {
       // Update the current page in the shared prefs
       SharedPrefs().setCurrentPage('/add_friend');
       return addFriend();
+    }
+  },
+);
+
+var createGroupHandler = Handler(
+  handlerFunc: (context, parameters) {
+    if (SharedPrefs().getEmail() == '' ||
+        SharedPrefs().getUserName() == '' ||
+        SharedPrefs().getPassword() == '') {
+      return LogIn();
+    } else {
+      // Update the current page in the shared prefs
+      SharedPrefs().setCurrentPage('/create_group');
+      return createGroup();
+    }
+  },
+);
+
+var nameGroupHandler = Handler(
+  handlerFunc: (context, parameters) {
+    if (SharedPrefs().getEmail() == '' ||
+        SharedPrefs().getUserName() == '' ||
+        SharedPrefs().getPassword() == '') {
+      return LogIn();
+    } else {
+      List<String> addedUsernames = parameters['addedUsernames'] ?? <String>[];
+      print('added usernames in handletap $addedUsernames');
+      // Update the current page in the shared prefs
+      SharedPrefs().setCurrentPage('/name_group');
+      return nameGroup(addedUsernames);
     }
   },
 );
@@ -189,7 +243,9 @@ var forgotPasswordHandler = Handler(
 
 var signupErrorMessageHandler = Handler(
   handlerFunc: (context, parameters) {
-    if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
+    if (SharedPrefs().getEmail() == '' ||
+        SharedPrefs().getUserName() == '' ||
+        SharedPrefs().getPassword() == '') {
       return LogIn();
     } else {
       // Update the current page in the shared prefs
@@ -201,7 +257,9 @@ var signupErrorMessageHandler = Handler(
 
 var logoutHandler = Handler(
   handlerFunc: (context, parameters) {
-    if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
+    if (SharedPrefs().getEmail() == '' ||
+        SharedPrefs().getUserName() == '' ||
+        SharedPrefs().getPassword() == '') {
       return LogIn();
     } else {
       // Update the current page in the shared prefs
