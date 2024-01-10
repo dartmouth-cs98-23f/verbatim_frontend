@@ -137,7 +137,7 @@ class _SettingsState extends State<settings> {
   final bioSettings = TextEditingController();
   final emailSettings = TextEditingController();
   final String assetName = 'assets/img1.svg';
-  final String profile = 'assets/profile2.jpeg';
+  final String profile = 'assets/profile_pic.png';
 
   @override
   Widget build(BuildContext context) {
@@ -205,8 +205,8 @@ class _SettingsState extends State<settings> {
                                         padding:
                                             EdgeInsets.only(left: 0, top: 0),
                                         child: Container(
-                                          width: 100,
-                                          height: 100,
+                                          width: 60,
+                                          height: 60,
                                           decoration: BoxDecoration(
                                             shape: BoxShape.circle,
                                             border: Border.all(
@@ -215,13 +215,19 @@ class _SettingsState extends State<settings> {
                                                   255,
                                                   243,
                                                   238), // Color of the border
-                                              width: 2.0, // Width of the border
+                                              width: 2.0,
                                             ),
                                           ),
-                                          child: ClipOval(
-                                            child: Image.asset(
-                                              profile,
-                                              fit: BoxFit.cover,
+                                          child: Container(
+                                            width: 5,
+                                            height: 5,
+                                            child: ClipOval(
+                                              child: Image.asset(
+                                                profile,
+                                                width: 5,
+                                                height: 5,
+                                                fit: BoxFit.cover,
+                                              ),
                                             ),
                                           ),
                                         ),
@@ -404,32 +410,31 @@ class _SettingsState extends State<settings> {
                     hintText: SharedPrefs().getEmail() ?? "",
                     obscureText: false),
 
-                Padding(
-                    padding: const EdgeInsets.only(left: 30.0),
+                Center(
                     child: Column(
-                      children: [
-                        const SizedBox(height: 30),
-                        MyButtonNoImage(
-                            buttonText: "Submit Changes",
-                            onTap: () {
-                              edits(
-                                context,
-                                getVal(firstNameSettings.text,
-                                    SharedPrefs().getFirstName() ?? ""),
-                                getVal(lastNameSettings.text,
-                                    SharedPrefs().getLastName() ?? ""),
-                                SharedPrefs().getUserName() ?? "",
-                                getVal(usernameSettings.text,
-                                    SharedPrefs().getUserName() ?? ""),
-                                getVal(emailSettings.text,
-                                    SharedPrefs().getEmail() ?? ""),
-                                getVal(bioSettings.text,
-                                    SharedPrefs().getBio() ?? ""),
-                                profile,
-                              );
-                            })
-                      ],
-                    ))
+                  children: [
+                    const SizedBox(height: 30),
+                    MyButtonNoImage(
+                        buttonText: "Submit Changes",
+                        onTap: () {
+                          edits(
+                            context,
+                            getVal(firstNameSettings.text,
+                                SharedPrefs().getFirstName() ?? ""),
+                            getVal(lastNameSettings.text,
+                                SharedPrefs().getLastName() ?? ""),
+                            SharedPrefs().getUserName() ?? "",
+                            getVal(usernameSettings.text,
+                                SharedPrefs().getUserName() ?? ""),
+                            getVal(
+                                bioSettings.text, SharedPrefs().getBio() ?? ""),
+                            getVal(emailSettings.text,
+                                SharedPrefs().getEmail() ?? ""),
+                            profile,
+                          );
+                        })
+                  ],
+                ))
               ],
             )),
       )),

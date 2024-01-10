@@ -2,7 +2,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:google_sign_in/google_sign_in.dart';
+// import 'package:google_sign_in/google_sign_in.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
@@ -32,10 +32,10 @@ class _SignUpState extends State<SignUp> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
-      scopes: ['email'],
-      clientId:
-          '297398575103-o3engamrir3bf4pupurvj8lm4mn0iuqt.apps.googleusercontent.com');
+  // final GoogleSignIn _googleSignIn = GoogleSignIn(
+  //     scopes: ['email'],
+  //     clientId:
+  //         '297398575103-o3engamrir3bf4pupurvj8lm4mn0iuqt.apps.googleusercontent.com');
 
   void signUp(BuildContext context, String firstName, String lastName,
       String username, String email, String password, String confirmPassword) {
@@ -52,6 +52,7 @@ class _SignUpState extends State<SignUp> {
       String email,
       String password,
       String confirmPassword) async {
+    print("Sign up url is: "+BackendService.getBackendUrl());
     try {
       final response = await http.post(
         Uri.parse(BackendService.getBackendUrl() + 'register'),
@@ -67,6 +68,7 @@ class _SignUpState extends State<SignUp> {
         }),
       );
 
+
       if (response.statusCode == 200) {
         // Save the user's info in the shared prefs
         SharedPrefs().setEmail(email);
@@ -75,44 +77,37 @@ class _SignUpState extends State<SignUp> {
         SharedPrefs().setPassword(password);
         SharedPrefs().setUserName(username);
 
-        // Successful sign-up: Navigate to the global challenge page
-        Navigator.push(
-          context,
-          MaterialPageRoute(builder: (context) => OnBoardingPage1()),
-        );
+        // Successful sign-up: Navigate to the 'OnBoardingPage1' page
+        Navigator.pushNamed(context, '/onboarding_page1');
 
         print('Sign-up successful');
       } else {
         print('Error during sign-up: ${response.statusCode.toString()}');
-        Navigator.push(
-          context,
-          MaterialPageRoute(
-            builder: (context) => SignupErrorMessage(pageName: 'sign up'),
-          ),
-        );
+        Navigator.of(context).push(MaterialPageRoute(
+          builder: (context) =>
+              SignupErrorMessage(pageName: 'sign up'),
+        ));
       }
     } catch (e) {
       print('Error during sign-up: ${e.toString()}');
-      Navigator.push(
-        context,
-        MaterialPageRoute(
-          builder: (context) => SignupErrorMessage(pageName: 'sign up'),
-        ),
-      );
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) =>
+            SignupErrorMessage(pageName: 'sign up'),
+      ));
     }
   }
 
   // Function to sign up with Google
-  Future<void> signUpWithGoogle() async {
-    final GoogleSignInAccount? account = await _googleSignIn.signIn();
+  // Future<void> signUpWithGoogle() async {
+  //   final GoogleSignInAccount? account = await _googleSignIn.signIn();
 
-    if (account != null) {
-      saveUsersInfo(context, '<unavailable>', '<unavailable>', '<unavailable>',
-          account.email, 'unavailable', 'unavailable');
-    } else {
-      print('\nThe google account is not found.');
-    }
-  }
+  //   if (account != null) {
+  //     saveUsersInfo(context, '<unavailable>', '<unavailable>', '<unavailable>',
+  //         account.email, 'unavailable', 'unavailable');
+  //   } else {
+  //     print('\nThe google account is not found.');
+  //   }
+  // }
 
   void validateUserInfo(
       BuildContext context,
@@ -365,7 +360,7 @@ class _SignUpState extends State<SignUp> {
                         buttonText: 'Sign up with Google',
                         hasButtonImage: true,
                         onTap: () {
-                          signUpWithGoogle();
+                          // signUpWithGoogle();
                         },
                       ),
                       const SizedBox(height: 10),
@@ -390,10 +385,7 @@ class _SignUpState extends State<SignUp> {
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
                                     // Navigate to the sign-in page
-                                    Navigator.of(context)
-                                        .push(MaterialPageRoute(
-                                      builder: (context) => LogIn(),
-                                    ));
+                                    Navigator.pushNamed(context, '/login');
                                   },
                               ),
                             ],

@@ -64,7 +64,7 @@ class _SideBarState extends State<SideBar> {
   List<String> usernamesList = [];
 
   Future<void> getFriends(String username) async {
-    final url = Uri.parse('http://localhost:8080/api/v1/getFriends');
+    final url = Uri.parse(BackendService.getBackendUrl() + 'getFriends');
     final Map<String, String> headers = {
       'Content-Type': 'text/plain',
     };
@@ -82,7 +82,7 @@ class _SideBarState extends State<SideBar> {
   }
 
   Future<void> getFriendRequests(String username) async {
-    final url = Uri.parse('http://localhost:8080/api/v1/getFriendRequests');
+    final url = Uri.parse(BackendService.getBackendUrl() + 'getFriendRequests');
     final Map<String, String> headers = {
       'Content-Type': 'text/plain',
     };
