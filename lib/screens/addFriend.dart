@@ -326,7 +326,7 @@ class _AddFriendState extends State<addFriend> {
                             alignment: Alignment.bottomLeft,
                             child: Container(
                               width: 200,
-                              margin: EdgeInsets.only(left: 32),
+                              margin: EdgeInsets.only(left: 32.0),
                               child: RichText(
                                 text: TextSpan(
                                   children: [
