@@ -2,7 +2,7 @@ import 'package:fluro/fluro.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'package:verbatim_frontend/screens/createGroup.dart';
-import 'package:verbatim_frontend/screens/nameGroup.dart';
+import 'package:verbatim_frontend/screens/myGroup.dart';
 import 'package:verbatim_frontend/screens/forgotPassword.dart';
 import 'package:verbatim_frontend/screens/logout.dart';
 import '../screens/globalChallenge.dart';
@@ -86,10 +86,34 @@ void defineRoutes() {
   );
 
   Application.router.define(
-    '/name_group',
-    handler: nameGroupHandler,
+    '/my_group',
+    handler: myGroupHandler,
   );
 }
+
+var myGroupHandler = Handler(
+  handlerFunc: (context, parameters) {
+    if (SharedPrefs().getEmail() == '' ||
+        SharedPrefs().getUserName() == '' ||
+        SharedPrefs().getPassword() == '') {
+      return LogIn();
+    } else {
+      // Update the current page in the shared prefs
+      SharedPrefs().setCurrentPage('/my_group');
+      String? groupName = parameters['groupName']?.first;
+
+      List<String>? addedUsernames =
+          parameters['addedUsernames']?.cast<String>();
+
+      if (groupName != null && addedUsernames != null) {
+        return myGroup(groupName: groupName, addedUsernames: addedUsernames);
+      } else {
+        print('Failed to find arguments');
+        return globalChallenge();
+      }
+    }
+  },
+);
 
 var onBoardingPage1Handler = Handler(
   handlerFunc: (context, parameters) {
@@ -213,22 +237,6 @@ var createGroupHandler = Handler(
       // Update the current page in the shared prefs
       SharedPrefs().setCurrentPage('/create_group');
       return createGroup();
-    }
-  },
-);
-
-var nameGroupHandler = Handler(
-  handlerFunc: (context, parameters) {
-    if (SharedPrefs().getEmail() == '' ||
-        SharedPrefs().getUserName() == '' ||
-        SharedPrefs().getPassword() == '') {
-      return LogIn();
-    } else {
-      List<String> addedUsernames = parameters['addedUsernames'] ?? <String>[];
-      print('added usernames in handletap $addedUsernames');
-      // Update the current page in the shared prefs
-      SharedPrefs().setCurrentPage('/name_group');
-      return nameGroup(addedUsernames);
     }
   },
 );

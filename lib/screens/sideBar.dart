@@ -284,7 +284,9 @@ class _SideBarState extends State<SideBar> {
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15)),
                             leading: Icon(Icons.people, color: Colors.black),
-                            onTap: () {},
+                            onTap: () {
+                              handleTap(context, 5);
+                            },
                           ),
                         ),
                       ),
@@ -452,6 +454,10 @@ void handleTap(BuildContext context, int index) {
 
     case 4: // "Create Group"
       Navigator.pushNamed(context, '/create_group');
+      break;
+
+    case 5: // "My Group"
+      Navigator.pushNamed(context, '/my_group');
       break;
   }
 }
