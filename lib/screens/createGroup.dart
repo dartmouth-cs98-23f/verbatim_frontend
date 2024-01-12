@@ -7,6 +7,8 @@ import 'package:verbatim_frontend/widgets/create_group_app_bar.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:verbatim_frontend/Components/defineRoutes.dart';
+import 'package:verbatim_frontend/screens/myGroup.dart';
 
 // User class for when backend passes in users
 class User {
@@ -499,9 +501,15 @@ void handleTap(BuildContext context, int index,
 
     // take us to the group page! (eventually)
     case 1:
-      print('here');
-      print(addedUsernames);
-      print(userResponse);
+      print(
+          'Arguments in handleTap: groupName: $userResponse, addedUsernames: $addedUsernames');
+
+      Navigator.pushNamed(
+        context,
+        '/my_group/${Uri.encodeComponent(userResponse!)}/${Uri.encodeComponent(addedUsernames!.join(','))}',
+      );
+
+/*
       Navigator.pushNamed(
         context,
         '/my_group',
@@ -510,6 +518,8 @@ void handleTap(BuildContext context, int index,
           'addedUsernames': addedUsernames,
         },
       );
+      */
+
       break;
   }
 }
