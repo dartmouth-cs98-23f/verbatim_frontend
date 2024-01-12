@@ -456,6 +456,22 @@ class _CreateGroupState extends State<createGroup> {
   }
 }
 
+/* 
+create group:
+
+case 0: go back to global challenge 'cancel'
+case 1: isCreated = true 'next'
+
+name group: 
+
+case 0: go back to create group with same users selected
+- isCreated = false 'back'
+case 1: create the group 'create group'
+
+
+
+*/
+
 void handleTap(BuildContext context, int index, List<String> addedUsernames) {
   switch (index) {
     case 0: // "Global Challenge"
