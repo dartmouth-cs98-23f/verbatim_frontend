@@ -1,10 +1,13 @@
 import 'package:flutter/material.dart';
 import 'size.dart';
 
-class createGroupAppBar extends StatelessWidget implements PreferredSizeWidget {
-  createGroupAppBar({
+class groupAppBar extends StatelessWidget implements PreferredSizeWidget {
+  final String title;
+
+  groupAppBar({
     Key? key,
     this.height,
+    required this.title,
   }) : super(
           key: key,
         );
@@ -28,7 +31,7 @@ class createGroupAppBar extends StatelessWidget implements PreferredSizeWidget {
           children: [
             Center(
               child: Text(
-                'Create Group',
+                title,
                 style: TextStyle(
                   fontSize: 24,
                   color: Colors.white,

@@ -4,8 +4,6 @@ import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'sideBar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:verbatim_frontend/widgets/create_group_app_bar.dart';
-import 'package:verbatim_frontend/screens/nameGroup.dart';
-
 import 'package:verbatim_frontend/widgets/size.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -165,8 +163,9 @@ class _CreateGroupState extends State<createGroup> {
                               fit: BoxFit.fill,
                             ),
                           ),
+
                           // appbar on top of orange background
-                          createGroupAppBar(),
+                          groupAppBar(title: 'Create Group'),
 
                           // don't show the search bar in 'nameGroup' mode
                           Visibility(
@@ -405,7 +404,15 @@ class _CreateGroupState extends State<createGroup> {
                   children: [
                     ElevatedButton(
                       onPressed: () {
-                        handleTap(context, 0, addedUsernames);
+                        // if the group hasn't been created, bring back to global challenge
+                        if (!isCreated) {
+                          handleTap(context, 0);
+                        } else {
+                          // if we're in name group, go back to create group
+                          setState(() {
+                            isCreated = false; // shift content
+                          });
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Colors.white,
@@ -416,8 +423,9 @@ class _CreateGroupState extends State<createGroup> {
                         minimumSize: const Size(100, 50),
                         side: BorderSide(color: Color(0xFFE76F51)),
                       ),
+                      // display different text based on which 'stage' we're in
                       child: Text(
-                        'Cancel ',
+                        isCreated ? 'Back' : 'Cancel',
                         style: TextStyle(
                           color: Color(0xFFE76F51),
                           fontWeight: FontWeight.bold,
@@ -427,10 +435,17 @@ class _CreateGroupState extends State<createGroup> {
                     SizedBox(width: 16.0),
                     ElevatedButton(
                       onPressed: () {
-                        print('here is added: $addedUsernames');
-                        setState(() {
-                          isCreated = true; // shift content
-                        });
+                        // if group isn't created, create it
+                        if (!isCreated) {
+                          setState(() {
+                            isCreated = true; // shift content
+                          });
+                          // otherwise, take us to the group page
+                        } else {
+                          handleTap(context, 1,
+                              userResponse: userResponse,
+                              addedUsernames: addedUsernames);
+                        }
                       },
                       style: ElevatedButton.styleFrom(
                         backgroundColor: Color(0xFFE76F51),
@@ -472,19 +487,29 @@ case 1: create the group 'create group'
 
 */
 
-void handleTap(BuildContext context, int index, List<String> addedUsernames) {
+void handleTap(BuildContext context, int index,
+    {String? userResponse, List<String>? addedUsernames}) {
   switch (index) {
+    // !isCreated
     case 0: // "Global Challenge"
       // ignore: prefer_typing_uninitialized_variables
       Navigator.pushNamed(context, '/global_challenge');
       break;
+    // is created
 
-    /**
-    case 1: // "Group Name"
-      Navigator.pushNamed(context, '/name_group',
-          arguments: {'addedUsernames': addedUsernames});
-
+    // take us to the group page! (eventually)
+    case 1:
+      print('here');
+      print(addedUsernames);
+      print(userResponse);
+      Navigator.pushNamed(
+        context,
+        '/my_group',
+        arguments: {
+          'groupName': userResponse,
+          'addedUsernames': addedUsernames,
+        },
+      );
       break;
-      **/
   }
 }
