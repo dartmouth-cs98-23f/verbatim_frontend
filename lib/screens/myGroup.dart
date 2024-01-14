@@ -47,16 +47,137 @@ List<String> activeChallenges = [
   "Dahlia's Challenge",
   "Eve's Challenge",
   "Jackie's Challenge",
-  "Dahlia's Challenge",
-  "Eve's Challenge",
-  "Jackie's Challenge",
-  "Dahlia's Challenge",
-  "Eve's Challenge",
-  "Jackie's Challenge",
-  "Dahlia's Challenge",
-  "Eve's Challenge",
-  "Jackie's Challenge",
 ];
+
+Future<void> _showChallengeOptions(
+    BuildContext context, String groupName) async {
+  return showDialog<void>(
+    context: context,
+    builder: (BuildContext context) {
+      return AlertDialog(
+        contentPadding: EdgeInsets.zero,
+        content: Container(
+          width: 259.h,
+          height: 360.v,
+          clipBehavior: Clip.antiAlias,
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(20),
+            boxShadow: [
+              BoxShadow(
+                color: Color(0xFF9E503C).withOpacity(0.5),
+                blurRadius: 4,
+                offset: Offset(2, 3),
+              )
+            ],
+          ),
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 10),
+              Padding(
+                padding: EdgeInsets.all(8.0),
+                child: Container(
+                  child: RichText(
+                    textAlign: TextAlign.center,
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'New Challenge with ',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextSpan(
+                          text: '$groupName',
+                          style: TextStyle(
+                            color: Colors.orange,
+                            fontSize: 24,
+                            fontWeight: FontWeight.w900,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+              SizedBox(height: 50.v),
+              Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  _buildOptionButton('Standard', 'Leave the categories to us',
+                      Icons.my_library_books_rounded),
+                  _buildOptionButton('Custom', 'Create your own categories',
+                      Icons.card_giftcard_rounded),
+                ],
+              ),
+              SizedBox(height: 10),
+            ],
+          ),
+        ),
+      );
+    },
+  );
+}
+
+Widget _buildOptionButton(String title, String description, IconData iconData) {
+  return Container(
+    width: 120,
+    height: 120,
+    padding: const EdgeInsets.all(10),
+    clipBehavior: Clip.antiAlias,
+    decoration: BoxDecoration(
+      color: Color(0xFFE76F51),
+      borderRadius: BorderRadius.circular(20),
+      boxShadow: [
+        BoxShadow(
+          color: Color(0xFF997048).withOpacity(0.5),
+          blurRadius: 4,
+          offset: Offset(0, 2),
+        )
+      ],
+    ),
+    child: Column(
+      mainAxisSize: MainAxisSize.min,
+      mainAxisAlignment: MainAxisAlignment.center,
+      crossAxisAlignment: CrossAxisAlignment.center,
+      children: [
+        SizedBox(height: 5),
+        Icon(
+          iconData,
+          color: Color.fromARGB(255, 250, 192, 94),
+          size: 25,
+        ),
+        SizedBox(height: 5),
+        Text(
+          title,
+          style: TextStyle(
+            color: Color(0xFFFFF7EE),
+            fontSize: 18,
+            fontWeight: FontWeight.w700,
+          ),
+        ),
+        SizedBox(height: 5),
+        SizedBox(
+          width: double.infinity,
+          child: Text(
+            description,
+            textAlign: TextAlign.center,
+            style: TextStyle(
+              color: Color(0xFFFFF7EE),
+              fontSize: 12,
+              fontWeight: FontWeight.w600,
+            ),
+          ),
+        ),
+      ],
+    ),
+  );
+}
 
 class myGroup extends StatefulWidget {
   final String groupName;
@@ -121,7 +242,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                           Text(
                                             widget.groupName,
                                             style: TextStyle(
-                                              fontSize: 24,
+                                              fontSize: 27,
                                               color: Colors.white,
                                               fontWeight: FontWeight.w900,
                                             ),
@@ -212,7 +333,8 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                                   borderRadius:
                                                       BorderRadius.circular(20),
                                                   side: BorderSide(
-                                                    color: Color(0xFFE76F51),
+                                                    color: Color.fromARGB(
+                                                        255, 231, 217, 213),
                                                   ))),
                                           tabs: [
                                             Tab(
@@ -250,7 +372,11 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                       children: [
                                         // Active Challenges
                                         Container(
-                                          padding: EdgeInsets.all(10),
+                                          padding: EdgeInsets.only(
+                                              top: 10,
+                                              right: 10,
+                                              left: 10,
+                                              bottom: 20),
                                           child: Column(
                                             children: [
                                               Expanded(
@@ -314,30 +440,34 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                                   },
                                                 ),
                                               ),
-                                              Align(
-                                                alignment:
-                                                    Alignment.bottomRight,
-                                                child: Container(
-                                                  margin: EdgeInsets.all(10),
-                                                  child: Row(
-                                                    mainAxisAlignment:
-                                                        MainAxisAlignment.end,
-                                                    children: [
-                                                      Text(
-                                                        'Make Group Challenge',
-                                                        style: TextStyle(
-                                                          fontSize: 14,
-                                                          fontWeight:
-                                                              FontWeight.bold,
-                                                        ),
+                                              SizedBox(height: 10.v),
+                                              GestureDetector(
+                                                onTap: () {
+                                                  _showChallengeOptions(context,
+                                                      widget.groupName);
+                                                },
+                                                child: Row(
+                                                  mainAxisAlignment:
+                                                      MainAxisAlignment.end,
+                                                  children: [
+                                                    Text(
+                                                      'Make Group Challenge',
+                                                      style: TextStyle(
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Color(
+                                                            0xFFE76F51), // Set the text color
                                                       ),
-                                                      SizedBox(width: 5),
-                                                      Icon(
-                                                        Icons.add,
-                                                        size: 20,
-                                                      ),
-                                                    ],
-                                                  ),
+                                                    ),
+                                                    SizedBox(width: 5),
+                                                    Icon(
+                                                      Icons.add,
+                                                      size: 20,
+                                                      color: Color(
+                                                          0xFFE76F51), // Set the icon color
+                                                    ),
+                                                  ],
                                                 ),
                                               ),
                                             ],
