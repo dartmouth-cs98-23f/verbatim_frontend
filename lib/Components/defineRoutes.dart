@@ -4,6 +4,7 @@ import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'package:verbatim_frontend/screens/forgotPassword.dart';
 import 'package:verbatim_frontend/screens/logout.dart';
+import 'package:verbatim_frontend/screens/settingsCopy.dart';
 import '../screens/globalChallenge.dart';
 import '../screens/logIn.dart';
 import '../screens/profile.dart';
@@ -255,8 +256,9 @@ var updateProfilePicHandler = Handler(
   handlerFunc: (context, parameters) {
     // Update the current profile pic in the shared prefs
     SharedPrefs().setCurrentPage('/update_profile_pic');
-    return SamplePage(
-      imagePath: 'assets/profile2.jpeg',
-    );
+    // return SamplePage(
+    //   imagePath: 'assets/profile2.jpeg',
+    // );
+    return Settings();
   },
 );
