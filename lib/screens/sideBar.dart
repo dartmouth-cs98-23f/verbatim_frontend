@@ -268,6 +268,7 @@ class _SideBarState extends State<SideBar> {
                       },
                       child: Icon(Icons.add, color: Colors.black, size: 25),
                     ),
+                    initiallyExpanded: true,
                     //  initiallyExpanded: true,
                     shape: Border(),
                     children: <Widget>[
@@ -457,7 +458,12 @@ void handleTap(BuildContext context, int index) {
       break;
 
     case 5: // "My Group"
-      Navigator.pushNamed(context, '/my_group');
+      String userResponse = 'kool kids';
+      List<String> addedUsernames = ['frances'];
+      Navigator.pushNamed(
+        context,
+        '/my_group/${Uri.encodeComponent(userResponse!)}/${Uri.encodeComponent(addedUsernames!.join(','))}',
+      );
       break;
   }
 }
