@@ -92,20 +92,30 @@ void defineRoutes() {
   );
 }
 
-Handler myGroupHandler = Handler(
+var myGroupHandler = Handler(
   handlerFunc: (context, params) {
-    var groupName = Uri.decodeComponent(params['param1']?[0] ?? '');
-    var addedUsernamesString = Uri.decodeComponent(params['param2']?[0] ?? '');
-    var addedUsernames = addedUsernamesString.split(',');
+    if (SharedPrefs().getEmail() == '' ||
+        SharedPrefs().getUserName() == '' ||
+        SharedPrefs().getPassword() == '') {
+      return LogIn();
+    } else {
+      var groupName = Uri.decodeComponent(params['param1']?[0] ?? '');
+      var addedUsernamesString =
+          Uri.decodeComponent(params['param2']?[0] ?? '');
+      var addedUsernames = addedUsernamesString.split(',');
 
-    if (groupName.isNotEmpty && addedUsernames.isNotEmpty) {
-      return myGroup(
-        groupName: groupName,
-        addedUsernames: addedUsernames,
-      );
+      if (groupName.isNotEmpty && addedUsernames.isNotEmpty) {
+        //  String myGroupUrl = '/my_group/$groupName/${addedUsernames.join(',')}';
+        // SharedPrefs().setCurrentPage(myGroupUrl);
+
+        return myGroup(
+          groupName: groupName,
+          addedUsernames: addedUsernames,
+        );
+      } else {
+        return globalChallenge();
+      }
     }
-
-    return globalChallenge();
   },
 );
 
