@@ -51,11 +51,11 @@ class _SamplePageState extends State<SamplePage> {
     }
   }
 
-  // Function to handle removing the current picture
   void _removeCurrentPicture() {
-    // Implement your logic for removing the current picture
-    // Update _currentImagePath accordingly
-    // Make sure to handle errors and user feedback appropriately
+    // For example, if you want to set the profile picture to 'profile_pic.png'
+    setState(() {
+      _currentImagePath = 'assets/profile_pic.png';
+    });
   }
 
   // Function to navigate to an enlarged version of the image

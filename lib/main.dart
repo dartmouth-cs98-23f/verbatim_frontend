@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/Components/sample_page.dart';
 import 'package:verbatim_frontend/screens/logIn.dart';
+import 'package:verbatim_frontend/screens/settingsCopy.dart';
 import 'BackendService.dart';
 import 'Components/defineRoutes.dart';
 import 'Components/shared_prefs.dart';
@@ -56,9 +57,10 @@ class MyApp extends StatelessWidget {
       navigatorKey: navigatorKey,
       onGenerateRoute: Application.router.generator,
       initialRoute: SharedPrefs().getCurrentPage() ?? '/login',
-      home: SamplePage(
-        imagePath: 'assets/profile2.jpeg',
-      ),
+      // home: SamplePage(
+      //   imagePath: 'assets/profile2.jpeg',
+      // ),
+      home: Settings(),
     );
   }
 }
