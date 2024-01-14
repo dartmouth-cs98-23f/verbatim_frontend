@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
+import 'package:verbatim_frontend/screens/customChallenge.dart';
 import 'sideBar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:verbatim_frontend/widgets/create_group_app_bar.dart';
@@ -109,10 +110,18 @@ Future<void> _showChallengeOptions(
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
-                  _buildOptionButton('Standard', 'Leave the categories to us',
-                      Icons.my_library_books_rounded),
-                  _buildOptionButton('Custom', 'Create your own categories',
-                      Icons.card_giftcard_rounded),
+                  _buildOptionButton(
+                      context,
+                      'Standard',
+                      'Leave the categories to us',
+                      Icons.my_library_books_rounded,
+                      groupName),
+                  _buildOptionButton(
+                      context,
+                      'Custom',
+                      'Create your own categories',
+                      Icons.card_giftcard_rounded,
+                      groupName),
                 ],
               ),
               SizedBox(height: 10),
@@ -124,59 +133,79 @@ Future<void> _showChallengeOptions(
   );
 }
 
-Widget _buildOptionButton(String title, String description, IconData iconData) {
+Widget _buildOptionButton(BuildContext context, title, String description,
+    IconData iconData, String groupName) {
   return Container(
-    width: 120,
-    height: 120,
-    padding: const EdgeInsets.all(10),
-    clipBehavior: Clip.antiAlias,
-    decoration: BoxDecoration(
-      color: Color(0xFFE76F51),
-      borderRadius: BorderRadius.circular(20),
-      boxShadow: [
-        BoxShadow(
-          color: Color(0xFF997048).withOpacity(0.5),
-          blurRadius: 4,
-          offset: Offset(0, 2),
-        )
-      ],
-    ),
-    child: Column(
-      mainAxisSize: MainAxisSize.min,
-      mainAxisAlignment: MainAxisAlignment.center,
-      crossAxisAlignment: CrossAxisAlignment.center,
-      children: [
-        SizedBox(height: 5),
-        Icon(
-          iconData,
-          color: Color.fromARGB(255, 250, 192, 94),
-          size: 25,
-        ),
-        SizedBox(height: 5),
-        Text(
-          title,
-          style: TextStyle(
-            color: Color(0xFFFFF7EE),
-            fontSize: 18,
-            fontWeight: FontWeight.w700,
-          ),
-        ),
-        SizedBox(height: 5),
-        SizedBox(
-          width: double.infinity,
-          child: Text(
-            description,
-            textAlign: TextAlign.center,
-            style: TextStyle(
-              color: Color(0xFFFFF7EE),
-              fontSize: 12,
-              fontWeight: FontWeight.w600,
+      width: 120,
+      height: 120,
+      padding: const EdgeInsets.all(10),
+      clipBehavior: Clip.antiAlias,
+      decoration: BoxDecoration(
+        color: Color(0xFFE76F51),
+        borderRadius: BorderRadius.circular(20),
+        boxShadow: [
+          BoxShadow(
+            color: Color(0xFF997048).withOpacity(0.5),
+            blurRadius: 4,
+            offset: Offset(0, 2),
+          )
+        ],
+      ),
+      child: GestureDetector(
+        onTap: () {
+          //change to standard once i make it
+          if (title == 'Standard') {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => customChallenge(groupName: groupName),
+              ),
+            );
+          } else if (title == 'Custom') {
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => customChallenge(groupName: groupName),
+              ),
+            );
+          }
+        },
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.center,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            SizedBox(height: 5),
+            Icon(
+              iconData,
+              color: Color.fromARGB(255, 250, 192, 94),
+              size: 25,
             ),
-          ),
+            SizedBox(height: 5),
+            Text(
+              title,
+              style: TextStyle(
+                color: Color(0xFFFFF7EE),
+                fontSize: 18,
+                fontWeight: FontWeight.w700,
+              ),
+            ),
+            SizedBox(height: 5),
+            SizedBox(
+              width: double.infinity,
+              child: Text(
+                description,
+                textAlign: TextAlign.center,
+                style: TextStyle(
+                  color: Color(0xFFFFF7EE),
+                  fontSize: 12,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+          ],
         ),
-      ],
-    ),
-  );
+      ));
 }
 
 class myGroup extends StatefulWidget {
@@ -217,7 +246,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                         width: double.maxFinite,
                         child: Column(children: [
                           SizedBox(
-                              height: 240.v,
+                              height: 260.v,
                               width: double.maxFinite,
                               child: Stack(
                                   alignment: Alignment.topCenter,
