@@ -25,71 +25,102 @@ class customChallenge extends StatefulWidget {
 
 class _CustomChallengeState extends State<customChallenge>
     with SingleTickerProviderStateMixin {
-  List<bool> expandedStates = [false, false, false, false, false];
-  List<String> prompts = [];
+  List<bool> expandedStates = [false, false, false];
+  List<String> prompts = [
+    "Your first challenge question",
+    "Your second challenge question",
+    "Your third challenge question"
+  ];
 
   Widget build(BuildContext context) {
     final String assetName = 'assets/img1.svg'; // orange (top) background
-
+    print(expandedStates);
+    print(prompts);
     return SafeArea(
         child: Scaffold(
             backgroundColor: Color.fromARGB(255, 255, 243, 238),
             body: SingleChildScrollView(
-                child: Container(
-                    color: Color.fromARGB(255, 255, 243, 238),
-                    child: Column(children: [
-                      SizedBox(
-                          width: double.maxFinite,
-                          child: Column(children: [
-                            SizedBox(
-                                height: 280.v,
-                                width: double.maxFinite,
-                                child: Stack(
-                                    alignment: Alignment.topCenter,
-                                    children: [
-                                      // orange background
-                                      Container(
-                                        height: 220.v,
-                                        width: double.maxFinite,
-                                        margin: EdgeInsets.zero,
-                                        padding: EdgeInsets.zero,
-                                        child: SvgPicture.asset(
-                                          assetName,
-                                          fit: BoxFit.fill,
+              child: Container(
+                color: Color.fromARGB(255, 255, 243, 238),
+                child: Column(children: [
+                  SizedBox(
+                    width: double.maxFinite,
+                    child: Column(
+                      children: [
+                        SizedBox(
+                            height: 280.v,
+                            width: double.maxFinite,
+                            child: Stack(
+                                alignment: Alignment.topCenter,
+                                children: [
+                                  // orange background
+                                  Container(
+                                    height: 220.v,
+                                    width: double.maxFinite,
+                                    margin: EdgeInsets.zero,
+                                    padding: EdgeInsets.zero,
+                                    child: SvgPicture.asset(
+                                      assetName,
+                                      fit: BoxFit.fill,
+                                    ),
+                                  ),
+                                  CustomAppBar(),
+                                  Container(
+                                      margin: EdgeInsets.only(top: 100.v),
+                                      child: Column(children: [
+                                        Text(
+                                          'Custom Challenge',
+                                          style: TextStyle(
+                                            fontSize: 27,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w900,
+                                          ),
                                         ),
-                                      ),
-                                      CustomAppBar(),
-                                      Container(
-                                          margin: EdgeInsets.only(top: 100.v),
-                                          child: Column(children: [
-                                            Text(
-                                              'Custom Challenge',
-                                              style: TextStyle(
-                                                fontSize: 27,
-                                                color: Colors.white,
-                                                fontWeight: FontWeight.w900,
-                                              ),
-                                            ),
-                                            SizedBox(height: 10.v),
-                                          ]))
-                                    ])),
-                            SizedBox(height: 20),
-                            // List of 5 rectangles
-                            for (int i = 0; i < expandedStates.length; i++)
-                              _buildEditableRectangle(i),
-                            SizedBox(height: 20),
-                            // Add Prompt button
-                            ElevatedButton(
-                              onPressed: () {
-                                setState(() {
-                                  prompts.add('New Prompt');
-                                });
-                                print('Add Prompt button pressed');
-                              },
-                              child: Text('Add Prompt'),
-                            ),
-                          ]))
-                    ])))));
+                                        SizedBox(height: 10.v),
+                                      ]))
+                                ])),
+                        SizedBox(height: 20),
+                        // List of 5 rectangles
+                        for (int i = 0; i < prompts.length; i++)
+                          _buildEditableRectangle(i),
+                        SizedBox(height: 20),
+                        // Add Prompt
+                        GestureDetector(
+                          onTap: () {
+                            setState(() {
+                              expandedStates.add(false);
+                              prompts.add('New Prompt');
+                            });
+                            print('Add Prompt button pressed');
+                          },
+                          child: Row(
+                            mainAxisAlignment: MainAxisAlignment.start,
+                            children: [
+                              SizedBox(width: 10),
+                              Icon(
+                                Icons.add,
+                                size: 20,
+                                color: Color(0xFFE76F51), // Set the icon color
+                              ),
+                              SizedBox(width: 5),
+                              Text(
+                                'New Prompt',
+                                style: TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color:
+                                      Color(0xFFE76F51), // Set the text color
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ]),
+              ),
+            )));
   }
 
   Widget _buildEditableRectangle(int index) {
@@ -103,21 +134,50 @@ class _CustomChallengeState extends State<customChallenge>
         duration: Duration(milliseconds: 300),
         height: expandedStates[index] ? 120 : 60,
         width: double.infinity,
-        margin: EdgeInsets.symmetric(vertical: 5),
+        margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
         padding: EdgeInsets.all(10),
         decoration: BoxDecoration(
           color: Colors.white,
           border: Border.all(color: Colors.black),
           borderRadius: BorderRadius.circular(10),
         ),
-        child: Center(
-          child: Text(
-            'Editable Text ${index + 1}',
-            style: TextStyle(
-              fontSize: 16,
-              fontWeight: FontWeight.bold,
+        child: Stack(
+          children: [
+            Center(
+              child: Text(
+                prompts[index],
+                style: TextStyle(
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
             ),
-          ),
+            if (expandedStates[index])
+              Positioned(
+                bottom: 0,
+                right: 0,
+                child: Row(
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        setState(() {
+                          prompts.removeAt(index);
+                          expandedStates.removeAt(index);
+                        });
+                      },
+                      child: Text('Delete'),
+                    ),
+                    ElevatedButton(
+                      onPressed: () {
+                        print('Edit button pressed for index $index');
+                      },
+                      child: Text('Edit'),
+                    ),
+                    SizedBox(width: 5),
+                  ],
+                ),
+              ),
+          ],
         ),
       ),
     );
