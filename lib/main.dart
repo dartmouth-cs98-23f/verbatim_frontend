@@ -16,7 +16,8 @@ Future<void> main() async {
   print("env in main is: " + environment);
   BackendService.loadProperties(environment);
 
-  runApp(const MyApp());
+  runApp(MyApp());
+
   defineRoutes();
 }
 
@@ -54,7 +55,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey,
       onGenerateRoute: Application.router.generator,
-      initialRoute: SharedPrefs().getCurrentPage() ?? '/login',
+      //  initialRoute: SharedPrefs().getCurrentPage() ?? '/login',
       home: LogIn(),
     );
   }
