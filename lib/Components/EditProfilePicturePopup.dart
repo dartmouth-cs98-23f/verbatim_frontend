@@ -1,8 +1,9 @@
 import 'package:flutter/material.dart';
-import "package:hovering/hovering.dart";
+import 'package:hovering/hovering.dart';
 
 class EditProfilePicturePopup extends StatefulWidget {
   final String imagePath;
+  final ImageProvider<Object> selectedImage;
   final VoidCallback onImageTap;
   final VoidCallback onChangeImageGallery;
   final VoidCallback onChangeImageCamera;
@@ -10,6 +11,7 @@ class EditProfilePicturePopup extends StatefulWidget {
 
   EditProfilePicturePopup({
     required this.imagePath,
+    required this.selectedImage,
     required this.onImageTap,
     required this.onChangeImageGallery,
     required this.onChangeImageCamera,
@@ -60,7 +62,7 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
                 decoration: BoxDecoration(
                   shape: BoxShape.circle,
                   border: Border.all(
-                    color: isHovered ? Colors.blue : Colors.deepOrange,
+                    color: isHovered ? Colors.blue : Colors.transparent,
                     width: 2.0,
                   ),
                 ),
@@ -69,11 +71,25 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
                     color: Colors.transparent,
                     child: InkWell(
                       onTap: widget.onImageTap,
-                      child: Image.asset(
-                        widget.imagePath,
-                        width: 100.0,
-                        height: 100.0,
-                        fit: BoxFit.cover,
+                      // child: Image.asset(
+                      //   widget.imagePath,
+                      //   width: 100.0,
+                      //   height: 100.0,
+                      //   fit: BoxFit.cover,
+                      // ),
+                      //selectedImage
+                      child: ClipOval(
+                        child: Container(
+                          width: 150.0,
+                          height: 150.0,
+                          decoration: BoxDecoration(
+                            shape: BoxShape.circle,
+                            image: DecorationImage(
+                              fit: BoxFit.cover,
+                              image: widget.selectedImage,
+                            ),
+                          ),
+                        ),
                       ),
                     ),
                   ),
@@ -99,6 +115,44 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
               ),
             ),
             onTap: widget.onChangeImageCamera,
+          ),
+          const SizedBox(height: 10),
+          ListTile(
+            leading: Icon(
+              Icons.photo,
+              color: Color(0xFFDE674A),
+            ),
+            title: Text(
+              'Choose from gallery',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 16,
+                fontFamily: 'Poppins',
+                fontWeight: FontWeight.w600,
+                height: 0.09,
+                letterSpacing: 0.10,
+              ),
+            ),
+            onTap: widget.onChangeImageGallery,
+          ),
+          const SizedBox(height: 10),
+          ListTile(
+            leading: Icon(
+              Icons.delete,
+              color: Color(0xFFDE674A),
+            ),
+            title: Text(
+              'Remove current picture',
+              style: TextStyle(
+                color: Colors.black,
+                fontSize: 16,
+                fontFamily: 'Poppins',
+                fontWeight: FontWeight.w600,
+                height: 0.09,
+                letterSpacing: 0.10,
+              ),
+            ),
+            onTap: widget.onRemoveCurrentPicture,
           ),
         ],
       ),
