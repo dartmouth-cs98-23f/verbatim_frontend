@@ -1,299 +1,567 @@
-import 'package:flutter/material.dart';
-import 'package:image_picker/image_picker.dart';
+// import 'dart:io';
 
-class SamplePage extends StatefulWidget {
-  final String imagePath; // Pass the image path as a parameter
+// import 'package:flutter/widgets.dart';
+// import 'package:flutter/gestures.dart';
+// import 'package:flutter/material.dart';
+// import 'package:get/get_state_manager/get_state_manager.dart';
+// import 'package:image_picker/image_picker.dart';
+// import 'package:verbatim_frontend/BackendService.dart';
+// import 'package:verbatim_frontend/Components/sample_page.dart';
+// import 'package:verbatim_frontend/screens/globalChallenge.dart';
+// import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
+// import 'package:verbatim_frontend/widgets/my_textfield.dart';
+// import 'package:http/http.dart' as http;
+// import 'dart:convert';
+// import 'package:verbatim_frontend/widgets/custom_app_bar.dart';
+// import 'package:flutter_svg/flutter_svg.dart';
+// import 'package:verbatim_frontend/widgets/size.dart';
+// import 'package:verbatim_frontend/widgets/custom_tab.dart';
+// import 'dart:async';
+// import 'package:verbatim_frontend/Components/shared_prefs.dart';
+// import 'package:verbatim_frontend/screens/resetPassword.dart';
+// import 'package:verbatim_frontend/widgets/testCustomBar.dart';
+// import 'sideBar.dart';
 
-  // Constructor to receive the image path
-  SamplePage({required this.imagePath});
+// //get the edits to send back as an acoount settings thing
+// //getsignin -> look for input function to replace
 
-  @override
-  _SamplePageState createState() => _SamplePageState();
-}
+// //cant find old username
+// //if changed username, username is taken by someone else
+// //
 
-class _SamplePageState extends State<SamplePage> {
-  late String _currentImagePath; // Track the currently displayed image
+// void edits(
+//   BuildContext context,
+//   String firstName,
+//   String lastName,
+//   String username,
+//   String newUsername,
+//   String bio,
+//   String email,
+//   String profilePic,
+// ) async {
+//   try {
+//     final response = await http.post(
+//       Uri.parse(BackendService.getBackendUrl() + 'accountSettings'),
+//       headers: <String, String>{
+//         'Content-Type': 'application/json',
+//       },
+//       body: jsonEncode({
+//         'firstName': firstName,
+//         'lastName': lastName,
+//         'username': username,
+//         'newUsername': newUsername,
+//         'email': email,
+//         'bio': bio,
+//         'profilePic': profilePic,
+//       }),
+//     );
+//     //do sth to verify the response,
+//     if (response.statusCode == 200) {
+//       //get the account info to display as dummy text
+//       SharedPrefs().setFirstName(firstName);
+//       SharedPrefs().setLastName(lastName);
+//       SharedPrefs().setBio(bio);
+//       SharedPrefs().setEmail(email);
+//       SharedPrefs().setUserName(newUsername);
+//       _showSuccessDialog(context);
+//     }
+//   } catch (error) {
+//     print('Sorry cannot edit account settings:$error');
+//   }
+// }
 
-  @override
-  void initState() {
-    super.initState();
-    _currentImagePath =
-        widget.imagePath; // Initialize with the provided image path
-  }
+// String getVal(String? fieldval, String currentval) {
+//   String finalVal;
+//   fieldval!.isEmpty ? finalVal = currentval : finalVal = fieldval;
+//   return finalVal;
+// }
 
-  // Function to show the centered edit profile picture pop-up
-  void _showEditProfilePicturePopup() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return EditProfilePicturePopup(
-          imagePath: _currentImagePath,
-          onImageTap: _viewEnlarged,
-          onChangeImageGallery: () => _pickImage(ImageSource.gallery),
-          onChangeImageCamera: () => _pickImage(ImageSource.camera),
-          onRemoveCurrentPicture: _removeCurrentPicture,
-        );
-      },
-    );
-  }
+// void _showSuccessDialog(BuildContext context) {
+//   showDialog(
+//     context: context,
+//     builder: (BuildContext context) {
+//       return AlertDialog(
+//         shape: RoundedRectangleBorder(
+//           borderRadius: BorderRadius.circular(10.0), // Set the corner radius
+//         ),
+//         backgroundColor:
+//             Color.fromARGB(255, 255, 243, 238), // Set the background color
+//         title: RichText(
+//           text: TextSpan(
+//             children: [
+//               TextSpan(
+//                 text: 'Verba',
+//                 style: TextStyle(
+//                     color: Colors.orange,
+//                     fontSize: 24,
+//                     fontWeight: FontWeight.bold),
+//               ),
+//               TextSpan(
+//                 text: '-tastic!',
+//                 style: TextStyle(
+//                     color: Colors.black,
+//                     fontSize: 24,
+//                     fontWeight: FontWeight.bold),
+//               ),
+//             ],
+//           ),
+//         ),
+//         content: Text(
+//           'Your changes have been recorded!',
+//           style: TextStyle(color: Colors.black), // Set text color
+//         ),
+//         actions: [
+//           TextButton(
+//             onPressed: () {
+//               Navigator.of(context).pop(); // Close the dialog
+//             },
+//             child: Text(
+//               'OK',
+//               style: TextStyle(color: Colors.blue), // Set button text color
+//             ),
+//           ),
+//         ],
+//       );
+//     },
+//   );
+// }
 
-// Function to pick an image using ImagePicker
-  Future<void> _pickImage(ImageSource source) async {
-    final pickedFile = await ImagePicker().pickImage(source: source);
+// class Settings extends StatefulWidget {
+//   const Settings({super.key});
 
-    if (pickedFile != null) {
-      // Handle the selected image file
-      setState(() {
-        _currentImagePath = pickedFile.path;
-      });
-    } else {
-      // User canceled the operation
-    }
-  }
+//   @override
+//   State<Settings> createState() => _SettingsState();
+// }
 
-  void _removeCurrentPicture() {
-    // For example, if you want to set the profile picture to 'profile_pic.png'
-    setState(() {
-      _currentImagePath = 'assets/profile_pic.png';
-    });
-  }
+// class _SettingsState extends State<Settings> {
+//   final firstNameSettings = TextEditingController();
+//   final lastNameSettings = TextEditingController();
 
-  // Function to navigate to an enlarged version of the image
-  void _viewEnlarged() {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => EnlargedImageView(imagePath: _currentImagePath),
-      ),
-    );
-  }
+//   final usernameSettings = TextEditingController();
+//   final bioSettings = TextEditingController();
+//   final emailSettings = TextEditingController();
+//   final String assetName = 'assets/img1.svg';
 
-  @override
-  Widget build(BuildContext context) {
-    WidgetsFlutterBinding.ensureInitialized();
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Sample Page'),
-      ),
-      body: Center(
-        child: GestureDetector(
-          onTap: _viewEnlarged, // Call _viewEnlarged when the image is tapped
-          child: Stack(
-            children: [
-              Container(
-                width: 150.0,
-                height: 150.0,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: Colors.blue,
-                    width: 2.0,
-                  ),
-                ),
-                child: ClipOval(
-                  child: Image.asset(
-                    _currentImagePath,
-                    width: 150.0,
-                    height: 150.0,
-                    fit: BoxFit.cover,
-                  ),
-                ),
-              ),
-              Positioned(
-                bottom: 16.0, // Adjust the bottom position as needed
-                right: 16.0, // Adjust the right position as needed
-                child: FloatingActionButton(
-                  onPressed: _showEditProfilePicturePopup,
-                  tooltip: 'Change Image',
-                  mini: true, // Set mini to true to reduce the size
-                  backgroundColor: Colors.deepOrange,
-                  child: Stack(
-                    alignment: Alignment.center,
-                    children: [
-                      Icon(
-                        Icons.edit,
-                        size: 24.0, // Adjust the size of the icon as needed
-                        color: Colors.white, // Border color
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
-}
+//   final String imagePath = 'assets/profile_pic.png';
+//   late String _currentImagePath; // Track the currently displayed image
+//   final String profile = 'assets/profile_pic.png';
 
-class EditProfilePicturePopup extends StatelessWidget {
-  final String imagePath;
-  final VoidCallback onImageTap;
-  final VoidCallback onChangeImageGallery; // Updated this line
-  final VoidCallback onChangeImageCamera; // Added this line
-  final VoidCallback onRemoveCurrentPicture;
+//   @override
+//   void initState() {
+//     super.initState();
+//     _currentImagePath =
+//         'assets/profile2.jpeg'; // Initialize with the provided image path
+//   }
 
-  EditProfilePicturePopup({
-    required this.imagePath,
-    required this.onImageTap,
-    required this.onChangeImageGallery, // Updated this line
-    required this.onChangeImageCamera, // Added this line
-    required this.onRemoveCurrentPicture,
-  });
+//   // Function to show the centered edit profile picture pop-up
+//   void _showEditProfilePicturePopup() {
+//     showDialog(
+//       context: context,
+//       builder: (BuildContext context) {
+//         return EditProfilePicturePopup(
+//           imagePath: _currentImagePath,
+//           onImageTap: _viewEnlarged,
+//           onChangeImageGallery: () => _pickImage(ImageSource.gallery),
+//           onChangeImageCamera: () => _pickImage(ImageSource.camera),
+//           onRemoveCurrentPicture: _removeCurrentPicture,
+//         );
+//       },
+//     );
+//   }
 
-  // Function to handle image uploading
-  Future<void> _uploadImage(String imagePath) async {
-    // Simulate an asynchronous upload process
-    await Future.delayed(Duration(seconds: 2));
+//   Future<void> _pickImage(ImageSource source) async {
+//     final pickedFile = await ImagePicker().pickImage(source: source);
 
-    // Print the path of the uploaded image
-    print('Image uploaded successfully: $imagePath');
-  }
+//     if (pickedFile != null) {
+//       // Use FileImage to load the image directly from the file
+//       print("\nPicked file has this path: ${pickedFile.path}\n");
+//       final fileImage = FileImage(File(pickedFile.path));
 
-  @override
-  Widget build(BuildContext context) {
-    return AlertDialog(
-      backgroundColor: Colors.white,
-      content: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          const SizedBox(height: 5),
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                'Edit Profile Picture',
-                style: TextStyle(
-                  color: Color(0xFF3C63B0),
-                  fontSize: 16,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w400,
-                  height: 0.09,
-                  letterSpacing: 0.30,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 5),
-          GestureDetector(
-            onTap: onImageTap,
-            child: Container(
-              width: 100.0,
-              height: 100.0,
-              decoration: BoxDecoration(
-                shape: BoxShape.circle,
-                border: Border.all(
-                  color: Colors.blue,
-                  width: 2.0,
-                ),
-              ),
-              child: ClipOval(
-                child: Image.asset(
-                  imagePath,
-                  width: 100.0,
-                  height: 100.0,
-                  fit: BoxFit.cover,
-                ),
-              ),
-            ),
-          ),
-          const SizedBox(height: 20),
-          ListTile(
-            leading: Icon(
-              Icons.photo_camera,
-              color: Color(0xFFDE674A),
-            ),
-            title: Text(
-              'Take a photo',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 16,
-                fontFamily: 'Poppins',
-                fontWeight: FontWeight.w600,
-                height: 0.09,
-                letterSpacing: 0.10,
-              ),
-            ),
-            onTap: onChangeImageCamera,
-          ),
+//       setState(() {
+//         _currentImagePath = pickedFile.path;
+//       });
+//     } else {
+//       // User canceled the operation
+//     }
+//   }
 
-          // ... (Previous code)
+//   void _removeCurrentPicture() {
+//     // For example, if you want to set the profile picture to 'profile_pic.png'
+//     setState(() {
+//       _currentImagePath = 'assets/profile_pic.png';
+//     });
+//   }
 
-          ListTile(
-            leading: Icon(
-              Icons.photo,
-              color: Color(0xFFDE674A),
-            ),
-            title: Text(
-              'Choose from gallery',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 16,
-                fontFamily: 'Poppins',
-                fontWeight: FontWeight.w600,
-                height: 0.09,
-                letterSpacing: 0.10,
-              ),
-            ),
-            onTap: onChangeImageGallery,
-          ),
-          ListTile(
-            leading: Stack(
-              children: [
-                // Border color
-                Icon(
-                  Icons.delete,
-                  color: Color(0xFFDE674A),
-                ),
-              ],
-            ), // Use a trash can icon for removal
-            title: Text(
-              'Remove current picture',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 16,
-                fontFamily: 'Poppins',
-                fontWeight: FontWeight.w600,
-                height: 0.09,
-                letterSpacing: 0.10,
-              ),
-            ),
-            onTap: () {
-              onRemoveCurrentPicture();
-              Navigator.pop(
-                  context); // Close the pop-up after removing the picture
-            },
-          ),
-        ],
-      ),
-    );
-  }
-}
+//   // Function to navigate to an enlarged version of the image
+//   void _viewEnlarged() {
+//     Navigator.push(
+//       context,
+//       MaterialPageRoute(
+//         builder: (context) => EnlargedImageView(imagePath: _currentImagePath),
+//       ),
+//     );
+//   }
 
-class EnlargedImageView extends StatelessWidget {
-  final String imagePath;
+//   @override
+//   Widget build(BuildContext context) {
+// // TODO: implement build
+// //SingleChildScrollView(
+//     return SafeArea(
+//         child: Scaffold(
+//       resizeToAvoidBottomInset: false,
+//       body: SingleChildScrollView(
+//           child: SafeArea(
+//         child: Container(
+//             color: Color.fromARGB(255, 255, 243, 238),
+//             child: Column(
+//               children: [
+//                 SizedBox(
+//                   width: double.maxFinite,
+//                   child: Column(
+//                     children: [
+//                       SizedBox(
+//                         height: 250.v,
+//                         width: double.maxFinite,
+//                         child: Stack(
+//                           alignment: Alignment.bottomLeft,
+//                           children: [
+//                             // orange background
+//                             Container(
+//                               height: 250.v,
+//                               width: double.maxFinite,
+//                               margin: EdgeInsets.zero,
+//                               padding: EdgeInsets.zero,
+//                               child: SvgPicture.asset(
+//                                 assetName,
+//                                 fit: BoxFit.fill,
+//                               ),
+//                             ),
 
-  EnlargedImageView({required this.imagePath});
+//                             // app bar on top of background
+//                             CustomAppBar(),
+//                             //testCustomBar(),
 
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      body: Center(
-        child: GestureDetector(
-          onTap: () => Navigator.pop(context),
-          child: Hero(
-            tag: 'enlarged_image', // Unique tag for the hero animation
-            child: Image.asset(
-              imagePath,
-              fit: BoxFit.cover,
-              height: double.infinity,
-              width: double.infinity,
-              alignment: Alignment.center,
-            ),
-          ),
-        ),
-      ),
-    );
-  }
-}
+//                             // 'Account Settings #'
+//                             const Positioned(
+//                               child: Center(
+//                                 child: Text(
+//                                   'Account Settings',
+//                                   style: TextStyle(
+//                                     fontSize: 28,
+//                                     color: Colors.white,
+//                                     fontWeight: FontWeight.w900,
+//                                   ),
+//                                 ),
+//                               ),
+//                             ),
+
+// /*
+//                             Positioned(
+//                               bottom: 0,
+//                               left: 30,
+//                               child: Stack(
+//                                 children: [
+//                                   Container(
+//                                     child: Align(
+//                                       alignment: Alignment
+//                                           .centerLeft, // Align the image to the left
+//                                       child: Padding(
+//                                         padding:
+//                                             EdgeInsets.only(left: 0, top: 0),
+//                                         child: Container(
+//                                           width: 60,
+//                                           height: 60,
+//                                           decoration: BoxDecoration(
+//                                             shape: BoxShape.circle,
+//                                             border: Border.all(
+//                                               color: Color.fromARGB(
+//                                                   255,
+//                                                   255,
+//                                                   243,
+//                                                   238), // Color of the border
+//                                               width: 2.0,
+//                                             ),
+//                                           ),
+//                                           child: Container(
+//                                             width: 5,
+//                                             height: 5,
+//                                             child: ClipOval(
+//                                               child: Image.asset(
+//                                                 profile,
+//                                                 width: 5,
+//                                                 height: 5,
+//                                                 fit: BoxFit.cover,
+//                                               ),
+//                                             ),
+//                                           ),
+//                                         ),
+//                                       ),
+//                                     ),
+//                                   ),
+
+//                                   //doesnt work because it goes beyond the profile dimensions
+//                                   Positioned(
+//                                     bottom: 25,
+//                                     left: 100,
+//                                     child: Container(
+//                                       child: Padding(
+//                                           padding:
+//                                               EdgeInsets.only(top: 0, left: 0),
+//                                           child: SvgPicture.asset(
+//                                             'assets/editIcon.svg',
+//                                             width: 24,
+//                                             height: 24,
+//                                           )),
+//                                     ),
+//                                   ),
+//                                 ],
+//                               ),
+//                             ),
+//                             */
+//                           ],
+//                         ),
+//                       ),
+//                     ],
+//                   ),
+//                 ),
+
+//                 const SizedBox(height: 10),
+//                 Padding(
+//                   padding: EdgeInsets.only(
+//                       left: 50.0), // Adjust the left padding as needed
+//                   child: Align(
+//                     alignment: Alignment.topLeft,
+//                     child: GestureDetector(
+//                       onTap: _viewEnlarged,
+//                       child: Stack(
+//                         children: [
+//                           Container(
+//                             width: 110.0,
+//                             height: 110.0,
+//                             decoration: BoxDecoration(
+//                               shape: BoxShape.circle,
+//                               border: Border.all(
+//                                 color: Colors.deepOrange,
+//                                 width: 2.0,
+//                               ),
+//                             ),
+//                             child: ClipOval(
+//                               child: Image.asset(
+//                                 _currentImagePath,
+//                                 width: 150.0,
+//                                 height: 150.0,
+//                                 fit: BoxFit.cover,
+//                               ),
+//                             ),
+//                           ),
+//                           Positioned(
+//                             bottom: 12.0,
+//                             right: -2.0,
+//                             child: FloatingActionButton(
+//                               onPressed: _showEditProfilePicturePopup,
+//                               tooltip: 'Change Image',
+//                               mini: true,
+//                               backgroundColor: Colors.deepOrange,
+//                               shape: RoundedRectangleBorder(
+//                                 borderRadius: BorderRadius.circular(22.0),
+//                                 side:
+//                                     BorderSide(color: Colors.white, width: 2.0),
+//                               ),
+//                               child: Container(
+//                                 child: Center(
+//                                   child: Icon(
+//                                     Icons.edit,
+//                                     size: 20.0,
+//                                     color: Colors.white,
+//                                   ),
+//                                 ),
+//                               ),
+//                             ),
+//                           ),
+//                         ],
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+
+//                 //Reset password
+//                 const SizedBox(height: 10),
+//                 Align(
+//                   alignment: Alignment.topLeft,
+//                   child: Padding(
+//                       padding: EdgeInsets.only(left: 30.0),
+//                       child: RichText(
+//                           text: TextSpan(
+//                         text: 'Reset password',
+//                         style: const TextStyle(
+//                           color: Color(0xFF3C64B1),
+//                           fontWeight: FontWeight.w700,
+//                         ),
+//                         recognizer: TapGestureRecognizer()
+//                           ..onTap = () {
+//                             // Navigate to the sign-in page
+//                             Navigator.of(context).push(MaterialPageRoute(
+//                               builder: (context) => ResetPassword(),
+//                             ));
+//                           },
+//                       ))),
+//                 ),
+
+//                 const SizedBox(height: 42),
+//                 const Padding(
+//                   padding: EdgeInsets.only(left: 30.0),
+//                   child: Align(
+//                     alignment: Alignment.centerLeft,
+//                     child: Text(
+//                       'First Name',
+//                       style: TextStyle(
+//                         color: Colors.black,
+//                         fontSize: 20,
+//                         fontFamily: 'Mulish',
+//                         fontWeight: FontWeight.w700,
+//                         height: 0.04,
+//                         letterSpacing: 0.30,
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+
+//                 const SizedBox(height: 20),
+//                 MyTextField(
+//                     controller: firstNameSettings,
+//                     hintText: SharedPrefs().getFirstName() ?? "",
+//                     obscureText: false),
+
+//                 //last name
+//                 const SizedBox(height: 42),
+//                 Padding(
+//                   padding: const EdgeInsets.only(left: 30.0),
+//                   child: Align(
+//                     alignment: Alignment.centerLeft,
+//                     child: Text(
+//                       'Last Name',
+//                       style: TextStyle(
+//                         color: Colors.black,
+//                         fontSize: 20,
+//                         fontFamily: 'Mulish',
+//                         fontWeight: FontWeight.w700,
+//                         height: 0.04,
+//                         letterSpacing: 0.30,
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+
+//                 const SizedBox(height: 20),
+//                 MyTextField(
+//                     controller: lastNameSettings,
+//                     hintText: SharedPrefs().getLastName() ?? "",
+//                     obscureText: false),
+
+//                 //username
+//                 const SizedBox(height: 42),
+//                 Padding(
+//                   padding: const EdgeInsets.only(left: 30.0),
+//                   child: Align(
+//                     alignment: Alignment.centerLeft,
+//                     child: Text(
+//                       'Username',
+//                       style: TextStyle(
+//                         color: Colors.black,
+//                         fontSize: 20,
+//                         fontFamily: 'Mulish',
+//                         fontWeight: FontWeight.w700,
+//                         height: 0.04,
+//                         letterSpacing: 0.30,
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//                 const SizedBox(height: 20),
+//                 MyTextField(
+//                     controller: usernameSettings,
+//                     hintText: SharedPrefs().getUserName() ?? "",
+//                     obscureText: false),
+
+//                 //bio
+//                 const SizedBox(height: 42),
+//                 Padding(
+//                   padding: const EdgeInsets.only(left: 30.0),
+//                   child: Align(
+//                     alignment: Alignment.centerLeft,
+//                     child: Text(
+//                       'Bio',
+//                       style: TextStyle(
+//                         color: Colors.black,
+//                         fontSize: 20,
+//                         fontFamily: 'Mulish',
+//                         fontWeight: FontWeight.w700,
+//                         height: 0.04,
+//                         letterSpacing: 0.30,
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//                 const SizedBox(height: 20),
+//                 MyTextField(
+//                     controller: bioSettings,
+//                     hintText: SharedPrefs().getBio() ?? "",
+//                     obscureText: false),
+
+//                 //email
+//                 //bio
+//                 const SizedBox(height: 42),
+//                 Padding(
+//                   padding: const EdgeInsets.only(left: 30.0),
+//                   child: Align(
+//                     alignment: Alignment.centerLeft,
+//                     child: Text(
+//                       'Email',
+//                       style: TextStyle(
+//                         color: Colors.black,
+//                         fontSize: 20,
+//                         fontFamily: 'Mulish',
+//                         fontWeight: FontWeight.w700,
+//                         height: 0.04,
+//                         letterSpacing: 0.30,
+//                       ),
+//                     ),
+//                   ),
+//                 ),
+//                 const SizedBox(height: 20),
+//                 MyTextField(
+//                     controller: emailSettings,
+//                     hintText: SharedPrefs().getEmail() ?? "",
+//                     obscureText: false),
+
+//                 Center(
+//                     child: Column(
+//                   children: [
+//                     const SizedBox(height: 30),
+//                     MyButtonNoImage(
+//                         buttonText: "Submit Changes",
+//                         onTap: () {
+//                           edits(
+//                             context,
+//                             getVal(firstNameSettings.text,
+//                                 SharedPrefs().getFirstName() ?? ""),
+//                             getVal(lastNameSettings.text,
+//                                 SharedPrefs().getLastName() ?? ""),
+//                             SharedPrefs().getUserName() ?? "",
+//                             getVal(usernameSettings.text,
+//                                 SharedPrefs().getUserName() ?? ""),
+//                             getVal(
+//                                 bioSettings.text, SharedPrefs().getBio() ?? ""),
+//                             getVal(emailSettings.text,
+//                                 SharedPrefs().getEmail() ?? ""),
+//                             _currentImagePath,
+//                           );
+//                         })
+//                   ],
+//                 ))
+//               ],
+//             )),
+//       )),
+//     ));
+//   }
+// }
