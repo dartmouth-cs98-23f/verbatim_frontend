@@ -144,7 +144,7 @@ class _SettingsState extends State<settings> {
 // TODO: implement build
 //SingleChildScrollView(
     return SafeArea(
-        child: Scaffold(
+      child: Scaffold(
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
           child: SafeArea(

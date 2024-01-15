@@ -446,8 +446,11 @@ void handleTap(BuildContext context, int index) {
       Navigator.pushNamed(context, '/add_friend');
       break;
     case 2: // "Settings"
-      Navigator.pushNamed(context, '/settings');
+      Navigator.pushNamed(context, '/profile');
       break;
+    // case 3: // "Profile"
+    //   Navigator.pushNamed(context, '/profile');
+    //   break;
 
     case 3: // "Logout"
       Navigator.pushNamed(context, '/logout');
