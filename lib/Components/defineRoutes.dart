@@ -8,6 +8,7 @@ import 'package:verbatim_frontend/screens/forgotPassword.dart';
 import 'package:verbatim_frontend/screens/logout.dart';
 import '../screens/globalChallenge.dart';
 import '../screens/logIn.dart';
+import '../screens/profile.dart';
 import '../screens/onboardingPage1.dart';
 import '../screens/onboardingPage2.dart';
 import '../screens/onboardingPage3.dart';
@@ -52,6 +53,11 @@ void defineRoutes() {
   );
 
   Application.router.define(
+    '/settings',
+    handler: settingsHandler,
+  );
+
+  Application.router.define(
     '/global_challenge',
     handler: globalChallengeHandler,
   );
@@ -67,8 +73,8 @@ void defineRoutes() {
   );
 
   Application.router.define(
-    '/settings',
-    handler: settingsHandler,
+    '/profile',
+    handler: profileHandler,
   );
 
   Application.router.define(
@@ -133,6 +139,7 @@ Handler onBoardingPage1Handler = Handler(
   },
 );
 
+
 Handler settingsHandler = Handler(handlerFunc: (context, parameters) {
   if (SharedPrefs().getEmail() == '' ||
       SharedPrefs().getUserName() == '' ||
@@ -146,6 +153,33 @@ Handler settingsHandler = Handler(handlerFunc: (context, parameters) {
 });
 
 Handler onBoardingPage2Handler = Handler(
+
+var profileHandler = Handler(
+    handlerFunc:(context, parameters) {
+      if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
+        return LogIn();
+      } else {
+        // Update the current page in the shared prefs
+        SharedPrefs().setCurrentPage('/profile');
+        return Profile();
+      }
+    }
+);
+
+var settingsHandler = Handler(
+    handlerFunc:(context, parameters) {
+      if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
+        return LogIn();
+      } else {
+        // Update the current page in the shared prefs
+        SharedPrefs().setCurrentPage('/settings');
+        return settings();
+      }
+    }
+);
+
+
+var onBoardingPage2Handler = Handler(
   handlerFunc: (context, parameters) {
     if (SharedPrefs().getEmail() == '' ||
         SharedPrefs().getUserName() == '' ||
