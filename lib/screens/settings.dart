@@ -1,12 +1,17 @@
+import 'dart:io';
+
+import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get_state_manager/get_state_manager.dart';
+import 'package:image_picker/image_picker.dart';
 import 'package:verbatim_frontend/BackendService.dart';
+import 'package:verbatim_frontend/Components/EditProfilePicturePopup.dart';
+import 'package:verbatim_frontend/Components/sample_page.dart';
 import 'package:verbatim_frontend/screens/globalChallenge.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
-import 'sideBar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:verbatim_frontend/widgets/custom_app_bar.dart';
@@ -17,6 +22,7 @@ import 'dart:async';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/resetPassword.dart';
 import 'package:verbatim_frontend/widgets/testCustomBar.dart';
+import 'sideBar.dart';
 
 //get the edits to send back as an acoount settings thing
 //getsignin -> look for input function to replace
@@ -126,10 +132,10 @@ class settings extends StatefulWidget {
   const settings({super.key});
 
   @override
-  State<settings> createState() => _SettingsState();
+  State<settings> createState() => _settingsState();
 }
 
-class _SettingsState extends State<settings> {
+class _settingsState extends State<settings> {
   final firstNameSettings = TextEditingController();
   final lastNameSettings = TextEditingController();
 
@@ -137,14 +143,116 @@ class _SettingsState extends State<settings> {
   final bioSettings = TextEditingController();
   final emailSettings = TextEditingController();
   final String assetName = 'assets/img1.svg';
+
+  final String imagePath = 'assets/profile_pic.png';
+  late String _currentImagePath =
+      'assets/profile2.jpeg'; // Track the currently displayed image
   final String profile = 'assets/profile_pic.png';
+
+  final ImagePicker picker = ImagePicker();
+  ImageProvider<Object> selectedImage = AssetImage('assets/profile2.jpeg');
+
+  @override
+  void initState() {
+    super.initState();
+    _currentImagePath =
+        'assets/profile2.jpeg'; // Initialize with the provided image path
+    selectedImage = AssetImage('assets/profile2.jpeg');
+  }
+
+  // Function to show the centered edit profile picture pop-up
+  void _showEditProfilePicturePopup() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return EditProfilePicturePopup(
+          imagePath: _currentImagePath,
+          selectedImage: selectedImage,
+          onImageTap: _viewEnlarged,
+          onChangeImageGallery: () => _pickImage(ImageSource.gallery),
+          onChangeImageCamera: () => _pickImage(ImageSource.camera),
+          onRemoveCurrentPicture: _removeCurrentPicture,
+        );
+      },
+    );
+  }
+
+  Future<void> _pickImage(ImageSource source) async {
+    if (!kIsWeb) {
+      final ImagePicker _picker = ImagePicker();
+      XFile? image = await _picker.pickImage(source: source);
+
+      if (image != null) {
+        var selected = File(image.path);
+        setState(() {
+          selectedImage = selected as ImageProvider<Object>;
+        });
+
+        // Close the pop-up
+        Navigator.pop(context);
+      } else {
+        print('\nNo image has been picked');
+      }
+    } else if (kIsWeb) {
+      final ImagePicker _picker = ImagePicker();
+      XFile? image = await _picker.pickImage(source: source);
+
+      if (image != null) {
+        String path = image.path;
+        print("\n\nchosen path: $path");
+
+        var bytes = await image.readAsBytes();
+        setState(() {
+          selectedImage = MemoryImage(bytes!);
+          _currentImagePath = path;
+        });
+
+        // Close the pop-up
+        Navigator.pop(context);
+      } else {
+        print('\nNo image has been picked');
+      }
+    } else {
+      print('\nSomething went wrong.');
+    }
+  }
+
+  void _removeCurrentPicture() {
+    // For example, if you want to set the profile picture to 'profile_pic.png'
+    setState(() {
+      _currentImagePath = 'assets/profile_pic.png';
+      selectedImage = AssetImage('assets/profile_pic.png');
+
+      // Close the pop-up
+      Navigator.pop(context);
+    });
+  }
+
+  // Function to navigate to an enlarged version of the image
+  // void _viewEnlarged() {
+  //   Navigator.push(
+  //     context,
+  //     MaterialPageRoute(
+  //       builder: (context) => EnlargedImageView(imagePath: _currentImagePath),
+  //     ),
+  //   );
+  // }
+
+  void _viewEnlarged() {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => EnlargedImageView(imageProvider: selectedImage),
+      ),
+    );
+  }
 
   @override
   Widget build(BuildContext context) {
 // TODO: implement build
 //SingleChildScrollView(
     return SafeArea(
-      child: Scaffold(
+        child: Scaffold(
       resizeToAvoidBottomInset: false,
       body: SingleChildScrollView(
           child: SafeArea(
@@ -192,6 +300,7 @@ class _SettingsState extends State<settings> {
                               ),
                             ),
 
+/*
                             Positioned(
                               bottom: 0,
                               left: 30,
@@ -253,10 +362,84 @@ class _SettingsState extends State<settings> {
                                 ],
                               ),
                             ),
+                            */
                           ],
                         ),
                       ),
                     ],
+                  ),
+                ),
+
+                const SizedBox(height: 10),
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: 50.0), // Adjust the left padding as needed
+                  child: Align(
+                    alignment: Alignment.topLeft,
+                    child: GestureDetector(
+                      onTap: _viewEnlarged,
+                      child: Stack(
+                        children: [
+                          Container(
+                            width: 110.0,
+                            height: 110.0,
+                            decoration: BoxDecoration(
+                              shape: BoxShape.circle,
+                              border: Border.all(
+                                color: Colors.deepOrange,
+                                width: 2.0,
+                              ),
+                            ),
+                            // child: ClipOval(
+                            //   child: Image.asset(
+                            //     _currentImagePath,
+                            //     width: 150.0,
+                            //     height: 150.0,
+                            //     fit: BoxFit.cover,
+                            //   ),
+                            // ),
+                            child: ClipOval(
+                              child: Container(
+                                width: 150.0,
+                                height: 150.0,
+                                decoration: BoxDecoration(
+                                  shape: BoxShape.circle,
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image:
+                                        selectedImage as ImageProvider<Object>,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                          Positioned(
+                            bottom: 12.0,
+                            right: -2.0,
+                            child: FloatingActionButton(
+                              onPressed: _showEditProfilePicturePopup,
+                              tooltip: 'Change Image',
+                              mini: true,
+                              backgroundColor: Colors.deepOrange,
+                              shape: RoundedRectangleBorder(
+                                borderRadius: BorderRadius.circular(22.0),
+                                side:
+                                    BorderSide(color: Colors.white, width: 2.0),
+                              ),
+                              child: Container(
+                                child: Center(
+                                  child: Icon(
+                                    Icons.edit,
+                                    size: 20.0,
+                                    color: Colors.white,
+                                  ),
+                                ),
+                              ),
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
                   ),
                 ),
 
@@ -430,7 +613,7 @@ class _SettingsState extends State<settings> {
                                 bioSettings.text, SharedPrefs().getBio() ?? ""),
                             getVal(emailSettings.text,
                                 SharedPrefs().getEmail() ?? ""),
-                            profile,
+                            _currentImagePath,
                           );
                         })
                   ],
@@ -439,7 +622,60 @@ class _SettingsState extends State<settings> {
             )),
       )),
     ));
+  }
+}
 
-    // );
+// class EnlargedImageView extends StatelessWidget {
+//   final String imagePath;
+
+//   const EnlargedImageView({required this.imagePath});
+
+//   @override
+//   Widget build(BuildContext context) {
+//     return Scaffold(
+//       backgroundColor: Colors.black,
+//       body: Center(
+//         child: GestureDetector(
+//           onTap: () {
+//             Navigator.pop(context);
+//           },
+//           child: Hero(
+//             tag: 'enlarged_image',
+//             child: Image.asset(
+//               imagePath,
+//               fit: BoxFit.contain,
+//             ),
+//           ),
+//         ),
+//       ),
+//     );
+//   }
+// }
+
+class EnlargedImageView extends StatelessWidget {
+  final ImageProvider<Object> imageProvider;
+
+  const EnlargedImageView({required this.imageProvider});
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      backgroundColor: Colors.black,
+      body: Center(
+        child: GestureDetector(
+          onTap: () {
+            Navigator.pop(context);
+          },
+          child: Hero(
+            tag: 'enlarged_image',
+            child: Image(
+              image: imageProvider,
+              fit: BoxFit
+                  .cover, // BoxFit.contain,  // using this second method makes the image fit a certain portion leaving the rest of the space to be entirely black
+            ),
+          ),
+        ),
+      ),
+    );
   }
 }

@@ -57,10 +57,7 @@ class MyApp extends StatelessWidget {
       navigatorKey: navigatorKey,
       onGenerateRoute: Application.router.generator,
       initialRoute: SharedPrefs().getCurrentPage() ?? '/login',
-      // home: SamplePage(
-      //   imagePath: 'assets/profile2.jpeg',
-      // ),
-      home: Settings(),
+      home: LogIn(),
     );
   }
 }
