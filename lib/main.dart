@@ -46,6 +46,10 @@ class MyApp extends StatelessWidget {
       },
     );
 
+    print("\n\nInitial route: ${SharedPrefs().getCurrentPage()}");
+    SharedPrefs().setCurrentPage('settings');
+    print("\n\nInitial route: ${SharedPrefs().getCurrentPage()}");
+
     return MaterialApp(
       theme: ThemeData(
         primarySwatch: paleColor,
