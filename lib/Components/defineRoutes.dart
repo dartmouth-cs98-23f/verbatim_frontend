@@ -22,11 +22,6 @@ class Application {
 
 void defineRoutes() {
   Application.router.define(
-    '/update_profile_pic',
-    handler: updateProfilePicHandler,
-  );
-
-  Application.router.define(
     '/onboarding_page1',
     handler: onBoardingPage1Handler,
   );
@@ -56,10 +51,10 @@ void defineRoutes() {
     handler: logInHandler,
   );
 
-  // Application.router.define(
-  //   '/settings',
-  //   handler: settingsHandler,
-  // );
+  Application.router.define(
+    '/settings',
+    handler: settingsHandler,
+  );
 
   Application.router.define(
     '/global_challenge',
@@ -118,17 +113,20 @@ var profileHandler = Handler(handlerFunc: (context, parameters) {
   }
 });
 
-// var settingsHandler = Handler(handlerFunc: (context, parameters) {
-//   if (SharedPrefs().getEmail() == '' ||
-//       SharedPrefs().getUserName() == '' ||
-//       SharedPrefs().getPassword() == '') {
-//     return LogIn();
-//   } else {
-//     // Update the current page in the shared prefs
-//     SharedPrefs().setCurrentPage('/settings');
-//     return settings();
-//   }
-// });
+var settingsHandler = Handler(handlerFunc: (context, parameters) {
+  // if (SharedPrefs().getEmail() == '' ||
+  //     SharedPrefs().getUserName() == '' ||
+  //     SharedPrefs().getPassword() == '') {
+  //   return LogIn();
+  // } else {
+  //   // Update the current page in the shared prefs
+  //   SharedPrefs().setCurrentPage('/settings');
+  //   return settings();
+  // }
+  // Update the current page in the shared prefs
+  SharedPrefs().setCurrentPage('/settings');
+  return settings();
+});
 
 var onBoardingPage2Handler = Handler(
   handlerFunc: (context, parameters) {
@@ -249,16 +247,5 @@ var logoutHandler = Handler(
       SharedPrefs().setCurrentPage('/logout');
       return LogoutPage();
     }
-  },
-);
-
-var updateProfilePicHandler = Handler(
-  handlerFunc: (context, parameters) {
-    // Update the current profile pic in the shared prefs
-    SharedPrefs().setCurrentPage('/update_profile_pic');
-    // return SamplePage(
-    //   imagePath: 'assets/profile2.jpeg',
-    // );
-    return Settings();
   },
 );
