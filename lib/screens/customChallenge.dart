@@ -31,11 +31,13 @@ class _CustomChallengeState extends State<customChallenge>
     "Your second challenge question",
     "Your third challenge question"
   ];
+  List<bool> editingStates = [false, false, false];
 
   Widget build(BuildContext context) {
-    final String assetName = 'assets/img1.svg'; // orange (top) background
+    final String assetName = 'assets/img1.svg';
     print(expandedStates);
     print(prompts);
+    print(editingStates);
     return SafeArea(
         child: Scaffold(
             backgroundColor: Color.fromARGB(255, 255, 243, 238),
@@ -53,7 +55,6 @@ class _CustomChallengeState extends State<customChallenge>
                             child: Stack(
                                 alignment: Alignment.topCenter,
                                 children: [
-                                  // orange background
                                   Container(
                                     height: 220.v,
                                     width: double.maxFinite,
@@ -79,7 +80,6 @@ class _CustomChallengeState extends State<customChallenge>
                                         SizedBox(height: 10.v),
                                       ]))
                                 ])),
-                        SizedBox(height: 20),
                         // List of 5 rectangles
                         for (int i = 0; i < prompts.length; i++)
                           _buildEditableRectangle(i),
@@ -90,6 +90,7 @@ class _CustomChallengeState extends State<customChallenge>
                             setState(() {
                               expandedStates.add(false);
                               prompts.add('New Prompt');
+                              editingStates.add(false);
                             });
                             print('Add Prompt button pressed');
                           },
@@ -100,16 +101,15 @@ class _CustomChallengeState extends State<customChallenge>
                               Icon(
                                 Icons.add,
                                 size: 20,
-                                color: Color(0xFFE76F51), // Set the icon color
+                                color: Color(0xFFE76F51),
                               ),
                               SizedBox(width: 5),
                               Text(
-                                'New Prompt',
+                                'Add Prompt',
                                 style: TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
-                                  color:
-                                      Color(0xFFE76F51), // Set the text color
+                                  color: Color(0xFFE76F51),
                                 ),
                               ),
                             ],
@@ -124,6 +124,10 @@ class _CustomChallengeState extends State<customChallenge>
   }
 
   Widget _buildEditableRectangle(int index) {
+    TextEditingController editingController = TextEditingController(
+      text: prompts[index],
+    );
+
     return GestureDetector(
       onTap: () {
         setState(() {
@@ -132,26 +136,50 @@ class _CustomChallengeState extends State<customChallenge>
       },
       child: AnimatedContainer(
         duration: Duration(milliseconds: 300),
-        height: expandedStates[index] ? 120 : 60,
+        height: expandedStates[index] ? 100 : 50,
         width: double.infinity,
-        margin: EdgeInsets.symmetric(vertical: 5, horizontal: 10),
-        padding: EdgeInsets.all(10),
+        margin: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+        padding: EdgeInsets.all(8),
         decoration: BoxDecoration(
           color: Colors.white,
-          border: Border.all(color: Colors.black),
           borderRadius: BorderRadius.circular(10),
+          boxShadow: [
+            BoxShadow(
+              color: Color(0xFF9E503C).withOpacity(1),
+              blurRadius: 5,
+              offset: Offset(2, 3),
+            )
+          ],
         ),
         child: Stack(
           children: [
-            Center(
-              child: Text(
-                prompts[index],
-                style: TextStyle(
-                  fontSize: 16,
-                  fontWeight: FontWeight.bold,
+            if (editingStates[index])
+              Center(
+                child: Container(
+                  width: double.infinity,
+                  child: TextField(
+                    controller: editingController,
+                    onChanged: (editedText) {
+                      prompts[index] = editedText;
+                      editingStates[index] = false;
+                    },
+                    style: TextStyle(
+                      fontSize: 16,
+                      fontWeight: FontWeight.bold,
+                    ),
+                  ),
                 ),
               ),
-            ),
+            if (!editingStates[index])
+              Center(
+                child: Text(
+                  prompts[index],
+                  style: TextStyle(
+                    fontSize: 16,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
             if (expandedStates[index])
               Positioned(
                 bottom: 0,
@@ -159,20 +187,70 @@ class _CustomChallengeState extends State<customChallenge>
                 child: Row(
                   children: [
                     ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        primary: Colors.white,
+                        onPrimary: Color(0xFFE76F51),
+                        enableFeedback: true,
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                        ),
+                        side: BorderSide(
+                          color: Color(0xFFE76F51),
+                          width: 4,
+                        ),
+                        minimumSize: const Size(75, 35),
+                      ),
                       onPressed: () {
                         setState(() {
                           prompts.removeAt(index);
                           expandedStates.removeAt(index);
                         });
                       },
-                      child: Text('Delete'),
+                      child: Text('Delete',
+                          style: TextStyle(fontWeight: FontWeight.bold)),
                     ),
-                    ElevatedButton(
-                      onPressed: () {
-                        print('Edit button pressed for index $index');
-                      },
-                      child: Text('Edit'),
-                    ),
+                    SizedBox(width: 10),
+                    if (!editingStates[index])
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Color(0xFFE76F51),
+                          enableFeedback: true,
+                          onPrimary: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          minimumSize: const Size(75, 35),
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            editingStates[index] = true;
+                            prompts[index] = editingController.text;
+                          });
+                        },
+                        child: Text('Edit',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                      ),
+                    if (editingStates[index])
+                      ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          primary: Color(0xFFE76F51),
+                          enableFeedback: true,
+                          onPrimary: Colors.white,
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(10),
+                          ),
+                          minimumSize: const Size(75, 35),
+                        ),
+                        onPressed: () {
+                          setState(() {
+                            editingStates[index] = false;
+                            prompts[index] = editingController.text;
+                            expandedStates[index] = false;
+                          });
+                        },
+                        child: Text('Save',
+                            style: TextStyle(fontWeight: FontWeight.bold)),
+                      ),
                     SizedBox(width: 5),
                   ],
                 ),

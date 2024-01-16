@@ -53,6 +53,7 @@ class _ProfileState extends State<Profile> {
                               // Orange background
                               Container(
                                 height: 250.v,
+                                color: Colors.transparent,
                                 width: double.maxFinite,
                                 margin: EdgeInsets.zero,
                                 padding: EdgeInsets.zero,
