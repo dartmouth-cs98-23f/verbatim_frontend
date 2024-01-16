@@ -27,17 +27,15 @@ class _CustomChallengeState extends State<customChallenge>
     with SingleTickerProviderStateMixin {
   List<bool> expandedStates = [false, false, false];
   List<String> prompts = [
-    "Your first challenge question",
-    "Your second challenge question",
-    "Your third challenge question"
+    "Replace with your challenge question",
+    "Replace with your challenge question",
+    "Replace with your challenge question",
   ];
   List<bool> editingStates = [false, false, false];
 
   Widget build(BuildContext context) {
     final String assetName = 'assets/img1.svg';
-    print(expandedStates);
-    print(prompts);
-    print(editingStates);
+
     return SafeArea(
         child: Scaffold(
             backgroundColor: Color.fromARGB(255, 255, 243, 238),
@@ -89,7 +87,8 @@ class _CustomChallengeState extends State<customChallenge>
                           onTap: () {
                             setState(() {
                               expandedStates.add(false);
-                              prompts.add('New Prompt');
+                              prompts
+                                  .add("Replace with your challenge question");
                               editingStates.add(false);
                             });
                             print('Add Prompt button pressed');
@@ -155,29 +154,53 @@ class _CustomChallengeState extends State<customChallenge>
           children: [
             if (editingStates[index])
               Center(
-                child: Container(
-                  width: double.infinity,
-                  child: TextField(
-                    controller: editingController,
-                    onChanged: (editedText) {
-                      prompts[index] = editedText;
-                      editingStates[index] = false;
-                    },
-                    style: TextStyle(
-                      fontSize: 16,
-                      fontWeight: FontWeight.bold,
-                    ),
+                child: Row(children: [
+                  CircleAvatar(
+                    backgroundColor: Color(0xFFE76F51),
+                    radius: 10,
                   ),
-                ),
+                  SizedBox(width: 10),
+                  Expanded(
+                    child: TextField(
+                      controller: editingController,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                      ),
+                      onChanged: (editedText) {
+                        prompts[index] = editedText;
+                        editingStates[index] = false;
+                      },
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  )
+                ]),
               ),
             if (!editingStates[index])
               Center(
-                child: Text(
-                  prompts[index],
-                  style: TextStyle(
-                    fontSize: 16,
-                    fontWeight: FontWeight.bold,
-                  ),
+                child: Row(
+                  children: [
+                    CircleAvatar(
+                        foregroundColor: Color(0xFFE76F51),
+                        backgroundColor: Color(0xFFE76F51),
+                        child: CircleAvatar(
+                          backgroundColor: expandedStates[index]
+                              ? Color(0xFFE76F51)
+                              : Colors.white,
+                          radius: 9,
+                        ),
+                        radius: 10),
+                    SizedBox(width: 10),
+                    Text(
+                      prompts[index],
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
                 ),
               ),
             if (expandedStates[index])
@@ -204,6 +227,7 @@ class _CustomChallengeState extends State<customChallenge>
                         setState(() {
                           prompts.removeAt(index);
                           expandedStates.removeAt(index);
+                          editingStates.removeAt(index);
                         });
                       },
                       child: Text('Delete',
