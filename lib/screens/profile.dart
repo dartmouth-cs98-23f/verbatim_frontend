@@ -58,18 +58,11 @@ class _ProfileState extends State<Profile> {
     final getStats =  await http.post(url, headers: headers, body: username);
 
     if(getStats.statusCode == 200){
-      
-      //Map<String, dynamic>?
-      //final data = json.decode(getStats.body);
-      final data = jsonDecode(getStats.body);
-      if(data){
-        friends = data['numFriends'];
-        globals = data['globalChal'];
-        customs = data['customChal'];
-        streaks = data['streak'];
-
-      }
-    
+      final List<dynamic>? data = jsonDecode(getStats.body);
+      streaks= data![0];
+      customs = data[1];
+      globals = data[2];
+      friends= data[3];
     }else{
       print('Sorry could not get user stats');
     }
