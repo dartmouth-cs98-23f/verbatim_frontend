@@ -232,7 +232,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
   }
 
   Widget build(BuildContext context) {
-    final String assetName = 'assets/img1.svg'; // orange (top) background
+    final String assetName = 'assets/img1.svg';
     List<String> addedUsernames = widget.addedUsernames;
 
     return SafeArea(
@@ -416,7 +416,6 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                                       (context, index) {
                                                     return GestureDetector(
                                                       onTap: () {
-                                                        // Handle button press
                                                         print(
                                                             "Pressed ${activeChallenges[index]}");
                                                       },
@@ -485,16 +484,15 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                                         fontSize: 18,
                                                         fontWeight:
                                                             FontWeight.bold,
-                                                        color: Color(
-                                                            0xFFE76F51), // Set the text color
+                                                        color:
+                                                            Color(0xFFE76F51),
                                                       ),
                                                     ),
                                                     SizedBox(width: 5),
                                                     Icon(
                                                       Icons.add,
                                                       size: 20,
-                                                      color: Color(
-                                                          0xFFE76F51), // Set the icon color
+                                                      color: Color(0xFFE76F51),
                                                     ),
                                                   ],
                                                 ),
@@ -502,7 +500,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                             ],
                                           ),
                                         ),
-                                        // Content for 'Stats'
+                                        // Content for Stats
                                         Container(child: StatsContent()),
                                       ],
                                     ),
@@ -674,16 +672,13 @@ class _DonutChartState extends State<DonutChart> {
                     startDegreeOffset: 250,
                     sectionsSpace: 0,
                     centerSpaceRadius: 50,
-                    // you can assign values according to your need
                     sections: [
-                      //now we will set values
                       PieChartSectionData(
                         value: widget.groupSimilarity,
                         color: Color(0xFFE76F51),
                         radius: 25,
                         showTitle: false,
                       ),
-
                       PieChartSectionData(
                         value: 100 - widget.groupSimilarity,
                         color: calculateColor(widget.groupSimilarity),
