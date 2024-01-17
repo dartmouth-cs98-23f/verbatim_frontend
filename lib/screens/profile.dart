@@ -6,6 +6,15 @@ import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/widgets/stats.dart';
 import 'package:verbatim_frontend/widgets/stats_tile.dart';
 import 'package:verbatim_frontend/screens/settings.dart';
+import 'package:verbatim_frontend/BackendService.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'dart:convert';
+
+
+//request: username
+//response: streak, numCustomChals, numGlobalChals, numFriends
+
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -13,6 +22,7 @@ class Profile extends StatefulWidget {
   @override
   State<Profile> createState() => _ProfileState();
 }
+
 
 class _ProfileState extends State<Profile> {
   final String assetName = 'assets/img1.svg';
@@ -22,10 +32,39 @@ class _ProfileState extends State<Profile> {
   final String globalChallengeIcon = 'assets/globalChallenges.svg';
   final String customIcon = 'assets/customChallenges.svg';
 
-  static const String friends = "54";
-  static const String globals = "";
-  static const String customs = "";
-  static const String streaks = "";
+  String friends = "54";
+  String globals = "";
+  String customs = "";
+  String streaks = "";
+
+
+  Map<String, dynamic> stats = {
+    "friends": 0,
+    "globals": 0,
+    "customs": 0,
+    "streaks": 0,
+  };
+
+  Future<void> _getStats(String username) 
+  async {
+    final url = Uri.parse(BackendService.getBackendUrl() + 'getUserStats');
+    final headers= <String, String>{'Content-Type': 'application/json'};
+    final getStats =  await http.post(url, headers: headers, body: username);
+
+    if(getStats.statusCode == 200){
+      final Map<String, dynamic>? data = json.decode(getStats.body);
+      friends = data!['numFriends'];
+      globals = data['numFriends'];
+      customs = data['customChal'];
+      streaks = data['streak'];
+
+    }else{
+      print('Sorry could not get user stats');
+    }
+
+  }
+
+
 
   final String field = "Friend";
 
@@ -37,7 +76,7 @@ class _ProfileState extends State<Profile> {
         body: SingleChildScrollView(
           child: SafeArea(
             child: Container(
-              color: Color.fromARGB(255, 255, 243, 238),
+              color: Color.fromRGBO(255, 243, 238, 1),
               child: Column(
                 children: [
                   SizedBox(
@@ -75,8 +114,8 @@ class _ProfileState extends State<Profile> {
                             borderRadius: BorderRadius.circular(30.0),
                           ),
                           child: Container(
-                            width: 300.h,
-                            height: 200.v,
+                            width: 340.h,
+                            height: 240.v,
                             padding: EdgeInsets.all(30),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -86,15 +125,6 @@ class _ProfileState extends State<Profile> {
                                     Container(
                                       width: 100.v,
                                       height: 100.v,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color:
-                                                Colors.black.withOpacity(0.2),
-                                          ),
-                                        ],
-                                      ),
                                       child: ClipOval(
                                         child: Image.asset(
                                           profile,
@@ -108,13 +138,14 @@ class _ProfileState extends State<Profile> {
                                     Column(
                                       children: [
                                         Text(
+                                          softWrap:true,
                                           SharedPrefs().getFirstName() ??
                                               "User M.",
                                           style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               fontSize: 32),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 15,
                                         ),
                                         SafeArea(
@@ -196,7 +227,9 @@ class _ProfileState extends State<Profile> {
                                 // Bio
                                 Text(
                                   SharedPrefs().getBio() ?? "Bio goes here",
+                                  softWrap:true,
                                   style: const TextStyle(
+                                    
                                     color: Colors.black,
                                     fontSize: 18,
                                   ),
@@ -217,8 +250,8 @@ class _ProfileState extends State<Profile> {
                             borderRadius: BorderRadius.circular(30.0),
                           ),
                           child: Container(
-                            width: 300.h,
-                            height: 450.v,
+                            width: 340.h,
+                            height: 470.v,
                             padding: EdgeInsets.all(25),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -240,7 +273,7 @@ class _ProfileState extends State<Profile> {
                                 Row(children: <Widget>[
                                   Expanded(
                                       child: Container(
-                                    height: 75.v,
+                                    height: 80.v,
                                     decoration: BoxDecoration(
                                         color: const Color.fromARGB(
                                             255, 231, 111, 81),
@@ -255,8 +288,8 @@ class _ProfileState extends State<Profile> {
                                           )
                                         ]),
                                     child: MyStatsTile(
-                                        field: "friends",
-                                        stat: "54",
+                                        field: "Friends",
+                                        stat: friends,
                                         icon: friendsIcon),
                                   )),
                                   const SizedBox(
@@ -264,7 +297,7 @@ class _ProfileState extends State<Profile> {
                                   ),
                                   Expanded(
                                       child: Container(
-                                    height: 75.v,
+                                    height: 80.v,
                                     decoration: BoxDecoration(
                                         color: const Color.fromARGB(
                                             255, 231, 111, 81),
@@ -279,8 +312,8 @@ class _ProfileState extends State<Profile> {
                                           )
                                         ]),
                                     child: MyStatsTile(
-                                        field: "Current streak",
-                                        stat: "19",
+                                        field: "Current \nStreak",
+                                        stat: streaks,
                                         icon: streakIcon),
                                   )),
                                 ]),
@@ -290,7 +323,7 @@ class _ProfileState extends State<Profile> {
                                 Row(children: <Widget>[
                                   Expanded(
                                       child: Container(
-                                    height: 75.v,
+                                    height: 80.v,
                                     decoration: BoxDecoration(
                                         color: const Color.fromARGB(
                                             255, 231, 111, 81),
@@ -305,8 +338,8 @@ class _ProfileState extends State<Profile> {
                                           )
                                         ]),
                                     child: MyStatsTile(
-                                        field: "Global Challenges",
-                                        stat: "103",
+                                        field: "Global \nChallenges",
+                                        stat: globals,
                                         icon: globalChallengeIcon),
                                   )),
                                   const SizedBox(
@@ -314,7 +347,7 @@ class _ProfileState extends State<Profile> {
                                   ),
                                   Expanded(
                                       child: Container(
-                                    height: 75.v,
+                                    height: 80.v,
                                     decoration: BoxDecoration(
                                         color: const Color.fromARGB(
                                             255, 231, 111, 81),
@@ -329,8 +362,8 @@ class _ProfileState extends State<Profile> {
                                           )
                                         ]),
                                     child: MyStatsTile(
-                                        field: "Custom Challenges",
-                                        stat: "358",
+                                        field: "Custom \nChallenges",
+                                        stat: customs,
                                         icon: customIcon),
                                   )),
                                 ]),
