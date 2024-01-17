@@ -6,6 +6,11 @@ import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/widgets/stats.dart';
 import 'package:verbatim_frontend/widgets/stats_tile.dart';
 import 'package:verbatim_frontend/screens/settings.dart';
+import 'package:verbatim_frontend/BackendService.dart';
+import 'package:http/http.dart' as http;
+import 'dart:async';
+import 'dart:convert';
+
 
 class Profile extends StatefulWidget {
   const Profile({Key? key}) : super(key: key);
@@ -13,6 +18,7 @@ class Profile extends StatefulWidget {
   @override
   State<Profile> createState() => _ProfileState();
 }
+
 
 class _ProfileState extends State<Profile> {
   final String assetName = 'assets/img1.svg';
@@ -22,12 +28,67 @@ class _ProfileState extends State<Profile> {
   final String globalChallengeIcon = 'assets/globalChallenges.svg';
   final String customIcon = 'assets/customChallenges.svg';
 
-  static const String friends = "54";
-  static const String globals = "";
-  static const String customs = "";
-  static const String streaks = "";
+  // static String friends = " ";
+  // static String globals = "0";
+  // static String customs = "0";
+  // static String streaks = "0";
+
+  static int friends = -1;
+  static int globals = 0;
+  static int customs = 0;
+  static int streaks = 0;
+
+  List<int> stats= [friends, globals, customs, streaks];
+
+  static String firstName =SharedPrefs().getFirstName()?? "User";
+  static String lastName = SharedPrefs().getLastName()?? "Name";
+  static String initial = lastName.substring(0, 1);
+
+  String displayName = '$firstName $initial.';
+  final String username = SharedPrefs().getUserName()??" ";
+
+
+
+
+  Future<void> _getStats(String username) 
+  async {
+    
+    final url = Uri.parse("${BackendService.getBackendUrl()}getUserStats");
+    final headers= <String, String>{'Content-Type': 'application/json'};
+    final getStats =  await http.post(url, headers: headers, body: username);
+
+    if(getStats.statusCode == 200){
+      
+      //Map<String, dynamic>?
+      //final data = json.decode(getStats.body);
+      final data = jsonDecode(getStats.body);
+      if(data){
+        friends = data['numFriends'];
+        globals = data['globalChal'];
+        customs = data['customChal'];
+        streaks = data['streak'];
+
+      }
+    
+    }else{
+      print('Sorry could not get user stats');
+    }
+
+  }
+
+
 
   final String field = "Friend";
+  @override
+  void initState() {
+    super.initState();
+    _getStats(username).then((_) {
+      setState(() {
+
+        stats = [friends,streaks, globals, customs];
+      });
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,7 +98,7 @@ class _ProfileState extends State<Profile> {
         body: SingleChildScrollView(
           child: SafeArea(
             child: Container(
-              color: Color.fromARGB(255, 255, 243, 238),
+              color: Color.fromRGBO(255, 243, 238, 1),
               child: Column(
                 children: [
                   SizedBox(
@@ -75,9 +136,9 @@ class _ProfileState extends State<Profile> {
                             borderRadius: BorderRadius.circular(30.0),
                           ),
                           child: Container(
-                            width: 300.h,
-                            height: 200.v,
-                            padding: EdgeInsets.all(30),
+                            width: 340,
+                            height: 200,
+                            padding: const EdgeInsets.only(top:25, left:25),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -86,15 +147,6 @@ class _ProfileState extends State<Profile> {
                                     Container(
                                       width: 100.v,
                                       height: 100.v,
-                                      decoration: BoxDecoration(
-                                        shape: BoxShape.circle,
-                                        boxShadow: [
-                                          BoxShadow(
-                                            color:
-                                                Colors.black.withOpacity(0.2),
-                                          ),
-                                        ],
-                                      ),
                                       child: ClipOval(
                                         child: Image.asset(
                                           profile,
@@ -108,14 +160,15 @@ class _ProfileState extends State<Profile> {
                                     Column(
                                       children: [
                                         Text(
-                                          SharedPrefs().getFirstName() ??
-                                              "User M.",
+                                          softWrap:true,
+                                              displayName,
                                           style: const TextStyle(
+                                              height: 1.2,
                                               fontWeight: FontWeight.bold,
                                               fontSize: 32),
                                         ),
-                                        SizedBox(
-                                          height: 15,
+                                        const SizedBox(
+                                          height: 10,
                                         ),
                                         SafeArea(
                                           child: GestureDetector(
@@ -130,7 +183,7 @@ class _ProfileState extends State<Profile> {
                                             },
                                             child: Container(
                                               width: 120,
-                                              height: 30,
+                                              height: 25,
                                               decoration: ShapeDecoration(
                                                 color: Color(0xFFE76F51),
                                                 shape: RoundedRectangleBorder(
@@ -171,7 +224,8 @@ class _ProfileState extends State<Profile> {
                                                             style: TextStyle(
                                                               color:
                                                                   Colors.white,
-                                                              fontSize: 16,
+                                                              fontSize: 12,
+                                                              height: 1.2,
                                                               fontWeight:
                                                                   FontWeight
                                                                       .bold,
@@ -191,14 +245,16 @@ class _ProfileState extends State<Profile> {
                                   ],
                                 ),
 
-                                const SizedBox(height: 25),
+                                const SizedBox(height: 20),
 
                                 // Bio
                                 Text(
                                   SharedPrefs().getBio() ?? "Bio goes here",
+                                  softWrap:true,
+
                                   style: const TextStyle(
                                     color: Colors.black,
-                                    fontSize: 18,
+                                    fontSize: 16,
                                   ),
                                 ),
                               ],
@@ -217,8 +273,8 @@ class _ProfileState extends State<Profile> {
                             borderRadius: BorderRadius.circular(30.0),
                           ),
                           child: Container(
-                            width: 300.h,
-                            height: 450.v,
+                            width: 340,
+                            height: 470,
                             padding: EdgeInsets.all(25),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
@@ -236,11 +292,11 @@ class _ProfileState extends State<Profile> {
                                     color: Colors.black,
                                   ),
                                 ),
-                                const SizedBox(height: 15),
+                                const SizedBox(height: 10),
                                 Row(children: <Widget>[
                                   Expanded(
                                       child: Container(
-                                    height: 75.v,
+                                    height: 80,
                                     decoration: BoxDecoration(
                                         color: const Color.fromARGB(
                                             255, 231, 111, 81),
@@ -255,8 +311,8 @@ class _ProfileState extends State<Profile> {
                                           )
                                         ]),
                                     child: MyStatsTile(
-                                        field: "friends",
-                                        stat: "54",
+                                        field: "Friends",
+                                        stat: (stats[0]).toString(),
                                         icon: friendsIcon),
                                   )),
                                   const SizedBox(
@@ -264,7 +320,7 @@ class _ProfileState extends State<Profile> {
                                   ),
                                   Expanded(
                                       child: Container(
-                                    height: 75.v,
+                                    height: 80,
                                     decoration: BoxDecoration(
                                         color: const Color.fromARGB(
                                             255, 231, 111, 81),
@@ -279,18 +335,18 @@ class _ProfileState extends State<Profile> {
                                           )
                                         ]),
                                     child: MyStatsTile(
-                                        field: "Current streak",
-                                        stat: "19",
+                                        field: "Current \nStreak",
+                                        stat: stats[1].toString(),
                                         icon: streakIcon),
                                   )),
                                 ]),
 
-                                const SizedBox(height: 15),
+                                const SizedBox(height: 10),
 
                                 Row(children: <Widget>[
                                   Expanded(
                                       child: Container(
-                                    height: 75.v,
+                                    height: 80,
                                     decoration: BoxDecoration(
                                         color: const Color.fromARGB(
                                             255, 231, 111, 81),
@@ -305,8 +361,8 @@ class _ProfileState extends State<Profile> {
                                           )
                                         ]),
                                     child: MyStatsTile(
-                                        field: "Global Challenges",
-                                        stat: "103",
+                                        field: "Global \nChallenges",
+                                        stat: stats[2].toString(),
                                         icon: globalChallengeIcon),
                                   )),
                                   const SizedBox(
@@ -314,7 +370,7 @@ class _ProfileState extends State<Profile> {
                                   ),
                                   Expanded(
                                       child: Container(
-                                    height: 75.v,
+                                    height: 80,
                                     decoration: BoxDecoration(
                                         color: const Color.fromARGB(
                                             255, 231, 111, 81),
@@ -329,22 +385,22 @@ class _ProfileState extends State<Profile> {
                                           )
                                         ]),
                                     child: MyStatsTile(
-                                        field: "Custom Challenges",
-                                        stat: "358",
+                                        field: "Custom \nChallenges",
+                                        stat: stats[3].toString(),
                                         icon: customIcon),
                                   )),
                                 ]),
                                 // Profile picture
-                                const SizedBox(height: 15),
+                                const SizedBox(height: 10),
                                 const Positioned(
                                     child: Center(
                                   child: Text.rich(TextSpan(
                                     children: [
                                       TextSpan(
-                                        text: 'Your',
+                                        text: 'Highest',
                                         style: TextStyle(
                                             color: Colors.black,
-                                            fontSize: 24,
+                                            fontSize: 20,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       TextSpan(
@@ -352,35 +408,35 @@ class _ProfileState extends State<Profile> {
                                         style: TextStyle(
                                             color: Color.fromARGB(
                                                 255, 231, 111, 81),
-                                            fontSize: 24,
+                                            fontSize: 20,
                                             fontWeight: FontWeight.bold),
                                       ),
                                       TextSpan(
                                         text: 'Match',
                                         style: TextStyle(
                                             color: Colors.black,
-                                            fontSize: 24,
+                                            fontSize: 20,
                                             fontWeight: FontWeight.bold),
                                       ),
                                     ],
                                   )),
                                 )),
 
-                                const SizedBox(height: 10),
+                                const SizedBox(height: 5),
 
                                 const Positioned(
                                   child: Center(
                                     child: Text(
                                       "86% similarity",
                                       style: TextStyle(
-                                        fontSize: 18,
-                                        fontWeight: FontWeight.bold,
+                                        fontSize: 16,
+                                        fontWeight: FontWeight.w500,
                                         color: Colors.black,
                                       ),
                                     ),
                                   ),
                                 ),
-                                const SizedBox(height: 15),
+                                const SizedBox(height: 5),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,
                                   children: [

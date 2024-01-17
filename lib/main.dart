@@ -47,7 +47,9 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       theme: ThemeData(
-        primarySwatch: paleColor,
+        //primarySwatch: paleColor,
+        scaffoldBackgroundColor: Color.fromARGB(255, 255, 243, 238),
+
         textSelectionTheme: const TextSelectionThemeData(
           cursorColor: Color(0xFFE76F51),
         ),
