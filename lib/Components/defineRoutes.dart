@@ -1,5 +1,4 @@
 import 'package:fluro/fluro.dart';
-import 'package:verbatim_frontend/Components/sample_page.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'package:verbatim_frontend/screens/forgotPassword.dart';

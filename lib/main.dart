@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:verbatim_frontend/Components/sample_page.dart';
 import 'package:verbatim_frontend/screens/logIn.dart';
 import 'BackendService.dart';
 import 'Components/defineRoutes.dart';
