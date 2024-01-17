@@ -15,31 +15,25 @@ class MyStatsTile extends StatelessWidget {
       children: [
         const SizedBox(width: 15),
         SvgPicture.asset(icon),
-        //const SizedBox(width: 15),
+        const SizedBox(width: 15),
         Container(
-          //widthFactor: 0.5,
           child: Column(
             children: [
-              const Padding(padding: EdgeInsets.only(top: 15.0)),
-              Text(stat,
-                  //textAlign: TextAlign.left,
-                  style: const TextStyle(
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20)),
-              Row(children: [
-                              const SizedBox(width: 25),
-
-              Positioned(
-                bottom: 15,
-                child: Text(field,
-                    //textAlign: TextAlign.left,
-                    softWrap: true,
+              const Padding(padding: EdgeInsets.only(top: 10.0, left:15.0)),
+              Text.rich(TextSpan(children: [
+                TextSpan(
+                    text: '$stat\n',
                     style: const TextStyle(
-                        height: 1.2, color: Colors.white, fontSize: 14)),
-              ),
-              ],)
-
+                        color: Colors.white,
+                        height: 1.2,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20)),
+                TextSpan(
+                  text: field,
+                  style: const TextStyle(
+                      height: 1.2, color: Colors.white, fontSize: 12),
+                )
+              ])),
             ],
           ),
         ),
