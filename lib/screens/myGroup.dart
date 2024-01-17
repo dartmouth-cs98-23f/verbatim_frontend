@@ -346,25 +346,13 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                     child: Column(
                                       children: [
                                         TabBar(
-                                          dividerColor: Colors.transparent,
+                                          unselectedLabelColor: Colors.black,
                                           controller: _tabController,
-                                          unselectedLabelColor:
-                                              Color(0xFFE76F51),
-                                          labelColor: Colors.white,
-                                          indicatorPadding: EdgeInsets.only(
-                                              left: 5,
-                                              right: 5,
-                                              top: 5,
-                                              bottom: 5),
-                                          indicator: ShapeDecoration(
-                                              color: Color(0xFFE76F51),
-                                              shape: BeveledRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(20),
-                                                  side: BorderSide(
-                                                    color: Color.fromARGB(
-                                                        255, 231, 217, 213),
-                                                  ))),
+                                          indicatorColor: Color(0xFFE76F51),
+                                          labelColor: Color(0xFFE76F51),
+                                          indicatorPadding: EdgeInsets.zero,
+                                          indicatorSize:
+                                              TabBarIndicatorSize.label,
                                           tabs: [
                                             Tab(
                                               child: Align(
