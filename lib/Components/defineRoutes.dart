@@ -4,7 +4,6 @@ import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'package:verbatim_frontend/screens/forgotPassword.dart';
 import 'package:verbatim_frontend/screens/logout.dart';
-import 'package:verbatim_frontend/screens/settingsCopy.dart';
 import '../screens/globalChallenge.dart';
 import '../screens/logIn.dart';
 import '../screens/profile.dart';

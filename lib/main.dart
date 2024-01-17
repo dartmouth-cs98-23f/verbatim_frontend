@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/Components/sample_page.dart';
 import 'package:verbatim_frontend/screens/logIn.dart';
-import 'package:verbatim_frontend/screens/settingsCopy.dart';
 import 'BackendService.dart';
 import 'Components/defineRoutes.dart';
 import 'Components/shared_prefs.dart';
@@ -45,10 +44,6 @@ class MyApp extends StatelessWidget {
         900: Color(0xFF212121),
       },
     );
-
-    print("\n\nInitial route: ${SharedPrefs().getCurrentPage()}");
-    SharedPrefs().setCurrentPage('settings');
-    print("\n\nInitial route: ${SharedPrefs().getCurrentPage()}");
 
     return MaterialApp(
       theme: ThemeData(
