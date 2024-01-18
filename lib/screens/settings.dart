@@ -1,15 +1,12 @@
 import 'dart:io';
-
+import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get_state_manager/get_state_manager.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/Components/EditProfilePicturePopup.dart';
-import 'package:verbatim_frontend/Components/sample_page.dart';
-import 'package:verbatim_frontend/screens/globalChallenge.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'package:http/http.dart' as http;
@@ -17,19 +14,10 @@ import 'dart:convert';
 import 'package:verbatim_frontend/widgets/custom_app_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
-import 'package:verbatim_frontend/widgets/custom_tab.dart';
 import 'dart:async';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/resetPassword.dart';
-import 'package:verbatim_frontend/widgets/testCustomBar.dart';
 import 'sideBar.dart';
-
-//get the edits to send back as an acoount settings thing
-//getsignin -> look for input function to replace
-
-//cant find old username
-//if changed username, username is taken by someone else
-//
 
 void edits(
   BuildContext context,
@@ -228,16 +216,6 @@ class _settingsState extends State<settings> {
     });
   }
 
-  // Function to navigate to an enlarged version of the image
-  // void _viewEnlarged() {
-  //   Navigator.push(
-  //     context,
-  //     MaterialPageRoute(
-  //       builder: (context) => EnlargedImageView(imagePath: _currentImagePath),
-  //     ),
-  //   );
-  // }
-
   void _viewEnlarged() {
     Navigator.push(
       context,
@@ -284,85 +262,6 @@ class _settingsState extends State<settings> {
 
                             // app bar on top of background
                             CustomAppBar(),
-                            //testCustomBar(),
-
-                            // 'Account Settings #'
-                            const Positioned(
-                              child: Center(
-                                child: Text(
-                                  'Account Settings',
-                                  style: TextStyle(
-                                    fontSize: 28,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w900,
-                                  ),
-                                ),
-                              ),
-                            ),
-
-/*
-                            Positioned(
-                              bottom: 0,
-                              left: 30,
-                              child: Stack(
-                                children: [
-                                  Container(
-                                    child: Align(
-                                      alignment: Alignment
-                                          .centerLeft, // Align the image to the left
-                                      child: Padding(
-                                        padding:
-                                            EdgeInsets.only(left: 0, top: 0),
-                                        child: Container(
-                                          width: 60,
-                                          height: 60,
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            border: Border.all(
-                                              color: Color.fromARGB(
-                                                  255,
-                                                  255,
-                                                  243,
-                                                  238), // Color of the border
-                                              width: 2.0,
-                                            ),
-                                          ),
-                                          child: Container(
-                                            width: 5,
-                                            height: 5,
-                                            child: ClipOval(
-                                              child: Image.asset(
-                                                profile,
-                                                width: 5,
-                                                height: 5,
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-
-                                  //doesnt work because it goes beyond the profile dimensions
-                                  Positioned(
-                                    bottom: 25,
-                                    left: 100,
-                                    child: Container(
-                                      child: Padding(
-                                          padding:
-                                              EdgeInsets.only(top: 0, left: 0),
-                                          child: SvgPicture.asset(
-                                            'assets/editIcon.svg',
-                                            width: 24,
-                                            height: 24,
-                                          )),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
-                            */
                           ],
                         ),
                       ),
@@ -390,14 +289,6 @@ class _settingsState extends State<settings> {
                                 width: 2.0,
                               ),
                             ),
-                            // child: ClipOval(
-                            //   child: Image.asset(
-                            //     _currentImagePath,
-                            //     width: 150.0,
-                            //     height: 150.0,
-                            //     fit: BoxFit.cover,
-                            //   ),
-                            // ),
                             child: ClipOval(
                               child: Container(
                                 width: 150.0,
@@ -598,7 +489,7 @@ class _settingsState extends State<settings> {
                   children: [
                     const SizedBox(height: 30),
                     MyButtonNoImage(
-                        buttonText: "Submit Changes",
+                        buttonText: "Update Profile",
                         onTap: () {
                           edits(
                             context,
@@ -624,33 +515,6 @@ class _settingsState extends State<settings> {
     ));
   }
 }
-
-// class EnlargedImageView extends StatelessWidget {
-//   final String imagePath;
-
-//   const EnlargedImageView({required this.imagePath});
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Scaffold(
-//       backgroundColor: Colors.black,
-//       body: Center(
-//         child: GestureDetector(
-//           onTap: () {
-//             Navigator.pop(context);
-//           },
-//           child: Hero(
-//             tag: 'enlarged_image',
-//             child: Image.asset(
-//               imagePath,
-//               fit: BoxFit.contain,
-//             ),
-//           ),
-//         ),
-//       ),
-//     );
-//   }
-// }
 
 class EnlargedImageView extends StatelessWidget {
   final ImageProvider<Object> imageProvider;
