@@ -1,3 +1,5 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
@@ -153,14 +155,15 @@ Widget _buildOptionButton(BuildContext context, title, String description,
       ),
       child: GestureDetector(
         onTap: () {
-          //change to standard once i make it
+          //talk to backend/add new popup - make something change so it pops up immediately
+          // some bool that can automatically call set state from other widget?
+
           if (title == 'Standard') {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => customChallenge(groupName: groupName),
-              ),
-            );
+            activeChallenges.add('New Standard Challenge');
+
+            Navigator.pop(context);
+
+            //
           } else if (title == 'Custom') {
             Navigator.push(
               context,
@@ -210,11 +213,11 @@ Widget _buildOptionButton(BuildContext context, title, String description,
 
 class myGroup extends StatefulWidget {
   final String groupName;
-  final List<String> addedUsernames;
+  final List<String>? addedUsernames;
 
   myGroup({
     Key? key,
-    required this.addedUsernames,
+    this.addedUsernames,
     required this.groupName,
   }) : super(key: key);
 
@@ -233,7 +236,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
 
   Widget build(BuildContext context) {
     final String assetName = 'assets/img1.svg';
-    List<String> addedUsernames = widget.addedUsernames;
+    List<String>? addedUsernames = widget.addedUsernames;
 
     return SafeArea(
         child: Scaffold(

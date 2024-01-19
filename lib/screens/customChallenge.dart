@@ -10,6 +10,7 @@ import 'dart:convert';
 import 'package:verbatim_frontend/widgets/custom_app_bar.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'dart:math';
+import 'package:verbatim_frontend/screens/myGroup.dart';
 
 class customChallenge extends StatefulWidget {
   final String groupName;
@@ -122,7 +123,16 @@ class _CustomChallengeState extends State<customChallenge>
                         ),
                         minimumSize: const Size(150, 50),
                       ),
-                      onPressed: () {}, //send prompts to backend
+                      // add 'create challenge'
+                      onPressed: () {
+                        Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                            builder: (context) =>
+                                myGroup(groupName: widget.groupName),
+                          ),
+                        );
+                      }, //send prompts to backend
                       child: Text(
                         'Send Challenge!',
                         style: TextStyle(
