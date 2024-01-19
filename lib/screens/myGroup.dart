@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/customChallenge.dart';
+import 'package:verbatim_frontend/screens/groupChallenge.dart';
 import 'sideBar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:verbatim_frontend/widgets/create_group_app_bar.dart';
@@ -394,6 +395,13 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                             itemBuilder: (context, index) {
                                               return GestureDetector(
                                                 onTap: () {
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          groupChallenge(),
+                                                    ),
+                                                  );
                                                   print(
                                                       "Pressed ${activeChallenges[index]}");
                                                 },
