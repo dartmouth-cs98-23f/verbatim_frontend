@@ -136,7 +136,7 @@ class _SettingsState extends State<settings> {
   final usernameSettings = TextEditingController();
   final bioSettings = TextEditingController();
   final emailSettings = TextEditingController();
-  final String assetName = 'assets/img1.svg';
+  final String assetName = 'assets/IconLiving.svg';
   final String profile = 'assets/profile_pic.png';
 
   @override
@@ -189,13 +189,14 @@ class _SettingsState extends State<settings> {
                                 ),
                               ),
                             ),
-
+                            Container(),
                             Positioned(
                               bottom: 0,
                               left: 30,
                               child: Stack(
                                 children: [
                                   Container(
+                                    //color: Color.fromARGB(255, 255, 243, 238),
                                     child: Align(
                                       alignment: Alignment
                                           .centerLeft, // Align the image to the left
