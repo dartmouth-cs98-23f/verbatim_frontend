@@ -7,7 +7,6 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
-      scrolledUnderElevation: 0.0,
       backgroundColor: Colors.transparent,
       toolbarHeight: 150,
       elevation: 0,
@@ -61,39 +60,7 @@ class NewNavBar extends StatelessWidget {
               );
             },
           ),
-          Expanded(
-            child: Container(
-              padding: const EdgeInsets.all(10),
-              clipBehavior: Clip.antiAlias,
-              decoration: ShapeDecoration(
-                color: Color(0xFFFFF7EE),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Icon(Icons.search, color: Colors.black, size: 20),
-                  SizedBox(width: 20),
-                  Expanded(
-                    child: Text(
-                      'Search Users',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 12,
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.w600,
-                        height: 0.11,
-                        letterSpacing: 0.20,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          SearchBarTextField(),
           SizedBox(width: 20),
           Container(
             width: 40,
@@ -113,36 +80,66 @@ class NewNavBar extends StatelessWidget {
 }
 
 class SearchBarTextField extends StatelessWidget {
+  final TextEditingController _searchController = TextEditingController();
+
+  void handleSearchChange(String value) {
+    // Add your logic for handling search input changes
+    print('Search input changed: $value');
+  }
+
+  void handleSearchPress() {
+    // Add your logic for handling search
+    print('Search performed');
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 180,
-      height: 24,
-      padding: const EdgeInsets.all(10),
-      clipBehavior: Clip.antiAlias,
-      decoration: ShapeDecoration(
-        color: Color(0xFFFFF7EE),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Icon(Icons.search, color: Colors.black, size: 20),
-          SizedBox(width: 10),
-          Text(
-            'Search Users',
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 12,
-              fontFamily: 'Poppins',
-              fontWeight: FontWeight.w600,
-              height: 0.11,
-              letterSpacing: 0.20,
-            ),
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        clipBehavior: Clip.antiAlias,
+        decoration: ShapeDecoration(
+          color: Color(0xFFFFF7EE),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
           ),
-        ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            IconButton(
+              onPressed: handleSearchPress, // Add onPressed function
+              icon: Icon(
+                Icons.search,
+                color: Colors.black,
+                size: 20,
+              ),
+            ),
+            SizedBox(width: 20),
+            Expanded(
+              child: TextField(
+                controller: _searchController,
+                onChanged: handleSearchChange, // Add onChange function
+                onSubmitted: (value) =>
+                    handleSearchPress(), // Add onSubmitted for Enter key press
+
+                decoration: InputDecoration(
+                  hintText: 'Search Users',
+                  hintStyle: TextStyle(
+                    color: Colors.black,
+                    fontSize: 12,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w600,
+                    height: 0.11,
+                    letterSpacing: 0.20,
+                  ),
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
