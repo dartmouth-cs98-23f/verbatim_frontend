@@ -74,8 +74,8 @@ void _showSuccessDialog(BuildContext context) {
         shape: RoundedRectangleBorder(
           borderRadius: BorderRadius.circular(10.0), // Set the corner radius
         ),
-        backgroundColor:
-            const Color.fromARGB(255, 255, 243, 238), // Set the background color
+        backgroundColor: const Color.fromARGB(
+            255, 255, 243, 238), // Set the background color
         title: RichText(
           text: const TextSpan(
             children: [
@@ -130,15 +130,11 @@ class _settingsState extends State<settings> {
   final usernameSettings = TextEditingController();
   final bioSettings = TextEditingController();
   final emailSettings = TextEditingController();
-<<<<<<< HEAD
   final String assetName = 'assets/img1.svg';
 
   final String imagePath = 'assets/profile_pic.png';
   late String _currentImagePath =
       'assets/profile2.jpeg'; // Track the currently displayed image
-=======
-  final String assetName = 'assets/IconLiving.svg';
->>>>>>> main
   final String profile = 'assets/profile_pic.png';
 
   final ImagePicker picker = ImagePicker();
@@ -264,87 +260,6 @@ class _settingsState extends State<settings> {
 
                             // app bar on top of background
                             CustomAppBar(),
-<<<<<<< HEAD
-=======
-                            //testCustomBar(),
-
-                            // 'Account Settings #'
-                            const Positioned(
-                              child: Center(
-                                child: Text(
-                                  'Account Settings',
-                                  style: TextStyle(
-                                    fontSize: 28,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w900,
-                                  ),
-                                ),
-                              ),
-                            ),
-                            Container(),
-                            Positioned(
-                              bottom: 0,
-                              left: 30,
-                              child: Stack(
-                                children: [
-                                  Container(
-                                    //color: Color.fromARGB(255, 255, 243, 238),
-                                    child: Align(
-                                      alignment: Alignment
-                                          .centerLeft, // Align the image to the left
-                                      child: Padding(
-                                        padding:
-                                            EdgeInsets.only(left: 0, top: 0),
-                                        child: Container(
-                                          width: 60,
-                                          height: 60,
-                                          decoration: BoxDecoration(
-                                            shape: BoxShape.circle,
-                                            border: Border.all(
-                                              color: const Color.fromARGB(
-                                                  255,
-                                                  255,
-                                                  243,
-                                                  238), // Color of the border
-                                              width: 2.0,
-                                            ),
-                                          ),
-                                          child: Container(
-                                            width: 5,
-                                            height: 5,
-                                            child: ClipOval(
-                                              child: Image.asset(
-                                                profile,
-                                                width: 5,
-                                                height: 5,
-                                                fit: BoxFit.cover,
-                                              ),
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                    ),
-                                  ),
-
-                                  //doesnt work because it goes beyond the profile dimensions
-                                  Positioned(
-                                    bottom: 25,
-                                    left: 100,
-                                    child: Container(
-                                      child: Padding(
-                                          padding:
-                                              EdgeInsets.only(top: 0, left: 0),
-                                          child: SvgPicture.asset(
-                                            'assets/editIcon.svg',
-                                            width: 24,
-                                            height: 24,
-                                          )),
-                                    ),
-                                  ),
-                                ],
-                              ),
-                            ),
->>>>>>> main
                           ],
                         ),
                       ),

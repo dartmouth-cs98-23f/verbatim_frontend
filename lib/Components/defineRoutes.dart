@@ -139,55 +139,17 @@ Handler onBoardingPage1Handler = Handler(
   },
 );
 
-<<<<<<< HEAD
 var profileHandler = Handler(handlerFunc: (context, parameters) {
-=======
-
-Handler settingsHandler = Handler(handlerFunc: (context, parameters) {
->>>>>>> main
   if (SharedPrefs().getEmail() == '' ||
       SharedPrefs().getUserName() == '' ||
       SharedPrefs().getPassword() == '') {
     return LogIn();
   } else {
     // Update the current page in the shared prefs
-<<<<<<< HEAD
     SharedPrefs().setCurrentPage('/profile');
     return Profile();
   }
 });
-=======
-    SharedPrefs().setCurrentPage('/settings');
-    return settings();
-  }
-});
-
-Handler onBoardingPage2Handler = Handler(
-
-var profileHandler = Handler(
-    handlerFunc:(context, parameters) {
-      if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
-        return LogIn();
-      } else {
-        // Update the current page in the shared prefs
-        SharedPrefs().setCurrentPage('/profile');
-        return Profile();
-      }
-    }
-);
-
-var settingsHandler = Handler(
-    handlerFunc:(context, parameters) {
-      if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
-        return LogIn();
-      } else {
-        // Update the current page in the shared prefs
-        SharedPrefs().setCurrentPage('/settings');
-        return settings();
-      }
-    }
-);
->>>>>>> main
 
 var settingsHandler = Handler(handlerFunc: (context, parameters) {
   // if (SharedPrefs().getEmail() == '' ||
@@ -218,11 +180,7 @@ var onBoardingPage2Handler = Handler(
   },
 );
 
-<<<<<<< HEAD
 var onBoardingPage3Handler = Handler(
-=======
-Handler onBoardingPage3Handler = Handler(
->>>>>>> main
   handlerFunc: (context, parameters) {
     if (SharedPrefs().getEmail() == '' ||
         SharedPrefs().getUserName() == '' ||
@@ -236,11 +194,7 @@ Handler onBoardingPage3Handler = Handler(
   },
 );
 
-<<<<<<< HEAD
 var onBoardingPage4Handler = Handler(
-=======
-Handler onBoardingPage4Handler = Handler(
->>>>>>> main
   handlerFunc: (context, parameters) {
     if (SharedPrefs().getEmail() == '' ||
         SharedPrefs().getUserName() == '' ||
