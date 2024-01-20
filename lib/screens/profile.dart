@@ -28,10 +28,7 @@ class _ProfileState extends State<Profile> {
   final String globalChallengeIcon = 'assets/globalChallenges.svg';
   final String customIcon = 'assets/customChallenges.svg';
 
-  // static String friends = " ";
-  // static String globals = "0";
-  // static String customs = "0";
-  // static String streaks = "0";
+ 
 
   static int friends = -1;
   static int globals = 0;
@@ -91,7 +88,7 @@ class _ProfileState extends State<Profile> {
         body: SingleChildScrollView(
           child: SafeArea(
             child: Container(
-              color: Color.fromRGBO(255, 243, 238, 1),
+              //color: Color.fromRGBO(255, 243, 238, 1), 
               child: Column(
                 children: [
                   SizedBox(

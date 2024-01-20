@@ -13,6 +13,7 @@ import 'package:verbatim_frontend/widgets/stats.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:intl/intl.dart';
 import 'verbatastic.dart';
+import 'globalSubmitGuest.dart';
 
 class globalChallenge extends StatefulWidget {
   globalChallenge({
@@ -562,7 +563,9 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                               questions: questions,
                                               responses: responses123))
                                     ]);
-                                  } else {
+                                  } 
+                                  //NEED TO CHANGE THIS SNIPPET OF CODE TO HAVE THE CARD AND A SIGN UP
+                                  else {
                                     return FutureBuilder<void>(
                                       future: _fetchData(username),
                                       builder: (context, snapshot) {
@@ -578,6 +581,9 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                           // display verbatastic data
                                           return Column(
                                             children: [
+
+                                              // Guest(formattedTimeUntilMidnight:
+                                              //       formattedTimeUntilMidnight),
                                               Verbatastic(
                                                 verbatimedWord: verbatimedWord,
                                                 formattedTimeUntilMidnight:
