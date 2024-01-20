@@ -219,6 +219,12 @@ class _GroupChallengeState extends State<groupChallenge> {
                       )
                     ])),
                 if (responded) _verbaMatch(),
+                if (responded)
+                  SizedBox(
+                    width: 300,
+                    height: 200,
+                    child: HorizontalScrollDropdown(),
+                  ),
               ]))),
       drawer: SideBar(),
     ));
@@ -298,8 +304,8 @@ class _DonutChartState extends State<DonutChart> {
   @override
   Widget build(BuildContext context) {
     Color calculateColor(double similarity) {
-      int score = similarity as int;
-      score = (score / 2) as int;
+      int score = similarity.truncate();
+      score = (score / 2).truncate();
 
       return Color.fromARGB(255, 250, 192 + score, 94 + score);
     }
@@ -393,5 +399,96 @@ class _DonutChartState extends State<DonutChart> {
             ],
           ),
         ));
+  }
+}
+
+class HorizontalScrollDropdown extends StatefulWidget {
+  @override
+  _HorizontalScrollDropdownState createState() =>
+      _HorizontalScrollDropdownState();
+}
+
+class _HorizontalScrollDropdownState extends State<HorizontalScrollDropdown> {
+  List<String> items = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'];
+  String selectedValue = 'Item 1';
+  bool isDropdownVisible = false;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: EdgeInsets.all(10),
+      decoration: BoxDecoration(
+        border: Border.all(color: Colors.black),
+        borderRadius: BorderRadius.circular(5),
+      ),
+      child: Column(
+        children: [
+          Row(
+            children: [
+              GestureDetector(
+                onTap: () {
+                  setState(() {
+                    isDropdownVisible = !isDropdownVisible;
+                  });
+                },
+                child: Text(
+                  selectedValue,
+                  style: TextStyle(fontSize: 16),
+                ),
+              ),
+              Icon(Icons.arrow_drop_down),
+            ],
+          ),
+          if (isDropdownVisible)
+            Container(
+              height: 150,
+              child: ListView.builder(
+                scrollDirection: Axis.horizontal,
+                itemCount: items.length,
+                itemBuilder: (context, index) {
+                  bool isSelected = selectedValue == items[index];
+                  return GestureDetector(
+                    onTap: () {
+                      setState(() {
+                        selectedValue = items[index];
+                        isDropdownVisible = false;
+                      });
+                    },
+                    child: Container(
+                      margin: EdgeInsets.symmetric(horizontal: 8),
+                      padding:
+                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      decoration: BoxDecoration(
+                        gradient: isSelected
+                            ? LinearGradient(
+                                colors: [
+                                  Colors.orange.shade800,
+                                  Colors.orange.shade500
+                                ],
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                              )
+                            : LinearGradient(
+                                colors: [
+                                  Colors.orange.shade200,
+                                  Colors.orange.shade100
+                                ],
+                                begin: Alignment.centerLeft,
+                                end: Alignment.centerRight,
+                              ),
+                        borderRadius: BorderRadius.circular(5),
+                      ),
+                      child: Text(
+                        items[index],
+                        style: TextStyle(fontSize: 16),
+                      ),
+                    ),
+                  );
+                },
+              ),
+            ),
+        ],
+      ),
+    );
   }
 }
