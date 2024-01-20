@@ -54,6 +54,7 @@ dependencies:
   shared_preferences: ^2.2.2
   fluro: ^2.0.5
   email_validator: ^2.1.17
+  google_fonts: ^6.1.0
 
 dev_dependencies:
   flutter_test:
@@ -110,7 +111,9 @@ flutter:
      - assets/IconLiving.svg
      - assets/send.svg
      - assets/copy.svg
+
      - assets/config.properties
+
 
 #     - images/a_dot_ham.jpeg
 
@@ -126,11 +129,14 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/Poppins-Regular.ttf
+        - asset: assets/Poppins-Bold.ttf
+        - asset: assets/Poppins-SemiBold.ttf
+        - asset: assets/Poppins-ExtraBold.ttf
+        - asset: assets/Poppins-Regular.ttf    
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:
