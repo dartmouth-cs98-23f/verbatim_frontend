@@ -95,9 +95,11 @@ class _GroupChallengeState extends State<groupChallenge> {
                             Positioned(
                               child: Center(
                                 child: Text(
-                                  'Group Challenge',
+                                  responded
+                                      ? 'Verba-Tastical!'
+                                      : 'Group Challenge',
                                   style: TextStyle(
-                                    fontSize: 24,
+                                    fontSize: 27,
                                     color: Colors.white,
                                     fontWeight: FontWeight.w900,
                                   ),
@@ -224,16 +226,16 @@ class _GroupChallengeState extends State<groupChallenge> {
 }
 
 Widget _verbaMatch() {
-  return Center(
+  return Align(
+      alignment: Alignment.topCenter,
       child: Container(
           width: 600.v,
-          color: Colors.blue,
           height: 300.v,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
               Column(
-                mainAxisAlignment: MainAxisAlignment.center,
+                mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   RichText(
                     text: TextSpan(
@@ -243,12 +245,12 @@ Widget _verbaMatch() {
                           style: TextStyle(
                               fontWeight: FontWeight.bold,
                               color: Color(0xFFE76F51),
-                              fontSize: 20),
+                              fontSize: 23),
                         ),
                         TextSpan(
-                            text: "Match",
+                            text: "Match!",
                             style: TextStyle(
-                              fontSize: 20,
+                              fontSize: 23,
                               fontWeight: FontWeight.bold,
                               color: Colors.black,
                             )),
@@ -258,23 +260,24 @@ Widget _verbaMatch() {
                   ),
                   SizedBox(height: 10),
                   Row(children: [
-                    Image.asset('assets/Ellipse 42.png', height: 40, width: 40),
-                    Image.asset('assets/Ellipse 43.png', height: 40, width: 40),
+                    Image.asset('assets/Ellipse 42.png', height: 50, width: 50),
+                    Image.asset('assets/Ellipse 43.png', height: 50, width: 50),
                   ]),
                   SizedBox(height: 10),
                   Text(
                     'Jackie and Eric',
-                    style: TextStyle(fontSize: 16, fontWeight: FontWeight.bold),
+                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ],
               ),
-              // SizedBox(width: 100.v),
-              Container(
-                height: 175.v,
-                width: 175.v,
-                alignment: Alignment.center,
-                child: DonutChart(groupSimilarity: 30),
-              ),
+              Column(mainAxisAlignment: MainAxisAlignment.start, children: [
+                Container(
+                  height: 200.v,
+                  width: 200.v,
+                  alignment: Alignment.center,
+                  child: DonutChart(groupSimilarity: 67),
+                ),
+              ])
             ],
           )));
 }
@@ -304,11 +307,11 @@ class _DonutChartState extends State<DonutChart> {
     return Scaffold(
         backgroundColor: Colors.transparent,
         body: Container(
-          height: 175.v,
-          width: 175.v,
+          height: 200.v,
+          width: 200.v,
           child: Column(
             children: [
-              SizedBox(height: 30.v),
+              SizedBox(height: 15.v),
               SizedBox(
                 height: 125.v,
                 child: Stack(
