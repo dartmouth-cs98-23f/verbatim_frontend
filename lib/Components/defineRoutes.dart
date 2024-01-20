@@ -1,6 +1,9 @@
 import 'package:fluro/fluro.dart';
+import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/addFriend.dart';
+import 'package:verbatim_frontend/screens/createGroup.dart';
+import 'package:verbatim_frontend/screens/myGroup.dart';
 import 'package:verbatim_frontend/screens/forgotPassword.dart';
 import 'package:verbatim_frontend/screens/logout.dart';
 import '../screens/globalChallenge.dart';
@@ -15,7 +18,7 @@ import '../screens/signupErrorMessage.dart';
 import '../screens/settings.dart';
 
 class Application {
-  static FluroRouter router = FluroRouter();
+  static FluroRouter router = FluroRouter.appRouter;
 }
 
 void defineRoutes() {
@@ -83,9 +86,46 @@ void defineRoutes() {
     '/logout',
     handler: logoutHandler,
   );
+
+  Application.router.define(
+    '/create_group',
+    handler: createGroupHandler,
+  );
+
+  Application.router.define(
+    '/my_group/:param1/:param2',
+    handler: myGroupHandler,
+  );
 }
 
-var onBoardingPage1Handler = Handler(
+var myGroupHandler = Handler(
+  handlerFunc: (context, params) {
+    if (SharedPrefs().getEmail() == '' ||
+        SharedPrefs().getUserName() == '' ||
+        SharedPrefs().getPassword() == '') {
+      return LogIn();
+    } else {
+      var groupName = Uri.decodeComponent(params['param1']?[0] ?? '');
+      var addedUsernamesString =
+          Uri.decodeComponent(params['param2']?[0] ?? '');
+      var addedUsernames = addedUsernamesString.split(',');
+
+      if (groupName.isNotEmpty && addedUsernames.isNotEmpty) {
+        //  String myGroupUrl = '/my_group/$groupName/${addedUsernames.join(',')}';
+        // SharedPrefs().setCurrentPage(myGroupUrl);
+
+        return myGroup(
+          groupName: groupName,
+          addedUsernames: addedUsernames,
+        );
+      } else {
+        return globalChallenge();
+      }
+    }
+  },
+);
+
+Handler onBoardingPage1Handler = Handler(
   handlerFunc: (context, parameters) {
     if (SharedPrefs().getEmail() == '' ||
         SharedPrefs().getUserName() == '' ||
@@ -99,17 +139,55 @@ var onBoardingPage1Handler = Handler(
   },
 );
 
+<<<<<<< HEAD
 var profileHandler = Handler(handlerFunc: (context, parameters) {
+=======
+
+Handler settingsHandler = Handler(handlerFunc: (context, parameters) {
+>>>>>>> main
   if (SharedPrefs().getEmail() == '' ||
       SharedPrefs().getUserName() == '' ||
       SharedPrefs().getPassword() == '') {
     return LogIn();
   } else {
     // Update the current page in the shared prefs
+<<<<<<< HEAD
     SharedPrefs().setCurrentPage('/profile');
     return Profile();
   }
 });
+=======
+    SharedPrefs().setCurrentPage('/settings');
+    return settings();
+  }
+});
+
+Handler onBoardingPage2Handler = Handler(
+
+var profileHandler = Handler(
+    handlerFunc:(context, parameters) {
+      if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
+        return LogIn();
+      } else {
+        // Update the current page in the shared prefs
+        SharedPrefs().setCurrentPage('/profile');
+        return Profile();
+      }
+    }
+);
+
+var settingsHandler = Handler(
+    handlerFunc:(context, parameters) {
+      if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
+        return LogIn();
+      } else {
+        // Update the current page in the shared prefs
+        SharedPrefs().setCurrentPage('/settings');
+        return settings();
+      }
+    }
+);
+>>>>>>> main
 
 var settingsHandler = Handler(handlerFunc: (context, parameters) {
   // if (SharedPrefs().getEmail() == '' ||
@@ -140,7 +218,11 @@ var onBoardingPage2Handler = Handler(
   },
 );
 
+<<<<<<< HEAD
 var onBoardingPage3Handler = Handler(
+=======
+Handler onBoardingPage3Handler = Handler(
+>>>>>>> main
   handlerFunc: (context, parameters) {
     if (SharedPrefs().getEmail() == '' ||
         SharedPrefs().getUserName() == '' ||
@@ -154,7 +236,11 @@ var onBoardingPage3Handler = Handler(
   },
 );
 
+<<<<<<< HEAD
 var onBoardingPage4Handler = Handler(
+=======
+Handler onBoardingPage4Handler = Handler(
+>>>>>>> main
   handlerFunc: (context, parameters) {
     if (SharedPrefs().getEmail() == '' ||
         SharedPrefs().getUserName() == '' ||
@@ -168,7 +254,7 @@ var onBoardingPage4Handler = Handler(
   },
 );
 
-var signUpHandler = Handler(
+Handler signUpHandler = Handler(
   handlerFunc: (context, parameters) {
     // Update the current page in the shared prefs
     SharedPrefs().setCurrentPage('/signup');
@@ -176,7 +262,7 @@ var signUpHandler = Handler(
   },
 );
 
-var logInHandler = Handler(
+Handler logInHandler = Handler(
   handlerFunc: (context, parameters) {
     // Update the current page in the shared prefs
     SharedPrefs().setCurrentPage('/login');
@@ -184,7 +270,7 @@ var logInHandler = Handler(
   },
 );
 
-var globalChallengeHandler = Handler(
+Handler globalChallengeHandler = Handler(
   handlerFunc: (context, parameters) {
     if (SharedPrefs().getEmail() == '' ||
         SharedPrefs().getUserName() == '' ||
@@ -198,7 +284,7 @@ var globalChallengeHandler = Handler(
   },
 );
 
-var addFriendHandler = Handler(
+Handler addFriendHandler = Handler(
   handlerFunc: (context, parameters) {
     if (SharedPrefs().getEmail() == '' ||
         SharedPrefs().getUserName() == '' ||
@@ -212,7 +298,21 @@ var addFriendHandler = Handler(
   },
 );
 
-var forgotPasswordHandler = Handler(
+Handler createGroupHandler = Handler(
+  handlerFunc: (context, parameters) {
+    if (SharedPrefs().getEmail() == '' ||
+        SharedPrefs().getUserName() == '' ||
+        SharedPrefs().getPassword() == '') {
+      return LogIn();
+    } else {
+      // Update the current page in the shared prefs
+      SharedPrefs().setCurrentPage('/create_group');
+      return createGroup();
+    }
+  },
+);
+
+Handler forgotPasswordHandler = Handler(
   handlerFunc: (context, parameters) {
     // Update the current page in the shared prefs
     SharedPrefs().setCurrentPage('/forgot_password');
@@ -220,7 +320,7 @@ var forgotPasswordHandler = Handler(
   },
 );
 
-var signupErrorMessageHandler = Handler(
+Handler signupErrorMessageHandler = Handler(
   handlerFunc: (context, parameters) {
     if (SharedPrefs().getEmail() == '' ||
         SharedPrefs().getUserName() == '' ||
@@ -234,7 +334,7 @@ var signupErrorMessageHandler = Handler(
   },
 );
 
-var logoutHandler = Handler(
+Handler logoutHandler = Handler(
   handlerFunc: (context, parameters) {
     if (SharedPrefs().getEmail() == '' ||
         SharedPrefs().getUserName() == '' ||
@@ -247,3 +347,39 @@ var logoutHandler = Handler(
     }
   },
 );
+
+ 
+
+
+/*
+var myGroupHandler = Handler(
+  handlerFunc: (BuildContext context, params) {
+    print('Handling myGroup route');
+    String? groupName = params['groupName']?.first;
+    List<String>? addedUsernames = params['addedUsernames']?.cast<String>();
+    print('Arguments: GroupName: $groupName, AddedUsernames: $addedUsernames');
+
+    print('Parameters: $params');
+
+    if (SharedPrefs().getEmail() == '' ||
+        SharedPrefs().getUserName() == '' ||
+        SharedPrefs().getPassword() == '') {
+      return LogIn();
+    } else {
+      // Update the current page in the shared prefs
+      SharedPrefs().setCurrentPage('/my_group');
+
+      print(
+          'Arguments: GroupName: $groupName, AddedUsernames: $addedUsernames');
+
+      if (groupName != null && addedUsernames != null) {
+        return myGroup(groupName: groupName, addedUsernames: addedUsernames);
+      } else {
+        print('Failed to find arguments');
+        return globalChallenge();
+      }
+    }
+  },
+);
+*/
+
