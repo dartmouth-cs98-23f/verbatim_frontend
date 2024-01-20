@@ -1,7 +1,12 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:flutter/services.dart';
+import 'package:verbatim_frontend/widgets/my_button_with_svg.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
+import 'package:verbatim_frontend/widgets/my_button_with_image.dart';
+import 'package:clipboard/clipboard.dart';
+
 
 class Verbatastic extends StatelessWidget {
   final String verbatimedWord;
@@ -14,6 +19,15 @@ class Verbatastic extends StatelessWidget {
     required this.verbatasticUsernames,
   });
 
+  void copyInvite() {
+    //TODO
+    String inviteLink = 'testlink';
+    Clipboard.setData(new ClipboardData(text: inviteLink));
+  }
+
+  void sendInvite() {
+    //new dialogue box, takes in phone number, get the pop up from existing code
+  }
   Future<void> preloadImages(BuildContext context) async {
     for (int i = 0; i < min(verbatasticUsernames!.length + 1, 6); i++) {
       final key = 'assets/Ellipse ${41 + i}.png';
@@ -25,7 +39,10 @@ class Verbatastic extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     preloadImages(context);
-
+    String copyIcon = 'assets/copy.svg';
+    String sendIcon = 'assets/send.svg';
+    String inviteText = "\n See how your friends would compare!";
+  
     return Column(
       children: [
         SizedBox(height: 20),
@@ -142,14 +159,14 @@ class Verbatastic extends StatelessWidget {
                       TextSpan(
                         text:
                             '${verbatasticUsernames!.length == 1 ? ' both ' : ' all '}said ',
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.black,
                           fontSize: 16,
                         ),
                       ),
                       TextSpan(
                         text: verbatimedWord,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.black,
                           fontSize: 17,
                           fontWeight: FontWeight.bold,
@@ -158,86 +175,32 @@ class Verbatastic extends StatelessWidget {
                     ],
             ),
           ),
+          //add the buttons
         ),
-
-        // section commented out until we implement 'similarity scores' :(
-        /*
-        Center(
-          child: Container(
-            width: 100.h,
-            height: 55,
-            child: Stack(
-              children: [
-                Positioned(
-                  top: 0,
-                  right: (80.h - 45),
-                  child: Image.asset(
-                    'assets/Ellipse 41.png',
-                    height: 55,
-                  ),
-                ),
-                Positioned(
-                  top: 0,
-                  left: (80.h - 45),
-                  child: Image.asset('assets/Ellipse 47.png', height: 55),
-                ),
-              ],
-            ),
+        const SizedBox(height: 10),
+        Text(
+          inviteText,
+          style: TextStyle(
+            color: Colors.black,
+            fontSize: 16,
           ),
         ),
-        SizedBox(height: 10),
-        Container(
-          width: 220,
-          child: Center(
-            child: RichText(
-              text: TextSpan(
-                children: verbatasticUsernames!.isEmpty
-                    ? [
-                        TextSpan(
-                          text: 'Add some friends who think more like you!',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ]
-                    : [
-                        TextSpan(
-                          text: 'You were most similar to Sarah today, with a ',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                          ),
-                        ),
-                        TextSpan(
-                          text: '97%',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        TextSpan(
-                          text: ' similarity score!',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 14,
-                          ),
-                        ),
-                      ],
-              ),
-            ),
-          ),
-        ),
-        */
+        const SizedBox(height: 25),
+        MyButtonWithSvg(
+            buttonText: "Copy Invite Link",
+            iconImage: copyIcon,
+            onTap: copyInvite),
+        // const SizedBox(height: 10),
+        // MyButtonWithSvg(
+        //     buttonText: "Send Invite", iconImage: sendIcon, onTap: sendInvite),
         SizedBox(height: 50.v),
         Container(
           width: 220,
           child: Center(
             child: Text(
               'New Challenge in $formattedTimeUntilMidnight',
-              style: TextStyle(
-                fontSize: 14,
+              style: const TextStyle(
+                fontSize: 16,
                 fontWeight: FontWeight.bold,
               ),
             ),

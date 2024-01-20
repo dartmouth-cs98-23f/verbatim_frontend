@@ -16,21 +16,24 @@ class MyStatsTile extends StatelessWidget {
         const SizedBox(width: 15),
         SvgPicture.asset(icon),
         const SizedBox(width: 15),
-        Center(
+        Container(
           child: Column(
             children: [
-              const Padding(padding: EdgeInsets.only(top: 15.0)),
-
-              Text(stat,
-                  textAlign: TextAlign.left,
+              const Padding(padding: EdgeInsets.only(top: 10.0, left:15.0)),
+              Text.rich(TextSpan(children: [
+                TextSpan(
+                    text: '$stat\n',
+                    style: const TextStyle(
+                        color: Colors.white,
+                        height: 1.2,
+                        fontWeight: FontWeight.bold,
+                        fontSize: 20)),
+                TextSpan(
+                  text: field,
                   style: const TextStyle(
-                      
-                      color: Colors.white,
-                      fontWeight: FontWeight.bold,
-                      fontSize: 20)),
-              Text(field,
-                  textAlign: TextAlign.left,
-                  style: const TextStyle(color: Colors.white, fontSize: 16)),
+                      height: 1.2, color: Colors.white, fontSize: 12),
+                )
+              ])),
             ],
           ),
         ),
