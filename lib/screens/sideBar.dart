@@ -72,7 +72,6 @@ class _SideBarState extends State<SideBar> {
     final response = await http.post(url, headers: headers, body: username);
 
     if (response.statusCode == 200) {
-      print('responses sent succesfully');
       final List<dynamic> data = json.decode(response.body);
       List<User> friendsList = data.map((item) => User.fromJson(item)).toList();
       usernamesList = friendsList.map((user) => user.username).toList();
@@ -90,8 +89,6 @@ class _SideBarState extends State<SideBar> {
     final response = await http.post(url, headers: headers, body: username);
 
     if (response.statusCode == 200) {
-      print('responses sent succesfully');
-
       List<Map<String, dynamic>> friendRequests =
           List<Map<String, dynamic>>.from(json.decode(response.body));
       if (friendRequests.isNotEmpty) {
@@ -126,7 +123,6 @@ class _SideBarState extends State<SideBar> {
     );
 
     if (response.statusCode == 200) {
-      print('responses sent succesfully');
     } else {
       print('Failed to send responses. Status code: ${response.statusCode}');
     }
