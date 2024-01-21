@@ -139,8 +139,8 @@ class Stats extends StatelessWidget {
               title: TabBar(
                 unselectedLabelColor: Colors.black,
                 labelPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                indicatorColor: Colors.orange,
-                labelColor: Colors.orange,
+                indicatorColor: Color(0xFFE76F51),
+                labelColor: Color(0xFFE76F51),
                 indicatorPadding: EdgeInsets.zero,
                 indicatorSize: TabBarIndicatorSize.label,
                 tabs: tabLabels
