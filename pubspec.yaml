@@ -54,6 +54,7 @@ dependencies:
   shared_preferences: ^2.2.2
   fluro: ^2.0.5
   email_validator: ^2.1.17
+  google_fonts: ^6.1.0
 
 dev_dependencies:
   flutter_test:
@@ -66,6 +67,9 @@ dev_dependencies:
   # rules and activating additional ones.
   flutter_lints: ^2.0.0
   lints: ^2.1.1
+  clipboard: ^0.1.3
+  cupertino_icons: ^1.0.2
+
 
 # For information on the generic Dart part of this file, see the
 # following page: https://dart.dev/tools/pub/pubspec
@@ -102,8 +106,14 @@ flutter:
      - assets/globalChallenges.svg
      - assets/default.jpeg
      - assets/streak.svg
+     - assets/Vector 4.png
      - assets/customChallenges.svg
+     - assets/IconLiving.svg
+     - assets/send.svg
+     - assets/copy.svg
+
      - assets/config.properties
+
 
 #     - images/a_dot_ham.jpeg
 
@@ -119,11 +129,14 @@ flutter:
   # "family" key with the font family name, and a "fonts" key with a
   # list giving the asset and other descriptors for the font. For
   # example:
-  # fonts:
-  #   - family: Schyler
-  #     fonts:
-  #       - asset: fonts/Schyler-Regular.ttf
-  #       - asset: fonts/Schyler-Italic.ttf
+  fonts:
+    - family: Poppins
+      fonts:
+        - asset: assets/Poppins-Regular.ttf
+        - asset: assets/Poppins-Bold.ttf
+        - asset: assets/Poppins-SemiBold.ttf
+        - asset: assets/Poppins-ExtraBold.ttf
+        - asset: assets/Poppins-Regular.ttf    
   #         style: italic
   #   - family: Trajan Pro
   #     fonts:
