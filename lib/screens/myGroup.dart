@@ -139,8 +139,8 @@ Future<void> _showChallengeOptions(
 Widget _buildOptionButton(BuildContext context, title, String description,
     IconData iconData, String groupName) {
   return Container(
-      width: 120,
-      height: 120,
+      width: 130,
+      height: 130,
       padding: const EdgeInsets.all(10),
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(

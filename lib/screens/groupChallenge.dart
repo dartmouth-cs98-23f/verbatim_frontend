@@ -300,6 +300,7 @@ class _GroupChallengeState extends State<groupChallenge> {
           padding: EdgeInsets.all(8),
 
           //remove this decoration?
+          /*
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(10),
@@ -311,6 +312,7 @@ class _GroupChallengeState extends State<groupChallenge> {
               )
             ],
           ),
+          */
           child: SingleChildScrollView(
               child: Column(
             children: [
