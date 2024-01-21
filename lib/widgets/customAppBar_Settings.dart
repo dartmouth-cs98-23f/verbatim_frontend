@@ -3,7 +3,8 @@ import 'package:verbatim_frontend/screens/settings.dart';
 import 'size.dart';
 import 'package:verbatim_frontend/screens/sideBar.dart';
 
-class CustomAppBarSettings extends StatelessWidget implements PreferredSizeWidget {
+class CustomAppBarSettings extends StatelessWidget
+    implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -114,32 +115,24 @@ class SearchBarTextField extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
           ),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            IconButton(
-              icon: Icon(Icons.search, color: Colors.black, size: 20),
-              onPressed: handleSearchIconPressed,
-            ),
-            SizedBox(width: 20),
-            Flexible(
-              child: TextField(
-                controller: _searchController,
-                onChanged: handleSearch,
-                onSubmitted: handleSubmit,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 12,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w600,
-                  height: 0.11,
-                  letterSpacing: 0.20,
-                ),
-                cursorColor: Colors.black,
-                decoration: InputDecoration(
-                  hintText: 'Search Users',
-                  hintStyle: TextStyle(
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.search,
+                color: Colors.black,
+                size: 20,
+              ),
+              SizedBox(width: 8), // Adjust horizontal spacing as needed
+              Expanded(
+                child: TextField(
+                  controller: _searchController,
+                  onChanged: handleSearch,
+                  onSubmitted: handleSubmit,
+                  style: TextStyle(
                     color: Colors.black,
                     fontSize: 12,
                     fontFamily: 'Poppins',
@@ -147,92 +140,28 @@ class SearchBarTextField extends StatelessWidget {
                     height: 0.11,
                     letterSpacing: 0.20,
                   ),
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(
-                      vertical: -16), // Adjust vertical padding as needed
+                  cursorColor: Colors.black,
+                  decoration: InputDecoration(
+                    hintText: 'Search Users',
+                    hintStyle: TextStyle(
+                      color: Colors.black,
+                      fontSize: 12,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w600,
+                      height: 0.11,
+                      letterSpacing: 0.20,
+                    ),
+                    border: InputBorder.none,
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 }
-
-// class SearchBarTextField extends StatelessWidget {
-//   TextEditingController _searchController = TextEditingController();
-
-//   void handleSearch(String value) {
-//     // Handle the search input changes
-//     print("Search onChanged: $value");
-//   }
-
-//   void handleSubmit(String value) {
-//     // Handle the search submission
-//     print("Search onSubmitted: $value");
-//   }
-
-//   void handleSearchIconPressed() {
-//     // Handle the search icon pressed
-//     print("Search icon pressed");
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Expanded(
-//       child: Container(
-//         padding: const EdgeInsets.all(10),
-//         clipBehavior: Clip.antiAlias,
-//         decoration: ShapeDecoration(
-//           color: Color(0xFFFFF7EE),
-//           shape: RoundedRectangleBorder(
-//             borderRadius: BorderRadius.circular(20),
-//           ),
-//         ),
-//         child: Row(
-//           mainAxisAlignment: MainAxisAlignment.start,
-//           crossAxisAlignment: CrossAxisAlignment.center,
-//           children: [
-//             IconButton(
-//               icon: Icon(Icons.search, color: Colors.black, size: 20),
-//               onPressed: handleSearchIconPressed,
-//             ),
-//             SizedBox(width: 20),
-//             Expanded(
-//               child: TextField(
-//                 controller: _searchController,
-//                 onChanged: handleSearch,
-//                 onSubmitted: handleSubmit,
-//                 style: TextStyle(
-//                   color: Colors.black,
-//                   fontSize: 12,
-//                   fontFamily: 'Poppins',
-//                   fontWeight: FontWeight.w600,
-//                   height: 0.11,
-//                   letterSpacing: 0.20,
-//                 ),
-//                 cursorColor: Colors.black,
-//                 decoration: InputDecoration(
-//                   hintText: 'Search Users',
-//                   hintStyle: TextStyle(
-//                     color: Colors.black,
-//                     fontSize: 12,
-//                     fontFamily: 'Poppins',
-//                     fontWeight: FontWeight.w600,
-//                     height: 0.11,
-//                     letterSpacing: 0.20,
-//                   ),
-//                   border: InputBorder.none,
-//                 ),
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
 
 class TitleFrame extends StatelessWidget {
   @override
