@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/Components/EditProfilePicturePopup.dart';
+import 'package:verbatim_frontend/widgets/customAppBar_Settings.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'package:http/http.dart' as http;
@@ -259,7 +260,7 @@ class _settingsState extends State<settings> {
                             ),
 
                             // app bar on top of background
-                            CustomAppBar(),
+                            CustomAppBarSettings(),
                           ],
                         ),
                       ),
