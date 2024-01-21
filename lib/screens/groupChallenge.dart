@@ -25,8 +25,10 @@ Future<void> preloadImages(BuildContext context) async {
 }
 
 class groupChallenge extends StatefulWidget {
+  final String groupName;
   groupChallenge({
     Key? key,
+    required this.groupName,
   }) : super(key: key);
 
   @override
@@ -43,6 +45,14 @@ class _GroupChallengeState extends State<groupChallenge> {
   int currentQuestionIndex = 0;
   List<String> questions = ["beep", "bpoo", "bopp", "poop", "werewr"];
   bool responded = false;
+
+  List<bool> expandedStates = [false, false, false];
+  List<String> prompts = [
+    "challenge question one",
+    "challenge question two",
+    "challenge question three",
+  ];
+  List<bool> editingStates = [false, false, false];
 
   void updateProgress() {
     setState(() {
@@ -220,14 +230,172 @@ class _GroupChallengeState extends State<groupChallenge> {
                     ])),
                 if (responded) _verbaMatch(),
                 if (responded)
-                  SizedBox(
-                    width: 300,
-                    height: 200,
-                    child: HorizontalScrollDropdown(),
+                  for (int i = 0; i < prompts.length; i++)
+                    _buildResponseRectangle(i),
+                SizedBox(height: 50.v),
+
+                Visibility(
+                  visible: responded,
+                  child: ElevatedButton(
+                    style: ElevatedButton.styleFrom(
+                      primary: Color(0xFFE76F51),
+                      onPrimary: Colors.white,
+                      enableFeedback: true,
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                      ),
+                      minimumSize: const Size(150, 50),
+                    ),
+                    // add 'create challenge'
+                    onPressed: () {
+                      Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                          builder: (context) =>
+                              myGroup(groupName: widget.groupName),
+                        ),
+                      );
+                    }, //send prompts to backend
+
+                    child: Text(
+                      'Back to Challenge Feed',
+                      style: TextStyle(
+                        fontWeight: FontWeight.bold,
+                        fontSize: 18,
+                      ),
+                    ),
                   ),
+                ),
+                SizedBox(height: 30.v),
               ]))),
       drawer: SideBar(),
     ));
+  }
+
+  Widget _buildResponseRectangle(int index) {
+    List<String> items = ['You', 'Jackie', 'Dahlia', 'Ryan', 'Eve'];
+    List<String> answers = [
+      'beep',
+      'bop',
+      'kleep',
+      'klop',
+      'longone',
+      'beep',
+    ];
+    String selectedValue = 'Item 1';
+    List<bool> isDropdownVisible = [false, false, false];
+
+    return GestureDetector(
+      onTap: () {
+        setState(() {
+          expandedStates[index] = !expandedStates[index];
+          isDropdownVisible[index] = expandedStates[index];
+        });
+      },
+      child: AnimatedContainer(
+          duration: Duration(milliseconds: 400),
+          height: expandedStates[index] ? 120 : 50,
+          width: double.infinity,
+          margin: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+          padding: EdgeInsets.all(8),
+
+          //remove this decoration?
+          decoration: BoxDecoration(
+            color: Colors.white,
+            borderRadius: BorderRadius.circular(10),
+            boxShadow: [
+              BoxShadow(
+                color: Color(0xFF9E503C).withOpacity(1),
+                blurRadius: 5,
+                offset: Offset(2, 3),
+              )
+            ],
+          ),
+          child: SingleChildScrollView(
+              child: Column(
+            children: [
+              //if clicked on
+              Visibility(
+                visible: expandedStates[index],
+                child: Column(
+                  children: [
+                    Center(
+                      child: Row(
+                        children: [
+                          Expanded(
+                            child: Text(
+                              prompts[index],
+                              style: TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          Icon(Icons.arrow_upward),
+                        ],
+                      ),
+                    ),
+                    AnimatedContainer(
+                      duration: Duration(milliseconds: 1000),
+                      height: 70,
+                      child: ListView.builder(
+                        scrollDirection: Axis.horizontal,
+                        itemCount: items.length,
+                        itemBuilder: (context, index) {
+                          bool isSelected = selectedValue == items[index];
+                          return Container(
+                              height: 40.v,
+                              width: 100.h,
+                              margin:
+                                  EdgeInsets.only(left: 8, right: 8, top: 10),
+                              padding: EdgeInsets.only(
+                                  left: 20, right: 20, top: 8, bottom: 8),
+                              decoration: BoxDecoration(
+                                color: Color(0xFFE76F51),
+                                borderRadius: BorderRadius.circular(5),
+                              ),
+                              child: Center(
+                                  child: Column(children: [
+                                Text(
+                                  items[index],
+                                  style: TextStyle(
+                                      fontSize: 14,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.white),
+                                ),
+                                Text(
+                                  answers[index],
+                                  style: TextStyle(
+                                      fontSize: 12, color: Colors.white),
+                                )
+                              ])));
+                        },
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              // if not clicked on
+              if (!expandedStates[index])
+                Center(
+                  child: Row(
+                    children: [
+                      Expanded(
+                        child: Text(
+                          prompts[index],
+                          style: TextStyle(
+                            fontSize: 16,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ),
+                      Icon(Icons.arrow_downward),
+                    ],
+                  ),
+                ),
+            ],
+          ))),
+    );
   }
 }
 
@@ -236,7 +404,7 @@ Widget _verbaMatch() {
       alignment: Alignment.topCenter,
       child: Container(
           width: 600.v,
-          height: 300.v,
+          height: 200.v,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
@@ -324,8 +492,6 @@ class _DonutChartState extends State<DonutChart> {
                   alignment: Alignment.center,
                   children: [
                     PieChart(
-                      //set the values of offset
-
                       PieChartData(
                         startDegreeOffset: 250,
                         sectionsSpace: 0,
@@ -411,7 +577,7 @@ class HorizontalScrollDropdown extends StatefulWidget {
 class _HorizontalScrollDropdownState extends State<HorizontalScrollDropdown> {
   List<String> items = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'];
   String selectedValue = 'Item 1';
-  bool isDropdownVisible = false;
+  bool isDropdownVisible = true;
 
   @override
   Widget build(BuildContext context) {

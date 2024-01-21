@@ -399,7 +399,9 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                                     context,
                                                     MaterialPageRoute(
                                                       builder: (context) =>
-                                                          groupChallenge(),
+                                                          groupChallenge(
+                                                              groupName: widget
+                                                                  .groupName),
                                                     ),
                                                   );
                                                   print(
