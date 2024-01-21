@@ -118,14 +118,9 @@ class SearchBarTextField extends StatelessWidget {
           mainAxisAlignment: MainAxisAlignment.start,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            Align(
-              alignment: Alignment(-1, 0),
-              widthFactor: 1,
-              heightFactor: 1,
-              child: IconButton(
-                icon: Icon(Icons.search, color: Colors.black, size: 20),
-                onPressed: handleSearchIconPressed,
-              ),
+            IconButton(
+              icon: Icon(Icons.search, color: Colors.black, size: 20),
+              onPressed: handleSearchIconPressed,
             ),
             SizedBox(width: 20),
             Flexible(
