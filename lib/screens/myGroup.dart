@@ -1,7 +1,10 @@
+import 'dart:async';
+
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/customChallenge.dart';
+import 'package:verbatim_frontend/screens/groupChallenge.dart';
 import 'sideBar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:verbatim_frontend/widgets/create_group_app_bar.dart';
@@ -153,14 +156,15 @@ Widget _buildOptionButton(BuildContext context, title, String description,
       ),
       child: GestureDetector(
         onTap: () {
-          //change to standard once i make it
+          //talk to backend/add new popup - make something change so it pops up immediately
+          // some bool that can automatically call set state from other widget?
+
           if (title == 'Standard') {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => customChallenge(groupName: groupName),
-              ),
-            );
+            activeChallenges.add('New Standard Challenge');
+
+            Navigator.pop(context);
+
+            //
           } else if (title == 'Custom') {
             Navigator.push(
               context,
@@ -210,11 +214,11 @@ Widget _buildOptionButton(BuildContext context, title, String description,
 
 class myGroup extends StatefulWidget {
   final String groupName;
-  final List<String> addedUsernames;
+  final List<String>? addedUsernames;
 
   myGroup({
     Key? key,
-    required this.addedUsernames,
+    this.addedUsernames,
     required this.groupName,
   }) : super(key: key);
 
@@ -232,80 +236,71 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
   }
 
   Widget build(BuildContext context) {
-    final String assetName = 'assets/img1.svg'; // orange (top) background
-    List<String> addedUsernames = widget.addedUsernames;
+    final String assetName = 'assets/img1.svg';
+    List<String>? addedUsernames = widget.addedUsernames;
 
     return SafeArea(
         child: Scaffold(
-            backgroundColor: Color.fromARGB(255, 255, 243, 238),
-            body: SingleChildScrollView(
-                child: Container(
-                    color: Color.fromARGB(255, 255, 243, 238),
-                    child: Column(children: [
-                      SizedBox(
+      backgroundColor: Color.fromARGB(255, 255, 243, 238),
+      body: SingleChildScrollView(
+          child: Container(
+              color: Color.fromARGB(255, 255, 243, 238),
+              child: Column(children: [
+                SizedBox(
+                  width: double.maxFinite,
+                  child: Column(children: [
+                    SizedBox(
+                        height: 260.v,
                         width: double.maxFinite,
-                        child: Column(children: [
-                          SizedBox(
-                              height: 260.v,
-                              width: double.maxFinite,
-                              child: Stack(
-                                  alignment: Alignment.topCenter,
-                                  children: [
-                                    // orange background
-                                    Container(
-                                      height: 220.v,
-                                      width: double.maxFinite,
-                                      margin: EdgeInsets.zero,
-                                      padding: EdgeInsets.zero,
-                                      child: SvgPicture.asset(
-                                        assetName,
-                                        fit: BoxFit.fill,
-                                      ),
-                                    ),
-                                    // app bar on top of background - currently non functional
-                                    CustomAppBar(),
-                                    Container(
-                                      margin: EdgeInsets.only(top: 80.v),
-                                      child: Column(
-                                        children: [
-                                          Text(
-                                            widget.groupName,
-                                            style: TextStyle(
-                                              fontSize: 27,
-                                              color: Colors.white,
-                                              fontWeight: FontWeight.w900,
+                        child: Stack(alignment: Alignment.topCenter, children: [
+                          // orange background
+                          Container(
+                            height: 220.v,
+                            width: double.maxFinite,
+                            margin: EdgeInsets.zero,
+                            padding: EdgeInsets.zero,
+                            child: SvgPicture.asset(
+                              assetName,
+                              fit: BoxFit.fill,
+                            ),
+                          ),
+                          // app bar on top of background - currently non functional
+                          CustomAppBar(),
+                          Container(
+                            margin: EdgeInsets.only(top: 80.v),
+                            child: Column(
+                              children: [
+                                Text(
+                                  widget.groupName,
+                                  style: TextStyle(
+                                    fontSize: 27,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w900,
+                                  ),
+                                ),
+                                SizedBox(height: 10.v),
+                                Center(
+                                  child: Container(
+                                    width: min(groupUsers.length + 1, 6) * 60,
+                                    height: 45,
+                                    child: Stack(
+                                      children: [
+                                        for (int i = 0;
+                                            i < min(groupUsers!.length + 1, 6);
+                                            i++)
+                                          Positioned(
+                                            top: 0,
+                                            left: 118.0 + (i * 20),
+                                            child: Image.asset(
+                                              'assets/Ellipse ${41 + i}.png',
+                                              height: 30,
                                             ),
                                           ),
-                                          SizedBox(height: 10.v),
-                                          Center(
-                                            child: Container(
-                                              width: min(groupUsers.length + 1,
-                                                      6) *
-                                                  60,
-                                              height: 45,
-                                              child: Stack(
-                                                children: [
-                                                  for (int i = 0;
-                                                      i <
-                                                          min(
-                                                              groupUsers!
-                                                                      .length +
-                                                                  1,
-                                                              6);
-                                                      i++)
-                                                    Positioned(
-                                                      top: 0,
-                                                      left: 118.0 + (i * 20),
-                                                      child: Image.asset(
-                                                        'assets/Ellipse ${41 + i}.png',
-                                                        height: 30,
-                                                      ),
-                                                    ),
-                                                ],
-                                              ),
-                                            ),
-                                          )
-                                          /*
+                                      ],
+                                    ),
+                                  ),
+                                )
+                                /*
                                           Text(
                                             'Added Usernames: $addedUsernames ',
                                             style: TextStyle(
@@ -314,202 +309,185 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                             ),
                                           ),
                                           */
-                                        ],
-                                      ),
-                                    ),
-                                  ])),
-                        ]),
-                      ),
-                      Center(
-                          child: Container(
-                              clipBehavior: Clip.hardEdge,
-                              margin: EdgeInsets.only(top: 10),
-                              width: 300.h,
-                              height: 500.v,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color:
-                                        const Color.fromARGB(255, 117, 19, 12)
-                                            .withOpacity(0.5),
-                                    blurRadius: 5,
-                                    offset: Offset(3, 7),
-                                  ),
-                                ],
-                                color: Colors.white,
-                              ),
+                              ],
+                            ),
+                          ),
+                        ])),
+                  ]),
+                ),
+                Center(
+                    child: Container(
+                        clipBehavior: Clip.hardEdge,
+                        margin: EdgeInsets.only(top: 10),
+                        width: 300.h,
+                        height: 500.v,
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(30),
+                          boxShadow: [
+                            BoxShadow(
+                              color: const Color.fromARGB(255, 117, 19, 12)
+                                  .withOpacity(0.5),
+                              blurRadius: 5,
+                              offset: Offset(3, 7),
+                            ),
+                          ],
+                          color: Colors.white,
+                        ),
+                        child: Column(
+                          children: [
+                            DefaultTabController(
+                              length: 2,
                               child: Column(
                                 children: [
-                                  DefaultTabController(
-                                    length: 2,
+                                  TabBar(
+                                    unselectedLabelColor: Colors.black,
+                                    controller: _tabController,
+                                    indicatorColor: Color(0xFFE76F51),
+                                    labelColor: Color(0xFFE76F51),
+                                    indicatorPadding: EdgeInsets.zero,
+                                    indicatorSize: TabBarIndicatorSize.label,
+                                    tabs: [
+                                      Tab(
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            "Active Challenges",
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                      Tab(
+                                        child: Align(
+                                          alignment: Alignment.center,
+                                          child: Text(
+                                            "Group Stats",
+                                            style: TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                ],
+                              ),
+                            ),
+                            Expanded(
+                              child: TabBarView(
+                                controller: _tabController,
+                                children: [
+                                  // Active Challenges
+                                  Container(
+                                    padding: EdgeInsets.only(
+                                        top: 10,
+                                        right: 10,
+                                        left: 10,
+                                        bottom: 20),
                                     child: Column(
                                       children: [
-                                        TabBar(
-                                          dividerColor: Colors.transparent,
-                                          controller: _tabController,
-                                          unselectedLabelColor:
-                                              Color(0xFFE76F51),
-                                          labelColor: Colors.white,
-                                          indicatorPadding: EdgeInsets.only(
-                                              left: 5,
-                                              right: 5,
-                                              top: 5,
-                                              bottom: 5),
-                                          indicator: ShapeDecoration(
-                                              color: Color(0xFFE76F51),
-                                              shape: BeveledRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(20),
-                                                  side: BorderSide(
-                                                    color: Color.fromARGB(
-                                                        255, 231, 217, 213),
-                                                  ))),
-                                          tabs: [
-                                            Tab(
-                                              child: Align(
-                                                alignment: Alignment.center,
-                                                child: Text(
-                                                  "Active Challenges",
-                                                  style: TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                            Tab(
-                                              child: Align(
-                                                alignment: Alignment.center,
-                                                child: Text(
-                                                  "Group Stats",
-                                                  style: TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
-                                                ),
-                                              ),
-                                            ),
-                                          ],
-                                        ),
-                                      ],
-                                    ),
-                                  ),
-                                  Expanded(
-                                    child: TabBarView(
-                                      controller: _tabController,
-                                      children: [
-                                        // Active Challenges
-                                        Container(
-                                          padding: EdgeInsets.only(
-                                              top: 10,
-                                              right: 10,
-                                              left: 10,
-                                              bottom: 20),
-                                          child: Column(
-                                            children: [
-                                              Expanded(
-                                                child: ListView.builder(
-                                                  itemCount:
-                                                      activeChallenges.length,
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    return GestureDetector(
-                                                      onTap: () {
-                                                        // Handle button press
-                                                        print(
-                                                            "Pressed ${activeChallenges[index]}");
-                                                      },
-                                                      child: Container(
-                                                        margin: EdgeInsets
-                                                            .symmetric(
-                                                          vertical: 10,
-                                                        ),
-                                                        padding:
-                                                            EdgeInsets.all(10),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: Color.fromARGB(
-                                                              255 - (3 * index),
-                                                              231 + index,
-                                                              111 + (5 * index),
-                                                              81 + (5 * index)),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(10),
-                                                        ),
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            Text(
-                                                              activeChallenges[
-                                                                  index],
-                                                              style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize: 14,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                              ),
-                                                            ),
-                                                            Icon(
-                                                              Icons
-                                                                  .arrow_forward_ios,
-                                                              color:
-                                                                  Colors.white,
-                                                              size: 16,
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    );
-                                                  },
-                                                ),
-                                              ),
-                                              SizedBox(height: 10.v),
-                                              GestureDetector(
+                                        Expanded(
+                                          child: ListView.builder(
+                                            itemCount: activeChallenges.length,
+                                            itemBuilder: (context, index) {
+                                              return GestureDetector(
                                                 onTap: () {
-                                                  _showChallengeOptions(context,
-                                                      widget.groupName);
+                                                  Navigator.push(
+                                                    context,
+                                                    MaterialPageRoute(
+                                                      builder: (context) =>
+                                                          groupChallenge(
+                                                              groupName: widget
+                                                                  .groupName),
+                                                    ),
+                                                  );
+                                                  print(
+                                                      "Pressed ${activeChallenges[index]}");
                                                 },
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.end,
-                                                  children: [
-                                                    Text(
-                                                      'Make Group Challenge',
-                                                      style: TextStyle(
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color: Color(
-                                                            0xFFE76F51), // Set the text color
+                                                child: Container(
+                                                  margin: EdgeInsets.symmetric(
+                                                    vertical: 10,
+                                                  ),
+                                                  padding: EdgeInsets.all(10),
+                                                  decoration: BoxDecoration(
+                                                    color: Color.fromARGB(
+                                                        255 - (3 * index),
+                                                        231 + index,
+                                                        111 + (5 * index),
+                                                        81 + (5 * index)),
+                                                    borderRadius:
+                                                        BorderRadius.circular(
+                                                            10),
+                                                  ),
+                                                  child: Row(
+                                                    mainAxisAlignment:
+                                                        MainAxisAlignment
+                                                            .spaceBetween,
+                                                    children: [
+                                                      Text(
+                                                        activeChallenges[index],
+                                                        style: TextStyle(
+                                                          color: Colors.white,
+                                                          fontSize: 14,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                        ),
                                                       ),
-                                                    ),
-                                                    SizedBox(width: 5),
-                                                    Icon(
-                                                      Icons.add,
-                                                      size: 20,
-                                                      color: Color(
-                                                          0xFFE76F51), // Set the icon color
-                                                    ),
-                                                  ],
+                                                      Icon(
+                                                        Icons.arrow_forward_ios,
+                                                        color: Colors.white,
+                                                        size: 16,
+                                                      ),
+                                                    ],
+                                                  ),
                                                 ),
+                                              );
+                                            },
+                                          ),
+                                        ),
+                                        SizedBox(height: 10.v),
+                                        GestureDetector(
+                                          onTap: () {
+                                            _showChallengeOptions(
+                                                context, widget.groupName);
+                                          },
+                                          child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.end,
+                                            children: [
+                                              Text(
+                                                'Make Group Challenge',
+                                                style: TextStyle(
+                                                  fontSize: 18,
+                                                  fontWeight: FontWeight.bold,
+                                                  color: Color(0xFFE76F51),
+                                                ),
+                                              ),
+                                              SizedBox(width: 5),
+                                              Icon(
+                                                Icons.add,
+                                                size: 20,
+                                                color: Color(0xFFE76F51),
                                               ),
                                             ],
                                           ),
                                         ),
-                                        // Content for 'Stats'
-                                        Container(child: StatsContent()),
                                       ],
                                     ),
                                   ),
+                                  // Content for Stats
+                                  Container(child: StatsContent()),
                                 ],
-                              )))
-                    ])))));
+                              ),
+                            ),
+                          ],
+                        )))
+              ]))),
+      drawer: SideBar(),
+    ));
   }
 }
 
@@ -674,16 +652,13 @@ class _DonutChartState extends State<DonutChart> {
                     startDegreeOffset: 250,
                     sectionsSpace: 0,
                     centerSpaceRadius: 50,
-                    // you can assign values according to your need
                     sections: [
-                      //now we will set values
                       PieChartSectionData(
                         value: widget.groupSimilarity,
                         color: Color(0xFFE76F51),
                         radius: 25,
                         showTitle: false,
                       ),
-
                       PieChartSectionData(
                         value: 100 - widget.groupSimilarity,
                         color: calculateColor(widget.groupSimilarity),
