@@ -61,39 +61,7 @@ class NewNavBar extends StatelessWidget {
               );
             },
           ),
-          Expanded(
-            child: Container(
-              padding: const EdgeInsets.all(10),
-              clipBehavior: Clip.antiAlias,
-              decoration: ShapeDecoration(
-                color: Color(0xFFFFF7EE),
-                shape: RoundedRectangleBorder(
-                  borderRadius: BorderRadius.circular(20),
-                ),
-              ),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.start,
-                crossAxisAlignment: CrossAxisAlignment.center,
-                children: [
-                  Icon(Icons.search, color: Colors.black, size: 20),
-                  SizedBox(width: 20),
-                  Expanded(
-                    child: Text(
-                      'Search Users',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 12,
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.w600,
-                        height: 0.11,
-                        letterSpacing: 0.20,
-                      ),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+          SearchBarTextField(),
           SizedBox(width: 20),
           Container(
             width: 40,
@@ -113,36 +81,74 @@ class NewNavBar extends StatelessWidget {
 }
 
 class SearchBarTextField extends StatelessWidget {
+  TextEditingController _searchController = TextEditingController();
+
+  void handleSearch(String value) {
+    // Handle the search input changes
+    print("Search onChanged: $value");
+  }
+
+  void handleSubmit(String value) {
+    // Handle the search submission
+    print("Search onSubmitted: $value");
+  }
+
+  void handleSearchIconPressed() {
+    // Handle the search icon pressed
+    print("Search icon pressed");
+  }
+
   @override
   Widget build(BuildContext context) {
-    return Container(
-      width: 180,
-      height: 24,
-      padding: const EdgeInsets.all(10),
-      clipBehavior: Clip.antiAlias,
-      decoration: ShapeDecoration(
-        color: Color(0xFFFFF7EE),
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(15),
-        ),
-      ),
-      child: Row(
-        crossAxisAlignment: CrossAxisAlignment.center,
-        children: [
-          Icon(Icons.search, color: Colors.black, size: 20),
-          SizedBox(width: 10),
-          Text(
-            'Search Users',
-            style: TextStyle(
-              color: Colors.black,
-              fontSize: 12,
-              fontFamily: 'Poppins',
-              fontWeight: FontWeight.w600,
-              height: 0.11,
-              letterSpacing: 0.20,
-            ),
+    return Expanded(
+      child: Container(
+        padding: const EdgeInsets.all(10),
+        clipBehavior: Clip.antiAlias,
+        decoration: ShapeDecoration(
+          color: Color(0xFFFFF7EE),
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(20),
           ),
-        ],
+        ),
+        child: Row(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            IconButton(
+              icon: Icon(Icons.search, color: Colors.black, size: 20),
+              onPressed: handleSearchIconPressed,
+            ),
+            SizedBox(width: 20),
+            Expanded(
+              child: TextField(
+                controller: _searchController,
+                onChanged: handleSearch,
+                onSubmitted: handleSubmit,
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 12,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w600,
+                  height: 0.11,
+                  letterSpacing: 0.20,
+                ),
+                cursorColor: Colors.black,
+                decoration: InputDecoration(
+                  hintText: 'Search Users',
+                  hintStyle: TextStyle(
+                    color: Colors.black,
+                    fontSize: 12,
+                    fontFamily: 'Poppins',
+                    fontWeight: FontWeight.w600,
+                    height: 0.11,
+                    letterSpacing: 0.20,
+                  ),
+                  border: InputBorder.none,
+                ),
+              ),
+            ),
+          ],
+        ),
       ),
     );
   }
