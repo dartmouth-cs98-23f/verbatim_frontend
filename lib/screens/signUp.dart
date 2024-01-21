@@ -52,7 +52,7 @@ class _SignUpState extends State<SignUp> {
       String email,
       String password,
       String confirmPassword) async {
-    print("Sign up url is: "+BackendService.getBackendUrl());
+    print("Sign up url is: " + BackendService.getBackendUrl());
     try {
       final response = await http.post(
         Uri.parse(BackendService.getBackendUrl() + 'register'),
@@ -67,7 +67,6 @@ class _SignUpState extends State<SignUp> {
           'password': password
         }),
       );
-
 
       if (response.statusCode == 200) {
         // Save the user's info in the shared prefs
@@ -84,15 +83,13 @@ class _SignUpState extends State<SignUp> {
       } else {
         print('Error during sign-up: ${response.statusCode.toString()}');
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) =>
-              SignupErrorMessage(pageName: 'sign up'),
+          builder: (context) => SignupErrorMessage(pageName: 'sign up'),
         ));
       }
     } catch (e) {
       print('Error during sign-up: ${e.toString()}');
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) =>
-            SignupErrorMessage(pageName: 'sign up'),
+        builder: (context) => SignupErrorMessage(pageName: 'sign up'),
       ));
     }
   }
