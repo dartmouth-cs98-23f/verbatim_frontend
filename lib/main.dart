@@ -1,8 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:verbatim_frontend/screens/logIn.dart';
 import 'BackendService.dart';
 import 'Components/defineRoutes.dart';
 import 'Components/shared_prefs.dart';
+import 'package:clipboard/clipboard.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -47,7 +49,9 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       theme: ThemeData(
-        primarySwatch: paleColor,
+        //primarySwatch: paleColor,
+        scaffoldBackgroundColor: Color.fromARGB(255, 255, 243, 238),
+        textTheme: GoogleFonts.poppinsTextTheme(),
         textSelectionTheme: const TextSelectionThemeData(
           cursorColor: Color(0xFFE76F51),
         ),

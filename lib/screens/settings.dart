@@ -81,9 +81,9 @@ void _showSuccessDialog(BuildContext context) {
           borderRadius: BorderRadius.circular(10.0), // Set the corner radius
         ),
         backgroundColor:
-            Color.fromARGB(255, 255, 243, 238), // Set the background color
+            const Color.fromARGB(255, 255, 243, 238), // Set the background color
         title: RichText(
-          text: TextSpan(
+          text: const TextSpan(
             children: [
               TextSpan(
                 text: 'Verba',
@@ -102,7 +102,7 @@ void _showSuccessDialog(BuildContext context) {
             ],
           ),
         ),
-        content: Text(
+        content: const Text(
           'Your changes have been recorded!',
           style: TextStyle(color: Colors.black), // Set text color
         ),
@@ -111,7 +111,7 @@ void _showSuccessDialog(BuildContext context) {
             onPressed: () {
               Navigator.of(context).pop(); // Close the dialog
             },
-            child: Text(
+            child: const Text(
               'OK',
               style: TextStyle(color: Colors.blue), // Set button text color
             ),
@@ -136,13 +136,11 @@ class _SettingsState extends State<settings> {
   final usernameSettings = TextEditingController();
   final bioSettings = TextEditingController();
   final emailSettings = TextEditingController();
-  final String assetName = 'assets/img1.svg';
+  final String assetName = 'assets/IconLiving.svg';
   final String profile = 'assets/profile_pic.png';
 
   @override
   Widget build(BuildContext context) {
-// TODO: implement build
-//SingleChildScrollView(
     return SafeArea(
       child: Scaffold(
       resizeToAvoidBottomInset: false,
@@ -191,13 +189,14 @@ class _SettingsState extends State<settings> {
                                 ),
                               ),
                             ),
-
+                            Container(),
                             Positioned(
                               bottom: 0,
                               left: 30,
                               child: Stack(
                                 children: [
                                   Container(
+                                    //color: Color.fromARGB(255, 255, 243, 238),
                                     child: Align(
                                       alignment: Alignment
                                           .centerLeft, // Align the image to the left
@@ -210,7 +209,7 @@ class _SettingsState extends State<settings> {
                                           decoration: BoxDecoration(
                                             shape: BoxShape.circle,
                                             border: Border.all(
-                                              color: Color.fromARGB(
+                                              color: const Color.fromARGB(
                                                   255,
                                                   255,
                                                   243,
