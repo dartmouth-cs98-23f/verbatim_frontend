@@ -57,6 +57,48 @@ class _CreateGroupState extends State<createGroup> {
 
   bool friendsFetched = false;
 
+  // create group
+  Future<void> create(String groupName, String createdByUsername,
+      List<String> usernamesToAdd) async {
+    final url = Uri.parse(BackendService.getBackendUrl() + 'createGroup');
+    final headers = <String, String>{'Content-Type': 'application/json'};
+    final requestPayload = json.encode({
+      'groupName': groupName,
+      'createdByUsername': createdByUsername,
+      'usernamesToAdd': usernamesToAdd,
+    });
+
+    final response =
+        await http.post(url, headers: headers, body: requestPayload);
+
+    if (response.statusCode == 200) {
+      print('responses sent succesfully');
+      final Map<String, dynamic> data = json.decode(response.body);
+
+      int groupId = data['groupId'];
+      String groupName = data['groupName'];
+      List<dynamic> users = data['users'];
+
+      print('Group ID: $groupId');
+      print('Group Name: $groupName');
+
+      for (var user in users) {
+        int userId = user['id'];
+        String username = user['username'];
+        String email = user['email'];
+
+        print('User ID: $userId');
+        print('Username: $username');
+        print('Email: $email');
+        print('---');
+      }
+
+      print(data);
+    } else {
+      print('Failed to send responses. Status code: ${response.statusCode}');
+    }
+  }
+
 //Find my friends!
 
   Future<void> getFriends(String username) async {
@@ -86,18 +128,6 @@ class _CreateGroupState extends State<createGroup> {
       print('added $friendName to addedusernames');
     }
   }
-
-  /* send create group request to backend 
-   
-  Create Group
-      path = "api/v1/createGroup"
-    Request: 
-    String groupName
-    String creatingUsername
-    List<String> addedUsernames
-
-  
-   */
 
   //set up the search controller
   @override
@@ -444,6 +474,7 @@ class _CreateGroupState extends State<createGroup> {
                           });
                           // otherwise, take us to the group page
                         } else {
+                          create(userResponse, username, addedUsernames);
                           handleTap(context, 1,
                               userResponse: userResponse,
                               addedUsernames: addedUsernames);
