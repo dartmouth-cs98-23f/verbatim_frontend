@@ -238,8 +238,8 @@ class _GroupChallengeState extends State<groupChallenge> {
                   visible: responded,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      foregroundColor: Colors.white,
-                      backgroundColor: Color(0xFFE76F51),
+                      primary: Color(0xFFE76F51),
+                      onPrimary: Colors.white,
                       enableFeedback: true,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -300,7 +300,6 @@ class _GroupChallengeState extends State<groupChallenge> {
           padding: EdgeInsets.all(8),
 
           //remove this decoration?
-          /*
           decoration: BoxDecoration(
             color: Colors.white,
             borderRadius: BorderRadius.circular(10),
@@ -312,7 +311,6 @@ class _GroupChallengeState extends State<groupChallenge> {
               )
             ],
           ),
-          */
           child: SingleChildScrollView(
               child: Column(
             children: [
