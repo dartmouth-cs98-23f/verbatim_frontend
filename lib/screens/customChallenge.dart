@@ -306,6 +306,7 @@ class _CustomChallengeState extends State<customChallenge>
                           prompts.removeAt(index);
                           expandedStates.removeAt(index);
                           editingStates.removeAt(index);
+                          bird.removeAt(index);
                         });
                       },
                       child: Text('Delete',
