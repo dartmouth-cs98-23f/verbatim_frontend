@@ -2,6 +2,7 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/BackendService.dart';
+import 'package:verbatim_frontend/widgets/button_settings.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'sideBar.dart';
@@ -13,7 +14,6 @@ import 'package:verbatim_frontend/widgets/size.dart';
 import 'package:verbatim_frontend/widgets/custom_tab.dart';
 import 'dart:async';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
-
 
 void reset(BuildContext context, String newPassword, String oldPassword) async {
   try {
@@ -39,7 +39,6 @@ void reset(BuildContext context, String newPassword, String oldPassword) async {
   }
 }
 
-
 class ResetPassword extends StatefulWidget {
   const ResetPassword({super.key});
 
@@ -48,7 +47,6 @@ class ResetPassword extends StatefulWidget {
 }
 
 class _ResetPasswordState extends State<ResetPassword> {
-
   Map<String, Text> validationErrors = {};
 
   final oldPassword = TextEditingController();
@@ -56,57 +54,57 @@ class _ResetPasswordState extends State<ResetPassword> {
   final confirmPassword = TextEditingController();
 
   void _showSuccessDialog(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0), // Set the corner radius
-        ),
-        backgroundColor:
-            Color.fromARGB(255, 255, 243, 238), // Set the background color
-        title: RichText(
-          text: TextSpan(
-            children: [
-              TextSpan(
-                text: 'Verba',
-                style: TextStyle(
-                    color: Colors.orange,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold),
-              ),
-              TextSpan(
-                text: '-tastic!',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold),
-              ),
-            ],
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0), // Set the corner radius
           ),
-        ),
-        content: Text(
-          'Your changes have been recorded!',
-          style: TextStyle(color: Colors.black), // Set text color
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(); // Close the dialog
-            },
-            child: Text(
-              'OK',
-              style: TextStyle(color: Colors.blue), // Set button text color
+          backgroundColor:
+              Color.fromARGB(255, 255, 243, 238), // Set the background color
+          title: RichText(
+            text: TextSpan(
+              children: [
+                TextSpan(
+                  text: 'Verba',
+                  style: TextStyle(
+                      color: Colors.orange,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold),
+                ),
+                TextSpan(
+                  text: '-tastic!',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
             ),
           ),
-        ],
-      );
-    },
-  );
-}
+          content: Text(
+            'Your changes have been recorded!',
+            style: TextStyle(color: Colors.black), // Set text color
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: Text(
+                'OK',
+                style: TextStyle(color: Colors.blue), // Set button text color
+              ),
+            ),
+          ],
+        );
+      },
+    );
+  }
 
-void reset(
-    BuildContext context, String newPassword, String oldPassword) async {
+  void reset(
+      BuildContext context, String newPassword, String oldPassword) async {
     try {
       final response = await http.post(
         //need a reset password endpoint
@@ -143,8 +141,9 @@ void reset(
       setValidationError("passwordMismatch", "Passwords do not match.");
       return false;
     }
-    if(SharedPrefs().getPassword()!= oldPassword){
-      setValidationError("incorrectPassword", "Incorrect value for currrent password");
+    if (SharedPrefs().getPassword() != oldPassword) {
+      setValidationError(
+          "incorrectPassword", "Incorrect value for currrent password");
       return false;
     }
     return true;
@@ -285,16 +284,22 @@ void reset(
                         child: Column(
                           children: [
                             SizedBox(height: 30),
-                            MyButtonNoImage(
-                              buttonText: "Submit",
-                              onTap: () {
-                                reset(
-                                  context,
-                                  oldPassword.text,
-                                  newPassword.text,
-                                );
-                              },
-                            ),
+                            Padding(
+                              padding: EdgeInsets.only(left: 1.5),
+                              child: Align(
+                                alignment: Alignment.bottomLeft,
+                                child: DeepOrangeButton(
+                                  buttonText: 'Reset Password',
+                                  onPressed: () {
+                                    reset(
+                                      context,
+                                      oldPassword.text,
+                                      newPassword.text,
+                                    );
+                                  },
+                                ),
+                              ),
+                            )
                           ],
                         ),
                       ),

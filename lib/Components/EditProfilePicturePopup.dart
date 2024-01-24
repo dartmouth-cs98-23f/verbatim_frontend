@@ -33,22 +33,33 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-          const SizedBox(height: 5),
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                'Edit Profile Picture',
-                style: TextStyle(
-                  color: Color(0xFF3C63B0),
-                  fontSize: 16,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w400,
-                  height: 0.09,
-                  letterSpacing: 0.30,
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              Padding(
+                padding: const EdgeInsets.only(left: 56.0),
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Text(
+                    'Edit Profile Picture',
+                    style: TextStyle(
+                      color: Color(0xFF3C63B0),
+                      fontSize: 16,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w400,
+                      height: 0.09,
+                      letterSpacing: 0.30,
+                    ),
+                  ),
                 ),
               ),
-            ),
+              IconButton(
+                icon: Icon(Icons.close),
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the popup
+                },
+              ),
+            ],
           ),
           const SizedBox(height: 5),
           MouseRegion(
@@ -71,13 +82,6 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
                     color: Colors.transparent,
                     child: InkWell(
                       onTap: widget.onImageTap,
-                      // child: Image.asset(
-                      //   widget.imagePath,
-                      //   width: 100.0,
-                      //   height: 100.0,
-                      //   fit: BoxFit.cover,
-                      // ),
-                      //selectedImage
                       child: ClipOval(
                         child: Container(
                           width: 150.0,

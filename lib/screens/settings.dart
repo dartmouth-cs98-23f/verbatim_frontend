@@ -7,6 +7,7 @@ import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/Components/EditProfilePicturePopup.dart';
+import 'package:verbatim_frontend/widgets/button_settings.dart';
 import 'package:verbatim_frontend/widgets/customAppBar_Settings.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
@@ -268,7 +269,7 @@ class _settingsState extends State<settings> {
                   ),
                 ),
 
-                const SizedBox(height: 10),
+                // const SizedBox(height: 10),
                 Padding(
                   padding: EdgeInsets.only(
                       left: 50.0), // Adjust the left padding as needed
@@ -284,7 +285,7 @@ class _settingsState extends State<settings> {
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               border: Border.all(
-                                color: Colors.deepOrange,
+                                color: Color(0xFFE76F51),
                                 width: 2.0,
                               ),
                             ),
@@ -310,7 +311,7 @@ class _settingsState extends State<settings> {
                               onPressed: _showEditProfilePicturePopup,
                               tooltip: 'Change Image',
                               mini: true,
-                              backgroundColor: Colors.deepOrange,
+                              backgroundColor: Color(0xFFE76F51),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(22.0),
                                 side:
@@ -334,39 +335,43 @@ class _settingsState extends State<settings> {
                 ),
 
                 //Reset password
-                const SizedBox(height: 10),
+                const SizedBox(height: 30),
                 Align(
-                  alignment: Alignment.topLeft,
-                  child: Padding(
+                    alignment: Alignment.topLeft,
+                    child: Padding(
                       padding: EdgeInsets.only(left: 30.0),
-                      child: RichText(
-                          text: TextSpan(
-                        text: 'Reset password',
-                        style: const TextStyle(
-                          color: Color(0xFF3C64B1),
-                          fontWeight: FontWeight.w700,
+                      child: GestureDetector(
+                        onTap: () {
+                          // Navigate to the ResetPassword page
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ResetPassword(),
+                          ));
+                        },
+                        child: Text(
+                          'Reset Password',
+                          style: TextStyle(
+                            color: Color(0xFF3C64B1),
+                            fontWeight: FontWeight.w400,
+                            fontFamily: 'Poppins',
+                            fontSize: 16, // Adjust font size as needed
+                            height: 0.06,
+                            letterSpacing: 0.30,
+                          ),
                         ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            // Navigate to the sign-in page
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => ResetPassword(),
-                            ));
-                          },
-                      ))),
-                ),
+                      ),
+                    )),
 
-                const SizedBox(height: 42),
+                const SizedBox(height: 38),
                 const Padding(
                   padding: EdgeInsets.only(left: 30.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      'First Name',
+                      'Name',
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 20,
-                        fontFamily: 'Mulish',
+                        fontFamily: 'Poppins',
                         fontWeight: FontWeight.w700,
                         height: 0.04,
                         letterSpacing: 0.30,
@@ -378,37 +383,12 @@ class _settingsState extends State<settings> {
                 const SizedBox(height: 20),
                 MyTextField(
                     controller: firstNameSettings,
-                    hintText: SharedPrefs().getFirstName() ?? "",
+                    hintText: (SharedPrefs().getFirstName() ?? "") +
+                        " " +
+                        (SharedPrefs().getLastName() ?? ""),
                     obscureText: false),
-
-                //last name
-                const SizedBox(height: 42),
-                Padding(
-                  padding: const EdgeInsets.only(left: 30.0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Last Name',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontFamily: 'Mulish',
-                        fontWeight: FontWeight.w700,
-                        height: 0.04,
-                        letterSpacing: 0.30,
-                      ),
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-                MyTextField(
-                    controller: lastNameSettings,
-                    hintText: SharedPrefs().getLastName() ?? "",
-                    obscureText: false),
-
                 //username
-                const SizedBox(height: 42),
+                const SizedBox(height: 38),
                 Padding(
                   padding: const EdgeInsets.only(left: 30.0),
                   child: Align(
@@ -418,7 +398,7 @@ class _settingsState extends State<settings> {
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 20,
-                        fontFamily: 'Mulish',
+                        fontFamily: 'Poppins',
                         fontWeight: FontWeight.w700,
                         height: 0.04,
                         letterSpacing: 0.30,
@@ -433,7 +413,7 @@ class _settingsState extends State<settings> {
                     obscureText: false),
 
                 //bio
-                const SizedBox(height: 42),
+                const SizedBox(height: 38),
                 Padding(
                   padding: const EdgeInsets.only(left: 30.0),
                   child: Align(
@@ -443,7 +423,7 @@ class _settingsState extends State<settings> {
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 20,
-                        fontFamily: 'Mulish',
+                        fontFamily: 'Poppins',
                         fontWeight: FontWeight.w700,
                         height: 0.04,
                         letterSpacing: 0.30,
@@ -459,7 +439,7 @@ class _settingsState extends State<settings> {
 
                 //email
                 //bio
-                const SizedBox(height: 42),
+                const SizedBox(height: 38),
                 Padding(
                   padding: const EdgeInsets.only(left: 30.0),
                   child: Align(
@@ -469,7 +449,7 @@ class _settingsState extends State<settings> {
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 20,
-                        fontFamily: 'Mulish',
+                        fontFamily: 'Poppins',
                         fontWeight: FontWeight.w700,
                         height: 0.04,
                         letterSpacing: 0.30,
@@ -486,26 +466,36 @@ class _settingsState extends State<settings> {
                 Center(
                     child: Column(
                   children: [
-                    const SizedBox(height: 30),
-                    MyButtonNoImage(
-                        buttonText: "Update Profile",
-                        onTap: () {
-                          edits(
-                            context,
-                            getVal(firstNameSettings.text,
-                                SharedPrefs().getFirstName() ?? ""),
-                            getVal(lastNameSettings.text,
-                                SharedPrefs().getLastName() ?? ""),
-                            SharedPrefs().getUserName() ?? "",
-                            getVal(usernameSettings.text,
-                                SharedPrefs().getUserName() ?? ""),
-                            getVal(
-                                bioSettings.text, SharedPrefs().getBio() ?? ""),
-                            getVal(emailSettings.text,
-                                SharedPrefs().getEmail() ?? ""),
-                            _currentImagePath,
-                          );
-                        })
+                    const SizedBox(height: 28),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          left: 27.0), // Adjust the left padding as needed
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: DeepOrangeButton(
+                          buttonText: 'Update Profile',
+                          onPressed: () {
+                            edits(
+                              context,
+                              getVal(firstNameSettings.text,
+                                  SharedPrefs().getFirstName() ?? ""),
+                              getVal(lastNameSettings.text,
+                                  SharedPrefs().getLastName() ?? ""),
+                              SharedPrefs().getUserName() ?? "",
+                              getVal(
+                                usernameSettings.text,
+                                SharedPrefs().getUserName() ?? "",
+                              ),
+                              getVal(bioSettings.text,
+                                  SharedPrefs().getBio() ?? ""),
+                              getVal(emailSettings.text,
+                                  SharedPrefs().getEmail() ?? ""),
+                              _currentImagePath,
+                            );
+                          },
+                        ),
+                      ),
+                    )
                   ],
                 ))
               ],
