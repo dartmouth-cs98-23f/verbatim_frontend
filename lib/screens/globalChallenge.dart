@@ -359,16 +359,29 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                 ),
                               ),
 
-                              Align(
-                                  alignment: Alignment.bottomRight,
+                              Positioned(
+                                  // alignment: Alignment.bottomRight,
+                                  right: 10.h,
+                                  top: 20.h,
                                   child: Container(
-                                    width: 100,
+                                    width: 150,
                                     clipBehavior: Clip.hardEdge,
-                                    margin: EdgeInsets.only(right: 20.h),
+                                    margin: EdgeInsets.only(
+                                        right: 20.h, top: 100.h),
                                     decoration: BoxDecoration(
-                                        borderRadius: BorderRadius.circular(50),
-                                        color: Colors.transparent),
-                                    height: 30,
+                                      borderRadius: BorderRadius.circular(50),
+                                      boxShadow: [
+                                        BoxShadow(
+                                          color: const Color.fromARGB(
+                                                  255, 117, 19, 12)
+                                              .withOpacity(0.9),
+                                          blurRadius: 5,
+                                          offset: Offset(3, 7),
+                                        ),
+                                      ],
+                                      color: Colors.white,
+                                    ),
+                                    height: 45,
                                     child: PlayTab(
                                       onTabSelectionChanged:
                                           (bool isFirstTabSelected) {
@@ -563,7 +576,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                               questions: questions,
                                               responses: responses123))
                                     ]);
-                                  } 
+                                  }
                                   //NEED TO CHANGE THIS SNIPPET OF CODE TO HAVE THE CARD AND A SIGN UP
                                   else {
                                     return FutureBuilder<void>(
@@ -581,7 +594,6 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                           // display verbatastic data
                                           return Column(
                                             children: [
-
                                               // Guest(formattedTimeUntilMidnight:
                                               //       formattedTimeUntilMidnight),
                                               Verbatastic(

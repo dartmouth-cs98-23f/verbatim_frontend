@@ -101,6 +101,7 @@ flutter:
      - assets/profile2.jpeg
      - assets/profile_pic.png
      - assets/editIcon.svg
+     - assets/play.svg
 
      - assets/friends.svg
      - assets/globalChallenges.svg

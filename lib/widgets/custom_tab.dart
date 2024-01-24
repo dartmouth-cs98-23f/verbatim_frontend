@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:flutter_svg/svg.dart';
 
 class PlayTab extends StatefulWidget {
   final void Function(bool) onTabSelectionChanged;
@@ -29,11 +30,13 @@ class _PlayTabState extends State<PlayTab> {
 
   @override
   Widget build(BuildContext context) {
+    final String play = 'assets/play.png';
+
     return Scaffold(
       resizeToAvoidBottomInset: false,
       body: Container(
-        height: 30,
-        width: 100,
+        height: 60,
+        width: 200,
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(50),
           color: Colors.white,
@@ -54,28 +57,63 @@ class _PlayTabState extends State<PlayTab> {
             _toggleTabSelection(index == 0);
           },
           children: [
+            /*
             Container(
-              height: 30,
-              width: 50,
+              height: 45,
+              width: 75,
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50),
               ),
-              child: Icon(
-                Icons.lightbulb,
-                color: Colors.black,
+              child: SvgPicture.asset(
+                play,
+                fit: BoxFit.fill,
               ),
             ),
-            Container(
-              height: 30,
-              width: 50,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(50),
-              ),
-              child: Icon(
-                Icons.bar_chart,
-                color: Colors.black,
-              ),
-            ),
+            */
+
+            Center(
+                child: Container(
+                    height: 45,
+                    width: 75,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    child: Center(
+                        child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                          Icon(
+                            Icons.lightbulb,
+                            color: Colors.black,
+                          ),
+                          Text("Play",
+                              style: TextStyle(
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 14,
+                                  color: Colors.black))
+                        ])))),
+            Center(
+                child: Container(
+                    height: 45,
+                    width: 75,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                    ),
+                    child: Center(
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Icon(
+                              Icons.bar_chart,
+                              color: Colors.black,
+                            ),
+                            Text("Stats",
+                                style: TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 14,
+                                    color: Colors.black))
+                          ]),
+                    )))
           ],
         )),
       ),
