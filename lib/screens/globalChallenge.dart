@@ -213,6 +213,8 @@ class _GlobalChallengeState extends State<globalChallenge> {
           print("verbatasticUsers is empty");
         }
       }
+    } else {
+      print("failed");
     }
   }
 
