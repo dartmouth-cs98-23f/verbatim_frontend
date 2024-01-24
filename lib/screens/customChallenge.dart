@@ -36,6 +36,9 @@ class _CustomChallengeState extends State<customChallenge>
     "Enter your challenge question",
   ];
 
+// r they ready for the bird?!?!?!
+  List<bool> bird = [false, false, false];
+
   //whether each is in 'editing' mode
   List<bool> editingStates = [false, false, false];
 
@@ -93,6 +96,7 @@ class _CustomChallengeState extends State<customChallenge>
                           expandedStates.add(false);
                           prompts.add("Enter your challenge question");
                           editingStates.add(false);
+                          bird.add(false);
                         });
                         print('Add Prompt button pressed');
                       },
@@ -197,16 +201,15 @@ class _CustomChallengeState extends State<customChallenge>
 
               Center(
                 child: Row(children: [
-                  if (prompts[index] == "Enter your challenge question")
+                  if (!bird[index])
                     CircleAvatar(
                       backgroundColor: Color(0xFFE76F51),
                       radius: 10,
                     ),
-                  if (prompts[index] != "Enter your challenge question")
+                  if (bird[index])
                     CircleAvatar(
                       backgroundColor: Colors.white,
-                      child: Image.asset(
-                          'assets/bird.png'), // Change the color as needed
+                      child: Image.asset('assets/bird.png'),
                       radius: 12,
                     ),
                   SizedBox(width: 10),
@@ -250,7 +253,7 @@ class _CustomChallengeState extends State<customChallenge>
               Center(
                 child: Row(
                   children: [
-                    if (prompts[index] == "Enter your challenge question")
+                    if (!bird[index])
                       CircleAvatar(
                           foregroundColor: Color(0xFFE76F51),
                           backgroundColor: Color(0xFFE76F51),
@@ -261,11 +264,10 @@ class _CustomChallengeState extends State<customChallenge>
                             radius: 9,
                           ),
                           radius: 10),
-                    if (prompts[index] != "Enter your challenge question")
+                    if (bird[index])
                       CircleAvatar(
                         backgroundColor: Colors.white,
-                        child: Image.asset(
-                            'assets/bird.png'), // Change the color as needed
+                        child: Image.asset('assets/bird.png'),
                         radius: 12,
                       ),
                     SizedBox(width: 10),
@@ -346,6 +348,7 @@ class _CustomChallengeState extends State<customChallenge>
                             editingStates[index] = false;
                             prompts[index] = editingController.text;
                             expandedStates[index] = false;
+                            bird[index] = true;
                           });
                         },
                         child: Text('Save',
