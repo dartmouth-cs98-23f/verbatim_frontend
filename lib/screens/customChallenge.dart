@@ -165,7 +165,9 @@ class _CustomChallengeState extends State<customChallenge>
   Widget _buildEditableRectangle(int index) {
     // the text to be edited is the prompt clicked on
     TextEditingController editingController = TextEditingController(
-      text: editingStates[index] ? prompts[index] : null,
+      text: (prompts[index] == 'Enter your challenge question')
+          ? null
+          : prompts[index],
     );
 
     FocusNode focusNode = FocusNode();
@@ -173,6 +175,7 @@ class _CustomChallengeState extends State<customChallenge>
       onTap: () {
         setState(() {
           expandedStates[index] = !expandedStates[index];
+          editingStates[index] = !editingStates[index];
           focusNode.requestFocus();
         });
       },
@@ -216,6 +219,7 @@ class _CustomChallengeState extends State<customChallenge>
                   Expanded(
                     child: TextField(
                       focusNode: focusNode,
+                      autofocus: true,
                       controller: editingController,
                       decoration: InputDecoration(
                         hintText: "Enter your challenge question...",
