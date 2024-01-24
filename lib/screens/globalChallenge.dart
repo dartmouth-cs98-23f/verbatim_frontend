@@ -36,20 +36,35 @@ class _GlobalChallengeState extends State<globalChallenge> {
   String question1 = "";
   String question2 = "";
   String question3 = "";
+
+  //new two for +2!!!
+  String question4 = "";
+  String question5 = "";
+
   String categoryQ1 = "";
   String categoryQ2 = "";
   String categoryQ3 = "";
+  //New two for +2!!!
+  String categoryQ4 = "";
+  String categoryQ5 = "";
   int id = 0;
   // Get Stats variables
   int totalResponses = 0;
   int numVerbatimQ1 = 0;
   int numVerbatimQ2 = 0;
   int numVerbatimQ3 = 0;
+  // new two for +2 !!!!
+  int numVerbatimQ4 = 0;
+  int numVerbatimQ5 = 0;
   int numExactVerbatim = 0;
   // keep user responses to send to stats
   String responseQ1 = "";
   String responseQ2 = "";
   String responseQ3 = "";
+  // new two for +2!
+  String responseQ4 = "";
+  String responseQ5 = "";
+  //response 123 should take em all
   List<String> responses123 = [];
 
   Map<String, List<String>?> verbatasticUsers = {};
@@ -85,11 +100,31 @@ class _GlobalChallengeState extends State<globalChallenge> {
     "friendResponses": [],
   };
 
+  // NEW TWO FOR +2!!!!
+  Map<String, dynamic> statsQ4 = {
+    "firstMostPopular": "",
+    "numResponsesFirst": 0,
+    "secondMostPopular": "",
+    "numResponsesSecond": 0,
+    "thirdMostPopular": "",
+    "numResponsesThird": 0,
+    "friendResponses": [],
+  };
+  Map<String, dynamic> statsQ5 = {
+    "firstMostPopular": "",
+    "numResponsesFirst": 0,
+    "secondMostPopular": "",
+    "numResponsesSecond": 0,
+    "thirdMostPopular": "",
+    "numResponsesThird": 0,
+    "friendResponses": [],
+  };
+
   bool responded = false;
-  List<String> responses = List.filled(3, "");
+  List<String> responses = List.filled(5, ""); //5 instead of 3 for +2!
   String fetchQuestions = "";
   int currentQuestionIndex = 0;
-  List<String> questions = ["", "", ""];
+  List<String> questions = ["", "", "", "", ""]; // +2!!!!!!!!!
 
   final StreamController<bool> _streamController = StreamController<bool>();
   double progressValue = 0.0;
@@ -109,11 +144,19 @@ class _GlobalChallengeState extends State<globalChallenge> {
       question2 = data['q2'];
 
       question3 = data['q3'];
+
+      //newtwo for +2!
+      question4 = data['q4'];
+      question5 = data['q5'];
+
       id = data['globalChallengeId'];
 
       categoryQ1 = data['categoryQ1'];
       categoryQ2 = data['categoryQ2'];
       categoryQ3 = data['categoryQ3'];
+      //new two for +2!!!
+      categoryQ4 = data['categoryQ4'];
+      categoryQ5 = data['categoryQ5'];
       totalResponses = data['totalResponses'];
 
       // if null, user has not yet submitted global response - if not null we NEED this for page refresh to still work
@@ -125,15 +168,31 @@ class _GlobalChallengeState extends State<globalChallenge> {
         id = data['globalChallengeId'];
         responseQ2 = data['responseQ2'];
         responseQ3 = data['responseQ3'];
+        // new two for +2
+        responseQ4 = data['responseQ4'];
+        responseQ5 = data['responseQ5'];
         numVerbatimQ1 = data['numVerbatimQ1'];
         numVerbatimQ2 = data['numVerbatimQ2'];
         numVerbatimQ3 = data['numVerbatimQ3'];
+        // new two for +2 !!
+        numVerbatimQ4 = data['numVerbatimQ4'];
+        numVerbatimQ5 = data['numVerbatimQ5'];
         statsQ1 = data['statsQ1'];
         statsQ2 = data['statsQ2'];
         statsQ3 = data['statsQ3'];
+        // new two for +2!
+        statsQ4 = data['statsQ4'];
+        statsQ5 = data['statsQ5'];
         totalResponses = data['totalResponses'];
         responded = true;
-        responses123 = [responseQ1, responseQ2, responseQ3];
+        // new two for +2!
+        responses123 = [
+          responseQ1,
+          responseQ2,
+          responseQ3,
+          responseQ4,
+          responseQ5
+        ];
         verbatasticUsers = (data["verbatasticUsers"] as Map<String, dynamic>?)
                 ?.map((key, value) {
               return MapEntry(key, (value as List).cast<String>());
@@ -162,7 +221,13 @@ class _GlobalChallengeState extends State<globalChallenge> {
     super.initState();
     _fetchData(username).then((_) {
       setState(() {
-        questions = [question1, question2, question3];
+        questions = [
+          question1,
+          question2,
+          question3,
+          question4,
+          question5
+        ]; // +2
       });
     });
   }
@@ -205,7 +270,9 @@ class _GlobalChallengeState extends State<globalChallenge> {
         'username': username,
         'responseQ1': modifiedResponses[0],
         'responseQ2': modifiedResponses[1],
-        'responseQ3': modifiedResponses[2]
+        'responseQ3': modifiedResponses[2],
+        'responseQ4': modifiedResponses[3],
+        'responseQ5': modifiedResponses[4], // +2!!
       }),
     );
 
@@ -217,9 +284,13 @@ class _GlobalChallengeState extends State<globalChallenge> {
       numVerbatimQ1 = stats['numVerbatimQ1'];
       numVerbatimQ2 = stats['numVerbatimQ2'];
       numVerbatimQ3 = stats['numVerbatimQ3'];
+      numVerbatimQ4 = stats['numVerbatimQ4']; //+2!!
+      numVerbatimQ5 = stats['numVerbatimQ5'];
       statsQ1 = stats['statsQ1'];
       statsQ2 = stats['statsQ2'];
       statsQ3 = stats['statsQ3'];
+      statsQ4 = stats['statsQ4']; //+2!!
+      statsQ5 = stats['statsQ5'];
       verbatasticUsers = (stats["verbatasticUsers"] as Map<String, dynamic>?)
               ?.map((key, value) {
             return MapEntry(key, (value as List).cast<String>());
@@ -272,7 +343,13 @@ class _GlobalChallengeState extends State<globalChallenge> {
         DateFormat.Hms().format(DateTime(0).add(timeUntilMidnight));
 
     final String assetName = 'assets/img1.svg';
-    List<String> tabLables = [categoryQ1, categoryQ2, categoryQ3];
+    List<String> tabLables = [
+      categoryQ1,
+      categoryQ2,
+      categoryQ3,
+      categoryQ4,
+      categoryQ5
+    ];
 
     bool showText = true;
     updateProgress();
@@ -475,7 +552,8 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                                   responseController.text;
                                               userResponses.add(userResponse);
                                               responseController.clear();
-                                              if (currentQuestionIndex <= 1) {
+                                              if (currentQuestionIndex <= 3) {
+                                                // 3 instead of one for +2!!
                                                 updateProgress();
                                                 currentQuestionIndex += 1;
                                               } else {
@@ -491,7 +569,8 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                             });
                                           },
                                           child: Text(
-                                            currentQuestionIndex == 2
+                                            currentQuestionIndex ==
+                                                    4 //4 instead of 2 for +2!
                                                 ? 'Submit'
                                                 : 'Next',
                                           ),
@@ -573,6 +652,9 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                               statsQ1: statsQ1,
                                               statsQ2: statsQ2,
                                               statsQ3: statsQ3,
+                                              statsQ4:
+                                                  statsQ4, // two more for +2!
+                                              statsQ5: statsQ5,
                                               questions: questions,
                                               responses: responses123))
                                     ]);
