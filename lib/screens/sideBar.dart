@@ -377,23 +377,6 @@ class _SideBarState extends State<SideBar> {
                       padding:
                           EdgeInsets.symmetric(horizontal: 0.0, vertical: .1),
                       child: ListTile(
-                        title: Text('Custom Challenge',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18)),
-                        leading: Icon(Icons.play_arrow, color: Colors.black),
-                        onTap: () {},
-                      ),
-                    ),
-                  ),
-                  SizedBox(height: 10.0),
-                  Container(
-                    padding: EdgeInsets.symmetric(horizontal: 5.0),
-                    child: Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 0.0, vertical: .1),
-                      child: ListTile(
                         title: Text('Invite Friends',
                             style: TextStyle(
                                 color: Colors.black,
