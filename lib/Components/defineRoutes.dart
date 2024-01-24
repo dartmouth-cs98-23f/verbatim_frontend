@@ -139,18 +139,6 @@ Handler onBoardingPage1Handler = Handler(
   },
 );
 
-Handler settingsHandler = Handler(handlerFunc: (context, parameters) {
-  if (SharedPrefs().getEmail() == '' ||
-      SharedPrefs().getUserName() == '' ||
-      SharedPrefs().getPassword() == '') {
-    return LogIn();
-  } else {
-    // Update the current page in the shared prefs
-    SharedPrefs().setCurrentPage('/settings');
-    return settings();
-  }
-});
-
 var profileHandler = Handler(handlerFunc: (context, parameters) {
   if (SharedPrefs().getEmail() == '' ||
       SharedPrefs().getUserName() == '' ||
@@ -161,6 +149,21 @@ var profileHandler = Handler(handlerFunc: (context, parameters) {
     SharedPrefs().setCurrentPage('/profile');
     return Profile();
   }
+});
+
+var settingsHandler = Handler(handlerFunc: (context, parameters) {
+  // if (SharedPrefs().getEmail() == '' ||
+  //     SharedPrefs().getUserName() == '' ||
+  //     SharedPrefs().getPassword() == '') {
+  //   return LogIn();
+  // } else {
+  //   // Update the current page in the shared prefs
+  //   SharedPrefs().setCurrentPage('/settings');
+  //   return settings();
+  // }
+  // Update the current page in the shared prefs
+  SharedPrefs().setCurrentPage('/settings');
+  return settings();
 });
 
 var onBoardingPage2Handler = Handler(
@@ -177,7 +180,7 @@ var onBoardingPage2Handler = Handler(
   },
 );
 
-Handler onBoardingPage3Handler = Handler(
+var onBoardingPage3Handler = Handler(
   handlerFunc: (context, parameters) {
     if (SharedPrefs().getEmail() == '' ||
         SharedPrefs().getUserName() == '' ||
@@ -191,7 +194,7 @@ Handler onBoardingPage3Handler = Handler(
   },
 );
 
-Handler onBoardingPage4Handler = Handler(
+var onBoardingPage4Handler = Handler(
   handlerFunc: (context, parameters) {
     if (SharedPrefs().getEmail() == '' ||
         SharedPrefs().getUserName() == '' ||

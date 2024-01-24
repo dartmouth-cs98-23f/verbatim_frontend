@@ -124,8 +124,8 @@ class _CustomChallengeState extends State<customChallenge>
 
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Color(0xFFE76F51),
-                        onPrimary: Colors.white,
+                        foregroundColor: Colors.white,
+                        backgroundColor: Color(0xFFE76F51),
                         enableFeedback: true,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -293,8 +293,8 @@ class _CustomChallengeState extends State<customChallenge>
                   children: [
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        primary: Colors.white,
-                        onPrimary: Color(0xFFE76F51),
+                        foregroundColor: Color(0xFFE76F51),
+                        backgroundColor: Colors.white,
                         enableFeedback: true,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -320,9 +320,9 @@ class _CustomChallengeState extends State<customChallenge>
                     if (!editingStates[index])
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: Color(0xFFE76F51),
+                          foregroundColor: Colors.white,
+                          backgroundColor: Color(0xFFE76F51),
                           enableFeedback: true,
-                          onPrimary: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
@@ -340,9 +340,9 @@ class _CustomChallengeState extends State<customChallenge>
                     if (editingStates[index])
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
-                          primary: Color(0xFFE76F51),
+                          foregroundColor: Colors.white,
+                          backgroundColor: Color(0xFFE76F51),
                           enableFeedback: true,
-                          onPrimary: Colors.white,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
