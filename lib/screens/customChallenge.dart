@@ -26,12 +26,17 @@ class customChallenge extends StatefulWidget {
 
 class _CustomChallengeState extends State<customChallenge>
     with SingleTickerProviderStateMixin {
+  // track whether each rectangle is exanded or not
   List<bool> expandedStates = [false, false, false];
+
+  // list of prompts the user will input
   List<String> prompts = [
-    "Replace with your challenge question",
-    "Replace with your challenge question",
-    "Replace with your challenge question",
+    "Enter your challenge question",
+    "Enter your challenge question",
+    "Enter your challenge question",
   ];
+
+  //whether each is in 'editing' mode
   List<bool> editingStates = [false, false, false];
 
   Widget build(BuildContext context) {
@@ -86,7 +91,7 @@ class _CustomChallengeState extends State<customChallenge>
                       onTap: () {
                         setState(() {
                           expandedStates.add(false);
-                          prompts.add("Replace with your challenge question");
+                          prompts.add("Enter your challenge question");
                           editingStates.add(false);
                         });
                         print('Add Prompt button pressed');
@@ -154,14 +159,17 @@ class _CustomChallengeState extends State<customChallenge>
   }
 
   Widget _buildEditableRectangle(int index) {
+    // the text to be edited is the prompt clicked on
     TextEditingController editingController = TextEditingController(
-      text: prompts[index],
+      text: editingStates[index] ? prompts[index] : null,
     );
 
+    FocusNode focusNode = FocusNode();
     return GestureDetector(
       onTap: () {
         setState(() {
           expandedStates[index] = !expandedStates[index];
+          focusNode.requestFocus();
         });
       },
       child: AnimatedContainer(
@@ -183,15 +191,43 @@ class _CustomChallengeState extends State<customChallenge>
         ),
         child: Stack(
           children: [
+            // if we are editing the rectangle
             if (editingStates[index])
+              // make the circle avatar orange
+
               Center(
                 child: Row(children: [
-                  CircleAvatar(
-                    backgroundColor: Color(0xFFE76F51),
-                    radius: 10,
-                  ),
+                  if (prompts[index] == "Enter your challenge question")
+                    CircleAvatar(
+                      backgroundColor: Color(0xFFE76F51),
+                      radius: 10,
+                    ),
+                  if (prompts[index] != "Enter your challenge question")
+                    CircleAvatar(
+                      backgroundColor: Colors.white,
+                      child: Image.asset(
+                          'assets/bird.png'), // Change the color as needed
+                      radius: 12,
+                    ),
                   SizedBox(width: 10),
                   Expanded(
+                    child: TextField(
+                      focusNode: focusNode,
+                      controller: editingController,
+                      decoration: InputDecoration(
+                        hintText: "Enter your challenge question...",
+                        border: InputBorder.none,
+                      ),
+                      onChanged: (editedText) {
+                        prompts[index] = editedText;
+                      },
+                      style: TextStyle(
+                        fontSize: 16,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+
+                    /*
                     child: TextField(
                       controller: editingController,
                       decoration: InputDecoration(
@@ -206,6 +242,7 @@ class _CustomChallengeState extends State<customChallenge>
                         fontWeight: FontWeight.bold,
                       ),
                     ),
+                    */
                   )
                 ]),
               ),
@@ -213,16 +250,24 @@ class _CustomChallengeState extends State<customChallenge>
               Center(
                 child: Row(
                   children: [
-                    CircleAvatar(
-                        foregroundColor: Color(0xFFE76F51),
-                        backgroundColor: Color(0xFFE76F51),
-                        child: CircleAvatar(
-                          backgroundColor: expandedStates[index]
-                              ? Color(0xFFE76F51)
-                              : Colors.white,
-                          radius: 9,
-                        ),
-                        radius: 10),
+                    if (prompts[index] == "Enter your challenge question")
+                      CircleAvatar(
+                          foregroundColor: Color(0xFFE76F51),
+                          backgroundColor: Color(0xFFE76F51),
+                          child: CircleAvatar(
+                            backgroundColor: expandedStates[index]
+                                ? Color(0xFFE76F51)
+                                : Colors.white,
+                            radius: 9,
+                          ),
+                          radius: 10),
+                    if (prompts[index] != "Enter your challenge question")
+                      CircleAvatar(
+                        backgroundColor: Colors.white,
+                        child: Image.asset(
+                            'assets/bird.png'), // Change the color as needed
+                        radius: 12,
+                      ),
                     SizedBox(width: 10),
                     Text(
                       prompts[index],
