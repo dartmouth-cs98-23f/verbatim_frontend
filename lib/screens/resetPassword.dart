@@ -3,6 +3,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/widgets/button_settings.dart';
+import 'package:verbatim_frontend/widgets/customAppBar_Settings.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'sideBar.dart';
@@ -190,34 +191,24 @@ class _ResetPasswordState extends State<ResetPassword> {
                                 fit: BoxFit.fill,
                               ),
                             ),
-                            CustomAppBar(),
-                            Positioned(
-                              child: Center(
-                                child: Text(
-                                  'Reset Password',
-                                  style: TextStyle(
-                                    fontSize: 24,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w900,
-                                  ),
-                                ),
-                              ),
+                            CustomAppBarSettings(
+                              title: 'Reset Password',
                             ),
                           ],
                         ),
                       ),
                       // field form boxes
-                      SizedBox(height: 30),
+                      SizedBox(height: 42),
                       Padding(
                         padding: EdgeInsets.only(left: 30.0),
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            'Old password',
+                            'Current password',
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 20,
-                              fontFamily: 'Mulish',
+                              fontFamily: 'Poppins',
                               fontWeight: FontWeight.w700,
                               height: 0.04,
                               letterSpacing: 0.30,
@@ -231,7 +222,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                         hintText: 'current password',
                         obscureText: true,
                       ),
-                      SizedBox(height: 30),
+                      SizedBox(height: 42),
                       Padding(
                         padding: EdgeInsets.only(left: 30.0),
                         child: Align(
@@ -241,7 +232,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 20,
-                              fontFamily: 'Mulish',
+                              fontFamily: 'Poppins',
                               fontWeight: FontWeight.w700,
                               height: 0.04,
                               letterSpacing: 0.30,
@@ -255,7 +246,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                         hintText: 'new password',
                         obscureText: true,
                       ),
-                      SizedBox(height: 30),
+                      SizedBox(height: 42),
                       Padding(
                         padding: EdgeInsets.only(left: 30.0),
                         child: Align(
@@ -265,7 +256,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 20,
-                              fontFamily: 'Mulish',
+                              fontFamily: 'Poppins',
                               fontWeight: FontWeight.w700,
                               height: 0.04,
                               letterSpacing: 0.30,
@@ -283,7 +274,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                         padding: EdgeInsets.only(left: 30.0),
                         child: Column(
                           children: [
-                            SizedBox(height: 30),
+                            SizedBox(height: 42),
                             Padding(
                               padding: EdgeInsets.only(left: 1.5),
                               child: Align(

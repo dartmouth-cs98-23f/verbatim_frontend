@@ -261,7 +261,9 @@ class _settingsState extends State<settings> {
                             ),
 
                             // app bar on top of background
-                            CustomAppBarSettings(),
+                            CustomAppBarSettings(
+                              title: 'Account Settings',
+                            ),
                           ],
                         ),
                       ),
@@ -340,7 +342,7 @@ class _settingsState extends State<settings> {
                     alignment: Alignment.topLeft,
                     child: Padding(
                       padding: EdgeInsets.only(left: 30.0),
-                      child: GestureDetector(
+                      child: InkWell(
                         onTap: () {
                           // Navigate to the ResetPassword page
                           Navigator.of(context).push(MaterialPageRoute(

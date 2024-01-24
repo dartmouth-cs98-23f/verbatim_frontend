@@ -5,6 +5,10 @@ import 'package:verbatim_frontend/screens/sideBar.dart';
 
 class CustomAppBarSettings extends StatelessWidget
     implements PreferredSizeWidget {
+  final String title;
+
+  CustomAppBarSettings({required this.title});
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -19,7 +23,7 @@ class CustomAppBarSettings extends StatelessWidget
             profileImagePath: 'assets/profile2.jpeg',
           ),
           SizedBox(height: 30), // Adjust the distance as needed
-          TitleFrame(),
+          TitleFrame(title: title),
           SizedBox(height: 30),
         ],
       ),
@@ -164,6 +168,10 @@ class SearchBarTextField extends StatelessWidget {
 }
 
 class TitleFrame extends StatelessWidget {
+  final String title;
+
+  TitleFrame({required this.title});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -181,7 +189,7 @@ class TitleFrame extends StatelessWidget {
             height: 10.0,
           ),
           Text(
-            'Account Settings',
+            title,
             style: TextStyle(
               color: Color(0xFFFFF7EE),
               fontSize: 32,
