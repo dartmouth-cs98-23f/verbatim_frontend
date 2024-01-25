@@ -24,61 +24,6 @@ import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/resetPassword.dart';
 import 'sideBar.dart';
 
-class ImageDisplayPage extends StatelessWidget {
-  final String imgUrl;
-
-  const ImageDisplayPage({Key? key, required this.imgUrl}) : super(key: key);
-
-  @override
-  Widget build(BuildContext context) {
-    return Scaffold(
-      appBar: AppBar(
-        title: Text('Downloaded Image'),
-      ),
-      body: Center(
-        child: FutureBuilder(
-          future: downloadImage(imgUrl),
-          builder: (context, snapshot) {
-            if (snapshot.connectionState == ConnectionState.done) {
-              if (snapshot.hasError) {
-                return Text('Error loading image');
-              } else {
-                // Image has been successfully loaded
-                return ClipOval(
-                  child: Image.memory(
-                    snapshot.data as Uint8List,
-                    width: 100,
-                    height: 100,
-                    fit: BoxFit.cover,
-                  ),
-                );
-              }
-            } else {
-              // Display a loading indicator while the image is being loaded
-              return CircularProgressIndicator();
-            }
-          },
-        ),
-      ),
-    );
-  }
-
-  Future<Uint8List> downloadImage(String url) async {
-    try {
-      final response = await http.get(Uri.parse(url));
-      if (response.statusCode == 200) {
-        return response.bodyBytes;
-      } else {
-        print('\nError: ${response.statusCode} - ${response.reasonPhrase}\n');
-        throw Exception('Failed to load image');
-      }
-    } catch (e) {
-      print('Exception: $e');
-      throw Exception('Failed to load image');
-    }
-  }
-}
-
 void edits(
   BuildContext context,
   String firstName,
@@ -195,19 +140,43 @@ class _settingsState extends State<settings> {
   final String assetName = 'assets/img1.svg';
 
   final String imagePath = 'assets/profile_pic.png';
-  late String _currentImagePath =
-      'assets/profile2.jpeg'; // Track the currently displayed image
-  final String profile = 'assets/profile_pic.png';
+  late String _currentImagePath = SharedPrefs.ProfileUrl;
 
   final ImagePicker picker = ImagePicker();
-  ImageProvider<Object> selectedImage = AssetImage('assets/profile2.jpeg');
+  ImageProvider<Object> selectedImage = AssetImage('assets/profile_pic.png');
 
+  @override
   @override
   void initState() {
     super.initState();
-    _currentImagePath =
-        'assets/profile2.jpeg'; // Initialize with the provided image path
-    selectedImage = AssetImage('assets/profile2.jpeg');
+    _loadProfileImage();
+  }
+
+  Future<void> _loadProfileImage() async {
+    String? profileUrl = SharedPrefs().getProfileUrl();
+    if (profileUrl != null) {
+      // Download the image bytes
+      Uint8List imageBytes = await downloadImage(profileUrl);
+      // Update the selectedImage with the loaded image bytes
+      setState(() {
+        selectedImage = MemoryImage(imageBytes);
+      });
+    }
+  }
+
+  Future<Uint8List> downloadImage(String url) async {
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        return response.bodyBytes;
+      } else {
+        print('\nError: ${response.statusCode} - ${response.reasonPhrase}\n');
+        throw Exception('Failed to load image');
+      }
+    } catch (e) {
+      print('Exception: $e');
+      throw Exception('Failed to load image');
+    }
   }
 
   // Function to show the centered edit profile picture pop-up
@@ -232,22 +201,17 @@ class _settingsState extends State<settings> {
     XFile? image = await _picker.pickImage(source: source);
 
     if (image != null) {
-      String path = image.path;
-
       var bytes = await image.readAsBytes();
+      String profileUrl = await uploadFileToFirebase(bytes);
 
       setState(() {
         selectedImage = MemoryImage(bytes!);
-        _currentImagePath = path;
+        SharedPrefs().setProfileUrl(profileUrl);
+        _currentImagePath = SharedPrefs.ProfileUrl;
       });
 
       // Close the pop-up
       Navigator.pop(context);
-
-      String profileUrl = await uploadFileToFirebase(bytes);
-
-      SharedPrefs().setProfileUrl(profileUrl);
-      navigateToImagePage(profileUrl);
 
       print("\n\nDownloadUrl: ${profileUrl}");
     } else {
@@ -271,17 +235,6 @@ class _settingsState extends State<settings> {
     return profileUrl;
   }
 
-  void navigateToImagePage(String imgUrl) {
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => ImageDisplayPage(
-          imgUrl: imgUrl,
-        ),
-      ),
-    );
-  }
-
   String generateUuid() {
     final Uuid uuid = Uuid();
     return uuid.v4(); // Generates a random UUID (v4)
@@ -290,8 +243,8 @@ class _settingsState extends State<settings> {
   void _removeCurrentPicture() {
     // For example, if you want to set the profile picture to 'profile_pic.png'
     setState(() {
-      _currentImagePath = 'assets/profile_pic.png';
       selectedImage = AssetImage('assets/profile_pic.png');
+      SharedPrefs().setProfileUrl('assets/profile_pic.png');
 
       // Close the pop-up
       Navigator.pop(context);

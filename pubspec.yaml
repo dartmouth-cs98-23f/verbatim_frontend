@@ -36,7 +36,7 @@ dependencies:
 
   get: ^4.1.4
   fl_chart: ^0.64.0
-  http: ^1.1.0
+  http: ^1.2.0
   google_sign_in: ^6.1.5
   flutter_signin_button: ^2.0.0
   flutter_svg: ^2.0.8

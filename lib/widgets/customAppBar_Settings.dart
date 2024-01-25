@@ -1,9 +1,13 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/settings.dart';
 import 'size.dart';
 import 'package:verbatim_frontend/screens/sideBar.dart';
 
 import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
 
 class CustomAppBarSettings extends StatelessWidget
     implements PreferredSizeWidget {
@@ -25,9 +29,7 @@ class CustomAppBarSettings extends StatelessWidget
       title: Column(
         children: [
           SizedBox(height: 60),
-          NewNavBar(
-            profileImagePath: 'assets/profile2.jpeg',
-          ),
+          NewNavBar(),
           SizedBox(height: 30), // Adjust the distance as needed
 
           TitleFrame(
@@ -49,12 +51,10 @@ class CustomAppBarSettings extends StatelessWidget
 }
 
 class NewNavBar extends StatelessWidget {
-  final String profileImagePath;
-
-  NewNavBar({required this.profileImagePath});
-
   @override
   Widget build(BuildContext context) {
+    final String? profileUrl = SharedPrefs().getProfileUrl();
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       clipBehavior: Clip.antiAlias,
@@ -78,20 +78,49 @@ class NewNavBar extends StatelessWidget {
           ),
           SearchBarTextField(),
           SizedBox(width: 20),
-          Container(
-            width: 40,
-            height: 40.45,
-            decoration: ShapeDecoration(
-              image: DecorationImage(
-                image: NetworkImage(profileImagePath),
-                fit: BoxFit.fill,
-              ),
-              shape: OvalBorder(),
-            ),
+          FutureBuilder<Uint8List>(
+            future: downloadImage(profileUrl),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done &&
+                  snapshot.hasData) {
+                return Container(
+                  width: 40,
+                  height: 40.45,
+                  decoration: ShapeDecoration(
+                    image: DecorationImage(
+                      image: MemoryImage(snapshot.data!),
+                      fit: BoxFit.fill,
+                    ),
+                    shape: CircleBorder(),
+                  ),
+                );
+              } else {
+                return Container(); // Placeholder widget while image is loading
+              }
+            },
           ),
         ],
       ),
     );
+  }
+
+  Future<Uint8List> downloadImage(String? url) async {
+    if (url != null) {
+      try {
+        final response = await http.get(Uri.parse(url));
+        if (response.statusCode == 200) {
+          return response.bodyBytes;
+        } else {
+          print('\nError: ${response.statusCode} - ${response.reasonPhrase}\n');
+          throw Exception('Failed to load image');
+        }
+      } catch (e) {
+        print('Exception: $e');
+        throw Exception('Failed to load image');
+      }
+    } else {
+      throw Exception('Profile URL is null');
+    }
   }
 }
 
