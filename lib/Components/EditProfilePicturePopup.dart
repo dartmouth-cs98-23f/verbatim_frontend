@@ -104,7 +104,7 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
           const SizedBox(height: 20),
           ListTile(
             leading: Icon(
-              Icons.photo_camera,
+              Icons.photo_camera_outlined,
               color: Color(0xFFDE674A),
             ),
             title: Text(
@@ -123,7 +123,7 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
           const SizedBox(height: 10),
           ListTile(
             leading: Icon(
-              Icons.photo,
+              Icons.photo_outlined,
               color: Color(0xFFDE674A),
             ),
             title: Text(
@@ -142,7 +142,7 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
           const SizedBox(height: 10),
           ListTile(
             leading: Icon(
-              Icons.delete,
+              Icons.delete_outline,
               color: Color(0xFFDE674A),
             ),
             title: Text(

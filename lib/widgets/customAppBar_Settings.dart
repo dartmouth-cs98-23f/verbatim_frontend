@@ -3,11 +3,17 @@ import 'package:verbatim_frontend/screens/settings.dart';
 import 'size.dart';
 import 'package:verbatim_frontend/screens/sideBar.dart';
 
+import 'package:flutter/material.dart';
+
 class CustomAppBarSettings extends StatelessWidget
     implements PreferredSizeWidget {
   final String title;
+  final bool showBackButton;
 
-  CustomAppBarSettings({required this.title});
+  CustomAppBarSettings({
+    required this.title,
+    this.showBackButton = false,
+  });
 
   @override
   Widget build(BuildContext context) {
@@ -23,7 +29,11 @@ class CustomAppBarSettings extends StatelessWidget
             profileImagePath: 'assets/profile2.jpeg',
           ),
           SizedBox(height: 30), // Adjust the distance as needed
-          TitleFrame(title: title),
+
+          TitleFrame(
+            title: title,
+            showBackArrow: showBackButton,
+          ),
           SizedBox(height: 30),
         ],
       ),
@@ -169,8 +179,9 @@ class SearchBarTextField extends StatelessWidget {
 
 class TitleFrame extends StatelessWidget {
   final String title;
+  final bool showBackArrow;
 
-  TitleFrame({required this.title});
+  TitleFrame({required this.title, this.showBackArrow = false});
 
   @override
   Widget build(BuildContext context) {
@@ -180,27 +191,39 @@ class TitleFrame extends StatelessWidget {
       padding: const EdgeInsets.all(10),
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(
-            height: 10.0,
-          ),
-          Text(
-            title,
-            style: TextStyle(
-              color: Color(0xFFFFF7EE),
-              fontSize: 32,
-              fontFamily: 'Poppins',
-              fontWeight: FontWeight.w700,
-              height: 0.04,
-              letterSpacing: 0.10,
+          if (showBackArrow)
+            Padding(
+              padding: EdgeInsets.only(bottom: 10),
+              child: IconButton(
+                icon: Icon(Icons.arrow_back_ios_new, color: Color(0xFFFFF7EE)),
+                onPressed: () {
+                  // Handle back arrow press
+                  Navigator.pop(context);
+                },
+              ),
             ),
-          ),
-          SizedBox(
-            height: 20.0,
+          SizedBox(width: showBackArrow ? 15.0 : 0.0),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 10.0),
+              Text(
+                title,
+                style: TextStyle(
+                  color: Color(0xFFFFF7EE),
+                  fontSize: 32,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w700,
+                  height: 0.04,
+                  letterSpacing: 0.10,
+                ),
+              ),
+              SizedBox(height: 20.0),
+            ],
           ),
         ],
       ),

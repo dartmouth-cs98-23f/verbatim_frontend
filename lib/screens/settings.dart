@@ -1,10 +1,13 @@
 import 'dart:io';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:uuid/uuid.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/Components/EditProfilePicturePopup.dart';
 import 'package:verbatim_frontend/widgets/button_settings.dart';
@@ -20,6 +23,61 @@ import 'dart:async';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/resetPassword.dart';
 import 'sideBar.dart';
+
+class ImageDisplayPage extends StatelessWidget {
+  final String imgUrl;
+
+  const ImageDisplayPage({Key? key, required this.imgUrl}) : super(key: key);
+
+  @override
+  Widget build(BuildContext context) {
+    return Scaffold(
+      appBar: AppBar(
+        title: Text('Downloaded Image'),
+      ),
+      body: Center(
+        child: FutureBuilder(
+          future: downloadImage(imgUrl),
+          builder: (context, snapshot) {
+            if (snapshot.connectionState == ConnectionState.done) {
+              if (snapshot.hasError) {
+                return Text('Error loading image');
+              } else {
+                // Image has been successfully loaded
+                return ClipOval(
+                  child: Image.memory(
+                    snapshot.data as Uint8List,
+                    width: 100,
+                    height: 100,
+                    fit: BoxFit.cover,
+                  ),
+                );
+              }
+            } else {
+              // Display a loading indicator while the image is being loaded
+              return CircularProgressIndicator();
+            }
+          },
+        ),
+      ),
+    );
+  }
+
+  Future<Uint8List> downloadImage(String url) async {
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        return response.bodyBytes;
+      } else {
+        print('\nError: ${response.statusCode} - ${response.reasonPhrase}\n');
+        throw Exception('Failed to load image');
+      }
+    } catch (e) {
+      print('Exception: $e');
+      throw Exception('Failed to load image');
+    }
+  }
+}
 
 void edits(
   BuildContext context,
@@ -126,6 +184,8 @@ class settings extends StatefulWidget {
 }
 
 class _settingsState extends State<settings> {
+  Reference ref = FirebaseStorage.instance.ref().child('Verbatim_Profiles');
+
   final firstNameSettings = TextEditingController();
   final lastNameSettings = TextEditingController();
 
@@ -168,43 +228,63 @@ class _settingsState extends State<settings> {
   }
 
   Future<void> _pickImage(ImageSource source) async {
-    if (!kIsWeb) {
-      final ImagePicker _picker = ImagePicker();
-      XFile? image = await _picker.pickImage(source: source);
+    final ImagePicker _picker = ImagePicker();
+    XFile? image = await _picker.pickImage(source: source);
 
-      if (image != null) {
-        var selected = File(image.path);
-        setState(() {
-          selectedImage = selected as ImageProvider<Object>;
-        });
+    if (image != null) {
+      String path = image.path;
 
-        // Close the pop-up
-        Navigator.pop(context);
-      } else {
-        print('\nNo image has been picked');
-      }
-    } else if (kIsWeb) {
-      final ImagePicker _picker = ImagePicker();
-      XFile? image = await _picker.pickImage(source: source);
+      var bytes = await image.readAsBytes();
 
-      if (image != null) {
-        String path = image.path;
-        print("\n\nchosen path: $path");
+      setState(() {
+        selectedImage = MemoryImage(bytes!);
+        _currentImagePath = path;
+      });
 
-        var bytes = await image.readAsBytes();
-        setState(() {
-          selectedImage = MemoryImage(bytes!);
-          _currentImagePath = path;
-        });
+      // Close the pop-up
+      Navigator.pop(context);
 
-        // Close the pop-up
-        Navigator.pop(context);
-      } else {
-        print('\nNo image has been picked');
-      }
+      String profileUrl = await uploadFileToFirebase(bytes);
+
+      SharedPrefs().setProfileUrl(profileUrl);
+      navigateToImagePage(profileUrl);
+
+      print("\n\nDownloadUrl: ${profileUrl}");
     } else {
-      print('\nSomething went wrong.');
+      print('\nNo image has been picked');
     }
+  }
+
+  Future<String> uploadFileToFirebase(Uint8List image) async {
+    String imgId = generateUuid();
+    Reference imgRef = ref.child(imgId);
+
+    UploadTask uploadTask = imgRef.putData(
+      image,
+      SettableMetadata(contentType: 'image/jpg'),
+    );
+
+    TaskSnapshot snapshot = await uploadTask;
+
+    String profileUrl = await snapshot.ref.getDownloadURL();
+
+    return profileUrl;
+  }
+
+  void navigateToImagePage(String imgUrl) {
+    Navigator.push(
+      context,
+      MaterialPageRoute(
+        builder: (context) => ImageDisplayPage(
+          imgUrl: imgUrl,
+        ),
+      ),
+    );
+  }
+
+  String generateUuid() {
+    final Uuid uuid = Uuid();
+    return uuid.v4(); // Generates a random UUID (v4)
   }
 
   void _removeCurrentPicture() {
@@ -322,8 +402,8 @@ class _settingsState extends State<settings> {
                               child: Container(
                                 child: Center(
                                   child: Icon(
-                                    Icons.edit,
-                                    size: 20.0,
+                                    Icons.create_outlined,
+                                    size: 30.0,
                                     color: Colors.white,
                                   ),
                                 ),

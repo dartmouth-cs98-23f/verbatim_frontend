@@ -8,6 +8,7 @@ class SharedPrefs {
   static const String FirstName = "";
   static const String Bio = '';
   static const String Email = '';
+  static const String ProfileUrl = '';
 
   static SharedPreferences? _sharedPrefs;
 
@@ -69,6 +70,14 @@ class SharedPrefs {
 
   String? getPassword() {
     return _sharedPrefs!.getString("password");
+  }
+
+  void setProfileUrl(String profileUrl) {
+    _sharedPrefs!.setString("profileUrl", profileUrl);
+  }
+
+  String? getProfileUrl() {
+    return _sharedPrefs!.getString("profileUrl");
   }
 
   String? getCurrentPage() {

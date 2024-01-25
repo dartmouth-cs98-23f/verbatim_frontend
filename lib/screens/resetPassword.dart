@@ -193,6 +193,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                             ),
                             CustomAppBarSettings(
                               title: 'Reset Password',
+                              showBackButton: true,
                             ),
                           ],
                         ),
