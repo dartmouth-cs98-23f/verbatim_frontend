@@ -71,7 +71,8 @@ class NewNavBar extends StatelessWidget {
             height: 40.45,
             decoration: ShapeDecoration(
               image: DecorationImage(
-                image: NetworkImage(profileImagePath),
+                image: NetworkImage(
+                    'https://firebasestorage.googleapis.com/v0/b/verbatim-81617.appspot.com/o/Verbatim_Profiles%2F9f2c8ab6-cdeb-4d04-99a1-e05c16da422b?alt=media&token=2611c455-c4d4-4eb1-a582-6ff84b32b3a5'),
                 fit: BoxFit.fill,
               ),
               shape: OvalBorder(),
