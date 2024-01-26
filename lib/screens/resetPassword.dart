@@ -54,56 +54,6 @@ class _ResetPasswordState extends State<ResetPassword> {
   final newPassword = TextEditingController();
   final confirmPassword = TextEditingController();
 
-  void _showSuccessDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0), // Set the corner radius
-          ),
-          backgroundColor:
-              Color.fromARGB(255, 255, 243, 238), // Set the background color
-          title: RichText(
-            text: TextSpan(
-              children: [
-                TextSpan(
-                  text: 'Verba',
-                  style: TextStyle(
-                      color: Colors.orange,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold),
-                ),
-                TextSpan(
-                  text: '-tastic!',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-          ),
-          content: Text(
-            'Your changes have been recorded!',
-            style: TextStyle(color: Colors.black), // Set text color
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: Text(
-                'OK',
-                style: TextStyle(color: Colors.blue), // Set button text color
-              ),
-            ),
-          ],
-        );
-      },
-    );
-  }
-
   void reset(
       BuildContext context, String newPassword, String oldPassword) async {
     try {
@@ -128,6 +78,65 @@ class _ResetPasswordState extends State<ResetPassword> {
     } catch (error) {
       print('Sorry, cannot edit account settings: $error');
     }
+    _showSuccessDialog(context);
+  }
+
+  void _showSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0), // Set the corner radius
+          ),
+          backgroundColor: const Color.fromARGB(
+              255, 255, 243, 238), // Set the background color
+          title: RichText(
+            text: const TextSpan(
+              children: [
+                TextSpan(
+                  text: 'Verba',
+                  style: TextStyle(
+                      color: Colors.orange,
+                      fontSize: 24,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.bold),
+                ),
+                TextSpan(
+                  text: '-tastic!',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 24,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+          content: const Text(
+            'Your password has been updated!',
+            style: TextStyle(
+              color: Colors.black,
+              fontFamily: 'Poppins',
+            ), // Set text color
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text(
+                'OK',
+                style: TextStyle(
+                  color: Colors.blue,
+                  fontFamily: 'Poppins',
+                ), // Set button text color
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   bool isValid(

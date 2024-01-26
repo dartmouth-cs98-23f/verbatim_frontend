@@ -10,6 +10,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/Components/EditProfilePicturePopup.dart';
+import 'package:verbatim_frontend/widgets/MyTextFieldSettings.dart';
 import 'package:verbatim_frontend/widgets/button_settings.dart';
 import 'package:verbatim_frontend/widgets/customAppBar_Settings.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
@@ -26,8 +27,7 @@ import 'sideBar.dart';
 
 void edits(
   BuildContext context,
-  String firstName,
-  String lastName,
+  String fullName,
   String username,
   String newUsername,
   String bio,
@@ -35,6 +35,14 @@ void edits(
   String profilePic,
 ) async {
   try {
+    Map<String, String> nameMap = getFirstAndLastName(fullName);
+
+    String firstName = nameMap['firstName'] ?? '';
+    String lastName = nameMap['lastName'] ?? '';
+
+    print('\nFirst Name: $firstName');
+    print('\nLast Name: $lastName');
+
     final response = await http.post(
       Uri.parse(BackendService.getBackendUrl() + 'accountSettings'),
       headers: <String, String>{
@@ -65,6 +73,18 @@ void edits(
   }
 }
 
+Map<String, String> getFirstAndLastName(String fullName) {
+  // Split the full name by whitespace
+  List<String> nameParts = fullName.trim().split(' ');
+
+  // Extract the first name and last name
+  String firstName = nameParts.isNotEmpty ? nameParts.first : '';
+  String lastName = nameParts.length > 1 ? nameParts.last : '';
+
+  // Return the first name and last name as a map
+  return {'firstName': firstName, 'lastName': lastName};
+}
+
 String getVal(String? fieldval, String currentval) {
   String finalVal;
   fieldval!.isEmpty ? finalVal = currentval : finalVal = fieldval;
@@ -89,6 +109,7 @@ void _showSuccessDialog(BuildContext context) {
                 style: TextStyle(
                     color: Colors.orange,
                     fontSize: 24,
+                    fontFamily: 'Poppins',
                     fontWeight: FontWeight.bold),
               ),
               TextSpan(
@@ -96,6 +117,7 @@ void _showSuccessDialog(BuildContext context) {
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 24,
+                    fontFamily: 'Poppins',
                     fontWeight: FontWeight.bold),
               ),
             ],
@@ -103,7 +125,10 @@ void _showSuccessDialog(BuildContext context) {
         ),
         content: const Text(
           'Your changes have been recorded!',
-          style: TextStyle(color: Colors.black), // Set text color
+          style: TextStyle(
+            color: Colors.black,
+            fontFamily: 'Poppins',
+          ), // Set text color
         ),
         actions: [
           TextButton(
@@ -112,7 +137,10 @@ void _showSuccessDialog(BuildContext context) {
             },
             child: const Text(
               'OK',
-              style: TextStyle(color: Colors.blue), // Set button text color
+              style: TextStyle(
+                color: Colors.blue,
+                fontFamily: 'Poppins',
+              ), // Set button text color
             ),
           ),
         ],
@@ -131,8 +159,7 @@ class settings extends StatefulWidget {
 class _settingsState extends State<settings> {
   Reference ref = FirebaseStorage.instance.ref().child('Verbatim_Profiles');
 
-  final firstNameSettings = TextEditingController();
-  final lastNameSettings = TextEditingController();
+  final fullNameSettings = TextEditingController();
 
   final usernameSettings = TextEditingController();
   final bioSettings = TextEditingController();
@@ -418,8 +445,8 @@ class _settingsState extends State<settings> {
                 ),
 
                 const SizedBox(height: 20),
-                MyTextField(
-                    controller: firstNameSettings,
+                MyTextFieldSettings(
+                    controller: fullNameSettings,
                     hintText: (SharedPrefs().getFirstName() ?? "") +
                         " " +
                         (SharedPrefs().getLastName() ?? ""),
@@ -444,7 +471,7 @@ class _settingsState extends State<settings> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                MyTextField(
+                MyTextFieldSettings(
                     controller: usernameSettings,
                     hintText: SharedPrefs().getUserName() ?? "",
                     obscureText: false),
@@ -469,7 +496,7 @@ class _settingsState extends State<settings> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                MyTextField(
+                MyTextFieldSettings(
                     controller: bioSettings,
                     hintText: SharedPrefs().getBio() ?? "",
                     obscureText: false),
@@ -495,7 +522,7 @@ class _settingsState extends State<settings> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                MyTextField(
+                MyTextFieldSettings(
                     controller: emailSettings,
                     hintText: SharedPrefs().getEmail() ?? "",
                     obscureText: false),
@@ -514,10 +541,8 @@ class _settingsState extends State<settings> {
                           onPressed: () {
                             edits(
                               context,
-                              getVal(firstNameSettings.text,
+                              getVal(fullNameSettings.text,
                                   SharedPrefs().getFirstName() ?? ""),
-                              getVal(lastNameSettings.text,
-                                  SharedPrefs().getLastName() ?? ""),
                               SharedPrefs().getUserName() ?? "",
                               getVal(
                                 usernameSettings.text,
