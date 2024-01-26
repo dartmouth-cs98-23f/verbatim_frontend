@@ -73,7 +73,11 @@ class SharedPrefs {
   }
 
   void setProfileUrl(String profileUrl) {
-    _sharedPrefs!.setString("profileUrl", profileUrl);
+    if (profileUrl != null && profileUrl.isNotEmpty) {
+      _sharedPrefs!.setString("profileUrl", profileUrl);
+    } else {
+      _sharedPrefs!.setString("profileUrl", 'assets/profile_pic.png');
+    }
   }
 
   String? getProfileUrl() {

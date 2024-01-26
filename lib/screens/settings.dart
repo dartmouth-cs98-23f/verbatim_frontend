@@ -140,7 +140,9 @@ class _settingsState extends State<settings> {
   final String assetName = 'assets/img1.svg';
 
   final String imagePath = 'assets/profile_pic.png';
-  late String _currentImagePath = SharedPrefs.ProfileUrl;
+  late String _currentProfileUrl = SharedPrefs.ProfileUrl != null
+      ? SharedPrefs.ProfileUrl
+      : 'assets/profile_pic.png';
 
   final ImagePicker picker = ImagePicker();
   ImageProvider<Object> selectedImage = AssetImage('assets/profile_pic.png');
@@ -185,7 +187,7 @@ class _settingsState extends State<settings> {
       context: context,
       builder: (BuildContext context) {
         return EditProfilePicturePopup(
-          imagePath: _currentImagePath,
+          imagePath: _currentProfileUrl,
           selectedImage: selectedImage,
           onImageTap: _viewEnlarged,
           onChangeImageGallery: () => _pickImage(ImageSource.gallery),
@@ -204,14 +206,14 @@ class _settingsState extends State<settings> {
       var bytes = await image.readAsBytes();
       String profileUrl = await uploadFileToFirebase(bytes);
 
+      // Close the pop-up
+      Navigator.pop(context);
+
       setState(() {
         selectedImage = MemoryImage(bytes!);
         SharedPrefs().setProfileUrl(profileUrl);
-        _currentImagePath = SharedPrefs.ProfileUrl;
+        _currentProfileUrl = SharedPrefs.ProfileUrl;
       });
-
-      // Close the pop-up
-      Navigator.pop(context);
 
       print("\n\nDownloadUrl: ${profileUrl}");
     } else {
@@ -525,7 +527,7 @@ class _settingsState extends State<settings> {
                                   SharedPrefs().getBio() ?? ""),
                               getVal(emailSettings.text,
                                   SharedPrefs().getEmail() ?? ""),
-                              _currentImagePath,
+                              _currentProfileUrl,
                             );
                           },
                         ),

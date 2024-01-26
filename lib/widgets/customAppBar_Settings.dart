@@ -2,6 +2,7 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
+import 'package:verbatim_frontend/screens/profile.dart';
 import 'package:verbatim_frontend/screens/settings.dart';
 import 'size.dart';
 import 'package:verbatim_frontend/screens/sideBar.dart';
@@ -53,7 +54,8 @@ class CustomAppBarSettings extends StatelessWidget
 class NewNavBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
-    final String? profileUrl = SharedPrefs().getProfileUrl();
+    final String profileUrl =
+        SharedPrefs().getProfileUrl() ?? 'assets/profile_pic.png';
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -83,19 +85,48 @@ class NewNavBar extends StatelessWidget {
             builder: (context, snapshot) {
               if (snapshot.connectionState == ConnectionState.done &&
                   snapshot.hasData) {
-                return Container(
-                  width: 40,
-                  height: 40.45,
-                  decoration: ShapeDecoration(
-                    image: DecorationImage(
-                      image: MemoryImage(snapshot.data!),
-                      fit: BoxFit.fill,
+                return GestureDetector(
+                  onTap: () {
+                    // Navigate to the Profile page
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Profile()),
+                    );
+                  },
+                  child: Container(
+                    width: 40,
+                    height: 40.45,
+                    decoration: ShapeDecoration(
+                      image: DecorationImage(
+                        image: MemoryImage(snapshot.data!),
+                        fit: BoxFit.fill,
+                      ),
+                      shape: CircleBorder(),
                     ),
-                    shape: CircleBorder(),
                   ),
                 );
               } else {
-                return Container(); // Placeholder widget while image is loading
+                return GestureDetector(
+                  onTap: () {
+                    // Navigate to the Profile page
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Profile()),
+                    );
+                  },
+                  child: Container(
+                    width: 40,
+                    height: 40.45,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: AssetImage('assets/profile_pic.png')
+                            as ImageProvider<Object>,
+                      ),
+                    ),
+                  ),
+                ); // Placeholder widget while image is loading
               }
             },
           ),
