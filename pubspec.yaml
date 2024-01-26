@@ -111,6 +111,8 @@ flutter:
      - assets/IconLiving.svg
      - assets/send.svg
      - assets/copy.svg
+     - assets/playtoggle.svg
+     - assets/statstoggle.svg
 
      - assets/config.properties
 

@@ -441,33 +441,20 @@ class _GlobalChallengeState extends State<globalChallenge> {
                               Positioned(
                                   // alignment: Alignment.bottomRight,
                                   right: 10.h,
-                                  top: 20.h,
+                                  top: 21.h,
                                   child: Container(
-                                    width: 150,
-                                    clipBehavior: Clip.hardEdge,
-                                    margin: EdgeInsets.only(
-                                        right: 20.h, top: 100.h),
-                                    decoration: BoxDecoration(
-                                      borderRadius: BorderRadius.circular(50),
-                                      boxShadow: [
-                                        BoxShadow(
-                                          color: const Color.fromARGB(
-                                                  255, 117, 19, 12)
-                                              .withOpacity(0.9),
-                                          blurRadius: 5,
-                                          offset: Offset(3, 7),
+                                      width: 150,
+                                      margin: EdgeInsets.only(
+                                          right: 20.h, top: 100.h),
+                                      height: 60.v,
+                                      child: Container(
+                                        child: PlayTab(
+                                          onTabSelectionChanged:
+                                              (bool isFirstTabSelected) {
+                                            toggleTextVisibility();
+                                          },
                                         ),
-                                      ],
-                                      color: Colors.white,
-                                    ),
-                                    height: 45,
-                                    child: PlayTab(
-                                      onTabSelectionChanged:
-                                          (bool isFirstTabSelected) {
-                                        toggleTextVisibility();
-                                      },
-                                    ),
-                                  ))
+                                      )))
                             ],
                           ),
                         ),
@@ -680,6 +667,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                             children: [
                                               // Guest(formattedTimeUntilMidnight:
                                               //       formattedTimeUntilMidnight),
+
                                               Verbatastic(
                                                 verbatimedWord: verbatimedWord,
                                                 formattedTimeUntilMidnight:
