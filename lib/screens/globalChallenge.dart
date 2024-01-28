@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:verbatim_frontend/BackendService.dart';
+import 'package:verbatim_frontend/gameObject.dart';
 import 'sideBar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -234,8 +235,8 @@ class _GlobalChallengeState extends State<globalChallenge> {
     });
   }
 
-  Future<void> sendUserResponses(
-      String username, String email, List<String> userResponses) async {
+  Future<void> sendUserResponses(String username, String email,
+      List<String> userResponses, GameObject responsesGM) async {
     final url =
         Uri.parse(BackendService.getBackendUrl() + 'submitGlobalResponse');
     final headers = <String, String>{'Content-Type': 'application/json'};
@@ -264,6 +265,9 @@ class _GlobalChallengeState extends State<globalChallenge> {
 
 //make sure we can send responses to stats on the first go
     responses123 = modifiedResponses;
+    //TODO: add variable referer //on submit check for username , if username is null the
+    responsesGM = GameObject(
+        modifiedResponses[0], modifiedResponses[1], modifiedResponses[2], '');
 
     final response = await http.post(
       url,
@@ -333,7 +337,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
   @override
   Widget build(BuildContext context) {
     String idString = id.toString();
-
+    GameObject responsesGM = GameObject('', '', '', '');
     username = SharedPrefs().getUserName() ?? "";
     DateTime now = DateTime.now();
     DateTime midnight =
@@ -420,7 +424,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                       children: [
                                         TextSpan(
                                           text: '$totalResponses',
-                                          style: TextStyle(
+                                          style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               color: Colors.black,
                                               fontSize: 15),
@@ -499,7 +503,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                               horizontal: 16.0),
                                           child: Text(
                                             questions[currentQuestionIndex],
-                                            style: TextStyle(
+                                            style: const TextStyle(
                                               fontSize: 18,
                                               fontWeight: FontWeight.bold,
                                             ),
@@ -507,7 +511,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                         ),
                                         SizedBox(height: 30.0),
                                         Container(
-                                          padding: EdgeInsets.symmetric(
+                                          padding: const EdgeInsets.symmetric(
                                               horizontal: 20.0),
                                           child: TextField(
                                             controller: responseController,
@@ -516,7 +520,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                                 userResponse = value;
                                               });
                                             },
-                                            decoration: InputDecoration(
+                                            decoration: const InputDecoration(
                                               hintText:
                                                   'Type your answer here...',
                                             ),
@@ -548,10 +552,10 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                                 currentQuestionIndex += 1;
                                               } else {
                                                 sendUserResponses(
-                                                  username,
-                                                  email,
-                                                  userResponses,
-                                                );
+                                                    username,
+                                                    email,
+                                                    userResponses,
+                                                    responsesGM);
                                                 setState(() {
                                                   responded = true;
                                                 });
@@ -580,7 +584,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                       ],
                                     );
                                   } else if (responded == false) {
-                                    return Column(
+                                    return const Column(
                                       children: [
                                         SizedBox(height: 20.0),
                                         Column(
@@ -630,6 +634,20 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                         ),
                                       ],
                                     );
+                                  }
+                                  //if guest
+                                  else if (username == '' &&
+                                      responded == true) {
+                                    print("Looking for username" + SharedPrefs.UserName);
+                                    return Column(
+                                      children: [
+                                        Guest(
+                                          formattedTimeUntilMidnight:
+                                              formattedTimeUntilMidnight,
+                                          data: responsesGM,
+                                        ),
+                                      ],
+                                    );
                                   } else if (!snapshot.data! &&
                                       responded == true) {
                                     return Column(children: [
@@ -649,6 +667,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                               responses: responses123))
                                     ]);
                                   }
+
                                   //NEED TO CHANGE THIS SNIPPET OF CODE TO HAVE THE CARD AND A SIGN UP
                                   else {
                                     return FutureBuilder<void>(

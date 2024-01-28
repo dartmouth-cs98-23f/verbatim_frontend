@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:verbatim_frontend/screens/landingPage.dart';
 import 'package:verbatim_frontend/screens/logIn.dart';
 import 'BackendService.dart';
 import 'Components/defineRoutes.dart';
@@ -15,7 +16,7 @@ Future<void> main() async {
 
   const String environment =
       const String.fromEnvironment('FLUTTER_BACKEND_ENV', defaultValue: 'prod');
-  print("env in main is: " + environment);
+  //print("env in main is: " + environment);
   BackendService.loadProperties(environment);
 
   runApp(MyApp());
@@ -59,8 +60,9 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey,
       onGenerateRoute: Application.router.generator,
-      //  initialRoute: SharedPrefs().getCurrentPage() ?? '/login',
-      home: LogIn(),
+      initialRoute: SharedPrefs().getCurrentPage() ?? '/landingPage',
+      home: LandingPage(),
+
     );
   }
 }

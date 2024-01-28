@@ -1,12 +1,13 @@
 import 'dart:math';
-
+import 'package:google_fonts/google_fonts.dart';
+import 'package:uni_links/uni_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/widgets/my_button_with_svg.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
 import 'package:verbatim_frontend/widgets/my_button_with_image.dart';
 import 'package:clipboard/clipboard.dart';
-
 
 class Verbatastic extends StatelessWidget {
   final String verbatimedWord;
@@ -21,7 +22,12 @@ class Verbatastic extends StatelessWidget {
 
   void copyInvite() {
     //TODO
-    String inviteLink = 'testlink';
+    //'https://example.com?referrer=$referrerToken';
+    String username = SharedPrefs().getUserName() ?? "";
+    //Navigator.pushNamed(context, '/details', arguments: {'referer': 'friend123'});
+
+    //String tempLink = http://localhost:3000/#/landingPage?referer=$username;
+    String inviteLink = 'ttp://localhost:3000/#/landingPage?referer=$username';
     Clipboard.setData(new ClipboardData(text: inviteLink));
   }
 
@@ -42,30 +48,34 @@ class Verbatastic extends StatelessWidget {
     String copyIcon = 'assets/copy.svg';
     String sendIcon = 'assets/send.svg';
     String inviteText = "\n See how your friends would compare!";
-  
+
     return Column(
       children: [
-        SizedBox(height: 20),
+        SizedBox(height: 40),
         Center(
           child: Padding(
-            padding: const EdgeInsets.only(right: 100.0),
+            padding: const EdgeInsets.only(right: 0.0),
             child: RichText(
               text: TextSpan(
                 children: [
                   TextSpan(
                     text: 'Verba',
-                    style: TextStyle(
-                      color: Colors.orange,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
+                    style: GoogleFonts.poppins(
+                      textStyle: const TextStyle(
+                        color: Color(0xFFE76F51),
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                   TextSpan(
                     text: '-tastic!',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
+                    style: GoogleFonts.poppins(
+                      textStyle: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ],
@@ -73,7 +83,7 @@ class Verbatastic extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: 65.v),
+        SizedBox(height: 10),
         Center(
             child: verbatasticUsernames!.isEmpty
                 ? Container(
@@ -124,19 +134,18 @@ class Verbatastic extends StatelessWidget {
                       TextSpan(
                         text:
                             "Wow, you're unique! No other users have submitted any of these responses.",
-                        style: TextStyle(
+                        style: GoogleFonts.poppins(
+                            textStyle: const TextStyle(
                           color: Colors.black,
                           fontSize: 16,
-                        ),
+                        )),
                       ),
                     ]
                   : [
                       TextSpan(
-                        text: 'You' +
-                            (verbatasticUsernames!.length == 1
-                                ? ' and '
-                                : ', '),
-                        style: TextStyle(
+                        text:
+                            'You${verbatasticUsernames!.length == 1 ? ' and ' : ', '}',
+                        style: const TextStyle(
                           color: Colors.black,
                           fontSize: 16,
                         ),
@@ -151,7 +160,7 @@ class Verbatastic extends StatelessWidget {
                                   : i < verbatasticUsernames!.length - 1
                                       ? ' and '
                                       : ''),
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Colors.black,
                             fontSize: 16,
                           ),
@@ -180,7 +189,7 @@ class Verbatastic extends StatelessWidget {
         const SizedBox(height: 10),
         Text(
           inviteText,
-          style: TextStyle(
+          style: const TextStyle(
             color: Colors.black,
             fontSize: 16,
           ),
@@ -193,7 +202,7 @@ class Verbatastic extends StatelessWidget {
         // const SizedBox(height: 10),
         // MyButtonWithSvg(
         //     buttonText: "Send Invite", iconImage: sendIcon, onTap: sendInvite),
-        SizedBox(height: 50.v),
+        SizedBox(height: 25.v),
         Container(
           width: 220,
           child: Center(
