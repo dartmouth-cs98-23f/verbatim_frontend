@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:verbatim_frontend/gameObject.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
 import 'package:verbatim_frontend/widgets/my_button_with_svg.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
@@ -9,18 +10,30 @@ import 'package:verbatim_frontend/screens/signUp.dart';
 
 class Guest extends StatelessWidget {
   final String formattedTimeUntilMidnight;
+  final GameObject data;
 
   const Guest({
     super.key,
     required this.formattedTimeUntilMidnight,
+    required this.data,
   });
 
   @override
   Widget build(BuildContext context) {
+    String referer;
     String copyIcon = 'assets/copy.svg';
     String sendIcon = 'assets/send.svg';
     String inviteText =
         "\n Want to know how your friend's responses compare to yours? Sign up to meet Verba-friends, create custom challenges, and compare scores!";
+    // ignore: unused_element
+    void onTap() {
+      String routeName = ModalRoute.of(context)?.settings.name ?? '';
+      Map<String, dynamic>? arguments = Uri.parse(routeName).queryParameters;
+      data.referer = arguments['referer'];
+      //TODO: //ADDD THE ARGUMENTS: GAMEOBJECT
+
+      Navigator.pushNamed(context, '/signup');
+    }
 
     return Column(
       children: [
@@ -30,7 +43,7 @@ class Guest extends StatelessWidget {
           // padding: const EdgeInsets.only(left: 25, right: 25.0),
 
           child: RichText(
-            text: TextSpan(
+            text: const TextSpan(
               children: [
                 TextSpan(
                   text: 'Verba',
@@ -56,10 +69,10 @@ class Guest extends StatelessWidget {
         const SizedBox(height: 10),
         Center(
             child: Padding(
-          padding: EdgeInsets.only(left:25, right:25),
+          padding: EdgeInsets.only(left: 25, right: 25),
           child: Text(
             inviteText,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.black,
               fontSize: 16,
             ),
@@ -83,7 +96,14 @@ class Guest extends StatelessWidget {
           buttonText: "Sign Up",
           onTap: () {
             // Navigate to the sign-in page
-            Navigator.pushNamed(context, '/signup');
+            //TODO: Change this
+            Navigator.push(
+              context,
+              MaterialPageRoute(
+                builder: (context) => SignUp(data: data),
+              ),
+            );
+            //Navigator.pushNamed(context, '/signup');
           },
         ),
         SizedBox(height: 20),

@@ -15,7 +15,7 @@ Future<void> main() async {
 
   const String environment =
       const String.fromEnvironment('FLUTTER_BACKEND_ENV', defaultValue: 'prod');
-  print("env in main is: " + environment);
+  //print("env in main is: " + environment);
   BackendService.loadProperties(environment);
 
   runApp(const MyApp());

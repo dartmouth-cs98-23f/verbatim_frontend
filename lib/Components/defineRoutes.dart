@@ -1,5 +1,6 @@
 import 'package:fluro/fluro.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
+import 'package:verbatim_frontend/gameObject.dart';
 import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'package:verbatim_frontend/screens/forgotPassword.dart';
 import 'package:verbatim_frontend/screens/logout.dart';
@@ -13,6 +14,7 @@ import '../screens/onboardingPage4.dart';
 import '../screens/signUp.dart';
 import '../screens/signupErrorMessage.dart';
 import '../screens/settings.dart';
+import '../screens/landingPage.dart';
 
 class Application {
   static FluroRouter router = FluroRouter();
@@ -43,6 +45,12 @@ void defineRoutes() {
     '/signup',
     handler: signUpHandler,
   );
+
+    Application.router.define(
+    '/landingPage',
+    handler: landingPageHandler,
+  );
+
 
   Application.router.define(
     '/login',
@@ -109,6 +117,18 @@ var profileHandler = Handler(
     }
 );
 
+var landingPageHandler = Handler(
+        handlerFunc:(context, parameters) {
+      if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
+        return LandingPage();
+      } else {
+        // Update the current page in the shared prefs
+        SharedPrefs().setCurrentPage('/landingPage');
+        return LandingPage();
+      }
+    }
+);
+
 var settingsHandler = Handler(
     handlerFunc:(context, parameters) {
       if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
@@ -162,7 +182,9 @@ var signUpHandler = Handler(
   handlerFunc: (context, parameters) {
     // Update the current page in the shared prefs
     SharedPrefs().setCurrentPage('/signup');
-    return SignUp();
+    //TODO: check for this
+
+    return SignUp(data: GameObject('','','',''));
   },
 );
 

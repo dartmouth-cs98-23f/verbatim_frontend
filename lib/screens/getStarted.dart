@@ -1,5 +1,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:verbatim_frontend/gameObject.dart';
 import 'package:verbatim_frontend/screens/signUp.dart';
 import 'logIn.dart';
 
@@ -13,13 +14,13 @@ class GetStarted extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            Expanded(
+            const Expanded(
               child: SingleChildScrollView(
                 child: Center(
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(top: 70.0),
+                        padding: EdgeInsets.only(top: 70.0),
                         child: Align(
                           alignment: Alignment.center,
                           child: Text(
@@ -35,7 +36,7 @@ class GetStarted extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const SizedBox(height: 40),
+                      SizedBox(height: 40),
                     ],
                   ),
                 ),
@@ -48,7 +49,7 @@ class GetStarted extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {
                       // Navigate to the 'Sign Up' page
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignUp()));
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignUp( data: new GameObject('', '', '', ''),)));
                     },
                     style: ElevatedButton.styleFrom(
                       primary: Color(0xFFE76F51), // Background color
@@ -56,7 +57,7 @@ class GetStarted extends StatelessWidget {
                         borderRadius: BorderRadius.circular(0.0), // Rectangular shape
                       ),
                     ),
-                    child: Text(
+                    child: const Text(
                       'Sign Up!',
                       style: TextStyle(
                         color: Colors.white,
@@ -71,7 +72,7 @@ class GetStarted extends StatelessWidget {
                       children: [
                         TextSpan(
                           text: 'Sign-in',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Color(0xFF1E4693),
                             decoration: TextDecoration.underline,
                           ),
