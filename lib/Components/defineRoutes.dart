@@ -111,8 +111,9 @@ var myGroupHandler = Handler(
       var addedUsernames = addedUsernamesString.split(',');
 
       if (groupName.isNotEmpty && addedUsernames.isNotEmpty) {
-        //  String myGroupUrl = '/my_group/$groupName/${addedUsernames.join(',')}';
+        String myGroupUrl = '/my_group/$groupName/${addedUsernames.join(',')}';
         // SharedPrefs().setCurrentPage(myGroupUrl);
+        SharedPrefs().setCurrentPage('/my_group');
 
         return myGroup(
           groupName: groupName,

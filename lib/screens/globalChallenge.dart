@@ -428,7 +428,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                         TextSpan(
                                             text: " users have played today",
                                             style: TextStyle(
-                                              fontSize: 15,
+                                              fontSize: 15.h,
                                               color: Colors.black,
                                             )),
                                       ],
@@ -441,11 +441,11 @@ class _GlobalChallengeState extends State<globalChallenge> {
                               Positioned(
                                   // alignment: Alignment.bottomRight,
                                   right: 10.h,
-                                  top: 21.h,
+                                  top: 50.v,
                                   child: Container(
-                                      width: 150,
+                                      width: 150.h,
                                       margin: EdgeInsets.only(
-                                          right: 20.h, top: 100.h),
+                                          right: 20.h, top: 150.v),
                                       height: 60.v,
                                       child: Container(
                                         child: PlayTab(
@@ -461,13 +461,13 @@ class _GlobalChallengeState extends State<globalChallenge> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 30),
+                  SizedBox(height: 20.v),
                   Stack(
                     alignment: Alignment.bottomRight,
                     children: [
                       Container(
                         clipBehavior: Clip.hardEdge,
-                        margin: EdgeInsets.only(top: 10.h),
+                        margin: EdgeInsets.only(top: 10.v),
                         //    padding: EdgeInsets.symmetric(horizontal: 10),
                         width: 300.h,
                         height: 500.v,
@@ -483,6 +483,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                           ],
                           color: Colors.white,
                         ),
+
                         child: Column(
                           children: [
                             StreamBuilder<bool>(
@@ -689,9 +690,9 @@ class _GlobalChallengeState extends State<globalChallenge> {
                         visible: !responded,
                         child: Image.asset(
                           'assets/bird.png',
-                          width: 83,
+                          width: 90.h,
                         ),
-                      )
+                      ),
                     ],
                   )
                 ],

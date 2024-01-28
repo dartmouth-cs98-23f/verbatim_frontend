@@ -80,10 +80,12 @@ Future<void> _showChallengeOptions(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 10),
+              SizedBox(height: 10.v),
               Padding(
-                padding: EdgeInsets.all(8.0),
+                padding: EdgeInsets.all(8.v),
                 child: Container(
+                    child: FittedBox(
+                  fit: BoxFit.scaleDown,
                   child: RichText(
                     textAlign: TextAlign.center,
                     text: TextSpan(
@@ -107,9 +109,9 @@ Future<void> _showChallengeOptions(
                       ],
                     ),
                   ),
-                ),
+                )),
               ),
-              SizedBox(height: 50.v),
+              SizedBox(height: 20.v),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -138,10 +140,14 @@ Future<void> _showChallengeOptions(
 
 Widget _buildOptionButton(BuildContext context, title, String description,
     IconData iconData, String groupName) {
+  double number = 125.h;
+  print(number);
   return Container(
-      width: 130,
-      height: 130,
-      padding: const EdgeInsets.all(10),
+      constraints: BoxConstraints(
+          minWidth: 80.0, maxWidth: 150.0, minHeight: 80.0, maxHeight: 150.0),
+      width: 125.h,
+      height: 125.h,
+      padding: EdgeInsets.all(10.h),
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: Color(0xFFE76F51),
@@ -179,22 +185,22 @@ Widget _buildOptionButton(BuildContext context, title, String description,
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(height: 5),
+            SizedBox(height: 5.v),
             Icon(
               iconData,
               color: Color.fromARGB(255, 250, 192, 94),
-              size: 25,
+              size: 35.v,
             ),
-            SizedBox(height: 5),
+            SizedBox(height: 5.v),
             Text(
               title,
               style: TextStyle(
                 color: Color(0xFFFFF7EE),
-                fontSize: 18,
+                fontSize: 22.v,
                 fontWeight: FontWeight.w700,
               ),
             ),
-            SizedBox(height: 5),
+            SizedBox(height: 5.v),
             SizedBox(
               width: double.infinity,
               child: Text(
@@ -202,7 +208,7 @@ Widget _buildOptionButton(BuildContext context, title, String description,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Color(0xFFFFF7EE),
-                  fontSize: 12,
+                  fontSize: 16.v,
                   fontWeight: FontWeight.w600,
                 ),
               ),
