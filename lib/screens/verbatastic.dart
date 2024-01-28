@@ -27,7 +27,7 @@ class Verbatastic extends StatelessWidget {
     //Navigator.pushNamed(context, '/details', arguments: {'referer': 'friend123'});
 
     //String tempLink = http://localhost:3000/#/landingPage?referer=$username;
-    String inviteLink = 'verbatim://landingPage?referer=$username';
+    String inviteLink = 'ttp://localhost:3000/#/landingPage?referer=$username';
     Clipboard.setData(new ClipboardData(text: inviteLink));
   }
 
@@ -56,22 +56,26 @@ class Verbatastic extends StatelessWidget {
           child: Padding(
             padding: const EdgeInsets.only(right: 0.0),
             child: RichText(
-              text: const TextSpan(
+              text: TextSpan(
                 children: [
                   TextSpan(
                     text: 'Verba',
-                    style: TextStyle(
-                      color: Color(0xFFE76F51),
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
+                    style: GoogleFonts.poppins(
+                      textStyle: const TextStyle(
+                        color: Color(0xFFE76F51),
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                   TextSpan(
                     text: '-tastic!',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
+                    style: GoogleFonts.poppins(
+                      textStyle: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
                     ),
                   ),
                 ],
@@ -139,9 +143,8 @@ class Verbatastic extends StatelessWidget {
                     ]
                   : [
                       TextSpan(
-                        text: 'You${verbatasticUsernames!.length == 1
-                                ? ' and '
-                                : ', '}',
+                        text:
+                            'You${verbatasticUsernames!.length == 1 ? ' and ' : ', '}',
                         style: const TextStyle(
                           color: Colors.black,
                           fontSize: 16,

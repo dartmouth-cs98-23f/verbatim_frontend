@@ -198,13 +198,10 @@ var logInHandler = Handler(
 
 var globalChallengeHandler = Handler(
   handlerFunc: (context, parameters) {
-    if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
-      return LogIn();
-    } else {
       // Update the current page in the shared prefs
       SharedPrefs().setCurrentPage('/global_challenge');
       return globalChallenge();
-    }
+    
   },
 );
 
