@@ -638,7 +638,8 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                   //if guest
                                   else if (username == '' &&
                                       responded == true) {
-                                    print("Looking for username" + SharedPrefs.UserName);
+                                    print("Looking for username" +
+                                        SharedPrefs.UserName);
                                     return Column(
                                       children: [
                                         Guest(
@@ -667,7 +668,6 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                               responses: responses123))
                                     ]);
                                   }
-
                                   //NEED TO CHANGE THIS SNIPPET OF CODE TO HAVE THE CARD AND A SIGN UP
                                   else {
                                     return FutureBuilder<void>(
