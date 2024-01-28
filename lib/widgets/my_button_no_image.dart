@@ -16,8 +16,8 @@ class MyButtonNoImage extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          width: 333,
-          height: 49,
+          width: 265,
+          height: 50,
           decoration: ShapeDecoration(
             color: Color(0xFFE76F51),
             shape: RoundedRectangleBorder(
