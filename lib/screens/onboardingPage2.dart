@@ -82,7 +82,7 @@ class OnBoardingPage2 extends StatelessWidget {
                       Navigator.pushNamed(context, '/global_challenge');
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xFFFFF3EE), // Background color
+                      backgroundColor: Color(0xFFFFF3EE), // Background color
                       shape: RoundedRectangleBorder(
                         borderRadius:
                             BorderRadius.circular(13.0), // Rectangular shape
@@ -101,7 +101,7 @@ class OnBoardingPage2 extends StatelessWidget {
                       Navigator.pushNamed(context, '/onboarding_page3');
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xFFE76F51), // Background color
+                      backgroundColor: Color(0xFFE76F51), // Background color
                       shape: RoundedRectangleBorder(
                         borderRadius:
                             BorderRadius.circular(13.0), // Rectangular shape

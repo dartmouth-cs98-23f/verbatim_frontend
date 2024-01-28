@@ -15,7 +15,6 @@ class _LogoutPageState extends State<LogoutPage> {
   Map<String, Text> validationErrors = {};
 
   Future<void> logout(BuildContext context) async {
-
     // Clear out all the user information
     await SharedPrefs().init();
     SharedPrefs().setEmail('');
@@ -55,7 +54,6 @@ class _LogoutPageState extends State<LogoutPage> {
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 160),
                 Center(
                   child: Text(
@@ -71,7 +69,6 @@ class _LogoutPageState extends State<LogoutPage> {
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 30),
                 Padding(
                   padding: const EdgeInsets.only(left: 15.0),
@@ -93,7 +90,6 @@ class _LogoutPageState extends State<LogoutPage> {
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 30),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -104,9 +100,10 @@ class _LogoutPageState extends State<LogoutPage> {
                         Navigator.pop(context);
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Color(0xFFE76F51), // Background color
+                        backgroundColor: Color(0xFFE76F51), // Background color
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(13.0), // Rectangular shape
+                          borderRadius:
+                              BorderRadius.circular(13.0), // Rectangular shape
                         ),
                       ),
                       child: Text(
@@ -117,16 +114,16 @@ class _LogoutPageState extends State<LogoutPage> {
                       ),
                     ),
                     SizedBox(width: 30.0),
-
                     ElevatedButton(
                       onPressed: () {
                         // Log out
                         logout(context);
                       },
                       style: ElevatedButton.styleFrom(
-                        primary: Color(0xFFFFF3EE), // Background color
+                        backgroundColor: Color(0xFFFFF3EE), // Background color
                         shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(13.0), // Rectangular shape
+                          borderRadius:
+                              BorderRadius.circular(13.0), // Rectangular shape
                         ),
                       ),
                       child: Text(

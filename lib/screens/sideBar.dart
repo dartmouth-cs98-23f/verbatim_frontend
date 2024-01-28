@@ -72,7 +72,6 @@ class _SideBarState extends State<SideBar> {
     final response = await http.post(url, headers: headers, body: username);
 
     if (response.statusCode == 200) {
-      print('responses sent succesfully');
       final List<dynamic> data = json.decode(response.body);
       List<User> friendsList = data.map((item) => User.fromJson(item)).toList();
       usernamesList = friendsList.map((user) => user.username).toList();
@@ -90,8 +89,6 @@ class _SideBarState extends State<SideBar> {
     final response = await http.post(url, headers: headers, body: username);
 
     if (response.statusCode == 200) {
-      print('responses sent succesfully');
-
       List<Map<String, dynamic>> friendRequests =
           List<Map<String, dynamic>>.from(json.decode(response.body));
       if (friendRequests.isNotEmpty) {
@@ -109,7 +106,8 @@ class _SideBarState extends State<SideBar> {
 
   Future<void> handleFriendRequests(
       String username, String requester, bool accept) async {
-    final url = Uri.parse(BackendService.getBackendUrl() + 'handleFriendRequest');
+    final url =
+        Uri.parse(BackendService.getBackendUrl() + 'handleFriendRequest');
     final Map<String, String> headers = {
       'Content-Type': 'application/json',
     };
@@ -125,7 +123,6 @@ class _SideBarState extends State<SideBar> {
     );
 
     if (response.statusCode == 200) {
-      print('responses sent succesfully');
     } else {
       print('Failed to send responses. Status code: ${response.statusCode}');
     }
@@ -210,6 +207,7 @@ class _SideBarState extends State<SideBar> {
                             fontWeight: FontWeight.bold,
                             fontSize: 18)),
 
+                    // takes you to the addFriend page
                     trailing: GestureDetector(
                       onTap: () {
                         handleTap(context, 1);
@@ -258,7 +256,15 @@ class _SideBarState extends State<SideBar> {
                           fontWeight: FontWeight.bold,
                           fontSize: 18),
                     ),
-                    trailing: Icon(Icons.add, color: Colors.black, size: 25),
+
+                    // takes you to the add groups page
+                    trailing: GestureDetector(
+                      onTap: () {
+                        handleTap(context, 4);
+                      },
+                      child: Icon(Icons.add, color: Colors.black, size: 25),
+                    ),
+                    initiallyExpanded: true,
                     //  initiallyExpanded: true,
                     shape: Border(),
                     children: <Widget>[
@@ -275,7 +281,9 @@ class _SideBarState extends State<SideBar> {
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15)),
                             leading: Icon(Icons.people, color: Colors.black),
-                            onTap: () {},
+                            onTap: () {
+                              handleTap(context, 5);
+                            },
                           ),
                         ),
                       ),
@@ -442,6 +450,19 @@ void handleTap(BuildContext context, int index) {
 
     case 3: // "Logout"
       Navigator.pushNamed(context, '/logout');
+      break;
+
+    case 4: // "Create Group"
+      Navigator.pushNamed(context, '/create_group');
+      break;
+
+    case 5: // "My Group"
+      String userResponse = 'kool kids';
+      List<String> addedUsernames = ['frances'];
+      Navigator.pushNamed(
+        context,
+        '/my_group/${Uri.encodeComponent(userResponse!)}/${Uri.encodeComponent(addedUsernames!.join(','))}',
+      );
       break;
   }
 }

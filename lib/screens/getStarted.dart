@@ -5,7 +5,7 @@ import 'package:verbatim_frontend/screens/signUp.dart';
 import 'logIn.dart';
 
 class GetStarted extends StatelessWidget {
-  const GetStarted({super.key});
+  const GetStarted({Key? key});
 
   @override
   Widget build(BuildContext context) {
@@ -49,12 +49,15 @@ class GetStarted extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {
                       // Navigate to the 'Sign Up' page
+
                       Navigator.of(context).push(MaterialPageRoute(builder: (context) => SignUp( data: new GameObject('', '', '', ''),)));
+
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xFFE76F51), // Background color
+                      backgroundColor: Color(0xFFE76F51), // Background color
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(0.0), // Rectangular shape
+                        borderRadius:
+                            BorderRadius.circular(0.0), // Rectangular shape
                       ),
                     ),
                     child: const Text(
@@ -79,7 +82,8 @@ class GetStarted extends StatelessWidget {
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
                               // Navigate to the 'Log In' page
-                              Navigator.of(context).push(MaterialPageRoute(builder: (context) => LogIn()));
+                              Navigator.of(context).push(MaterialPageRoute(
+                                  builder: (context) => LogIn()));
                             },
                         ),
                       ],

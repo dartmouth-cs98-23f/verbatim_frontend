@@ -34,7 +34,6 @@ class NewNavBar extends StatelessWidget {
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
-                        
                       ),
                     ),
                   ],
@@ -61,7 +60,9 @@ class NewNavBar extends StatelessWidget {
                       height: 16,
                       clipBehavior: Clip.antiAlias,
                       decoration: BoxDecoration(),
+
                       child: Stack(),
+
                     ),
                     const SizedBox(width: 10),
                     SizedBox(
