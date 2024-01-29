@@ -376,96 +376,90 @@ class _GlobalChallengeState extends State<globalChallenge> {
                 children: [
                   SizedBox(
                     width: double.maxFinite,
-                    child: Column(
-                      children: [
-                        SizedBox(
-                          height: 260.v,
+                    child: Column(children: [
+                      SizedBox(
+                          height: 220,
                           width: double.maxFinite,
-                          child: Stack(
-                            alignment: Alignment.topCenter,
-                            children: [
-                              // orange background
-                              Container(
-                                height: 220.v,
-                                width: double.maxFinite,
-                                margin: EdgeInsets.zero,
-                                padding: EdgeInsets.zero,
-                                child: SvgPicture.asset(
-                                  assetName,
-                                  fit: BoxFit.fill,
-                                ),
+                          child:
+                              Stack(alignment: Alignment.topCenter, children: [
+                            // orange background
+                            Container(
+                              height: 200,
+                              width: double.maxFinite,
+                              margin: EdgeInsets.zero,
+                              padding: EdgeInsets.zero,
+                              child: SvgPicture.asset(
+                                assetName,
+                                fit: BoxFit.fill,
                               ),
+                            ),
 
-                              // app bar on top of background
-                              CustomAppBar(),
+                            // app bar on top of background
+                            CustomAppBar(),
 
-                              // 'Global Challenge #'
-                              Positioned(
-                                child: Center(
-                                  child: Text(
-                                    'Global Challenge #$idString',
-                                    style: TextStyle(
-                                      fontSize: 24,
-                                      color: Colors.white,
-                                      fontWeight: FontWeight.w900,
-                                    ),
+                            // 'Global Challenge #'
+                            Center(
+                              child: Container(
+                                padding: EdgeInsets.only(top: 20),
+                                child: Text(
+                                  'Global Challenge #$idString',
+                                  style: TextStyle(
+                                    fontSize: 27,
+                                    color: Colors.white,
+                                    fontWeight: FontWeight.w900,
                                   ),
                                 ),
                               ),
-
-                              // x users have played
-                              Align(
-                                alignment: Alignment.bottomLeft,
+                            ),
+                            Center(
                                 child: Container(
-                                  width: 152.h,
-                                  margin: EdgeInsets.only(left: 32.h),
-                                  child: RichText(
-                                    text: TextSpan(
-                                      children: [
-                                        TextSpan(
-                                          text: '$totalResponses',
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.black,
-                                              fontSize: 15),
-                                        ),
-                                        TextSpan(
-                                            text: " users have played today",
-                                            style: TextStyle(
-                                              fontSize: 15.h,
-                                              color: Colors.black,
-                                            )),
-                                      ],
-                                    ),
-                                    textAlign: TextAlign.left,
-                                  ),
-                                ),
-                              ),
-
-                              Positioned(
-                                  // alignment: Alignment.bottomRight,
-                                  right: 10.h,
-                                  top: 50.v,
-                                  child: Container(
-                                      width: 150.h,
-                                      margin: EdgeInsets.only(
-                                          right: 20.h, top: 150.v),
-                                      height: 60.v,
-                                      child: Container(
-                                        child: PlayTab(
-                                          onTabSelectionChanged:
-                                              (bool isFirstTabSelected) {
-                                            toggleTextVisibility();
-                                          },
-                                        ),
-                                      )))
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
+                                    padding: EdgeInsets.only(top: 170),
+                                    child: SizedBox(
+                                        height: 40,
+                                        width: double.maxFinite,
+                                        child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceEvenly,
+                                          children: [
+                                            SizedBox(
+                                              child: RichText(
+                                                text: TextSpan(
+                                                  children: [
+                                                    TextSpan(
+                                                      text: '$totalResponses',
+                                                      style: const TextStyle(
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Colors.black,
+                                                          fontSize: 15),
+                                                    ),
+                                                    TextSpan(
+                                                        text:
+                                                            " users have played today",
+                                                        style: TextStyle(
+                                                          fontSize: 15,
+                                                          color: Colors.black,
+                                                        )),
+                                                  ],
+                                                ),
+                                              ),
+                                            ),
+                                            Container(
+                                                height: 40,
+                                                width: 150,
+                                                child: Container(
+                                                  child: PlayTab(
+                                                    onTabSelectionChanged: (bool
+                                                        isFirstTabSelected) {
+                                                      toggleTextVisibility();
+                                                    },
+                                                  ),
+                                                ))
+                                          ],
+                                        ))))
+                          ])),
+                    ]),
                   ),
-                  SizedBox(height: 20.v),
                   Stack(
                     alignment: Alignment.bottomRight,
                     children: [
@@ -473,8 +467,8 @@ class _GlobalChallengeState extends State<globalChallenge> {
                         clipBehavior: Clip.hardEdge,
                         margin: EdgeInsets.only(top: 10.v),
                         //    padding: EdgeInsets.symmetric(horizontal: 10),
-                        width: 300.h,
-                        height: 500.v,
+                        width: 300,
+                        height: 400,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
                           boxShadow: [
@@ -709,7 +703,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                         visible: !responded,
                         child: Image.asset(
                           'assets/bird.png',
-                          width: 90.h,
+                          width: 90,
                         ),
                       ),
                     ],
