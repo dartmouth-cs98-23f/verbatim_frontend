@@ -240,7 +240,10 @@ class _SideBarState extends State<SideBar> {
                                 ),
                               ),
                               leading: Icon(Icons.person, color: Colors.black),
-                              onTap: () {},
+                              onTap: () {
+                                Navigator.pushNamed(this.context,
+                                    '/friendship?friendUsername=$friend');
+                              },
                             );
                           },
                         ),

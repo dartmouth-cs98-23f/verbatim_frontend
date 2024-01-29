@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:verbatim_frontend/screens/landingPage.dart';
 import 'package:verbatim_frontend/screens/logIn.dart';
+import 'package:verbatim_frontend/screens/signUp.dart';
 import 'BackendService.dart';
 import 'Components/defineRoutes.dart';
 import 'Components/shared_prefs.dart';
@@ -60,9 +61,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey,
       onGenerateRoute: Application.router.generator,
-      initialRoute: SharedPrefs().getCurrentPage() ?? '/landingPage',
-      home: LandingPage(),
-
+      //    initialRoute: SharedPrefs().getCurrentPage() ?? '/landingPage',
+      home: LogIn(), //LandingPage(),
     );
   }
 }
