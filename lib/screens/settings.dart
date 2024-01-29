@@ -232,14 +232,23 @@ class _settingsState extends State<settings> {
 
     if (image != null) {
       var bytes = await image.readAsBytes();
-      String profileUrl =
-          await uploadFileToFirebase(bytes); // Get profileUrl after upload
+      String newProfileUrl =
+          await uploadFileToFirebase(bytes); // Get new profile picture URL
+      String prevProfileUrl = SharedPrefs().getProfileUrl() ??
+          ''; // Get previous profile picture URL
 
-      _currentProfileUrl = profileUrl;
+      // Update profile picture URL in SharedPrefs
+      SharedPrefs().setProfileUrl(newProfileUrl);
+
+      // Delete previous profile picture if URL is not empty and different from new URL
+      if (prevProfileUrl.isNotEmpty && prevProfileUrl != newProfileUrl) {
+        await deleteFileFromFirebase(prevProfileUrl);
+      }
+      _currentProfileUrl = newProfileUrl;
 
       setState(() {
         selectedImage = MemoryImage(bytes!);
-        SharedPrefs().setProfileUrl(profileUrl);
+        SharedPrefs().setProfileUrl(newProfileUrl);
       });
 
       Navigator.pop(context);
@@ -252,7 +261,7 @@ class _settingsState extends State<settings> {
         SharedPrefs().getUserName() as String,
         SharedPrefs().getBio() as String,
         SharedPrefs().getEmail() as String,
-        profileUrl,
+        newProfileUrl,
       );
     } else {
       print('\nNo image has been picked');
@@ -275,20 +284,42 @@ class _settingsState extends State<settings> {
     return profileUrl;
   }
 
+  Future<void> deleteFileFromFirebase(String fileUrl) async {
+    try {
+      // Get the reference to the file in Firebase Storage
+      Reference reference = FirebaseStorage.instance.refFromURL(fileUrl);
+
+      // Delete the file
+      await reference.delete();
+
+      print('File deleted successfully');
+    } catch (error) {
+      print('Error deleting file: $error');
+      // Handle the error gracefully
+    }
+  }
+
   String generateUuid() {
     final Uuid uuid = Uuid();
     return uuid.v4(); // Generates a random UUID (v4)
   }
 
-  void _removeCurrentPicture() {
-    // For example, if you want to set the profile picture to 'profile_pic.png'
+  Future<void> _removeCurrentPicture() async {
+    String prevProfileUrl = SharedPrefs().getProfileUrl() ?? '';
+    String newProfileUrl = 'assets/profile_pic.png';
+
     setState(() {
       selectedImage = AssetImage('assets/profile_pic.png');
-      SharedPrefs().setProfileUrl('assets/profile_pic.png');
+      SharedPrefs().setProfileUrl(newProfileUrl);
 
       // Close the pop-up
       Navigator.pop(context);
     });
+
+    // Delete previous profile picture if URL is not empty and different from new URL
+    if (prevProfileUrl.isNotEmpty && prevProfileUrl != newProfileUrl) {
+      await deleteFileFromFirebase(prevProfileUrl);
+    }
   }
 
   void _viewEnlarged() {
