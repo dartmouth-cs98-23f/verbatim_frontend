@@ -40,7 +40,6 @@ class _LogInState extends State<LogIn> {
     try {
       final response = await http.post(
         Uri.parse(BackendService.getBackendUrl() + 'login'),
-
         headers: <String, String>{
           'Content-Type': 'application/json',
         },
@@ -62,6 +61,9 @@ class _LogInState extends State<LogIn> {
           SharedPrefs().setFirstName(responseData['firstName'] ?? '');
           SharedPrefs().setLastName(responseData['lastName'] ?? '');
           SharedPrefs().setBio(responseData['bio'] ?? '');
+          SharedPrefs().setProfileUrl(responseData['profilePic'] ?? '');
+
+          print("\nLogIn profile url: ${responseData['profilePic']}");
           // SharedPrefs().setBio(responseData['profilePicture']);
           Navigator.pushNamed(context, '/global_challenge');
           print('Log-in successful');
@@ -69,15 +71,13 @@ class _LogInState extends State<LogIn> {
       } else {
         print('Error during log-in: ${response.statusCode.toString()}');
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) =>
-              SignupErrorMessage(pageName: 'log in'),
+          builder: (context) => SignupErrorMessage(pageName: 'log in'),
         ));
       }
     } catch (e) {
       print('Error during sign-up: $e');
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) =>
-            SignupErrorMessage(pageName: 'log in'),
+        builder: (context) => SignupErrorMessage(pageName: 'log in'),
       ));
     }
   }

@@ -40,8 +40,7 @@ void edits(
     String firstName = nameMap['firstName'] ?? '';
     String lastName = nameMap['lastName'] ?? '';
 
-    print('\nFirst Name: $firstName');
-    print('\nLast Name: $lastName');
+    print("\nIn edits: profile: ${profilePic}");
 
     final response = await http.post(
       Uri.parse(BackendService.getBackendUrl() + 'accountSettings'),
@@ -66,7 +65,10 @@ void edits(
       SharedPrefs().setBio(bio);
       SharedPrefs().setEmail(email);
       SharedPrefs().setUserName(newUsername);
+      SharedPrefs().setProfileUrl(profilePic);
+
       _showSuccessDialog(context);
+      print("\nSuccessfully updated the profile picture!");
     }
   } catch (error) {
     print('Sorry cannot edit account settings:$error');
@@ -240,6 +242,14 @@ class _settingsState extends State<settings> {
         selectedImage = MemoryImage(bytes!);
         SharedPrefs().setProfileUrl(profileUrl);
         _currentProfileUrl = SharedPrefs.ProfileUrl;
+        edits(
+            context,
+            SharedPrefs.FirstName + "" + SharedPrefs.LastName,
+            SharedPrefs.UserName,
+            SharedPrefs.UserName,
+            SharedPrefs.Bio,
+            SharedPrefs.Email,
+            _currentProfileUrl);
       });
 
       print("\n\nDownloadUrl: ${profileUrl}");
@@ -540,20 +550,19 @@ class _settingsState extends State<settings> {
                           buttonText: 'Update Profile',
                           onPressed: () {
                             edits(
-                              context,
-                              getVal(fullNameSettings.text,
-                                  SharedPrefs().getFirstName() ?? ""),
-                              SharedPrefs().getUserName() ?? "",
-                              getVal(
-                                usernameSettings.text,
+                                context,
+                                getVal(fullNameSettings.text,
+                                    SharedPrefs().getFirstName() ?? ""),
                                 SharedPrefs().getUserName() ?? "",
-                              ),
-                              getVal(bioSettings.text,
-                                  SharedPrefs().getBio() ?? ""),
-                              getVal(emailSettings.text,
-                                  SharedPrefs().getEmail() ?? ""),
-                              _currentProfileUrl,
-                            );
+                                getVal(
+                                  usernameSettings.text,
+                                  SharedPrefs().getUserName() ?? "",
+                                ),
+                                getVal(bioSettings.text,
+                                    SharedPrefs().getBio() ?? ""),
+                                getVal(emailSettings.text,
+                                    SharedPrefs().getEmail() ?? ""),
+                                _currentProfileUrl);
                           },
                         ),
                       ),
