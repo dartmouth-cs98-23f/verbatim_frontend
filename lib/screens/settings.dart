@@ -304,14 +304,22 @@ class _settingsState extends State<settings> {
     return uuid.v4(); // Generates a random UUID (v4)
   }
 
-  void _removeCurrentPicture() {
+  Future<void> _removeCurrentPicture() async {
+    String prevProfileUrl = SharedPrefs().getProfileUrl() ?? '';
+    String newProfileUrl = 'assets/profile_pic.png';
+
     setState(() {
       selectedImage = AssetImage('assets/profile_pic.png');
-      SharedPrefs().setProfileUrl('assets/profile_pic.png');
+      SharedPrefs().setProfileUrl(newProfileUrl);
 
       // Close the pop-up
       Navigator.pop(context);
     });
+
+    // Delete previous profile picture if URL is not empty and different from new URL
+    if (prevProfileUrl.isNotEmpty && prevProfileUrl != newProfileUrl) {
+      await deleteFileFromFirebase(prevProfileUrl);
+    }
   }
 
   void _viewEnlarged() {
