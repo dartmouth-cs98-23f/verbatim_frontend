@@ -238,8 +238,8 @@ class _GroupChallengeState extends State<groupChallenge> {
                   visible: responded,
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xFFE76F51),
-                      onPrimary: Colors.white,
+                      foregroundColor: Colors.white,
+                      backgroundColor: Color(0xFFE76F51),
                       enableFeedback: true,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),

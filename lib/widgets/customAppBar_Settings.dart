@@ -3,7 +3,8 @@ import 'package:verbatim_frontend/screens/settings.dart';
 import 'size.dart';
 import 'package:verbatim_frontend/screens/sideBar.dart';
 
-class CustomAppBarSettings extends StatelessWidget implements PreferredSizeWidget {
+class CustomAppBarSettings extends StatelessWidget
+    implements PreferredSizeWidget {
   @override
   Widget build(BuildContext context) {
     return AppBar(

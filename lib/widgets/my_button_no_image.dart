@@ -16,16 +16,18 @@ class MyButtonNoImage extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          width: 333,
-          height: 49,
+          width: 265,
+          height: 50,
           decoration: ShapeDecoration(
             color: Color(0xFFE76F51),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(14),
             ),
           ),
-          child: Material( // Use Material widget to enable ink splash
-            color: Colors.transparent, // Make it transparent to prevent background color overlay
+          child: Material(
+            // Use Material widget to enable ink splash
+            color: Colors
+                .transparent, // Make it transparent to prevent background color overlay
             child: InkWell(
               onTap: onTap,
               child: Row(
