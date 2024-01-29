@@ -51,7 +51,6 @@ class _LogInState extends State<LogIn> {
 
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
-        print(responseData);
 
         if (responseData != null) {
           // Authentication successful: Save the user info to the disk so that they can persist to other pages
@@ -61,12 +60,9 @@ class _LogInState extends State<LogIn> {
           SharedPrefs().setFirstName(responseData['firstName'] ?? '');
           SharedPrefs().setLastName(responseData['lastName'] ?? '');
           SharedPrefs().setBio(responseData['bio'] ?? '');
-          SharedPrefs().setProfileUrl(responseData['profilePic'] ?? '');
+          SharedPrefs().setProfileUrl(responseData['profilePicture'] ?? '');
 
-          print("\nLogIn profile url: ${responseData['profilePic']}");
-          // SharedPrefs().setBio(responseData['profilePicture']);
           Navigator.pushNamed(context, '/global_challenge');
-          print('Log-in successful');
         }
       } else {
         print('Error during log-in: ${response.statusCode.toString()}');

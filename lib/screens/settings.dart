@@ -40,8 +40,6 @@ void edits(
     String firstName = nameMap['firstName'] ?? '';
     String lastName = nameMap['lastName'] ?? '';
 
-    print("\nIn edits: profile: ${profilePic}");
-
     final response = await http.post(
       Uri.parse(BackendService.getBackendUrl() + 'accountSettings'),
       headers: <String, String>{
@@ -57,8 +55,10 @@ void edits(
         'profilePic': profilePic,
       }),
     );
+
     //do sth to verify the response,
     if (response.statusCode == 200) {
+      print("\nprofile pic url: ${profilePic}");
       //get the account info to display as dummy text
       SharedPrefs().setFirstName(firstName);
       SharedPrefs().setLastName(lastName);
@@ -68,7 +68,6 @@ void edits(
       SharedPrefs().setProfileUrl(profilePic);
 
       _showSuccessDialog(context);
-      print("\nSuccessfully updated the profile picture!");
     }
   } catch (error) {
     print('Sorry cannot edit account settings:$error');
@@ -233,26 +232,28 @@ class _settingsState extends State<settings> {
 
     if (image != null) {
       var bytes = await image.readAsBytes();
-      String profileUrl = await uploadFileToFirebase(bytes);
+      String profileUrl =
+          await uploadFileToFirebase(bytes); // Get profileUrl after upload
 
-      // Close the pop-up
-      Navigator.pop(context);
+      _currentProfileUrl = profileUrl;
 
       setState(() {
         selectedImage = MemoryImage(bytes!);
         SharedPrefs().setProfileUrl(profileUrl);
-        _currentProfileUrl = SharedPrefs.ProfileUrl;
-        edits(
-            context,
-            SharedPrefs.FirstName + "" + SharedPrefs.LastName,
-            SharedPrefs.UserName,
-            SharedPrefs.UserName,
-            SharedPrefs.Bio,
-            SharedPrefs.Email,
-            _currentProfileUrl);
       });
 
-      print("\n\nDownloadUrl: ${profileUrl}");
+      Navigator.pop(context);
+
+      edits(
+        context,
+        SharedPrefs().getFirstName() ??
+            '' + " " + (SharedPrefs().getLastName() ?? ''),
+        SharedPrefs().getUserName() as String,
+        SharedPrefs().getUserName() as String,
+        SharedPrefs().getBio() as String,
+        SharedPrefs().getEmail() as String,
+        profileUrl,
+      );
     } else {
       print('\nNo image has been picked');
     }
@@ -562,7 +563,7 @@ class _settingsState extends State<settings> {
                                     SharedPrefs().getBio() ?? ""),
                                 getVal(emailSettings.text,
                                     SharedPrefs().getEmail() ?? ""),
-                                _currentProfileUrl);
+                                SharedPrefs().getProfileUrl() as String);
                           },
                         ),
                       ),
