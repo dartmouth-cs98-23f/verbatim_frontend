@@ -4,6 +4,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 // import 'package:google_sign_in/google_sign_in.dart';
 import 'package:verbatim_frontend/BackendService.dart';
+import 'package:verbatim_frontend/gameObject.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
@@ -17,7 +18,9 @@ import 'onboardingPage1.dart';
 // import 'package:google_sign_in/google_sign_in';
 
 class SignUp extends StatefulWidget {
-  const SignUp({super.key});
+  final GameObject data;
+  //TODO: figure out how to not need the
+  const SignUp({super.key, required this.data});
 
   @override
   State<SignUp> createState() => _SignUpState();
@@ -31,6 +34,8 @@ class _SignUpState extends State<SignUp> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
+
+  Object? get data => data;
 
   // final GoogleSignIn _googleSignIn = GoogleSignIn(
   //     scopes: ['email'],
@@ -206,6 +211,7 @@ class _SignUpState extends State<SignUp> {
       // Continue with sign-up
       print(
           'Successfully signed up with this info: $firstName, $lastName, $username, $email, $password, $confirmedPassword');
+
       signUp(context, firstName, lastName, username.toLowerCase(),
           email.toLowerCase(), password, confirmedPassword);
     }
@@ -251,8 +257,8 @@ class _SignUpState extends State<SignUp> {
                   ),
                 ),
                 const SizedBox(height: 50),
-                Padding(
-                  padding: const EdgeInsets.only(left: 30.0),
+                const Padding(
+                  padding: EdgeInsets.only(left: 30.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -359,6 +365,7 @@ class _SignUpState extends State<SignUp> {
                         buttonText: 'Sign up with Google',
                         hasButtonImage: true,
                         onTap: () {
+                          print(this.data);
                           // signUpWithGoogle();
                         },
                       ),
@@ -367,7 +374,7 @@ class _SignUpState extends State<SignUp> {
                         child: RichText(
                           text: TextSpan(
                             children: [
-                              TextSpan(
+                              const TextSpan(
                                 text: 'Already have an account? ',
                                 style: TextStyle(
                                   color: Colors.black,
@@ -376,7 +383,7 @@ class _SignUpState extends State<SignUp> {
                               ),
                               TextSpan(
                                 text: 'Sign in',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Color(0xFF3C64B1),
                                   fontWeight: FontWeight
                                       .w800, // Blue color for the link

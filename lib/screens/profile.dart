@@ -142,7 +142,7 @@ class _ProfileState extends State<Profile> {
                                           softWrap: true,
                                           displayName,
                                           style: GoogleFonts.poppins(
-                                              textStyle: TextStyle(
+                                              textStyle: const TextStyle(
                                                   fontWeight: FontWeight.bold,
                                                   fontSize: 32)),
                                         ),
@@ -386,7 +386,7 @@ class _ProfileState extends State<Profile> {
                                       TextSpan(
                                           text: 'Highest',
                                           style: GoogleFonts.poppins(
-                                            textStyle: TextStyle(
+                                            textStyle: const TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.bold),
@@ -394,7 +394,7 @@ class _ProfileState extends State<Profile> {
                                       TextSpan(
                                           text: 'Verba',
                                           style: GoogleFonts.poppins(
-                                            textStyle: TextStyle(
+                                            textStyle: const TextStyle(
                                                 color: Color.fromARGB(
                                                     255, 231, 111, 81),
                                                 fontSize: 20,
@@ -403,7 +403,7 @@ class _ProfileState extends State<Profile> {
                                       TextSpan(
                                           text: 'Match',
                                           style: GoogleFonts.poppins(
-                                            textStyle: TextStyle(
+                                            textStyle: const TextStyle(
                                                 color: Colors.black,
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.bold),
