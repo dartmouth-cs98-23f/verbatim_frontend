@@ -1,12 +1,17 @@
 import 'dart:io';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:uuid/uuid.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/Components/EditProfilePicturePopup.dart';
+import 'package:verbatim_frontend/widgets/MyTextFieldSettings.dart';
+import 'package:verbatim_frontend/widgets/button_settings.dart';
 import 'package:verbatim_frontend/widgets/customAppBar_Settings.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
@@ -22,8 +27,7 @@ import 'sideBar.dart';
 
 void edits(
   BuildContext context,
-  String firstName,
-  String lastName,
+  String fullName,
   String username,
   String newUsername,
   String bio,
@@ -31,6 +35,11 @@ void edits(
   String profilePic,
 ) async {
   try {
+    Map<String, String> nameMap = getFirstAndLastName(fullName);
+
+    String firstName = nameMap['firstName'] ?? '';
+    String lastName = nameMap['lastName'] ?? '';
+
     final response = await http.post(
       Uri.parse(BackendService.getBackendUrl() + 'accountSettings'),
       headers: <String, String>{
@@ -46,19 +55,35 @@ void edits(
         'profilePic': profilePic,
       }),
     );
+
     //do sth to verify the response,
     if (response.statusCode == 200) {
+      print("\nprofile pic url: ${profilePic}");
       //get the account info to display as dummy text
       SharedPrefs().setFirstName(firstName);
       SharedPrefs().setLastName(lastName);
       SharedPrefs().setBio(bio);
       SharedPrefs().setEmail(email);
       SharedPrefs().setUserName(newUsername);
+      SharedPrefs().setProfileUrl(profilePic);
+
       _showSuccessDialog(context);
     }
   } catch (error) {
     print('Sorry cannot edit account settings:$error');
   }
+}
+
+Map<String, String> getFirstAndLastName(String fullName) {
+  // Split the full name by whitespace
+  List<String> nameParts = fullName.trim().split(' ');
+
+  // Extract the first name and last name
+  String firstName = nameParts.isNotEmpty ? nameParts.first : '';
+  String lastName = nameParts.length > 1 ? nameParts.last : '';
+
+  // Return the first name and last name as a map
+  return {'firstName': firstName, 'lastName': lastName};
 }
 
 String getVal(String? fieldval, String currentval) {
@@ -85,6 +110,7 @@ void _showSuccessDialog(BuildContext context) {
                 style: TextStyle(
                     color: Colors.orange,
                     fontSize: 24,
+                    fontFamily: 'Poppins',
                     fontWeight: FontWeight.bold),
               ),
               TextSpan(
@@ -92,6 +118,7 @@ void _showSuccessDialog(BuildContext context) {
                 style: TextStyle(
                     color: Colors.black,
                     fontSize: 24,
+                    fontFamily: 'Poppins',
                     fontWeight: FontWeight.bold),
               ),
             ],
@@ -99,7 +126,10 @@ void _showSuccessDialog(BuildContext context) {
         ),
         content: const Text(
           'Your changes have been recorded!',
-          style: TextStyle(color: Colors.black), // Set text color
+          style: TextStyle(
+            color: Colors.black,
+            fontFamily: 'Poppins',
+          ), // Set text color
         ),
         actions: [
           TextButton(
@@ -108,7 +138,10 @@ void _showSuccessDialog(BuildContext context) {
             },
             child: const Text(
               'OK',
-              style: TextStyle(color: Colors.blue), // Set button text color
+              style: TextStyle(
+                color: Colors.blue,
+                fontFamily: 'Poppins',
+              ), // Set button text color
             ),
           ),
         ],
@@ -125,8 +158,9 @@ class settings extends StatefulWidget {
 }
 
 class _settingsState extends State<settings> {
-  final firstNameSettings = TextEditingController();
-  final lastNameSettings = TextEditingController();
+  Reference ref = FirebaseStorage.instance.ref().child('Verbatim_Profiles');
+
+  final fullNameSettings = TextEditingController();
 
   final usernameSettings = TextEditingController();
   final bioSettings = TextEditingController();
@@ -134,19 +168,45 @@ class _settingsState extends State<settings> {
   final String assetName = 'assets/img1.svg';
 
   final String imagePath = 'assets/profile_pic.png';
-  late String _currentImagePath =
-      'assets/profile2.jpeg'; // Track the currently displayed image
-  final String profile = 'assets/profile_pic.png';
+  late String _currentProfileUrl = SharedPrefs.ProfileUrl != null
+      ? SharedPrefs.ProfileUrl
+      : 'assets/profile_pic.png';
 
   final ImagePicker picker = ImagePicker();
-  ImageProvider<Object> selectedImage = AssetImage('assets/profile2.jpeg');
+  ImageProvider<Object> selectedImage = AssetImage('assets/profile_pic.png');
 
+  @override
   @override
   void initState() {
     super.initState();
-    _currentImagePath =
-        'assets/profile2.jpeg'; // Initialize with the provided image path
-    selectedImage = AssetImage('assets/profile2.jpeg');
+    _loadProfileImage();
+  }
+
+  Future<void> _loadProfileImage() async {
+    String? profileUrl = SharedPrefs().getProfileUrl();
+    if (profileUrl != null) {
+      // Download the image bytes
+      Uint8List imageBytes = await downloadImage(profileUrl);
+      // Update the selectedImage with the loaded image bytes
+      setState(() {
+        selectedImage = MemoryImage(imageBytes);
+      });
+    }
+  }
+
+  Future<Uint8List> downloadImage(String url) async {
+    try {
+      final response = await http.get(Uri.parse(url));
+      if (response.statusCode == 200) {
+        return response.bodyBytes;
+      } else {
+        print('\nError: ${response.statusCode} - ${response.reasonPhrase}\n');
+        throw Exception('Failed to load image');
+      }
+    } catch (e) {
+      print('Exception: $e');
+      throw Exception('Failed to load image');
+    }
   }
 
   // Function to show the centered edit profile picture pop-up
@@ -155,7 +215,7 @@ class _settingsState extends State<settings> {
       context: context,
       builder: (BuildContext context) {
         return EditProfilePicturePopup(
-          imagePath: _currentImagePath,
+          imagePath: _currentProfileUrl,
           selectedImage: selectedImage,
           onImageTap: _viewEnlarged,
           onChangeImageGallery: () => _pickImage(ImageSource.gallery),
@@ -167,50 +227,64 @@ class _settingsState extends State<settings> {
   }
 
   Future<void> _pickImage(ImageSource source) async {
-    if (!kIsWeb) {
-      final ImagePicker _picker = ImagePicker();
-      XFile? image = await _picker.pickImage(source: source);
+    final ImagePicker _picker = ImagePicker();
+    XFile? image = await _picker.pickImage(source: source);
 
-      if (image != null) {
-        var selected = File(image.path);
-        setState(() {
-          selectedImage = selected as ImageProvider<Object>;
-        });
+    if (image != null) {
+      var bytes = await image.readAsBytes();
+      String profileUrl =
+          await uploadFileToFirebase(bytes); // Get profileUrl after upload
 
-        // Close the pop-up
-        Navigator.pop(context);
-      } else {
-        print('\nNo image has been picked');
-      }
-    } else if (kIsWeb) {
-      final ImagePicker _picker = ImagePicker();
-      XFile? image = await _picker.pickImage(source: source);
+      _currentProfileUrl = profileUrl;
 
-      if (image != null) {
-        String path = image.path;
-        print("\n\nchosen path: $path");
+      setState(() {
+        selectedImage = MemoryImage(bytes!);
+        SharedPrefs().setProfileUrl(profileUrl);
+      });
 
-        var bytes = await image.readAsBytes();
-        setState(() {
-          selectedImage = MemoryImage(bytes!);
-          _currentImagePath = path;
-        });
+      Navigator.pop(context);
 
-        // Close the pop-up
-        Navigator.pop(context);
-      } else {
-        print('\nNo image has been picked');
-      }
+      edits(
+        context,
+        SharedPrefs().getFirstName() ??
+            '' + " " + (SharedPrefs().getLastName() ?? ''),
+        SharedPrefs().getUserName() as String,
+        SharedPrefs().getUserName() as String,
+        SharedPrefs().getBio() as String,
+        SharedPrefs().getEmail() as String,
+        profileUrl,
+      );
     } else {
-      print('\nSomething went wrong.');
+      print('\nNo image has been picked');
     }
+  }
+
+  Future<String> uploadFileToFirebase(Uint8List image) async {
+    String imgId = generateUuid();
+    Reference imgRef = ref.child(imgId);
+
+    UploadTask uploadTask = imgRef.putData(
+      image,
+      SettableMetadata(contentType: 'image/jpg'),
+    );
+
+    TaskSnapshot snapshot = await uploadTask;
+
+    String profileUrl = await snapshot.ref.getDownloadURL();
+
+    return profileUrl;
+  }
+
+  String generateUuid() {
+    final Uuid uuid = Uuid();
+    return uuid.v4(); // Generates a random UUID (v4)
   }
 
   void _removeCurrentPicture() {
     // For example, if you want to set the profile picture to 'profile_pic.png'
     setState(() {
-      _currentImagePath = 'assets/profile_pic.png';
       selectedImage = AssetImage('assets/profile_pic.png');
+      SharedPrefs().setProfileUrl('assets/profile_pic.png');
 
       // Close the pop-up
       Navigator.pop(context);
@@ -260,7 +334,9 @@ class _settingsState extends State<settings> {
                             ),
 
                             // app bar on top of background
-                            CustomAppBarSettings(),
+                            CustomAppBarSettings(
+                              title: 'Account Settings',
+                            ),
                           ],
                         ),
                       ),
@@ -268,7 +344,7 @@ class _settingsState extends State<settings> {
                   ),
                 ),
 
-                const SizedBox(height: 10),
+                // const SizedBox(height: 10),
                 Padding(
                   padding: EdgeInsets.only(
                       left: 50.0), // Adjust the left padding as needed
@@ -284,7 +360,7 @@ class _settingsState extends State<settings> {
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               border: Border.all(
-                                color: Colors.deepOrange,
+                                color: Color(0xFFE76F51),
                                 width: 2.0,
                               ),
                             ),
@@ -310,7 +386,7 @@ class _settingsState extends State<settings> {
                               onPressed: _showEditProfilePicturePopup,
                               tooltip: 'Change Image',
                               mini: true,
-                              backgroundColor: Colors.deepOrange,
+                              backgroundColor: Color(0xFFE76F51),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(22.0),
                                 side:
@@ -319,8 +395,8 @@ class _settingsState extends State<settings> {
                               child: Container(
                                 child: Center(
                                   child: Icon(
-                                    Icons.edit,
-                                    size: 20.0,
+                                    Icons.create_outlined,
+                                    size: 30.0,
                                     color: Colors.white,
                                   ),
                                 ),
@@ -334,39 +410,43 @@ class _settingsState extends State<settings> {
                 ),
 
                 //Reset password
-                const SizedBox(height: 10),
+                const SizedBox(height: 30),
                 Align(
-                  alignment: Alignment.topLeft,
-                  child: Padding(
+                    alignment: Alignment.topLeft,
+                    child: Padding(
                       padding: EdgeInsets.only(left: 30.0),
-                      child: RichText(
-                          text: TextSpan(
-                        text: 'Reset password',
-                        style: const TextStyle(
-                          color: Color(0xFF3C64B1),
-                          fontWeight: FontWeight.w700,
+                      child: InkWell(
+                        onTap: () {
+                          // Navigate to the ResetPassword page
+                          Navigator.of(context).push(MaterialPageRoute(
+                            builder: (context) => ResetPassword(),
+                          ));
+                        },
+                        child: Text(
+                          'Reset Password',
+                          style: TextStyle(
+                            color: Color(0xFF3C64B1),
+                            fontWeight: FontWeight.w400,
+                            fontFamily: 'Poppins',
+                            fontSize: 16, // Adjust font size as needed
+                            height: 0.06,
+                            letterSpacing: 0.30,
+                          ),
                         ),
-                        recognizer: TapGestureRecognizer()
-                          ..onTap = () {
-                            // Navigate to the sign-in page
-                            Navigator.of(context).push(MaterialPageRoute(
-                              builder: (context) => ResetPassword(),
-                            ));
-                          },
-                      ))),
-                ),
+                      ),
+                    )),
 
-                const SizedBox(height: 42),
+                const SizedBox(height: 38),
                 const Padding(
                   padding: EdgeInsets.only(left: 30.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
-                      'First Name',
+                      'Name',
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 20,
-                        fontFamily: 'Mulish',
+                        fontFamily: 'Poppins',
                         fontWeight: FontWeight.w700,
                         height: 0.04,
                         letterSpacing: 0.30,
@@ -376,39 +456,14 @@ class _settingsState extends State<settings> {
                 ),
 
                 const SizedBox(height: 20),
-                MyTextField(
-                    controller: firstNameSettings,
-                    hintText: SharedPrefs().getFirstName() ?? "",
+                MyTextFieldSettings(
+                    controller: fullNameSettings,
+                    hintText: (SharedPrefs().getFirstName() ?? "") +
+                        " " +
+                        (SharedPrefs().getLastName() ?? ""),
                     obscureText: false),
-
-                //last name
-                const SizedBox(height: 42),
-                Padding(
-                  padding: const EdgeInsets.only(left: 30.0),
-                  child: Align(
-                    alignment: Alignment.centerLeft,
-                    child: Text(
-                      'Last Name',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontFamily: 'Mulish',
-                        fontWeight: FontWeight.w700,
-                        height: 0.04,
-                        letterSpacing: 0.30,
-                      ),
-                    ),
-                  ),
-                ),
-
-                const SizedBox(height: 20),
-                MyTextField(
-                    controller: lastNameSettings,
-                    hintText: SharedPrefs().getLastName() ?? "",
-                    obscureText: false),
-
                 //username
-                const SizedBox(height: 42),
+                const SizedBox(height: 38),
                 Padding(
                   padding: const EdgeInsets.only(left: 30.0),
                   child: Align(
@@ -418,7 +473,7 @@ class _settingsState extends State<settings> {
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 20,
-                        fontFamily: 'Mulish',
+                        fontFamily: 'Poppins',
                         fontWeight: FontWeight.w700,
                         height: 0.04,
                         letterSpacing: 0.30,
@@ -427,13 +482,13 @@ class _settingsState extends State<settings> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                MyTextField(
+                MyTextFieldSettings(
                     controller: usernameSettings,
                     hintText: SharedPrefs().getUserName() ?? "",
                     obscureText: false),
 
                 //bio
-                const SizedBox(height: 42),
+                const SizedBox(height: 38),
                 Padding(
                   padding: const EdgeInsets.only(left: 30.0),
                   child: Align(
@@ -443,7 +498,7 @@ class _settingsState extends State<settings> {
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 20,
-                        fontFamily: 'Mulish',
+                        fontFamily: 'Poppins',
                         fontWeight: FontWeight.w700,
                         height: 0.04,
                         letterSpacing: 0.30,
@@ -452,14 +507,14 @@ class _settingsState extends State<settings> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                MyTextField(
+                MyTextFieldSettings(
                     controller: bioSettings,
                     hintText: SharedPrefs().getBio() ?? "",
                     obscureText: false),
 
                 //email
                 //bio
-                const SizedBox(height: 42),
+                const SizedBox(height: 38),
                 Padding(
                   padding: const EdgeInsets.only(left: 30.0),
                   child: Align(
@@ -469,7 +524,7 @@ class _settingsState extends State<settings> {
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 20,
-                        fontFamily: 'Mulish',
+                        fontFamily: 'Poppins',
                         fontWeight: FontWeight.w700,
                         height: 0.04,
                         letterSpacing: 0.30,
@@ -478,7 +533,7 @@ class _settingsState extends State<settings> {
                   ),
                 ),
                 const SizedBox(height: 20),
-                MyTextField(
+                MyTextFieldSettings(
                     controller: emailSettings,
                     hintText: SharedPrefs().getEmail() ?? "",
                     obscureText: false),
@@ -486,26 +541,33 @@ class _settingsState extends State<settings> {
                 Center(
                     child: Column(
                   children: [
-                    const SizedBox(height: 30),
-                    MyButtonNoImage(
-                        buttonText: "Update Profile",
-                        onTap: () {
-                          edits(
-                            context,
-                            getVal(firstNameSettings.text,
-                                SharedPrefs().getFirstName() ?? ""),
-                            getVal(lastNameSettings.text,
-                                SharedPrefs().getLastName() ?? ""),
-                            SharedPrefs().getUserName() ?? "",
-                            getVal(usernameSettings.text,
-                                SharedPrefs().getUserName() ?? ""),
-                            getVal(
-                                bioSettings.text, SharedPrefs().getBio() ?? ""),
-                            getVal(emailSettings.text,
-                                SharedPrefs().getEmail() ?? ""),
-                            _currentImagePath,
-                          );
-                        })
+                    const SizedBox(height: 28),
+                    Padding(
+                      padding: EdgeInsets.only(
+                          left: 27.0), // Adjust the left padding as needed
+                      child: Align(
+                        alignment: Alignment.topLeft,
+                        child: DeepOrangeButton(
+                          buttonText: 'Update Profile',
+                          onPressed: () {
+                            edits(
+                                context,
+                                getVal(fullNameSettings.text,
+                                    SharedPrefs().getFirstName() ?? ""),
+                                SharedPrefs().getUserName() ?? "",
+                                getVal(
+                                  usernameSettings.text,
+                                  SharedPrefs().getUserName() ?? "",
+                                ),
+                                getVal(bioSettings.text,
+                                    SharedPrefs().getBio() ?? ""),
+                                getVal(emailSettings.text,
+                                    SharedPrefs().getEmail() ?? ""),
+                                SharedPrefs().getProfileUrl() as String);
+                          },
+                        ),
+                      ),
+                    )
                   ],
                 ))
               ],

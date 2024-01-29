@@ -80,6 +80,8 @@ class _SignUpState extends State<SignUp> {
         SharedPrefs().setLastName(lastName);
         SharedPrefs().setPassword(password);
         SharedPrefs().setUserName(username);
+        SharedPrefs().setBio("");
+        SharedPrefs().setProfileUrl("");
 
         // Successful sign-up: Navigate to the 'OnBoardingPage1' page
         Navigator.pushNamed(context, '/onboarding_page1');

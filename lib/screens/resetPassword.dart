@@ -2,6 +2,8 @@ import 'package:flutter/widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/BackendService.dart';
+import 'package:verbatim_frontend/widgets/button_settings.dart';
+import 'package:verbatim_frontend/widgets/customAppBar_Settings.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'sideBar.dart';
@@ -13,7 +15,6 @@ import 'package:verbatim_frontend/widgets/size.dart';
 import 'package:verbatim_frontend/widgets/custom_tab.dart';
 import 'dart:async';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
-
 
 void reset(BuildContext context, String newPassword, String oldPassword) async {
   try {
@@ -39,7 +40,6 @@ void reset(BuildContext context, String newPassword, String oldPassword) async {
   }
 }
 
-
 class ResetPassword extends StatefulWidget {
   const ResetPassword({super.key});
 
@@ -48,65 +48,14 @@ class ResetPassword extends StatefulWidget {
 }
 
 class _ResetPasswordState extends State<ResetPassword> {
-
   Map<String, Text> validationErrors = {};
 
   final oldPassword = TextEditingController();
   final newPassword = TextEditingController();
   final confirmPassword = TextEditingController();
 
-  void _showSuccessDialog(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0), // Set the corner radius
-        ),
-        backgroundColor:
-            Color.fromARGB(255, 255, 243, 238), // Set the background color
-        title: RichText(
-          text: TextSpan(
-            children: [
-              TextSpan(
-                text: 'Verba',
-                style: TextStyle(
-                    color: Colors.orange,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold),
-              ),
-              TextSpan(
-                text: '-tastic!',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-        ),
-        content: Text(
-          'Your changes have been recorded!',
-          style: TextStyle(color: Colors.black), // Set text color
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(); // Close the dialog
-            },
-            child: Text(
-              'OK',
-              style: TextStyle(color: Colors.blue), // Set button text color
-            ),
-          ),
-        ],
-      );
-    },
-  );
-}
-
-void reset(
-    BuildContext context, String newPassword, String oldPassword) async {
+  void reset(
+      BuildContext context, String newPassword, String oldPassword) async {
     try {
       final response = await http.post(
         //need a reset password endpoint
@@ -129,6 +78,65 @@ void reset(
     } catch (error) {
       print('Sorry, cannot edit account settings: $error');
     }
+    _showSuccessDialog(context);
+  }
+
+  void _showSuccessDialog(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0), // Set the corner radius
+          ),
+          backgroundColor: const Color.fromARGB(
+              255, 255, 243, 238), // Set the background color
+          title: RichText(
+            text: const TextSpan(
+              children: [
+                TextSpan(
+                  text: 'Verba',
+                  style: TextStyle(
+                      color: Colors.orange,
+                      fontSize: 24,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.bold),
+                ),
+                TextSpan(
+                  text: '-tastic!',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 24,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+          content: const Text(
+            'Your password has been updated!',
+            style: TextStyle(
+              color: Colors.black,
+              fontFamily: 'Poppins',
+            ), // Set text color
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text(
+                'OK',
+                style: TextStyle(
+                  color: Colors.blue,
+                  fontFamily: 'Poppins',
+                ), // Set button text color
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   bool isValid(
@@ -143,8 +151,9 @@ void reset(
       setValidationError("passwordMismatch", "Passwords do not match.");
       return false;
     }
-    if(SharedPrefs().getPassword()!= oldPassword){
-      setValidationError("incorrectPassword", "Incorrect value for currrent password");
+    if (SharedPrefs().getPassword() != oldPassword) {
+      setValidationError(
+          "incorrectPassword", "Incorrect value for currrent password");
       return false;
     }
     return true;
@@ -191,34 +200,25 @@ void reset(
                                 fit: BoxFit.fill,
                               ),
                             ),
-                            CustomAppBar(),
-                            Positioned(
-                              child: Center(
-                                child: Text(
-                                  'Reset Password',
-                                  style: TextStyle(
-                                    fontSize: 24,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w900,
-                                  ),
-                                ),
-                              ),
+                            CustomAppBarSettings(
+                              title: 'Reset Password',
+                              showBackButton: true,
                             ),
                           ],
                         ),
                       ),
                       // field form boxes
-                      SizedBox(height: 30),
+                      SizedBox(height: 42),
                       Padding(
                         padding: EdgeInsets.only(left: 30.0),
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
-                            'Old password',
+                            'Current password',
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 20,
-                              fontFamily: 'Mulish',
+                              fontFamily: 'Poppins',
                               fontWeight: FontWeight.w700,
                               height: 0.04,
                               letterSpacing: 0.30,
@@ -232,7 +232,7 @@ void reset(
                         hintText: 'current password',
                         obscureText: true,
                       ),
-                      SizedBox(height: 30),
+                      SizedBox(height: 42),
                       Padding(
                         padding: EdgeInsets.only(left: 30.0),
                         child: Align(
@@ -242,7 +242,7 @@ void reset(
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 20,
-                              fontFamily: 'Mulish',
+                              fontFamily: 'Poppins',
                               fontWeight: FontWeight.w700,
                               height: 0.04,
                               letterSpacing: 0.30,
@@ -256,7 +256,7 @@ void reset(
                         hintText: 'new password',
                         obscureText: true,
                       ),
-                      SizedBox(height: 30),
+                      SizedBox(height: 42),
                       Padding(
                         padding: EdgeInsets.only(left: 30.0),
                         child: Align(
@@ -266,7 +266,7 @@ void reset(
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 20,
-                              fontFamily: 'Mulish',
+                              fontFamily: 'Poppins',
                               fontWeight: FontWeight.w700,
                               height: 0.04,
                               letterSpacing: 0.30,
@@ -284,17 +284,23 @@ void reset(
                         padding: EdgeInsets.only(left: 30.0),
                         child: Column(
                           children: [
-                            SizedBox(height: 30),
-                            MyButtonNoImage(
-                              buttonText: "Submit",
-                              onTap: () {
-                                reset(
-                                  context,
-                                  oldPassword.text,
-                                  newPassword.text,
-                                );
-                              },
-                            ),
+                            SizedBox(height: 42),
+                            Padding(
+                              padding: EdgeInsets.only(left: 1.5),
+                              child: Align(
+                                alignment: Alignment.bottomLeft,
+                                child: DeepOrangeButton(
+                                  buttonText: 'Reset Password',
+                                  onPressed: () {
+                                    reset(
+                                      context,
+                                      oldPassword.text,
+                                      newPassword.text,
+                                    );
+                                  },
+                                ),
+                              ),
+                            )
                           ],
                         ),
                       ),
