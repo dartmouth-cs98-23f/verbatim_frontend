@@ -25,19 +25,15 @@ class FriendsAppBar extends StatelessWidget implements PreferredSizeWidget {
           color: Colors.transparent,
           borderRadius: BorderRadius.circular(10),
         ),
-        child: Row(
-          children: [
-            Center(
-              child: Text(
-                'Add Friends',
-                style: TextStyle(
-                  fontSize: 24,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w900,
-                ),
-              ),
+        child: Center(
+          child: Text(
+            'Add Friends',
+            style: TextStyle(
+              fontSize: 24,
+              color: Colors.white,
+              fontWeight: FontWeight.w900,
             ),
-          ],
+          ),
         ),
       ),
       centerTitle: false,

@@ -267,12 +267,12 @@ class _AddFriendState extends State<addFriend> {
                   child: Column(
                     children: [
                       SizedBox(
-                        height: 240.v,
+                        height: 240,
                         width: double.maxFinite,
                         child: Stack(alignment: Alignment.topCenter, children: [
                           // orange background
                           Container(
-                            height: 220.v,
+                            height: 220,
                             width: double.maxFinite,
                             margin: EdgeInsets.zero,
                             padding: EdgeInsets.zero,
@@ -290,7 +290,7 @@ class _AddFriendState extends State<addFriend> {
                               alignment: Alignment.center,
                               child: Container(
                                   width: 350,
-                                  height: 30,
+                                  height: 27,
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(20),
@@ -365,8 +365,8 @@ class _AddFriendState extends State<addFriend> {
                   child: Container(
                     clipBehavior: Clip.hardEdge,
                     margin: EdgeInsets.only(top: 10),
-                    width: 300.h,
-                    height: 500.v,
+                    width: 300,
+                    height: 400,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(30),
                       boxShadow: [
