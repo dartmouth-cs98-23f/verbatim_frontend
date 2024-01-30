@@ -18,6 +18,7 @@ class groupAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: Colors.transparent,
       toolbarHeight: 100,
+      iconTheme: IconThemeData(color: Colors.white),
       elevation: 0,
       title: Container(
         height: 50,
