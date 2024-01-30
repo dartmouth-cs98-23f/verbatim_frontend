@@ -350,9 +350,15 @@ class _SideBarState extends State<SideBar> {
                                 ),
                               ),
                               leading: Icon(Icons.people, color: Colors.black),
+                              /*
                               onTap: () {
-                                //    Navigator.pushNamed(this.context,
-                                //        '/friendship?friendUsername=$groups');
+                                handleTap(context, 5);
+                                
+                              },
+                              */
+                              onTap: () {
+                                Navigator.pushNamed(this.context,
+                                    '/myGroup?groupName=$groupname');
                               },
                             );
                           },

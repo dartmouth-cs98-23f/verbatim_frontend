@@ -106,7 +106,7 @@ void defineRoutes() {
   );
 
   Application.router.define(
-    '/my_group/:param1/:param2',
+    '/myGroup',
     handler: myGroupHandler,
   );
 }
@@ -118,6 +118,12 @@ var myGroupHandler = Handler(
         SharedPrefs().getPassword() == '') {
       return LogIn();
     } else {
+      SharedPrefs().setCurrentPage('/friendship');
+      String assetName = 'Frances';
+      assetName = params["groupName"]![0];
+      return myGroup(groupName: assetName);
+
+      /*
       var groupName = Uri.decodeComponent(params['param1']?[0] ?? '');
       var addedUsernamesString =
           Uri.decodeComponent(params['param2']?[0] ?? '');
@@ -135,6 +141,7 @@ var myGroupHandler = Handler(
       } else {
         return globalChallenge();
       }
+      */
     }
   },
 );
@@ -160,6 +167,8 @@ var friendshipHandler = Handler(handlerFunc: (context, parameters) {
     // Update the current page in the shared prefs
     SharedPrefs().setCurrentPage('/friendship');
     String assetName = 'Frances';
+
+    assetName = parameters["friendUsername"]![0];
     return friendship(friendUsername: assetName);
   }
 });
