@@ -474,6 +474,7 @@ class _CreateGroupState extends State<createGroup> {
                           });
                           // otherwise, take us to the group page
                         } else {
+                          // talk to backend here
                           create(userResponse, username, addedUsernames);
                           handleTap(context, 1,
                               userResponse: userResponse,

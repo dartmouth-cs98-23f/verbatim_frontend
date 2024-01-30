@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:verbatim_frontend/BackendService.dart';
 import 'dart:convert';
@@ -23,6 +24,17 @@ class User {
     return User(
       username: json['username'],
     );
+  }
+}
+
+class UserGroup {
+  int id = 0;
+  String groupName = "";
+
+  UserGroup({required this.groupName, required this.id});
+
+  factory UserGroup.fromJson(Map<String, dynamic> json) {
+    return UserGroup(groupName: json['name'], id: json['id']);
   }
 }
 
@@ -62,6 +74,38 @@ class _SideBarState extends State<SideBar> {
 
   Set<String> friendRequestUsernames = <String>{};
   List<String> usernamesList = [];
+  List<String> groupnamesList = [];
+  List<UserGroup> userGroups = [];
+
+  //get groups
+  Future<void> getMyGroups(String username) async {
+    final url = Uri.parse(
+        BackendService.getBackendUrl() + 'user/' + '$username/' + 'groups');
+
+    final headers = <String, String>{'Content-Type': 'application/json'};
+    final requestPayload = json.encode({
+      'username': username,
+    });
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = json.decode(response.body);
+      print('this is data $data');
+      List<dynamic> groups = data['groups'];
+      print('this is groups $groups');
+      for (Map<String, dynamic> group in groups) {
+        int id = group["id"];
+        String name = group["name"];
+        userGroups.add(UserGroup(id: id, groupName: name));
+        groupnamesList.add(name);
+        print(name);
+      }
+
+      print('this is groupnames $groupnamesList');
+    } else {
+      print('Failed to send responses. Status code: ${response.statusCode}');
+    }
+  }
 
   Future<void> getFriends(String username) async {
     final url = Uri.parse(BackendService.getBackendUrl() + 'getFriends');
@@ -135,6 +179,7 @@ class _SideBarState extends State<SideBar> {
         future: Future.wait([
           getFriends(username),
           getFriendRequests(username),
+          getMyGroups(username),
         ]),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -267,17 +312,16 @@ class _SideBarState extends State<SideBar> {
                       },
                       child: Icon(Icons.add, color: Colors.black, size: 25),
                     ),
-                    initiallyExpanded: true,
-                    //  initiallyExpanded: true,
+                    initiallyExpanded: false,
+
                     shape: Border(),
                     children: <Widget>[
                       SizedBox(height: 10.0),
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 5.0),
-                        child: Container(
-                          padding: EdgeInsets.symmetric(
-                              horizontal: 0.0, vertical: .1),
-                          child: ListTile(
+                        child:
+
+                            /*child: ListTile(
                             title: Text('Group 1',
                                 style: TextStyle(
                                     color: Colors.black,
@@ -288,6 +332,30 @@ class _SideBarState extends State<SideBar> {
                               handleTap(context, 5);
                             },
                           ),
+                          */
+                            ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: groupnamesList.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            String groupname = groupnamesList[index];
+
+                            return ListTile(
+                              title: Text(
+                                groupname,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                ),
+                              ),
+                              leading: Icon(Icons.people, color: Colors.black),
+                              onTap: () {
+                                //    Navigator.pushNamed(this.context,
+                                //        '/friendship?friendUsername=$groups');
+                              },
+                            );
+                          },
                         ),
                       ),
                     ],
