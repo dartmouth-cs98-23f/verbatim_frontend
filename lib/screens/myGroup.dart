@@ -61,8 +61,8 @@ Future<void> _showChallengeOptions(
       return AlertDialog(
         contentPadding: EdgeInsets.zero,
         content: Container(
-          width: 259.h,
-          height: 360.v,
+          width: 200,
+          height: 230,
           clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(
             color: Colors.white,
@@ -80,9 +80,9 @@ Future<void> _showChallengeOptions(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 10.v),
+              SizedBox(height: 5),
               Padding(
-                padding: EdgeInsets.all(8.v),
+                padding: EdgeInsets.all(8),
                 child: Container(
                     child: FittedBox(
                   fit: BoxFit.scaleDown,
@@ -94,10 +94,11 @@ Future<void> _showChallengeOptions(
                           text: 'New Challenge with ',
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 24,
+                            fontSize: 22,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
+                        // if groupname is a certain length, make it a new line
                         TextSpan(
                           text: '$groupName',
                           style: TextStyle(
@@ -111,7 +112,7 @@ Future<void> _showChallengeOptions(
                   ),
                 )),
               ),
-              SizedBox(height: 20.v),
+              SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -145,9 +146,9 @@ Widget _buildOptionButton(BuildContext context, title, String description,
   return Container(
       constraints: BoxConstraints(
           minWidth: 80.0, maxWidth: 150.0, minHeight: 80.0, maxHeight: 150.0),
-      width: 125.h,
-      height: 125.h,
-      padding: EdgeInsets.all(10.h),
+      width: 125,
+      height: 125,
+      padding: EdgeInsets.all(10),
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
         color: Color(0xFFE76F51),
@@ -185,22 +186,22 @@ Widget _buildOptionButton(BuildContext context, title, String description,
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(height: 5.v),
+            SizedBox(height: 5),
             Icon(
               iconData,
               color: Color.fromARGB(255, 250, 192, 94),
-              size: 35.v,
+              size: 20,
             ),
-            SizedBox(height: 5.v),
+            SizedBox(height: 5),
             Text(
               title,
               style: TextStyle(
                 color: Color(0xFFFFF7EE),
-                fontSize: 22.v,
+                fontSize: 16,
                 fontWeight: FontWeight.w700,
               ),
             ),
-            SizedBox(height: 5.v),
+            SizedBox(height: 5),
             SizedBox(
               width: double.infinity,
               child: Text(
@@ -208,7 +209,7 @@ Widget _buildOptionButton(BuildContext context, title, String description,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Color(0xFFFFF7EE),
-                  fontSize: 16.v,
+                  fontSize: 12,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -256,12 +257,12 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                   width: double.maxFinite,
                   child: Column(children: [
                     SizedBox(
-                        height: 260.v,
+                        height: 260,
                         width: double.maxFinite,
                         child: Stack(alignment: Alignment.topCenter, children: [
                           // orange background
                           Container(
-                            height: 220.v,
+                            height: 240,
                             width: double.maxFinite,
                             margin: EdgeInsets.zero,
                             padding: EdgeInsets.zero,
@@ -306,15 +307,6 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                     ),
                                   ),
                                 )
-                                /*
-                                          Text(
-                                            'Added Usernames: $addedUsernames ',
-                                            style: TextStyle(
-                                              fontSize: 16,
-                                              color: Colors.white,
-                                            ),
-                                          ),
-                                          */
                               ],
                             ),
                           ),
@@ -325,8 +317,8 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                     child: Container(
                         clipBehavior: Clip.hardEdge,
                         margin: EdgeInsets.only(top: 10),
-                        width: 300.h,
-                        height: 500.v,
+                        width: 340,
+                        height: 450,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(30),
                           boxShadow: [
@@ -357,7 +349,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                         child: Align(
                                           alignment: Alignment.center,
                                           child: Text(
-                                            "Active Challenges",
+                                            "Play",
                                             style: TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.bold,

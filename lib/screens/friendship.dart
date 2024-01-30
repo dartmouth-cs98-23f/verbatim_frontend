@@ -29,8 +29,8 @@ Future<void> _showChallengeOptions(
       return AlertDialog(
         contentPadding: EdgeInsets.zero,
         content: Container(
-          width: 259.h,
-          height: 360.v,
+          width: 250,
+          height: 250,
           clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(
             color: Colors.white,
