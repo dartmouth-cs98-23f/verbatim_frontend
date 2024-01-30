@@ -9,6 +9,7 @@ import 'package:http/http.dart' as http;
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/profile.dart';
+import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 import 'package:verbatim_frontend/widgets/friends_app_bar.dart';
 import 'package:verbatim_frontend/widgets/friends_app_bar_test.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
@@ -443,68 +444,15 @@ class _AddFriendState extends State<addFriend> {
                                 title: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    FutureBuilder<Uint8List>(
-                                      future: downloadImage(profileUrl),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.connectionState ==
-                                                ConnectionState.done &&
-                                            snapshot.hasData) {
-                                          return GestureDetector(
-                                            onTap: () {
-                                              // Navigate to the Profile page
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        Profile()),
-                                              );
-                                            },
-                                            child: Container(
-                                              width: 40,
-                                              height: 40.45,
-                                              decoration: ShapeDecoration(
-                                                image: DecorationImage(
-                                                  image: MemoryImage(
-                                                      snapshot.data!),
-                                                  fit: BoxFit.fill,
-                                                ),
-                                                shape: CircleBorder(),
-                                              ),
-                                            ),
-                                          );
-                                        } else {
-                                          return GestureDetector(
-                                            onTap: () {
-                                              // Navigate to the Profile page
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        Profile()),
-                                              );
-                                            },
-                                            child: Container(
-                                              width: 40,
-                                              height: 40.45,
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                image: DecorationImage(
-                                                  fit: BoxFit.cover,
-                                                  image: AssetImage(
-                                                          'assets/profile_pic.png')
-                                                      as ImageProvider<Object>,
-                                                ),
-                                              ),
-                                            ),
-                                          ); // Placeholder widget while image is loading
-                                        }
-                                      },
+                                    FirebaseStorageImage(
+                                      profileUrl: profileUrl,
                                     ),
                                     SizedBox(width: 8),
                                     Text(
                                       name,
                                       style: TextStyle(
-                                          fontWeight: FontWeight.bold),
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -537,72 +485,18 @@ class _AddFriendState extends State<addFriend> {
                               final isRequested =
                                   myRequestedUsers_backend.contains(name);
                               String profileUrl = currentUser.profilePicture;
-                              // 'https://firebasestorage.googleapis.com/v0/b/verbatim-81617.appspot.com/o/Verbatim_Profiles%2F5a009aea-6912-45a6-87d6-1e0f2d39fe3f?alt=media&token=28bcc903-9128-4606-ac46-b23ef1a5c822';
                               return ListTile(
                                 title: Row(
                                   children: [
-                                    FutureBuilder<Uint8List>(
-                                      future: downloadImage(profileUrl),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.connectionState ==
-                                                ConnectionState.done &&
-                                            snapshot.hasData) {
-                                          return GestureDetector(
-                                            onTap: () {
-                                              // Navigate to the Profile page
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        Profile()),
-                                              );
-                                            },
-                                            child: Container(
-                                              width: 40,
-                                              height: 40.45,
-                                              decoration: ShapeDecoration(
-                                                image: DecorationImage(
-                                                  image: MemoryImage(
-                                                      snapshot.data!),
-                                                  fit: BoxFit.fill,
-                                                ),
-                                                shape: CircleBorder(),
-                                              ),
-                                            ),
-                                          );
-                                        } else {
-                                          return GestureDetector(
-                                            onTap: () {
-                                              // Navigate to the Profile page
-                                              Navigator.push(
-                                                context,
-                                                MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        Profile()),
-                                              );
-                                            },
-                                            child: Container(
-                                              width: 40,
-                                              height: 40.45,
-                                              decoration: BoxDecoration(
-                                                shape: BoxShape.circle,
-                                                image: DecorationImage(
-                                                  fit: BoxFit.cover,
-                                                  image: AssetImage(
-                                                          'assets/profile_pic.png')
-                                                      as ImageProvider<Object>,
-                                                ),
-                                              ),
-                                            ),
-                                          ); // Placeholder widget while image is loading
-                                        }
-                                      },
+                                    FirebaseStorageImage(
+                                      profileUrl: profileUrl,
                                     ),
                                     SizedBox(width: 8),
                                     Text(
                                       name,
                                       style: TextStyle(
-                                          fontWeight: FontWeight.bold),
+                                        fontWeight: FontWeight.bold,
+                                      ),
                                     ),
                                   ],
                                 ),
@@ -630,14 +524,5 @@ class _AddFriendState extends State<addFriend> {
             )),
       ),
     ));
-  }
-
-  Future<Uint8List> downloadImage(String url) async {
-    final response = await http.get(Uri.parse(url));
-    if (response.statusCode == 200) {
-      return response.bodyBytes;
-    } else {
-      throw Exception('Failed to download image');
-    }
   }
 }

@@ -93,7 +93,11 @@ class FriendsAppBarTest extends StatelessWidget {
               ),
               const SizedBox(width: 10),
               Container(
-                  width: 40, height: 40.45, child: FirebaseStorageImage()),
+                  width: 40,
+                  height: 40.45,
+                  child: FirebaseStorageImage(
+                    profileUrl: SharedPrefs().getProfileUrl() as String,
+                  )),
             ],
           ),
         ),

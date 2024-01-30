@@ -4,6 +4,7 @@ import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/profile.dart';
 import 'package:verbatim_frontend/screens/settings.dart';
+import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 import 'size.dart';
 import 'package:verbatim_frontend/screens/sideBar.dart';
 
@@ -80,78 +81,12 @@ class NewNavBar extends StatelessWidget {
           ),
           SearchBarTextField(),
           SizedBox(width: 20),
-          FutureBuilder<Uint8List>(
-            future: downloadImage(profileUrl),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done &&
-                  snapshot.hasData) {
-                return GestureDetector(
-                  onTap: () {
-                    // Navigate to the Profile page
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Profile()),
-                    );
-                  },
-                  child: Container(
-                    width: 40,
-                    height: 40.45,
-                    decoration: ShapeDecoration(
-                      image: DecorationImage(
-                        image: MemoryImage(snapshot.data!),
-                        fit: BoxFit.fill,
-                      ),
-                      shape: CircleBorder(),
-                    ),
-                  ),
-                );
-              } else {
-                return GestureDetector(
-                  onTap: () {
-                    // Navigate to the Profile page
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Profile()),
-                    );
-                  },
-                  child: Container(
-                    width: 40,
-                    height: 40.45,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: AssetImage('assets/profile_pic.png')
-                            as ImageProvider<Object>,
-                      ),
-                    ),
-                  ),
-                ); // Placeholder widget while image is loading
-              }
-            },
+          FirebaseStorageImage(
+            profileUrl: profileUrl,
           ),
         ],
       ),
     );
-  }
-
-  Future<Uint8List> downloadImage(String? url) async {
-    if (url != null) {
-      try {
-        final response = await http.get(Uri.parse(url));
-        if (response.statusCode == 200) {
-          return response.bodyBytes;
-        } else {
-          print('\nError: ${response.statusCode} - ${response.reasonPhrase}\n');
-          throw Exception('Failed to load image');
-        }
-      } catch (e) {
-        print('Exception: $e');
-        throw Exception('Failed to load image');
-      }
-    } else {
-      throw Exception('Profile URL is null');
-    }
   }
 }
 

@@ -7,12 +7,14 @@ import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/profile.dart';
 
 class FirebaseStorageImage extends StatelessWidget {
-  FirebaseStorageImage({Key? key}) : super(key: key);
+  final String profileUrl;
+
+  FirebaseStorageImage({Key? key, required this.profileUrl}) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return FutureBuilder<Uint8List>(
-      future: downloadImage(SharedPrefs().getProfileUrl() as String),
+      future: downloadImage(profileUrl),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.done &&
             snapshot.hasData) {
