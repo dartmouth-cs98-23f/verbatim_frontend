@@ -26,9 +26,11 @@ Future<void> preloadImages(BuildContext context) async {
 
 class groupChallenge extends StatefulWidget {
   final String groupName;
+  final int? groupId;
   groupChallenge({
     Key? key,
     required this.groupName,
+    required this.groupId,
   }) : super(key: key);
 
   @override
@@ -251,8 +253,9 @@ class _GroupChallengeState extends State<groupChallenge> {
                       Navigator.push(
                         context,
                         MaterialPageRoute(
-                          builder: (context) =>
-                              myGroup(groupName: widget.groupName),
+                          builder: (context) => myGroup(
+                              groupName: widget.groupName,
+                              groupId: widget.groupId),
                         ),
                       );
                     }, //send prompts to backend

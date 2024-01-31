@@ -56,9 +56,10 @@ class _CreateGroupState extends State<createGroup> {
   List<String> addedUsernames = []; //usernames added to the group
 
   bool friendsFetched = false;
+  int? groupId = 0;
 
   // create group
-  Future<void> create(String groupName, String createdByUsername,
+  Future create(String groupName, String createdByUsername,
       List<String> usernamesToAdd) async {
     final url = Uri.parse(BackendService.getBackendUrl() + 'createGroup');
     final headers = <String, String>{'Content-Type': 'application/json'};
@@ -72,13 +73,17 @@ class _CreateGroupState extends State<createGroup> {
         await http.post(url, headers: headers, body: requestPayload);
 
     if (response.statusCode == 200) {
-      print('responses sent succesfully');
+      print('responses from CREATE GROUP sent succesfully');
       final Map<String, dynamic> data = json.decode(response.body);
 
-      int groupId = data['groupId'];
+      print('this is create group data $data');
+      groupId = data['groupId'];
+
       String groupName = data['groupName'];
+
       List<dynamic> users = data['users'];
 
+      print('this is create group data $data');
       print('Group ID: $groupId');
       print('Group Name: $groupName');
 
@@ -86,17 +91,11 @@ class _CreateGroupState extends State<createGroup> {
         int userId = user['id'];
         String username = user['username'];
         String email = user['email'];
-
-        print('User ID: $userId');
-        print('Username: $username');
-        print('Email: $email');
-        print('---');
       }
-
-      print(data);
     } else {
       print('Failed to send responses. Status code: ${response.statusCode}');
     }
+    return groupId;
   }
 
 //Find my friends!
@@ -181,12 +180,12 @@ class _CreateGroupState extends State<createGroup> {
                   width: double.maxFinite,
                   child: Column(children: [
                     SizedBox(
-                        height: 240.v,
+                        height: 220,
                         width: double.maxFinite,
                         child: Stack(alignment: Alignment.topCenter, children: [
                           // orange background
                           Container(
-                            height: 220.v,
+                            height: 220,
                             width: double.maxFinite,
                             margin: EdgeInsets.zero,
                             padding: EdgeInsets.zero,
@@ -247,8 +246,8 @@ class _CreateGroupState extends State<createGroup> {
                   child: Container(
                       clipBehavior: Clip.hardEdge,
                       margin: EdgeInsets.only(top: 10),
-                      width: 300.h,
-                      height: 430.v,
+                      width: 300,
+                      height: 350,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
                         boxShadow: [
@@ -418,12 +417,6 @@ class _CreateGroupState extends State<createGroup> {
                                 ),
                               ),
                               SizedBox(height: 30.0),
-                              Text(
-                                'Added Usernames: $addedUsernames ',
-                                style: TextStyle(
-                                  fontSize: 16,
-                                ),
-                              ),
                             ]),
                         ],
                       )),
@@ -447,10 +440,12 @@ class _CreateGroupState extends State<createGroup> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Colors.white,
+                        backgroundColor: Color.fromARGB(255, 255, 243, 238),
                         padding: EdgeInsets.all(16.0),
+                        elevation: 0.0,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0),
+                          //why doesnt this work  side: BorderSide(width: 20.0),
                         ),
                         minimumSize: const Size(100, 50),
                         side: BorderSide(color: Color(0xFFE76F51)),
@@ -466,7 +461,7 @@ class _CreateGroupState extends State<createGroup> {
                     ),
                     SizedBox(width: 16.0),
                     ElevatedButton(
-                      onPressed: () {
+                      onPressed: () async {
                         // if group isn't created, create it
                         if (!isCreated) {
                           setState(() {
@@ -475,10 +470,11 @@ class _CreateGroupState extends State<createGroup> {
                           // otherwise, take us to the group page
                         } else {
                           // talk to backend here
-                          create(userResponse, username, addedUsernames);
-                          handleTap(context, 1,
-                              userResponse: userResponse,
-                              addedUsernames: addedUsernames);
+                          int groupID = await create(
+                              userResponse, username, addedUsernames);
+                          print('this is the groupid in create group $groupId');
+                          Navigator.pushNamed(this.context,
+                              '/myGroup?groupName=$userResponse&groupId=$groupID');
                         }
                       },
                       style: ElevatedButton.styleFrom(

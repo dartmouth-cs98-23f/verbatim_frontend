@@ -118,10 +118,12 @@ var myGroupHandler = Handler(
         SharedPrefs().getPassword() == '') {
       return LogIn();
     } else {
-      SharedPrefs().setCurrentPage('/friendship');
-      String assetName = 'Frances';
-      assetName = params["groupName"]![0];
-      return myGroup(groupName: assetName);
+      SharedPrefs().setCurrentPage('/myGroup');
+      String assetName = params["groupName"]![0];
+
+      int? groupId = int.tryParse(params["groupId"]![0]);
+
+      return myGroup(groupName: assetName, groupId: groupId);
 
       /*
       var groupName = Uri.decodeComponent(params['param1']?[0] ?? '');

@@ -35,7 +35,31 @@ once in myGroup, myGroup uses the ID to get the group stats from backend
 
 */
 
+// class GroupChallenge
+
+// MAKE IT
+
 //Future void function, get active challenges
+
+Future<void> getActiveChallenges(int groupId) async {
+  final url = Uri.parse(
+      BackendService.getBackendUrl() + 'group/' + '$groupId/' + 'challenges');
+
+  final response = await http.get(url);
+  if (response.statusCode == 200) {
+    final Map<String, dynamic> data = json.decode(response.body);
+    print('this is data $data');
+    List<dynamic> activeChallenges = data['groups'];
+    print('this is activeChallenges $activeChallenges');
+  }
+}
+// create standard challenge
+
+Future<void> createStandardChallenge(String username, int groupId) async {
+  final url =
+      Uri.parse(BackendService.getBackendUrl() + 'createStandardChallenge');
+  final headers = <String, String>{'Content-Type': 'application/json'};
+}
 
 List<String> groupUsers = ['frances', '2', '2', '3', '33', '44'];
 
@@ -54,7 +78,7 @@ List<String> activeChallenges = [
 ];
 
 Future<void> _showChallengeOptions(
-    BuildContext context, String groupName) async {
+    BuildContext context, String groupName, int? groupId) async {
   return showDialog<void>(
     context: context,
     builder: (BuildContext context) {
@@ -121,13 +145,15 @@ Future<void> _showChallengeOptions(
                       'Standard',
                       'Leave the categories to us',
                       Icons.my_library_books_rounded,
-                      groupName),
+                      groupName,
+                      groupId),
                   _buildOptionButton(
                       context,
                       'Custom',
                       'Create your own categories',
                       Icons.card_giftcard_rounded,
-                      groupName),
+                      groupName,
+                      groupId),
                 ],
               ),
               SizedBox(height: 10),
@@ -140,7 +166,7 @@ Future<void> _showChallengeOptions(
 }
 
 Widget _buildOptionButton(BuildContext context, title, String description,
-    IconData iconData, String groupName) {
+    IconData iconData, String groupName, int? groupId) {
   double number = 125.h;
   print(number);
   return Container(
@@ -176,7 +202,8 @@ Widget _buildOptionButton(BuildContext context, title, String description,
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => customChallenge(groupName: groupName),
+                builder: (context) =>
+                    customChallenge(groupName: groupName, groupId: groupId),
               ),
             );
           }
@@ -221,12 +248,14 @@ Widget _buildOptionButton(BuildContext context, title, String description,
 
 class myGroup extends StatefulWidget {
   final String groupName;
+  final int? groupId;
   final List<String>? addedUsernames;
 
   myGroup({
     Key? key,
     this.addedUsernames,
     required this.groupName,
+    required this.groupId,
   }) : super(key: key);
 
   @override
@@ -243,6 +272,12 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
   }
 
   Widget build(BuildContext context) {
+    int groupID = 0;
+    if (widget.groupId != null) {
+      groupID = widget.groupId!;
+    }
+
+    getActiveChallenges(groupID);
     final String assetName = 'assets/img1.svg';
     List<String>? addedUsernames = widget.addedUsernames;
 
@@ -399,7 +434,9 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                                       builder: (context) =>
                                                           groupChallenge(
                                                               groupName: widget
-                                                                  .groupName),
+                                                                  .groupName,
+                                                              groupId: widget
+                                                                  .groupId),
                                                     ),
                                                   );
                                                   print(
@@ -450,7 +487,9 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                         GestureDetector(
                                           onTap: () {
                                             _showChallengeOptions(
-                                                context, widget.groupName);
+                                                context,
+                                                widget.groupName,
+                                                widget.groupId);
                                           },
                                           child: Row(
                                             mainAxisAlignment:

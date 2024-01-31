@@ -140,10 +140,14 @@ Widget _buildOptionButton(BuildContext context, title, String description,
 
             //
           } else if (title == 'Custom') {
+            // THIS IS A FAKE GROUP ID THIS NEEDS TO BE BETTER SO IT DOESNT MESS EVERYTHIGN UP
+            // EACH FRIENDSHIP NEEDS A GROUP ID?
+
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) => customChallenge(groupName: groupName),
+                builder: (context) =>
+                    customChallenge(groupName: groupName, groupId: 1),
               ),
             );
           }
@@ -241,7 +245,7 @@ class _FriendshipState extends State<friendship>
                             CustomAppBar(),
                             Center(
                                 child: Container(
-                                    padding: EdgeInsets.only(top: 120),
+                                    padding: EdgeInsets.only(top: 100),
                                     child: Column(children: [
                                       Text(
                                         'You and ${widget.friendUsername}',
@@ -346,7 +350,8 @@ class _FriendshipState extends State<friendship>
                                                                 groupChallenge(
                                                                     groupName:
                                                                         widget
-                                                                            .friendUsername),
+                                                                            .friendUsername,
+                                                                    groupId: 1),
                                                           ),
                                                         );
                                                         print(

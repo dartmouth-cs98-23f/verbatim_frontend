@@ -14,10 +14,12 @@ import 'package:verbatim_frontend/screens/myGroup.dart';
 
 class customChallenge extends StatefulWidget {
   final String groupName;
+  final int? groupId;
 
   customChallenge({
     Key? key,
     required this.groupName,
+    required this.groupId,
   }) : super(key: key);
 
   @override
@@ -137,8 +139,9 @@ class _CustomChallengeState extends State<customChallenge>
                         Navigator.push(
                           context,
                           MaterialPageRoute(
-                            builder: (context) =>
-                                myGroup(groupName: widget.groupName),
+                            builder: (context) => myGroup(
+                                groupName: widget.groupName,
+                                groupId: widget.groupId),
                           ),
                         );
                       }, //send prompts to backend

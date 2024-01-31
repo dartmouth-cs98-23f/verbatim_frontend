@@ -290,7 +290,7 @@ class _AddFriendState extends State<addFriend> {
                               alignment: Alignment.center,
                               child: Container(
                                   width: 350,
-                                  height: 27,
+                                  height: 30,
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(20),
@@ -323,7 +323,7 @@ class _AddFriendState extends State<addFriend> {
 
                           // search results
                           Align(
-                            alignment: Alignment.bottomLeft,
+                            alignment: Alignment.bottomCenter,
                             child: Container(
                               width: 200,
                               margin: EdgeInsets.only(left: 32.0),
@@ -332,7 +332,7 @@ class _AddFriendState extends State<addFriend> {
                                   children: [
                                     if (_searchText.isNotEmpty)
                                       TextSpan(
-                                        text: "Search Results",
+                                        text: "Search Results:",
                                         style: TextStyle(
                                           fontSize: 15,
                                           fontWeight: FontWeight.bold,

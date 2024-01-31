@@ -90,18 +90,15 @@ class _SideBarState extends State<SideBar> {
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = json.decode(response.body);
-      print('this is data $data');
+
       List<dynamic> groups = data['groups'];
-      print('this is groups $groups');
+
       for (Map<String, dynamic> group in groups) {
         int id = group["id"];
         String name = group["name"];
         userGroups.add(UserGroup(id: id, groupName: name));
         groupnamesList.add(name);
-        print(name);
       }
-
-      print('this is groupnames $groupnamesList');
     } else {
       print('Failed to send responses. Status code: ${response.statusCode}');
     }
@@ -339,6 +336,7 @@ class _SideBarState extends State<SideBar> {
                           itemCount: groupnamesList.length,
                           itemBuilder: (BuildContext context, int index) {
                             String groupname = groupnamesList[index];
+                            int? groupId = userGroups[index].id;
 
                             return ListTile(
                               title: Text(
@@ -350,15 +348,9 @@ class _SideBarState extends State<SideBar> {
                                 ),
                               ),
                               leading: Icon(Icons.people, color: Colors.black),
-                              /*
-                              onTap: () {
-                                handleTap(context, 5);
-                                
-                              },
-                              */
                               onTap: () {
                                 Navigator.pushNamed(this.context,
-                                    '/myGroup?groupName=$groupname');
+                                    '/myGroup?groupName=$groupname&groupId=$groupId');
                               },
                             );
                           },
