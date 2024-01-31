@@ -27,10 +27,12 @@ Future<void> preloadImages(BuildContext context) async {
 class groupChallenge extends StatefulWidget {
   final String groupName;
   final int? groupId;
+  final List<String> challengeQs;
   groupChallenge({
     Key? key,
     required this.groupName,
     required this.groupId,
+    required this.challengeQs,
   }) : super(key: key);
 
   @override
@@ -48,13 +50,15 @@ class _GroupChallengeState extends State<groupChallenge> {
   List<String> questions = ["beep", "bpoo", "bopp", "poop", "werewr"];
   bool responded = false;
 
-  List<bool> expandedStates = [false, false, false];
+  List<bool> expandedStates = [false, false, false, false, false];
   List<String> prompts = [
     "challenge question one",
     "challenge question two",
     "challenge question three",
+    "challenge question four",
+    "challenge question five",
   ];
-  List<bool> editingStates = [false, false, false];
+  List<bool> editingStates = [false, false, false, false, false];
 
   void updateProgress() {
     setState(() {
@@ -69,6 +73,10 @@ class _GroupChallengeState extends State<groupChallenge> {
 
   @override
   Widget build(BuildContext context) {
+    List<String> sentquestions = widget.challengeQs;
+    print('widget.challengeQs $sentquestions');
+    questions = sentquestions;
+    prompts = sentquestions;
     updateProgress();
     final String assetName = 'assets/img1.svg';
 
@@ -84,13 +92,13 @@ class _GroupChallengeState extends State<groupChallenge> {
                     width: double.maxFinite,
                     child: Column(children: [
                       SizedBox(
-                          height: 220.v,
+                          height: 220,
                           width: double.maxFinite,
                           child:
                               Stack(alignment: Alignment.topCenter, children: [
                             // orange background
                             Container(
-                              height: 220.v,
+                              height: 200,
                               width: double.maxFinite,
                               margin: EdgeInsets.zero,
                               padding: EdgeInsets.zero,
@@ -128,8 +136,8 @@ class _GroupChallengeState extends State<groupChallenge> {
                         clipBehavior: Clip.hardEdge,
                         margin: EdgeInsets.only(top: 10.h),
                         //    padding: EdgeInsets.symmetric(horizontal: 10),
-                        width: 300.h,
-                        height: 500.v,
+                        width: 300,
+                        height: 400,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
                           boxShadow: [
@@ -189,7 +197,7 @@ class _GroupChallengeState extends State<groupChallenge> {
                                   userResponse = responseController.text;
                                   userResponses.add(userResponse);
                                   responseController.clear();
-                                  if (currentQuestionIndex <= 1) {
+                                  if (currentQuestionIndex <= 3) {
                                     updateProgress();
                                     currentQuestionIndex += 1;
                                   } else {
@@ -205,7 +213,7 @@ class _GroupChallengeState extends State<groupChallenge> {
                                 });
                               },
                               child: Text(
-                                currentQuestionIndex == 2 ? 'Submit' : 'Next',
+                                currentQuestionIndex == 4 ? 'Submit' : 'Next',
                               ),
                             ),
                             SizedBox(height: 20),

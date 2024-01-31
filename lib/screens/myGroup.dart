@@ -24,6 +24,8 @@ List<Map<String, dynamic>> activeChallenges = [];
 List<int> activeChallengeIds = [];
 Map<int, List<String>> mappedChallenges = {};
 List<String> titles = [];
+List<String> contentList = [];
+Map<int, List<String>> getChallengeMappedChallenges = {};
 
 Future<void> getActiveChallenges(int groupId) async {
   print("group ID: $groupId");
@@ -46,7 +48,7 @@ Future<void> getActiveChallenges(int groupId) async {
       print('this is active challenges IDs : $activeChallengeIds');
 
       mappedChallenges = getMappedChallenges(activeChallenges);
-      print("this is titles $titles");
+      print("this is mappedchallengegoiwho $mappedChallenges");
     } else {}
   } else {}
 }
@@ -54,7 +56,7 @@ Future<void> getActiveChallenges(int groupId) async {
 Map<int, List<String>> getMappedChallenges(List<dynamic> activeChallenges) {
   Map<int, List<String>> mappedChallenges = {};
 
-  activeChallenges.forEach((challenge) {
+  for (var challenge in activeChallenges) {
     int id = challenge["id"];
     String createdByUsername = challenge["createdBy"]["username"];
     bool isCustom = challenge["isCustom"];
@@ -64,7 +66,9 @@ Map<int, List<String>> getMappedChallenges(List<dynamic> activeChallenges) {
       isCustom ? "Custom" : "Not Custom"
     ];
     mappedChallenges[id] = challengeInfo;
-  });
+    // List<String> questions = await getChallenge(id);
+    // mappedChallenges[id]!.addAll(questions);
+  }
 
   print('this is mapped challenges $mappedChallenges');
 
@@ -75,7 +79,9 @@ Map<int, List<String>> getMappedChallenges(List<dynamic> activeChallenges) {
 
 // now i need to load the challenge content and send it to groupChallenge
 
-Future<List<String>> getChallenge(int challengeId) async {
+//
+Future<void> getChallenge(
+    int challengeId, Map<int, List<String>> mappedChallenges) async {
   final url = Uri.parse(BackendService.getBackendUrl() + 'getChallengeQs');
   final headers = <String, String>{'Content-Type': 'application/json'};
 
@@ -87,22 +93,28 @@ Future<List<String>> getChallenge(int challengeId) async {
   if (response.statusCode == 200) {
     final dynamic jsonData = json.decode(response.body);
     if (jsonData is List) {
-      List<String> contentList = jsonData.expand<String>((innerList) {
+      contentList = jsonData.expand<String>((innerList) {
         return innerList.map<String>((item) {
           return item['content'].toString();
         });
       }).toList();
 
       print("Content List: $contentList");
-      return contentList;
+      print('thisis the challenge id tho $challengeId');
+
+      if (mappedChallenges.containsKey(challengeId)) {
+        mappedChallenges[challengeId]!.addAll(contentList);
+      } else {
+        print('total failure');
+      }
+      print('mappedchallenge in getchallenge $mappedChallenges');
+      getChallengeMappedChallenges = mappedChallenges;
     } else {
       print("bad format");
-      return [];
     }
   } else {
     print(
-        'failed to get challenge questions. Status code: ${response.statusCode}');
-    return [];
+        'failed to get challenge beeeeepp questions. Status code: ${response.statusCode}');
   }
 }
 
@@ -341,16 +353,52 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    _loadChallenges();
 
+/*
     getActiveChallenges(widget.groupId ?? 0).then((_) {
-      print('Init State - mappedchallenges: $mappedChallenges');
+      print(
+          'Init State - mappedchallenges: $mappedChallenges total ids $activeChallengeIds');
+      fetchChallengeContent();
+
       setState(() {});
+      print(
+          'Init State - mappedchNOWOWWWWallenges: $getChallengeMappedChallenges total ids $activeChallengeIds');
     });
+    */
+  }
+
+  Future<void> fetchChallengeContent() async {
+    for (var challengeId in activeChallengeIds) {
+      await getChallenge(challengeId, mappedChallenges);
+    }
+  }
+
+  Future<void> _loadChallenges() async {
+    await getActiveChallenges(widget.groupId ?? 0);
+    print('Init State - mappedchallenges: $mappedChallenges');
+
+    for (var challengeId in activeChallengeIds) {
+      await getChallenge(challengeId, mappedChallenges);
+    }
+
+    print(
+        'Init State - getchallengemappedchallenges: $getChallengeMappedChallenges');
+
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   Widget build(BuildContext context) {
     final String assetName = 'assets/img1.svg';
     List<String>? addedUsernames = widget.addedUsernames;
+    print('this is mapped challenges in widget $mappedChallenges');
+
+    for (int id in activeChallengeIds) {
+      getChallenge(id, mappedChallenges);
+      print("hereiugiugiguuigiu ha $mappedChallenges");
+    }
 
     return SafeArea(
         child: Scaffold(
@@ -503,16 +551,30 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                                   mappedChallenges[id]!;
                                               String createdByUsername =
                                                   challengeInfo[0];
+
                                               String challengeType =
                                                   challengeInfo[1] == "Custom"
                                                       ? "custom"
                                                       : "standard";
+                                              List<String> challengeQuestions =
+                                                  challengeInfo
+                                                      .skip(2)
+                                                      .toList();
+
                                               String title =
                                                   "$createdByUsername's $challengeType challenge";
 
+                                              print(
+                                                  'first question in the bunch $challengeQuestions');
+                                              print(
+                                                  'this ismapped down here in the bunchchallenge $mappedChallenges');
+                                              print(
+                                                  'mapped challengeqUESTIONS $challengeQuestions');
+                                              print(
+                                                  'we got this from get $getChallengeMappedChallenges');
+
                                               return GestureDetector(
                                                 onTap: () {
-                                                  getChallenge(id);
                                                   Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
@@ -521,7 +583,9 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                                               groupName: widget
                                                                   .groupName,
                                                               groupId: widget
-                                                                  .groupId),
+                                                                  .groupId,
+                                                              challengeQs:
+                                                                  challengeQuestions),
                                                     ),
                                                   );
                                                   //  print(

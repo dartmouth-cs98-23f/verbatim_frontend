@@ -348,10 +348,14 @@ class _FriendshipState extends State<friendship>
                                                           MaterialPageRoute(
                                                             builder: (context) =>
                                                                 groupChallenge(
-                                                                    groupName:
-                                                                        widget
-                                                                            .friendUsername,
-                                                                    groupId: 1),
+                                                              groupName: widget
+                                                                  .friendUsername,
+                                                              groupId: 1,
+                                                              challengeQs: [
+                                                                'eirh',
+                                                                'werwe'
+                                                              ],
+                                                            ),
                                                           ),
                                                         );
                                                         print(
