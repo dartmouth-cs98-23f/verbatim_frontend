@@ -558,7 +558,8 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                                               groupId: widget
                                                                   .groupId,
                                                               challengeQs:
-                                                                  challengeQuestions),
+                                                                  challengeQuestions,
+                                                              challengeId: id),
                                                     ),
                                                   );
                                                   //  print(

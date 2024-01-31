@@ -355,6 +355,7 @@ class _FriendshipState extends State<friendship>
                                                                 'eirh',
                                                                 'werwe'
                                                               ],
+                                                              challengeId: 4,
                                                             ),
                                                           ),
                                                         );

@@ -15,6 +15,54 @@ import 'package:verbatim_frontend/screens/myGroup.dart';
 import 'package:verbatim_frontend/widgets/custom_app_bar.dart';
 import 'dart:math';
 
+// submit challenge
+Future<void> submitChallenge(
+    String username, int challengeId, List<String> userResponses) async {
+  final url = Uri.parse(BackendService.getBackendUrl() + 'submitGroupResponse');
+  final headers = <String, String>{'Content-Type': 'application/json'};
+
+  final modifiedResponses = userResponses.map((response) {
+    final responseWithoutPunctuation =
+        response.replaceAll(RegExp(r'[^\w\s]'), '');
+
+    final words = responseWithoutPunctuation
+        .split(' ')
+        .where((word) => word.isNotEmpty); // shld fix the whitespace thing
+
+    final capitalizedWords = words.map((word) {
+      if (word.isNotEmpty) {
+        final trimmed = word.trim();
+
+        return trimmed[0].toUpperCase() + trimmed.substring(1);
+      }
+
+      return word;
+    });
+
+// join them back into list<string>
+    return capitalizedWords.join(' ');
+  }).toList();
+
+  print('these are modified responses: $modifiedResponses');
+
+  final response = await http.post(url,
+      headers: headers,
+      body: json.encode({
+        'username': username,
+        'responses': modifiedResponses,
+        'challengeId': challengeId,
+      }));
+
+  if (response.statusCode == 200) {
+    print('responses submitted succesfully');
+    final Map<String, dynamic> stats = json.decode(response.body);
+    // need to do lots of things to this
+    print(stats);
+  } else {
+    print("failedright here Status code: ${response.statusCode} ");
+  }
+}
+
 //fix image getting but jsut use this for now
 Future<void> preloadImages(BuildContext context) async {
   for (int i = 0; i < min(groupUsers!.length + 1, 6); i++) {
@@ -28,11 +76,13 @@ class groupChallenge extends StatefulWidget {
   final String groupName;
   final int? groupId;
   final List<String> challengeQs;
+  final int challengeId;
   groupChallenge({
     Key? key,
     required this.groupName,
     required this.groupId,
     required this.challengeQs,
+    required this.challengeId,
   }) : super(key: key);
 
   @override
@@ -41,7 +91,7 @@ class groupChallenge extends StatefulWidget {
 
 class _GroupChallengeState extends State<groupChallenge> {
   String username = SharedPrefs().getUserName() ?? "";
-  int challengeID = 3;
+
   TextEditingController responseController = TextEditingController();
   String userResponse = '';
   List<String> userResponses = [];
@@ -66,18 +116,13 @@ class _GroupChallengeState extends State<groupChallenge> {
     });
   }
 
-  sendUserResponses(
-      int challengeID, String username, List<String> userResponses) {
-    print("ill send these to the backend for u");
-  }
-
   @override
   Widget build(BuildContext context) {
     int numQuestions =
         widget.challengeQs.length; // how many questions are there?
 
     List<String> sentquestions = widget.challengeQs;
-    print('widget.challengeQs $sentquestions');
+
     questions = sentquestions;
     prompts = sentquestions;
     updateProgress();
@@ -196,6 +241,7 @@ class _GroupChallengeState extends State<groupChallenge> {
                                 padding: EdgeInsets.all(16),
                               ),
                               onPressed: () {
+                                print('username is $username');
                                 setState(() {
                                   userResponse = responseController.text;
                                   userResponses.add(userResponse);
@@ -205,9 +251,9 @@ class _GroupChallengeState extends State<groupChallenge> {
                                     updateProgress();
                                     currentQuestionIndex += 1;
                                   } else {
-                                    sendUserResponses(
-                                      challengeID,
+                                    submitChallenge(
                                       username,
+                                      widget.challengeId,
                                       userResponses,
                                     );
                                     setState(() {
