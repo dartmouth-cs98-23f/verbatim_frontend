@@ -12,6 +12,27 @@ import 'package:fl_chart/fl_chart.dart';
 import 'dart:math';
 import 'package:verbatim_frontend/screens/myGroup.dart';
 
+Future<void> createCustomChallenge(
+    String username, List<String> prompts, int groupId) async {
+  final url =
+      Uri.parse(BackendService.getBackendUrl() + 'createCustomChallenge');
+  final headers = <String, String>{'Content-Type': 'application/json'};
+  print('this is $username and this is groupId $groupId');
+  final response = await http.post(url,
+      headers: headers,
+      body: json.encode({
+        'createdByUsername': username,
+        'questions': prompts,
+        'groupId': groupId
+      }));
+  if (response.statusCode == 200) {
+    print('success');
+  } else {
+    print(
+        'failed to create standard challenge. Status code: ${response.statusCode}');
+  }
+}
+
 class customChallenge extends StatefulWidget {
   final String groupName;
   final int? groupId;
@@ -136,6 +157,11 @@ class _CustomChallengeState extends State<customChallenge>
                       ),
                       // add 'create challenge'
                       onPressed: () {
+                        print("this is prompts $prompts");
+                        int groupID = widget.groupId!;
+                        String username = SharedPrefs().getUserName() ?? "";
+                        createCustomChallenge(username, prompts, groupID);
+                        //send custom challenge to the backend
                         Navigator.push(
                           context,
                           MaterialPageRoute(

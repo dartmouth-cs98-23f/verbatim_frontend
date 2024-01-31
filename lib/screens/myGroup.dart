@@ -28,7 +28,6 @@ List<String> contentList = [];
 Map<int, List<String>> getChallengeMappedChallenges = {};
 
 Future<void> getActiveChallenges(int groupId) async {
-  print("group ID: $groupId");
   final url = Uri.parse(
       BackendService.getBackendUrl() + 'group/' + '$groupId/' + 'challenges');
 
@@ -42,13 +41,10 @@ Future<void> getActiveChallenges(int groupId) async {
       activeChallenges =
           List<Map<String, dynamic>>.from(jsonData["activeChallenges"]);
 
-      print('this is active challenges: $activeChallenges');
       activeChallengeIds =
           activeChallenges.map((challenge) => challenge["id"] as int).toList();
-      print('this is active challenges IDs : $activeChallengeIds');
 
       mappedChallenges = getMappedChallenges(activeChallenges);
-      print("this is mappedchallengegoiwho $mappedChallenges");
     } else {}
   } else {}
 }
@@ -69,8 +65,6 @@ Map<int, List<String>> getMappedChallenges(List<dynamic> activeChallenges) {
     // List<String> questions = await getChallenge(id);
     // mappedChallenges[id]!.addAll(questions);
   }
-
-  print('this is mapped challenges $mappedChallenges');
 
   return mappedChallenges;
 }
@@ -99,15 +93,11 @@ Future<void> getChallenge(
         });
       }).toList();
 
-      print("Content List: $contentList");
-      print('thisis the challenge id tho $challengeId');
-
       if (mappedChallenges.containsKey(challengeId)) {
         mappedChallenges[challengeId]!.addAll(contentList);
       } else {
         print('total failure');
       }
-      print('mappedchallenge in getchallenge $mappedChallenges');
       getChallengeMappedChallenges = mappedChallenges;
     } else {
       print("bad format");
@@ -237,8 +227,6 @@ Future<void> _showChallengeOptions(
 
 Widget _buildOptionButton(BuildContext context, title, String description,
     IconData iconData, String groupName, int? groupId) {
-  double number = 125.h;
-  print(number);
   return Container(
       constraints: BoxConstraints(
           minWidth: 80.0, maxWidth: 150.0, minHeight: 80.0, maxHeight: 150.0),
@@ -376,14 +364,10 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
 
   Future<void> _loadChallenges() async {
     await getActiveChallenges(widget.groupId ?? 0);
-    print('Init State - mappedchallenges: $mappedChallenges');
 
     for (var challengeId in activeChallengeIds) {
       await getChallenge(challengeId, mappedChallenges);
     }
-
-    print(
-        'Init State - getchallengemappedchallenges: $getChallengeMappedChallenges');
 
     if (mounted) {
       setState(() {});
@@ -393,11 +377,9 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     final String assetName = 'assets/img1.svg';
     List<String>? addedUsernames = widget.addedUsernames;
-    print('this is mapped challenges in widget $mappedChallenges');
 
     for (int id in activeChallengeIds) {
       getChallenge(id, mappedChallenges);
-      print("hereiugiugiguuigiu ha $mappedChallenges");
     }
 
     return SafeArea(
@@ -563,15 +545,6 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
 
                                               String title =
                                                   "$createdByUsername's $challengeType challenge";
-
-                                              print(
-                                                  'first question in the bunch $challengeQuestions');
-                                              print(
-                                                  'this ismapped down here in the bunchchallenge $mappedChallenges');
-                                              print(
-                                                  'mapped challengeqUESTIONS $challengeQuestions');
-                                              print(
-                                                  'we got this from get $getChallengeMappedChallenges');
 
                                               return GestureDetector(
                                                 onTap: () {

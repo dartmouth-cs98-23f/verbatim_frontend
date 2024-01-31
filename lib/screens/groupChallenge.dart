@@ -73,6 +73,9 @@ class _GroupChallengeState extends State<groupChallenge> {
 
   @override
   Widget build(BuildContext context) {
+    int numQuestions =
+        widget.challengeQs.length; // how many questions are there?
+
     List<String> sentquestions = widget.challengeQs;
     print('widget.challengeQs $sentquestions');
     questions = sentquestions;
@@ -197,7 +200,8 @@ class _GroupChallengeState extends State<groupChallenge> {
                                   userResponse = responseController.text;
                                   userResponses.add(userResponse);
                                   responseController.clear();
-                                  if (currentQuestionIndex <= 3) {
+                                  if (currentQuestionIndex <=
+                                      (numQuestions - 2)) {
                                     updateProgress();
                                     currentQuestionIndex += 1;
                                   } else {
@@ -213,7 +217,9 @@ class _GroupChallengeState extends State<groupChallenge> {
                                 });
                               },
                               child: Text(
-                                currentQuestionIndex == 4 ? 'Submit' : 'Next',
+                                currentQuestionIndex == (numQuestions - 1)
+                                    ? 'Submit'
+                                    : 'Next',
                               ),
                             ),
                             SizedBox(height: 20),
@@ -240,7 +246,7 @@ class _GroupChallengeState extends State<groupChallenge> {
                     ])),
                 if (responded) _verbaMatch(),
                 if (responded)
-                  for (int i = 0; i < prompts.length; i++)
+                  for (int i = 0; i < numQuestions; i++)
                     _buildResponseRectangle(i),
                 SizedBox(height: 50.v),
 
@@ -309,21 +315,6 @@ class _GroupChallengeState extends State<groupChallenge> {
           width: double.infinity,
           margin: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
           padding: EdgeInsets.all(8),
-
-          //remove this decoration?
-          /*
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(10),
-            boxShadow: [
-              BoxShadow(
-                color: Color(0xFF9E503C).withOpacity(1),
-                blurRadius: 5,
-                offset: Offset(2, 3),
-              )
-            ],
-          ),
-          */
           child: SingleChildScrollView(
               child: Column(
             children: [
