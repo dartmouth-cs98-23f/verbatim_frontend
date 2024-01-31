@@ -15,44 +15,99 @@ import 'package:verbatim_frontend/widgets/custom_app_bar.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'dart:math';
 
-// my group is a page populated by the group-specific information
-// it takes a ton of information...
-
-/* Create Group:
-
-frontend sends groupname, creator Username and added Usernames to the backend 
-
-Backend returns the groupID, active challenges and groupMembers. 
-
-I give myGroup:
-- groupname
-- active challenges
-- group members
-- group ID
-
-once in myGroup, myGroup uses the ID to get the group stats from backend
-
-
-*/
-
-// class GroupChallenge
-
 // MAKE IT
 
-//Future void function, get active challenges
+/* Future void function, get active challenges
+  - When you open the page, send groupId 
+*/
+List<Map<String, dynamic>> activeChallenges = [];
+List<int> activeChallengeIds = [];
+Map<int, List<String>> mappedChallenges = {};
+List<String> titles = [];
 
 Future<void> getActiveChallenges(int groupId) async {
+  print("group ID: $groupId");
   final url = Uri.parse(
       BackendService.getBackendUrl() + 'group/' + '$groupId/' + 'challenges');
 
   final response = await http.get(url);
   if (response.statusCode == 200) {
-    final Map<String, dynamic> data = json.decode(response.body);
-    print('this is data $data');
-    List<dynamic> activeChallenges = data['groups'];
-    print('this is activeChallenges $activeChallenges');
+    final dynamic jsonData = json.decode(response.body);
+
+    if (jsonData is Map<String, dynamic> &&
+        jsonData.containsKey("activeChallenges") &&
+        jsonData["activeChallenges"] is List) {
+      activeChallenges =
+          List<Map<String, dynamic>>.from(jsonData["activeChallenges"]);
+
+      print('this is active challenges: $activeChallenges');
+      activeChallengeIds =
+          activeChallenges.map((challenge) => challenge["id"] as int).toList();
+      print('this is active challenges IDs : $activeChallengeIds');
+
+      mappedChallenges = getMappedChallenges(activeChallenges);
+      print("this is titles $titles");
+    } else {}
+  } else {}
+}
+
+Map<int, List<String>> getMappedChallenges(List<dynamic> activeChallenges) {
+  Map<int, List<String>> mappedChallenges = {};
+
+  activeChallenges.forEach((challenge) {
+    int id = challenge["id"];
+    String createdByUsername = challenge["createdBy"]["username"];
+    bool isCustom = challenge["isCustom"];
+
+    List<String> challengeInfo = [
+      createdByUsername,
+      isCustom ? "Custom" : "Not Custom"
+    ];
+    mappedChallenges[id] = challengeInfo;
+  });
+
+  print('this is mapped challenges $mappedChallenges');
+
+  return mappedChallenges;
+}
+
+// Example usage:
+
+// now i need to load the challenge content and send it to groupChallenge
+
+Future<List<String>> getChallenge(int challengeId) async {
+  final url = Uri.parse(BackendService.getBackendUrl() + 'getChallengeQs');
+  final headers = <String, String>{'Content-Type': 'application/json'};
+
+  final response = await http.post(url,
+      headers: headers,
+      body: json.encode(
+        challengeId,
+      ));
+  if (response.statusCode == 200) {
+    final dynamic jsonData = json.decode(response.body);
+    if (jsonData is List) {
+      List<String> contentList = jsonData.expand<String>((innerList) {
+        return innerList.map<String>((item) {
+          return item['content'].toString();
+        });
+      }).toList();
+
+      print("Content List: $contentList");
+      return contentList;
+    } else {
+      print("bad format");
+      return [];
+    }
+  } else {
+    print(
+        'failed to get challenge questions. Status code: ${response.statusCode}');
+    return [];
   }
 }
+
+// get the content for each active challenge
+
 // create standard challenge
 
 Future<void> createStandardChallenge(String username, int groupId) async {
@@ -79,12 +134,6 @@ Future<void> preloadImages(BuildContext context) async {
     await precacheImage(image, context);
   }
 }
-
-List<String> activeChallenges = [
-  "Dahlia's Challenge",
-  "Eve's Challenge",
-  "Jackie's Challenge",
-];
 
 Future<void> _showChallengeOptions(
     BuildContext context, String groupName, int? groupId) async {
@@ -203,12 +252,22 @@ Widget _buildOptionButton(BuildContext context, title, String description,
 
           if (title == 'Standard') {
             int groupID = groupId!;
-            activeChallenges.add('New Standard Challenge');
+            //   activeChallengesHard.add('New Standard Challenge');
 
             Navigator.pop(context);
             String username = SharedPrefs().getUserName() ?? "";
             print('this is username $username');
             createStandardChallenge(username, groupID);
+            // re-initiate to load
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => myGroup(
+                  groupName: groupName,
+                  groupId: groupId,
+                ),
+              ),
+            );
 
             //
           } else if (title == 'Custom') {
@@ -282,15 +341,14 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+
+    getActiveChallenges(widget.groupId ?? 0).then((_) {
+      print('Init State - mappedchallenges: $mappedChallenges');
+      setState(() {});
+    });
   }
 
   Widget build(BuildContext context) {
-    int groupID = 0;
-    if (widget.groupId != null) {
-      groupID = widget.groupId!;
-    }
-
-    getActiveChallenges(groupID);
     final String assetName = 'assets/img1.svg';
     List<String>? addedUsernames = widget.addedUsernames;
 
@@ -437,10 +495,24 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                       children: [
                                         Expanded(
                                           child: ListView.builder(
-                                            itemCount: activeChallenges.length,
+                                            itemCount: mappedChallenges.length,
                                             itemBuilder: (context, index) {
+                                              int id = mappedChallenges.keys
+                                                  .elementAt(index);
+                                              List<String> challengeInfo =
+                                                  mappedChallenges[id]!;
+                                              String createdByUsername =
+                                                  challengeInfo[0];
+                                              String challengeType =
+                                                  challengeInfo[1] == "Custom"
+                                                      ? "custom"
+                                                      : "standard";
+                                              String title =
+                                                  "$createdByUsername's $challengeType challenge";
+
                                               return GestureDetector(
                                                 onTap: () {
+                                                  getChallenge(id);
                                                   Navigator.push(
                                                     context,
                                                     MaterialPageRoute(
@@ -452,8 +524,8 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                                                   .groupId),
                                                     ),
                                                   );
-                                                  print(
-                                                      "Pressed ${activeChallenges[index]}");
+                                                  //  print(
+                                                  //  "Pressed ${activeChallengesHard[index]}");
                                                 },
                                                 child: Container(
                                                   margin: EdgeInsets.symmetric(
@@ -476,7 +548,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                                             .spaceBetween,
                                                     children: [
                                                       Text(
-                                                        activeChallenges[index],
+                                                        title,
                                                         style: TextStyle(
                                                           color: Colors.white,
                                                           fontSize: 14,
