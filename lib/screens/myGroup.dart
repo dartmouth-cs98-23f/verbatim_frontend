@@ -59,6 +59,15 @@ Future<void> createStandardChallenge(String username, int groupId) async {
   final url =
       Uri.parse(BackendService.getBackendUrl() + 'createStandardChallenge');
   final headers = <String, String>{'Content-Type': 'application/json'};
+  print('this is $username and this is groupId $groupId');
+  final response = await http.post(url,
+      headers: headers,
+      body: json.encode({'createdByUsername': username, 'groupId': groupId}));
+  if (response.statusCode == 200) {
+  } else {
+    print(
+        'failed to create standard challenge. Status code: ${response.statusCode}');
+  }
 }
 
 List<String> groupUsers = ['frances', '2', '2', '3', '33', '44'];
@@ -193,9 +202,13 @@ Widget _buildOptionButton(BuildContext context, title, String description,
           // some bool that can automatically call set state from other widget?
 
           if (title == 'Standard') {
+            int groupID = groupId!;
             activeChallenges.add('New Standard Challenge');
 
             Navigator.pop(context);
+            String username = SharedPrefs().getUserName() ?? "";
+            print('this is username $username');
+            createStandardChallenge(username, groupID);
 
             //
           } else if (title == 'Custom') {
