@@ -345,7 +345,7 @@ class _AddFriendState extends State<addFriend> {
                           ),
                           // app bar for add friend page
                           FriendsAppBarTest(
-                            title: 'Add Friend',
+                            title: 'Add Friends',
                           ),
 
                           Padding(
