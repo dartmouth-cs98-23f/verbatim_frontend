@@ -420,7 +420,7 @@ class _AddFriendState extends State<addFriend> {
                     margin: EdgeInsets.only(top: 10),
                     // width: 300.h,
                     // height: 500.v,
-                    width: 335,
+                    width: 360,
                     height: 508,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(30),

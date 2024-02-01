@@ -74,9 +74,11 @@ class _ProfileState extends State<Profile> {
 
     // If user object is provided, populate profile details from user object
     if (widget.user != null) {
-      firstName = widget.user!.firstName;
+      firstName = widget.user!.firstName.replaceFirst(
+          widget.user!.firstName[0], widget.user!.firstName[0].toUpperCase());
+
       lastName = widget.user!.lastName;
-      initial = lastName.substring(0, 1);
+      initial = lastName.substring(0, 1).toUpperCase();
       displayName = '$firstName $initial.';
       username = widget.user!.username;
       bio = widget.user!.bio ?? '';
@@ -166,8 +168,8 @@ class _ProfileState extends State<Profile> {
                               borderRadius: BorderRadius.circular(30.0),
                             ),
                             child: Container(
-                              width: 340,
-                              height: 200,
+                              width: 360,
+                              height: 190,
                               padding: const EdgeInsets.only(top: 25, left: 25),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -175,14 +177,14 @@ class _ProfileState extends State<Profile> {
                                   Row(
                                     children: [
                                       Container(
-                                        width: 100.v,
-                                        height: 100.v,
+                                        width: 100,
+                                        height: 101.12,
                                         child: ClipOval(
                                           child: FirebaseStorageImage(
                                               profileUrl: profileUrl),
                                         ),
                                       ),
-                                      const SizedBox(width: 20),
+                                      const SizedBox(width: 10),
                                       Column(
                                         children: [
                                           Text(
@@ -208,7 +210,7 @@ class _ProfileState extends State<Profile> {
                                                 //func
                                               },
                                               child: Container(
-                                                width: 120,
+                                                width: 200,
                                                 height: 25,
                                                 decoration: ShapeDecoration(
                                                   color: Color(0xFFE76F51),
@@ -281,7 +283,7 @@ class _ProfileState extends State<Profile> {
                                                           ),
                                                         ),
                                                         const SizedBox(
-                                                            width: 10),
+                                                            width: 5),
                                                         Align(
                                                           alignment:
                                                               Alignment.center,
@@ -293,7 +295,7 @@ class _ProfileState extends State<Profile> {
                                                                   : (widget
                                                                           .user!
                                                                           .isRequested
-                                                                      ? "Friends" // "Friends Since ${DateTime(2023, 12, 31).toString().substring(0, 10)}
+                                                                      ? "Friends Since 10/27/23" // "Friends Since ${DateTime(2023, 12, 31).toString().substring(0, 10)}
                                                                       : "Add Friend"),
                                                               style: GoogleFonts
                                                                   .poppins(
@@ -304,7 +306,10 @@ class _ProfileState extends State<Profile> {
                                                                   fontSize: 12,
                                                                   fontWeight:
                                                                       FontWeight
-                                                                          .bold,
+                                                                          .w600,
+                                                                  height: 0.12,
+                                                                  letterSpacing:
+                                                                      0.20,
                                                                 ),
                                                               ),
                                                             ),
@@ -352,7 +357,7 @@ class _ProfileState extends State<Profile> {
                               borderRadius: BorderRadius.circular(30.0),
                             ),
                             child: Container(
-                              width: 340,
+                              width: 360,
                               height: 470,
                               padding: EdgeInsets.all(25),
                               child: Column(
@@ -532,21 +537,40 @@ class _ProfileState extends State<Profile> {
                                       Align(
                                         widthFactor: .5,
                                         child: ClipOval(
-                                          child: Container(
-                                            width: 100,
-                                            height: 100,
-                                            color: Colors.blue,
-                                          ),
+                                          child: widget.user != null
+                                              ? Container(
+                                                  width: 100,
+                                                  height: 100,
+                                                  child: FirebaseStorageImage(
+                                                    profileUrl: SharedPrefs()
+                                                            .getProfileUrl()
+                                                        as String,
+                                                  ),
+                                                )
+                                              : Container(
+                                                  width: 100,
+                                                  height: 100,
+                                                  color: Colors.blue,
+                                                ),
                                         ),
                                       ),
                                       Align(
                                         widthFactor: .5,
                                         child: ClipOval(
-                                          child: Container(
-                                            width: 100,
-                                            height: 100,
-                                            color: Colors.red,
-                                          ),
+                                          child: widget.user != null
+                                              ? Container(
+                                                  width: 100,
+                                                  height: 100,
+                                                  child: FirebaseStorageImage(
+                                                    profileUrl: widget
+                                                        .user!.profilePicture,
+                                                  ),
+                                                )
+                                              : Container(
+                                                  width: 100,
+                                                  height: 100,
+                                                  color: Colors.red,
+                                                ),
                                         ),
                                       ),
                                     ],
