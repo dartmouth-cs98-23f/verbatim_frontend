@@ -4,12 +4,15 @@ import 'package:flutter/material.dart';
 import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:http/http.dart' as http;
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
+import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'package:verbatim_frontend/screens/profile.dart';
 
 class FirebaseStorageImage extends StatelessWidget {
   final String profileUrl;
+  final User? user;
 
-  FirebaseStorageImage({Key? key, required this.profileUrl}) : super(key: key);
+  FirebaseStorageImage({Key? key, required this.profileUrl, this.user})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
@@ -20,11 +23,17 @@ class FirebaseStorageImage extends StatelessWidget {
             snapshot.hasData) {
           return GestureDetector(
             onTap: () {
-              // Navigate to the Profile page
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => Profile()),
-              );
+              if (user != null) {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Profile(user: user!)),
+                );
+              } else {
+                Navigator.push(
+                  context,
+                  MaterialPageRoute(builder: (context) => Profile()),
+                );
+              }
             },
             child: Container(
               width: 40,

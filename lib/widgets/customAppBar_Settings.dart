@@ -30,9 +30,9 @@ class CustomAppBarSettings extends StatelessWidget
       elevation: 0,
       title: Column(
         children: [
-          SizedBox(height: 60),
+          SizedBox(height: 100),
           NewNavBar(),
-          SizedBox(height: 30), // Adjust the distance as needed
+          // SizedBox(height: 30), // Adjust the distance as needed
 
           TitleFrame(
             title: title,
@@ -66,21 +66,21 @@ class NewNavBar extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          IconButton(
-            icon: Icon(
-              Icons.menu,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              // Navigate to the SideBar widget
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SideBar()),
-              );
-            },
-          ),
-          SearchBarTextField(),
-          SizedBox(width: 20),
+          // IconButton(
+          //   icon: Icon(
+          //     Icons.menu,
+          //     color: Colors.white,
+          //   ),
+          //   onPressed: () {
+          //     // Navigate to the SideBar widget
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(builder: (context) => SideBar()),
+          //     );
+          //   },
+          // ),
+          // SearchBarTextField(),
+          SizedBox(width: 80),
           FirebaseStorageImage(
             profileUrl: profileUrl,
           ),

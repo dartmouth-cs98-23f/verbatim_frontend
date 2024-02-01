@@ -28,6 +28,7 @@ class User {
   int numCustomChallengesCompleted = 0;
   int streak = 0;
   bool hasCompletedDailyChallenge = false;
+  bool isRequested = false;
 
   User({
     required this.id,
@@ -331,7 +332,7 @@ class _AddFriendState extends State<addFriend> {
                             // height: 220.v,
                             // width: double.maxFinite,
                             height: 261,
-                            width: 390,
+                            width: 430,
                             margin: EdgeInsets.zero,
                             padding: EdgeInsets.zero,
                             child: SvgPicture.asset(
@@ -339,11 +340,16 @@ class _AddFriendState extends State<addFriend> {
                               fit: BoxFit.fill,
                             ),
                           ),
+                          SizedBox(
+                            height: 20,
+                          ),
                           // app bar for add friend page
-                          FriendsAppBarTest(),
+                          FriendsAppBarTest(
+                            title: 'Add Friend',
+                          ),
 
                           Padding(
-                            padding: EdgeInsets.only(top: 20.0),
+                            padding: EdgeInsets.only(top: 5.0),
                             child: Align(
                               alignment: Alignment.center,
                               child: Container(
@@ -386,7 +392,7 @@ class _AddFriendState extends State<addFriend> {
                         padding: EdgeInsets.only(left: 6.0),
                         child: Container(
                           height: 22,
-                          width: 180,
+                          width: 190,
                           child: Text(
                             _searchText.isEmpty
                                 ? 'People you may know'
@@ -436,7 +442,7 @@ class _AddFriendState extends State<addFriend> {
                             itemBuilder: (context, index) {
                               final currentUser = _searchResults()[index];
                               final name = currentUser.username;
-                              final isRequested =
+                              currentUser.isRequested =
                                   myRequestedUsers_backend.contains(name);
                               String profileUrl = currentUser.profilePicture;
 
@@ -446,6 +452,7 @@ class _AddFriendState extends State<addFriend> {
                                   children: [
                                     FirebaseStorageImage(
                                       profileUrl: profileUrl,
+                                      user: currentUser,
                                     ),
                                     SizedBox(width: 8),
                                     Text(
@@ -459,11 +466,11 @@ class _AddFriendState extends State<addFriend> {
 
                                 // icon displayed is dependent on whether you have requested this user.
                                 trailing: IconButton(
-                                  icon: isRequested
+                                  icon: currentUser.isRequested
                                       ? Icon(Icons.pending)
                                       : Icon(Icons.person_add_alt),
                                   onPressed: () {
-                                    if (!isRequested) {
+                                    if (!currentUser.isRequested) {
                                       // prevent user from sending friend requests twice!
                                       sendFriendRequest(username, name);
 
@@ -482,7 +489,8 @@ class _AddFriendState extends State<addFriend> {
                               // final name = userUsernames[index];
                               final currentUser = searchResults[index];
                               final name = currentUser.username;
-                              final isRequested =
+
+                              currentUser.isRequested =
                                   myRequestedUsers_backend.contains(name);
                               String profileUrl = currentUser.profilePicture;
                               return ListTile(
@@ -490,6 +498,7 @@ class _AddFriendState extends State<addFriend> {
                                   children: [
                                     FirebaseStorageImage(
                                       profileUrl: profileUrl,
+                                      user: currentUser,
                                     ),
                                     SizedBox(width: 8),
                                     Text(
@@ -501,11 +510,11 @@ class _AddFriendState extends State<addFriend> {
                                   ],
                                 ),
                                 trailing: IconButton(
-                                  icon: isRequested
+                                  icon: currentUser.isRequested
                                       ? Icon(Icons.pending)
                                       : Icon(Icons.person_add_alt),
                                   onPressed: () {
-                                    if (!isRequested) {
+                                    if (!currentUser.isRequested) {
                                       sendFriendRequest(username, name);
                                       setState(() {
                                         toggleFriend(name);
