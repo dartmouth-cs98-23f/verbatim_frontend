@@ -20,6 +20,28 @@ import 'dart:math';
 /* Future void function, get active challenges
   - When you open the page, send groupId 
 */
+
+/* get group stats
+
+// verba match --> could be empty
+// group score 
+// group members 
+*/
+
+Future<void> leaveGroup(int groupId, String username) async {
+  final url = Uri.parse(BackendService.getBackendUrl() + 'leaveGroup');
+  final headers = <String, String>{'Content-Type': 'application/json'};
+
+  final response = await http.post(url,
+      headers: headers,
+      body: json.encode(({'groupId': groupId, 'username': username})));
+  if (response.statusCode == 200) {
+    print("success");
+  } else {
+    print("failure");
+  }
+}
+
 List<Map<String, dynamic>> activeChallenges = [];
 List<int> activeChallengeIds = [];
 Map<int, List<String>> mappedChallenges = {};
@@ -45,6 +67,7 @@ Future<void> getActiveChallenges(int groupId) async {
           activeChallenges.map((challenge) => challenge["id"] as int).toList();
 
       mappedChallenges = getMappedChallenges(activeChallenges);
+      print('$activeChallenges');
     } else {}
   } else {}
 }
@@ -377,6 +400,8 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
   Widget build(BuildContext context) {
     final String assetName = 'assets/img1.svg';
     List<String>? addedUsernames = widget.addedUsernames;
+    int groupID = widget.groupId!;
+    String username = SharedPrefs().getUserName() ?? "";
 
     for (int id in activeChallengeIds) {
       getChallenge(id, mappedChallenges);
@@ -410,13 +435,13 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                           // app bar on top of background - currently non functional
                           CustomAppBar(),
                           Container(
-                            margin: EdgeInsets.only(top: 80.v),
+                            margin: EdgeInsets.only(top: 70),
                             child: Column(
                               children: [
                                 Text(
                                   widget.groupName,
                                   style: TextStyle(
-                                    fontSize: 27,
+                                    fontSize: 30,
                                     color: Colors.white,
                                     fontWeight: FontWeight.w900,
                                   ),
@@ -442,7 +467,36 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                       ],
                                     ),
                                   ),
-                                )
+                                ),
+                                Center(
+                                    child: Container(
+                                        margin: EdgeInsets.only(top: 13),
+                                        child: Row(
+                                            mainAxisAlignment:
+                                                MainAxisAlignment.spaceAround,
+                                            children: [
+                                              ElevatedButton(
+                                                  onPressed: () {
+                                                    leaveGroup(
+                                                        groupID, username);
+                                                  },
+                                                  style:
+                                                      ElevatedButton.styleFrom(
+                                                    primary: Colors.white,
+                                                    padding:
+                                                        EdgeInsets.symmetric(
+                                                            horizontal: 8,
+                                                            vertical: 4),
+                                                  ),
+                                                  child: Text("Leave Group",
+                                                      style: const TextStyle(
+                                                        fontSize: 12,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color:
+                                                            Color(0xFFE76F51),
+                                                      ))),
+                                            ])))
                               ],
                             ),
                           ),
@@ -452,7 +506,6 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                 Center(
                     child: Container(
                         clipBehavior: Clip.hardEdge,
-                        margin: EdgeInsets.only(top: 10),
                         width: 340,
                         height: 450,
                         decoration: BoxDecoration(
