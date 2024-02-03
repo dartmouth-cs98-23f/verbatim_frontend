@@ -15,11 +15,104 @@ import 'package:verbatim_frontend/widgets/custom_app_bar.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'dart:math';
 
-List<String> activeChallenges = [
-  "Eve's Challenge",
-  "Eve's Challenge",
-  "Frances's Challenge",
-];
+List<Map<String, dynamic>> activeChallenges = [];
+List<int> activeChallengeIds = [];
+Map<int, List<String>> mappedChallenges = {};
+List<String> titles = [];
+List<String> contentList = [];
+Map<int, List<String>> getChallengeMappedChallenges = {};
+
+// but version for friends
+Future<void> getActiveChallenges(String user, String friend) async {
+  final url = Uri.parse(
+      BackendService.getBackendUrl() + '$user/' + '$friend/' + 'challenges');
+
+  final response = await http.get(url);
+  if (response.statusCode == 200) {
+    final dynamic jsonData = json.decode(response.body);
+    print(jsonData);
+
+    if (jsonData is Map<String, dynamic> &&
+        jsonData.containsKey("activeChallenges") &&
+        jsonData["activeChallenges"] is List) {
+      activeChallenges =
+          List<Map<String, dynamic>>.from(jsonData["activeChallenges"]);
+
+      activeChallengeIds =
+          activeChallenges.map((challenge) => challenge["id"] as int).toList();
+
+      mappedChallenges = getMappedChallenges(activeChallenges);
+      print('$activeChallenges');
+    } else {}
+  } else {}
+}
+
+Map<int, List<String>> getMappedChallenges(List<dynamic> activeChallenges) {
+  Map<int, List<String>> mappedChallenges = {};
+
+  for (var challenge in activeChallenges) {
+    int id = challenge["id"];
+    String createdByUsername = challenge["createdBy"]["username"];
+    bool isCustom = challenge["isCustom"];
+
+    List<String> challengeInfo = [
+      createdByUsername,
+      isCustom ? "Custom" : "Not Custom"
+    ];
+    mappedChallenges[id] = challengeInfo;
+  }
+
+  return mappedChallenges;
+}
+
+Future<void> getChallenge(
+    int challengeId, Map<int, List<String>> mappedChallenges) async {
+  final url = Uri.parse(BackendService.getBackendUrl() + 'getChallengeQs');
+  final headers = <String, String>{'Content-Type': 'application/json'};
+
+  final response = await http.post(url,
+      headers: headers,
+      body: json.encode(
+        challengeId,
+      ));
+  if (response.statusCode == 200) {
+    final dynamic jsonData = json.decode(response.body);
+    if (jsonData is List) {
+      contentList = jsonData.expand<String>((innerList) {
+        return innerList.map<String>((item) {
+          return item['content'].toString();
+        });
+      }).toList();
+
+      if (mappedChallenges.containsKey(challengeId)) {
+        mappedChallenges[challengeId]!.addAll(contentList);
+      } else {
+        print('total failure');
+      }
+      getChallengeMappedChallenges = mappedChallenges;
+    } else {
+      print("bad format");
+    }
+  } else {
+    print(
+        'failed to get challenge beeeeepp questions. Status code: ${response.statusCode}');
+  }
+}
+
+Future<void> createStandardChallenge(String username, int groupId) async {
+  final url =
+      Uri.parse(BackendService.getBackendUrl() + 'createStandardChallenge');
+  final headers = <String, String>{'Content-Type': 'application/json'};
+  print('this is $username and this is groupId $groupId');
+  final response = await http.post(url,
+      headers: headers,
+      body: json.encode({'createdByUsername': username, 'groupId': groupId}));
+  if (response.statusCode == 200) {
+  } else {
+    print(
+        'failed to create standard challenge. Status code: ${response.statusCode}');
+  }
+}
 
 Future<void> _showChallengeOptions(
     BuildContext context, String groupName) async {
@@ -134,7 +227,9 @@ Widget _buildOptionButton(BuildContext context, title, String description,
           // some bool that can automatically call set state from other widget?
 
           if (title == 'Standard') {
-            activeChallenges.add('New Standard Challenge');
+            String username = SharedPrefs().getUserName() ?? "";
+//can't be -1
+            createStandardChallenge(username, -1);
 
             Navigator.pop(context);
 
@@ -210,6 +305,21 @@ class _FriendshipState extends State<friendship>
   void initState() {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
+    _loadChallenges();
+  }
+
+  Future<void> _loadChallenges() async {
+    String username = SharedPrefs().getUserName() ?? "";
+
+    await getActiveChallenges(username, widget.friendUsername);
+
+    for (var challengeId in activeChallengeIds) {
+      await getChallenge(challengeId, mappedChallenges);
+    }
+
+    if (mounted) {
+      setState(() {});
+    }
   }
 
   Widget build(BuildContext context) {
@@ -338,9 +448,30 @@ class _FriendshipState extends State<friendship>
                                               Expanded(
                                                 child: ListView.builder(
                                                   itemCount:
-                                                      activeChallenges.length,
+                                                      mappedChallenges.length,
                                                   itemBuilder:
                                                       (context, index) {
+                                                    int id = mappedChallenges
+                                                        .keys
+                                                        .elementAt(index);
+                                                    List<String> challengeInfo =
+                                                        mappedChallenges[id]!;
+                                                    String createdByUsername =
+                                                        challengeInfo[0];
+
+                                                    String challengeType =
+                                                        challengeInfo[1] ==
+                                                                "Custom"
+                                                            ? "custom"
+                                                            : "standard";
+                                                    List<String>
+                                                        challengeQuestions =
+                                                        challengeInfo
+                                                            .skip(2)
+                                                            .toList();
+
+                                                    String title =
+                                                        "$createdByUsername's $challengeType challenge";
                                                     return GestureDetector(
                                                       onTap: () {
                                                         Navigator.push(
@@ -348,15 +479,14 @@ class _FriendshipState extends State<friendship>
                                                           MaterialPageRoute(
                                                             builder: (context) =>
                                                                 groupChallenge(
-                                                              groupName: widget
-                                                                  .friendUsername,
-                                                              groupId: 1,
-                                                              challengeQs: [
-                                                                'eirh',
-                                                                'werwe'
-                                                              ],
-                                                              challengeId: 4,
-                                                            ),
+                                                                    groupName:
+                                                                        widget
+                                                                            .friendUsername,
+                                                                    groupId: -1,
+                                                                    challengeQs:
+                                                                        challengeQuestions,
+                                                                    challengeId:
+                                                                        id),
                                                           ),
                                                         );
                                                         print(
@@ -386,8 +516,7 @@ class _FriendshipState extends State<friendship>
                                                                   .spaceBetween,
                                                           children: [
                                                             Text(
-                                                              activeChallenges[
-                                                                  index],
+                                                              title,
                                                               style: TextStyle(
                                                                 color: Colors
                                                                     .white,

@@ -44,6 +44,7 @@ class createGroup extends StatefulWidget {
 
 class _CreateGroupState extends State<createGroup> {
   String username = SharedPrefs().getUserName() ?? "";
+  bool error = false;
   bool isCreated = false; // in the beginning, the group isn't created
   TextEditingController responseController = TextEditingController();
   String userResponse = '';
@@ -236,10 +237,31 @@ class _CreateGroupState extends State<createGroup> {
                                     )),
                               ),
                             ),
-                          )
+                          ),
                         ]))
                   ]),
                 ),
+                Visibility(
+                    visible: error,
+                    child: Center(
+                      child: SizedBox(
+                        child: RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text:
+                                    "Add at least two friends to make a group",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    )),
 
                 // constant background
                 Center(
@@ -464,9 +486,17 @@ class _CreateGroupState extends State<createGroup> {
                       onPressed: () async {
                         // if group isn't created, create it
                         if (!isCreated) {
-                          setState(() {
-                            isCreated = true; // shift content
-                          });
+                          if (addedUsernames.length <= 1) {
+                            setState(() {
+                              error = true; // shift content
+                            });
+                          } else {
+                            setState(() {
+                              error = false;
+                              isCreated = true; // shift content
+                            });
+                          }
+
                           // otherwise, take us to the group page
                         } else {
                           // talk to backend here
