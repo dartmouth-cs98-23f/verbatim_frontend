@@ -98,6 +98,7 @@ Future<void> getChallenge(
         challengeId,
       ));
   if (response.statusCode == 200) {
+    print('got challenge Qs in freindship');
     final dynamic jsonData = json.decode(response.body);
     if (jsonData is List) {
       contentList = jsonData.expand<String>((innerList) {

@@ -119,18 +119,28 @@ Map<int, List<String>> getMappedChallenges(List<dynamic> activeChallenges) {
 // now i need to load the challenge content and send it to groupChallenge
 
 //
-Future<void> getChallenge(
-    int challengeId, Map<int, List<String>> mappedChallenges) async {
-  final url = Uri.parse(BackendService.getBackendUrl() + 'getChallengeQs');
+Future<void> getChallenge(int challengeId, String user,
+    Map<int, List<String>> mappedChallenges) async {
+  final url = Uri.parse(BackendService.getBackendUrl() +
+      '$challengeId/' +
+      '$user/' +
+      'getChallengeQs');
+
   final headers = <String, String>{'Content-Type': 'application/json'};
 
+/*
   final response = await http.post(url,
       headers: headers,
-      body: json.encode(
-        challengeId,
-      ));
+      body: json.encode(({
+        'challengeId': challengeId,
+        'username': user,
+      })));
+      */
+  final response = await http.get(url);
   if (response.statusCode == 200) {
+    print('got challenge Qs in groups');
     final dynamic jsonData = json.decode(response.body);
+    print('this is the jsondata $jsonData');
     if (jsonData is List) {
       contentList = jsonData.expand<String>((innerList) {
         return innerList.map<String>((item) {
@@ -141,11 +151,11 @@ Future<void> getChallenge(
       if (mappedChallenges.containsKey(challengeId)) {
         mappedChallenges[challengeId]!.addAll(contentList);
       } else {
-        print('total failure');
+        //   print('total failure');
       }
       getChallengeMappedChallenges = mappedChallenges;
     } else {
-      print("bad format");
+      //  print("bad format");
     }
   } else {
     print(
@@ -392,17 +402,13 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
     _loadChallenges();
   }
 
-  Future<void> fetchChallengeContent() async {
-    for (var challengeId in activeChallengeIds) {
-      await getChallenge(challengeId, mappedChallenges);
-    }
-  }
-
   Future<void> _loadChallenges() async {
     await getActiveChallenges(widget.groupId ?? 0);
 
+    String username = SharedPrefs().getUserName() ?? "";
+
     for (var challengeId in activeChallengeIds) {
-      await getChallenge(challengeId, mappedChallenges);
+      await getChallenge(challengeId, username, mappedChallenges);
     }
 
     if (mounted) {
