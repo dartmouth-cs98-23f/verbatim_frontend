@@ -11,6 +11,7 @@ import 'package:verbatim_frontend/widgets/custom_app_bar.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'dart:math';
 import 'package:verbatim_frontend/screens/myGroup.dart';
+import 'package:verbatim_frontend/screens/friendship.dart';
 
 Future<void> createCustomChallenge(
     String username, List<String> prompts, int groupId) async {
@@ -36,11 +37,13 @@ Future<void> createCustomChallenge(
 class customChallenge extends StatefulWidget {
   final String groupName;
   final int? groupId;
+  final bool friendship;
 
   customChallenge({
     Key? key,
     required this.groupName,
     required this.groupId,
+    required this.friendship,
   }) : super(key: key);
 
   @override
@@ -157,19 +160,35 @@ class _CustomChallengeState extends State<customChallenge>
                       ),
                       // add 'create challenge'
                       onPressed: () {
-                        print("this is prompts $prompts");
-                        int groupID = widget.groupId!;
-                        String username = SharedPrefs().getUserName() ?? "";
-                        createCustomChallenge(username, prompts, groupID);
-                        //send custom challenge to the backend
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) => myGroup(
-                                groupName: widget.groupName,
-                                groupId: widget.groupId),
-                          ),
-                        );
+                        if (widget.friendship) {
+                          int groupID = widget.groupId!;
+                          String username = SharedPrefs().getUserName() ?? "";
+                          createCustomChallenge(username, prompts, groupID);
+                          //send custom challenge to the backend
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => friendship(
+                                friendUsername: widget.groupName,
+                              ),
+                            ),
+                          );
+                        } else {
+                          print("this is prompts $prompts");
+
+                          int groupID = widget.groupId!;
+                          String username = SharedPrefs().getUserName() ?? "";
+                          createCustomChallenge(username, prompts, groupID);
+                          //send custom challenge to the backend
+                          Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                              builder: (context) => myGroup(
+                                  groupName: widget.groupName,
+                                  groupId: widget.groupId),
+                            ),
+                          );
+                        }
                       }, //send prompts to backend
                       child: Text(
                         'Send Challenge!',

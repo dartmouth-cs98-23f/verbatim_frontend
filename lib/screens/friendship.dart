@@ -15,12 +15,34 @@ import 'package:verbatim_frontend/widgets/custom_app_bar.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'dart:math';
 
+double groupRating = 0;
+List<String> verbaMatch = [];
+List<String> groupMembers = [];
+
+Future<void> getFriendStats(String user, String friend) async {
+  final url = Uri.parse(BackendService.getBackendUrl() + '$user/' + '$friend');
+
+  final response = await http.get(url);
+
+  if (response.statusCode == 200) {
+    final dynamic jsonData = json.decode(response.body);
+    print('here is the json $jsonData');
+    int rating = jsonData["groupRating"];
+    groupRating = rating as double;
+    verbaMatch = List<String>.from(jsonData["verbaMatch"]);
+    groupMembers = List<String>.from(jsonData["groupMembers"]);
+  } else {
+    print('failed to get group stats. Status code: ${response.statusCode}');
+  }
+}
+
 List<Map<String, dynamic>> activeChallenges = [];
 List<int> activeChallengeIds = [];
 Map<int, List<String>> mappedChallenges = {};
 List<String> titles = [];
 List<String> contentList = [];
 Map<int, List<String>> getChallengeMappedChallenges = {};
+int groupId = -1; // get from getActiveChallenge
 
 // but version for friends
 Future<void> getActiveChallenges(String user, String friend) async {
@@ -30,19 +52,18 @@ Future<void> getActiveChallenges(String user, String friend) async {
   final response = await http.get(url);
   if (response.statusCode == 200) {
     final dynamic jsonData = json.decode(response.body);
-    print(jsonData);
 
     if (jsonData is Map<String, dynamic> &&
         jsonData.containsKey("activeChallenges") &&
         jsonData["activeChallenges"] is List) {
       activeChallenges =
           List<Map<String, dynamic>>.from(jsonData["activeChallenges"]);
+      groupId = jsonData["groupId"];
 
       activeChallengeIds =
           activeChallenges.map((challenge) => challenge["id"] as int).toList();
 
       mappedChallenges = getMappedChallenges(activeChallenges);
-      print('$activeChallenges');
     } else {}
   } else {}
 }
@@ -54,6 +75,7 @@ Map<int, List<String>> getMappedChallenges(List<dynamic> activeChallenges) {
     int id = challenge["id"];
     String createdByUsername = challenge["createdBy"]["username"];
     bool isCustom = challenge["isCustom"];
+    print('$isCustom $createdByUsername here iam sometimes');
 
     List<String> challengeInfo = [
       createdByUsername,
@@ -122,8 +144,8 @@ Future<void> _showChallengeOptions(
       return AlertDialog(
         contentPadding: EdgeInsets.zero,
         content: Container(
-          width: 250,
-          height: 250,
+          width: 200,
+          height: 230,
           clipBehavior: Clip.antiAlias,
           decoration: BoxDecoration(
             color: Colors.white,
@@ -141,9 +163,9 @@ Future<void> _showChallengeOptions(
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 10.v),
+              SizedBox(height: 5),
               Padding(
-                padding: EdgeInsets.all(8.v),
+                padding: EdgeInsets.all(8),
                 child: Container(
                     child: FittedBox(
                   fit: BoxFit.scaleDown,
@@ -155,7 +177,7 @@ Future<void> _showChallengeOptions(
                           text: 'New Challenge with ',
                           style: TextStyle(
                             color: Colors.black,
-                            fontSize: 24,
+                            fontSize: 22,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
@@ -172,7 +194,7 @@ Future<void> _showChallengeOptions(
                   ),
                 )),
               ),
-              SizedBox(height: 20.v),
+              SizedBox(height: 20),
               Row(
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: [
@@ -201,13 +223,11 @@ Future<void> _showChallengeOptions(
 
 Widget _buildOptionButton(BuildContext context, title, String description,
     IconData iconData, String groupName) {
-  double number = 125.h;
-  print(number);
   return Container(
       constraints: BoxConstraints(
           minWidth: 80.0, maxWidth: 150.0, minHeight: 80.0, maxHeight: 150.0),
-      width: 125.h,
-      height: 125.h,
+      width: 125,
+      height: 125,
       padding: EdgeInsets.all(10.h),
       clipBehavior: Clip.antiAlias,
       decoration: BoxDecoration(
@@ -228,21 +248,31 @@ Widget _buildOptionButton(BuildContext context, title, String description,
 
           if (title == 'Standard') {
             String username = SharedPrefs().getUserName() ?? "";
-//can't be -1
-            createStandardChallenge(username, -1);
 
             Navigator.pop(context);
+            createStandardChallenge(username, groupId);
+
+            Navigator.pushReplacement(
+              context,
+              MaterialPageRoute(
+                builder: (context) => friendship(
+                  friendUsername: groupName,
+                ),
+              ),
+            );
 
             //
           } else if (title == 'Custom') {
-            // THIS IS A FAKE GROUP ID THIS NEEDS TO BE BETTER SO IT DOESNT MESS EVERYTHIGN UP
-            // EACH FRIENDSHIP NEEDS A GROUP ID?
+            // does this 'groupname' thing work?
 
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                    customChallenge(groupName: groupName, groupId: 1),
+                builder: (context) => customChallenge(
+                  groupName: groupName,
+                  groupId: groupId,
+                  friendship: true,
+                ),
               ),
             );
           }
@@ -252,22 +282,22 @@ Widget _buildOptionButton(BuildContext context, title, String description,
           mainAxisAlignment: MainAxisAlignment.center,
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
-            SizedBox(height: 5.v),
+            SizedBox(height: 5),
             Icon(
               iconData,
               color: Color.fromARGB(255, 250, 192, 94),
-              size: 35.v,
+              size: 20,
             ),
-            SizedBox(height: 5.v),
+            SizedBox(height: 5),
             Text(
               title,
               style: TextStyle(
                 color: Color(0xFFFFF7EE),
-                fontSize: 22.v,
+                fontSize: 16,
                 fontWeight: FontWeight.w700,
               ),
             ),
-            SizedBox(height: 5.v),
+            SizedBox(height: 5),
             SizedBox(
               width: double.infinity,
               child: Text(
@@ -275,7 +305,7 @@ Widget _buildOptionButton(BuildContext context, title, String description,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   color: Color(0xFFFFF7EE),
-                  fontSize: 16.v,
+                  fontSize: 11,
                   fontWeight: FontWeight.w600,
                 ),
               ),
@@ -308,6 +338,17 @@ class _FriendshipState extends State<friendship>
     _loadChallenges();
   }
 
+// this doesnt work
+/*
+  @override
+  void didUpdateWidget(covariant friendship oldWidget) {
+    super.didUpdateWidget(oldWidget);
+
+    if (widget.friendUsername != oldWidget.friendUsername) {
+      _loadChallenges();
+    }
+  }*/
+
   Future<void> _loadChallenges() async {
     String username = SharedPrefs().getUserName() ?? "";
 
@@ -323,6 +364,9 @@ class _FriendshipState extends State<friendship>
   }
 
   Widget build(BuildContext context) {
+    String username = SharedPrefs().getUserName() ?? "";
+
+    getFriendStats(username, widget.friendUsername);
     final String assetName = 'assets/img1.svg';
 
     return SafeArea(
@@ -482,7 +526,8 @@ class _FriendshipState extends State<friendship>
                                                                     groupName:
                                                                         widget
                                                                             .friendUsername,
-                                                                    groupId: -1,
+                                                                    groupId:
+                                                                        groupId,
                                                                     challengeQs:
                                                                         challengeQuestions,
                                                                     challengeId:
@@ -490,7 +535,7 @@ class _FriendshipState extends State<friendship>
                                                           ),
                                                         );
                                                         print(
-                                                            "Pressed ${activeChallenges[index]}");
+                                                            'this is the groupId when you send a challenge$groupId');
                                                       },
                                                       child: Container(
                                                         margin: EdgeInsets
@@ -502,10 +547,10 @@ class _FriendshipState extends State<friendship>
                                                         decoration:
                                                             BoxDecoration(
                                                           color: Color.fromARGB(
-                                                              255 - (3 * index),
-                                                              231 + index,
-                                                              111 + (5 * index),
-                                                              81 + (5 * index)),
+                                                              255,
+                                                              231,
+                                                              111,
+                                                              81),
                                                           borderRadius:
                                                               BorderRadius
                                                                   .circular(10),
@@ -598,11 +643,12 @@ class StatsContent extends StatelessWidget {
             height: 200,
             child: Padding(
               padding: EdgeInsets.all(16.0),
-              child:
-                  DonutChart(groupSimilarity: 30, title: 'Global Challenges'),
+              child: DonutChart(
+                  groupSimilarity: groupRating, title: 'Group Power Score'),
             ),
           ),
           SizedBox(height: 15.v),
+          /*
           Container(
             height: 200,
             child: Padding(
@@ -614,69 +660,158 @@ class StatsContent extends StatelessWidget {
             ),
           ),
           SizedBox(height: 20.v),
-          Container(
-            child: RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: 'Verba',
-                    style: TextStyle(
-                      color: Colors.orange,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
+          */
+          Visibility(
+            visible: verbaMatch.length != 0,
+            child: Container(
+              child: Center(
+                child: Text(
+                  'Most Similar: ',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
                   ),
-                  TextSpan(
-                    text: 'Match!',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Container(
-            child: Center(
-              child: Text(
-                '97% Similarity',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
                 ),
               ),
             ),
           ),
-          SizedBox(height: 10.v),
-          Center(
-            child: Container(
-              width: 170,
-              height: 60,
-              child: Stack(
-                children: [
-                  for (int i = 0; i < 2; i++)
-                    Positioned(
-                      top: 0,
-                      left: 35.0 + (i * 50),
-                      child: Image.asset(
-                        'assets/Ellipse ${41 + i}.png',
-                        height: 60,
-                      ),
+          Visibility(
+              visible: verbaMatch.length == 0,
+              child: Container(
+                child: Center(
+                  child: RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'No ',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextSpan(
+                          text: 'Verba-',
+                          style: TextStyle(
+                            color: Colors.orange,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextSpan(
+                          text: 'Matches...',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
                     ),
-                ],
+                  ),
+                ),
+              )),
+          Visibility(
+            visible: verbaMatch.length == 0,
+            child: SizedBox(
+              height: 20,
+            ),
+          ),
+          Visibility(
+            visible: verbaMatch.length == 0,
+            child: Container(
+              child: Center(
+                child: Text(
+                  'Play more challenges to match!',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
               ),
             ),
           ),
-          SizedBox(height: 15.v),
-          Container(
+          Visibility(
+            visible: verbaMatch.length != 0,
+            child: Container(
+              child: RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: 'Verba',
+                      style: TextStyle(
+                        color: Colors.orange,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextSpan(
+                      text: 'Match!',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Visibility(
+            visible: verbaMatch.length != 0,
+            child: Container(
+              child: Center(
+                child: Text(
+                  '97% Similarity',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Visibility(
+            visible: verbaMatch.length != 0,
+            child: SizedBox(height: 10.v),
+          ),
+          Visibility(
+            visible: verbaMatch.length != 0,
             child: Center(
-              child: Text(
-                'Eve and Frances',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
+              child: Container(
+                width: 170,
+                height: 60,
+                child: Stack(
+                  children: [
+                    for (int i = 0; i < 2; i++)
+                      Positioned(
+                        top: 0,
+                        left: 35.0 + (i * 50),
+                        child: Image.asset(
+                          'assets/Ellipse ${41 + i}.png',
+                          height: 60,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Visibility(
+            visible: verbaMatch.length != 0,
+            child: SizedBox(height: 15.v),
+          ),
+          Visibility(
+            visible: verbaMatch.length != 0,
+            child: Container(
+              child: Center(
+                child: Text(
+                  'Jackie and Erik',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
@@ -777,14 +912,14 @@ class _DonutChartState extends State<DonutChart> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                "${widget.groupSimilarity.toStringAsFixed(2)}%",
+                                "${widget.groupSimilarity.toStringAsFixed(2)}",
                                 style: TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                               Text(
-                                "Similarity",
+                                "Rating",
                                 style: TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.bold,

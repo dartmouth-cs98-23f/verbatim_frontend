@@ -28,6 +28,29 @@ import 'dart:math';
 // group members 
 */
 
+double groupRating = 0;
+List<String> verbaMatch = [];
+List<String> groupMembers = [];
+
+Future<void> getGroupStats(int groupId) async {
+  final url = Uri.parse(BackendService.getBackendUrl() + 'group/' + '$groupId');
+
+  final response = await http.get(url);
+
+  if (response.statusCode == 200) {
+    final dynamic jsonData = json.decode(response.body);
+
+    int rating = jsonData["groupRating"];
+    groupRating = rating as double;
+    verbaMatch = List<String>.from(jsonData["verbaMatch"]);
+    groupMembers = List<String>.from(jsonData["groupMembers"]);
+
+    print('this is jsondata $jsonData');
+  } else {
+    print('failed to get group stats. Status code: ${response.statusCode}');
+  }
+}
+
 Future<void> leaveGroup(int groupId, String username) async {
   final url = Uri.parse(BackendService.getBackendUrl() + 'leaveGroup');
   final headers = <String, String>{'Content-Type': 'application/json'};
@@ -67,7 +90,6 @@ Future<void> getActiveChallenges(int groupId) async {
           activeChallenges.map((challenge) => challenge["id"] as int).toList();
 
       mappedChallenges = getMappedChallenges(activeChallenges);
-      print('$activeChallenges');
     } else {}
   } else {}
 }
@@ -146,7 +168,7 @@ Future<void> createStandardChallenge(String username, int groupId) async {
   if (response.statusCode == 200) {
   } else {
     print(
-        'failed to create standard challenge. Status code: ${response.statusCode}');
+        'te standard chalfailed to crealenge. Status code: ${response.statusCode}');
   }
 }
 
@@ -279,7 +301,7 @@ Widget _buildOptionButton(BuildContext context, title, String description,
 
             Navigator.pop(context);
             String username = SharedPrefs().getUserName() ?? "";
-            print('this is username $username');
+
             createStandardChallenge(username, groupID);
             // re-initiate to load
             Navigator.pushReplacement(
@@ -297,8 +319,11 @@ Widget _buildOptionButton(BuildContext context, title, String description,
             Navigator.push(
               context,
               MaterialPageRoute(
-                builder: (context) =>
-                    customChallenge(groupName: groupName, groupId: groupId),
+                builder: (context) => customChallenge(
+                  groupName: groupName,
+                  groupId: groupId,
+                  friendship: false,
+                ),
               ),
             );
           }
@@ -365,18 +390,6 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
     _loadChallenges();
-
-/*
-    getActiveChallenges(widget.groupId ?? 0).then((_) {
-      print(
-          'Init State - mappedchallenges: $mappedChallenges total ids $activeChallengeIds');
-      fetchChallengeContent();
-
-      setState(() {});
-      print(
-          'Init State - mappedchNOWOWWWWallenges: $getChallengeMappedChallenges total ids $activeChallengeIds');
-    });
-    */
   }
 
   Future<void> fetchChallengeContent() async {
@@ -398,14 +411,11 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
   }
 
   Widget build(BuildContext context) {
+    getGroupStats(widget.groupId ?? 0);
     final String assetName = 'assets/img1.svg';
     List<String>? addedUsernames = widget.addedUsernames;
     int groupID = widget.groupId!;
     String username = SharedPrefs().getUserName() ?? "";
-
-    for (int id in activeChallengeIds) {
-      getChallenge(id, mappedChallenges);
-    }
 
     return SafeArea(
         child: Scaffold(
@@ -625,10 +635,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                                   padding: EdgeInsets.all(10),
                                                   decoration: BoxDecoration(
                                                     color: Color.fromARGB(
-                                                        255 - (3 * index),
-                                                        231 + index,
-                                                        111 + (5 * index),
-                                                        81 + (5 * index)),
+                                                        255, 231, 111, 81),
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             10),
@@ -716,11 +723,12 @@ class StatsContent extends StatelessWidget {
             height: 200,
             child: Padding(
               padding: EdgeInsets.all(16.0),
-              child:
-                  DonutChart(groupSimilarity: 30, title: 'Global Challenges'),
+              child: DonutChart(
+                  groupSimilarity: groupRating, title: 'Group Power Score'),
             ),
           ),
           SizedBox(height: 15.v),
+          /*
           Container(
             height: 200,
             child: Padding(
@@ -732,80 +740,158 @@ class StatsContent extends StatelessWidget {
             ),
           ),
           SizedBox(height: 20.v),
-          Container(
-            child: Center(
-              child: Text(
-                'Most Similar',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
-          Container(
-            child: RichText(
-              text: TextSpan(
-                children: [
-                  TextSpan(
-                    text: 'Verba',
-                    style: TextStyle(
-                      color: Colors.orange,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                  TextSpan(
-                    text: 'Match!',
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 24,
-                      fontWeight: FontWeight.bold,
-                    ),
-                  ),
-                ],
-              ),
-            ),
-          ),
-          Container(
-            child: Center(
-              child: Text(
-                '97% Similarity',
-                style: TextStyle(
-                  fontSize: 18,
-                  fontWeight: FontWeight.bold,
-                ),
-              ),
-            ),
-          ),
-          SizedBox(height: 10.v),
-          Center(
+          */
+          Visibility(
+            visible: verbaMatch.length != 0,
             child: Container(
-              width: 170,
-              height: 60,
-              child: Stack(
-                children: [
-                  for (int i = 0; i < 2; i++)
-                    Positioned(
-                      top: 0,
-                      left: 35.0 + (i * 50),
-                      child: Image.asset(
-                        'assets/Ellipse ${41 + i}.png',
-                        height: 60,
+              child: Center(
+                child: Text(
+                  'Most Similar: ',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Visibility(
+              visible: verbaMatch.length == 0,
+              child: Container(
+                child: Center(
+                  child: RichText(
+                    text: TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'No ',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextSpan(
+                          text: 'Verba-',
+                          style: TextStyle(
+                            color: Colors.orange,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextSpan(
+                          text: 'Matches...',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              )),
+          Visibility(
+            visible: verbaMatch.length == 0,
+            child: SizedBox(
+              height: 20,
+            ),
+          ),
+          Visibility(
+            visible: verbaMatch.length == 0,
+            child: Container(
+              child: Center(
+                child: Text(
+                  'Play more challenges to match!',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Visibility(
+            visible: verbaMatch.length != 0,
+            child: Container(
+              child: RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: 'Verba',
+                      style: TextStyle(
+                        color: Colors.orange,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
                       ),
                     ),
-                ],
+                    TextSpan(
+                      text: 'Match!',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
               ),
             ),
           ),
-          SizedBox(height: 15.v),
-          Container(
+          Visibility(
+            visible: verbaMatch.length != 0,
+            child: Container(
+              child: Center(
+                child: Text(
+                  '97% Similarity',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Visibility(
+            visible: verbaMatch.length != 0,
+            child: SizedBox(height: 10.v),
+          ),
+          Visibility(
+            visible: verbaMatch.length != 0,
             child: Center(
-              child: Text(
-                'Jackie and Erik',
-                style: TextStyle(
-                  fontSize: 14,
-                  fontWeight: FontWeight.bold,
+              child: Container(
+                width: 170,
+                height: 60,
+                child: Stack(
+                  children: [
+                    for (int i = 0; i < 2; i++)
+                      Positioned(
+                        top: 0,
+                        left: 35.0 + (i * 50),
+                        child: Image.asset(
+                          'assets/Ellipse ${41 + i}.png',
+                          height: 60,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Visibility(
+            visible: verbaMatch.length != 0,
+            child: SizedBox(height: 15.v),
+          ),
+          Visibility(
+            visible: verbaMatch.length != 0,
+            child: Container(
+              child: Center(
+                child: Text(
+                  'Jackie and Erik',
+                  style: TextStyle(
+                    fontSize: 14,
+                    fontWeight: FontWeight.bold,
+                  ),
                 ),
               ),
             ),
@@ -906,14 +992,14 @@ class _DonutChartState extends State<DonutChart> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                "${widget.groupSimilarity.toStringAsFixed(2)}%",
+                                "${widget.groupSimilarity.toStringAsFixed(2)}",
                                 style: TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                               Text(
-                                "Similarity",
+                                "Rating",
                                 style: TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.bold,
