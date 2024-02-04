@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+
 import 'package:verbatim_frontend/screens/landingPage.dart';
 import 'package:verbatim_frontend/screens/logIn.dart';
 import 'package:verbatim_frontend/screens/signUp.dart';
 import 'BackendService.dart';
 import 'Components/defineRoutes.dart';
 import 'Components/shared_prefs.dart';
+import 'package:verbatim_frontend/screens/sidebar.dart';
 import 'package:clipboard/clipboard.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
@@ -20,7 +23,9 @@ Future<void> main() async {
   //print("env in main is: " + environment);
   BackendService.loadProperties(environment);
 
-  runApp(MyApp());
+  runApp(
+    MyApp(),
+  );
 
   defineRoutes();
 }

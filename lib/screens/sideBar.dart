@@ -1,9 +1,24 @@
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'dart:convert';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
+
+// try and get this to work?
+/*
+class FriendRequestsProvider extends ChangeNotifier {
+  Set<String> _friendRequestUsernames = <String>{};
+
+  Set<String> get friendRequestUsernames => _friendRequestUsernames;
+
+  void updateFriendRequests(Set<String> updatedFriendRequests) {
+    _friendRequestUsernames = updatedFriendRequests;
+    notifyListeners();
+  }
+}
+*/
 
 class User {
   int id = 0;
@@ -82,10 +97,6 @@ class _SideBarState extends State<SideBar> {
     final url = Uri.parse(
         BackendService.getBackendUrl() + 'user/' + '$username/' + 'groups');
 
-    final headers = <String, String>{'Content-Type': 'application/json'};
-    final requestPayload = json.encode({
-      'username': username,
-    });
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
@@ -104,6 +115,7 @@ class _SideBarState extends State<SideBar> {
     }
   }
 
+// getFriends - can I get the friend:user groupId here?
   Future<void> getFriends(String username) async {
     final url = Uri.parse(BackendService.getBackendUrl() + 'getFriends');
     final Map<String, String> headers = {
@@ -172,6 +184,7 @@ class _SideBarState extends State<SideBar> {
   @override
   Widget build(BuildContext context) {
     username = SharedPrefs().getUserName() ?? "";
+    // laod content first - get friends, requests and groups
     return FutureBuilder<void>(
         future: Future.wait([
           getFriends(username),
@@ -272,6 +285,7 @@ class _SideBarState extends State<SideBar> {
                           itemBuilder: (BuildContext context, int index) {
                             String friend = usernamesList[index];
 
+// if you click the friendname, go to the friendship page. Can i send friend groupId? load it here?
                             return ListTile(
                               title: Text(
                                 friend,
@@ -316,28 +330,14 @@ class _SideBarState extends State<SideBar> {
                       SizedBox(height: 10.0),
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 5.0),
-                        child:
-
-                            /*child: ListTile(
-                            title: Text('Group 1',
-                                style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15)),
-                            leading: Icon(Icons.people, color: Colors.black),
-                            onTap: () {
-                              handleTap(context, 5);
-                            },
-                          ),
-                          */
-                            ListView.builder(
+                        child: ListView.builder(
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
                           itemCount: groupnamesList.length,
                           itemBuilder: (BuildContext context, int index) {
                             String groupname = groupnamesList[index];
                             int? groupId = userGroups[index].id;
-
+// go to group with this Id
                             return ListTile(
                               title: Text(
                                 groupname,
@@ -360,76 +360,77 @@ class _SideBarState extends State<SideBar> {
                   ),
                   SizedBox(height: 20.0),
                   ExpansionTile(
-                    title: Text(
-                      'Friend Requests',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18),
-                    ),
-                    trailing: friendRequestUsernames.isNotEmpty
-                        ? Icon(Icons.pending, color: Colors.orange, size: 25)
-                        : Icon(Icons.pending, color: Colors.black, size: 25),
-                    shape: Border(),
-                    children: <Widget>[
-                      SizedBox(height: 10.0),
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 5.0),
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: friendRequestUsernames.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            List<String> requestsList =
-                                friendRequestUsernames.toList();
-                            String requester = requestsList[index];
-
-                            return ListTile(
-                              title: Text(
-                                requester,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                ),
-                              ),
-                              leading: Icon(Icons.person, color: Colors.black),
-                              trailing: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  GestureDetector(
-                                    onTap: () {
-                                      handleFriendRequests(
-                                          username, requester, true);
-                                      setState(() {
-                                        friendRequestUsernames
-                                            .remove(requester);
-                                      });
-                                    },
-                                    child: Icon(Icons.check_box,
-                                        color: Colors.black),
-                                  ),
-                                  GestureDetector(
-                                    onTap: () {
-                                      handleFriendRequests(
-                                          username, requester, false);
-                                      setState(() {
-                                        friendRequestUsernames
-                                            .remove(requester);
-                                      });
-                                    },
-                                    child:
-                                        Icon(Icons.cancel, color: Colors.black),
-                                  ),
-                                ],
-                              ),
-                              onTap: () {},
-                            );
-                          },
-                        ),
+                      title: Text(
+                        'Friend Requests',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18),
                       ),
-                    ],
-                  ),
+                      trailing: friendRequestUsernames.isNotEmpty
+                          ? Icon(Icons.pending, color: Colors.orange, size: 25)
+                          : Icon(Icons.pending, color: Colors.black, size: 25),
+                      shape: Border(),
+                      children: <Widget>[
+                        SizedBox(height: 10.0),
+                        Container(
+                          padding: EdgeInsets.symmetric(horizontal: 5.0),
+                          child: ListView.builder(
+                            shrinkWrap: true,
+                            physics: NeverScrollableScrollPhysics(),
+                            itemCount: friendRequestUsernames.length,
+                            itemBuilder: (BuildContext context, int index) {
+                              List<String> requestsList =
+                                  friendRequestUsernames.toList();
+
+                              String requester = requestsList[index];
+
+                              return ListTile(
+                                title: Text(
+                                  requester,
+                                  style: TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
+                                  ),
+                                ),
+                                leading:
+                                    Icon(Icons.person, color: Colors.black),
+                                trailing: Row(
+                                  mainAxisSize: MainAxisSize.min,
+                                  children: [
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          friendRequestUsernames
+                                              .remove(requester);
+                                        });
+                                        handleFriendRequests(
+                                            username, requester, true);
+                                      },
+                                      child: Icon(Icons.check_box,
+                                          color: Colors.black),
+                                    ),
+                                    GestureDetector(
+                                      onTap: () {
+                                        setState(() {
+                                          friendRequestUsernames
+                                              .remove(requester);
+                                        });
+                                        handleFriendRequests(
+                                            username, requester, false);
+                                      },
+                                      child: Icon(Icons.cancel,
+                                          color: Colors.black),
+                                    ),
+                                  ],
+                                ),
+                                onTap: () {},
+                              );
+                            },
+                          ),
+                        ),
+                      ]),
                   SizedBox(height: 20.0),
                   ListTile(
                     title: Text('More',
@@ -506,15 +507,6 @@ void handleTap(BuildContext context, int index) {
 
     case 4: // "Create Group"
       Navigator.pushNamed(context, '/create_group');
-      break;
-
-    case 5: // "My Group"
-      String userResponse = 'kool kids';
-      List<String> addedUsernames = ['frances'];
-      Navigator.pushNamed(
-        context,
-        '/my_group/${Uri.encodeComponent(userResponse!)}/${Uri.encodeComponent(addedUsernames!.join(','))}',
-      );
       break;
   }
 }
