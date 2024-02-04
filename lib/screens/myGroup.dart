@@ -7,374 +7,12 @@ import 'package:verbatim_frontend/screens/customChallenge.dart';
 import 'package:verbatim_frontend/screens/groupChallenge.dart';
 import 'sideBar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:verbatim_frontend/widgets/create_group_app_bar.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:verbatim_frontend/widgets/custom_app_bar.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'dart:math';
-
-// MAKE IT
-
-/* Future void function, get active challenges
-  - When you open the page, send groupId 
-*/
-
-/* get group stats
-
-// verba match --> could be empty
-// group score 
-// group members 
-*/
-
-double groupRating = 0;
-List<String> verbaMatch = [];
-List<String> groupMembers = [];
-
-Future<void> getGroupStats(int groupId) async {
-  final url = Uri.parse(BackendService.getBackendUrl() + 'group/' + '$groupId');
-
-  final response = await http.get(url);
-
-  if (response.statusCode == 200) {
-    final dynamic jsonData = json.decode(response.body);
-
-    int rating = jsonData["groupRating"];
-    groupRating = rating as double;
-    verbaMatch = List<String>.from(jsonData["verbaMatch"]);
-    groupMembers = List<String>.from(jsonData["groupMembers"]);
-
-    print('this is jsondata $jsonData');
-  } else {
-    print('failed to get group stats. Status code: ${response.statusCode}');
-  }
-}
-
-Future<void> leaveGroup(int groupId, String username) async {
-  final url = Uri.parse(BackendService.getBackendUrl() + 'leaveGroup');
-  final headers = <String, String>{'Content-Type': 'application/json'};
-
-  final response = await http.post(url,
-      headers: headers,
-      body: json.encode(({'groupId': groupId, 'username': username})));
-  if (response.statusCode == 200) {
-    print("success");
-  } else {
-    print("failure");
-  }
-}
-
-List<Map<String, dynamic>> activeChallenges = [];
-List<int> activeChallengeIds = [];
-Map<int, List<String>> mappedChallenges = {};
-List<String> titles = [];
-List<String> contentList = [];
-Map<int, List<String>> getChallengeMappedChallenges = {};
-
-Future<void> getActiveChallenges(int groupId) async {
-  final url = Uri.parse(
-      BackendService.getBackendUrl() + 'group/' + '$groupId/' + 'challenges');
-
-  final response = await http.get(url);
-  if (response.statusCode == 200) {
-    final dynamic jsonData = json.decode(response.body);
-
-    if (jsonData is Map<String, dynamic> &&
-        jsonData.containsKey("activeChallenges") &&
-        jsonData["activeChallenges"] is List) {
-      activeChallenges =
-          List<Map<String, dynamic>>.from(jsonData["activeChallenges"]);
-
-      activeChallengeIds =
-          activeChallenges.map((challenge) => challenge["id"] as int).toList();
-
-      mappedChallenges = getMappedChallenges(activeChallenges);
-    } else {}
-  } else {}
-}
-
-Map<int, List<String>> getMappedChallenges(List<dynamic> activeChallenges) {
-  Map<int, List<String>> mappedChallenges = {};
-
-  for (var challenge in activeChallenges) {
-    int id = challenge["id"];
-    String createdByUsername = challenge["createdBy"]["username"];
-    bool isCustom = challenge["isCustom"];
-
-    List<String> challengeInfo = [
-      createdByUsername,
-      isCustom ? "Custom" : "Not Custom"
-    ];
-    mappedChallenges[id] = challengeInfo;
-    // List<String> questions = await getChallenge(id);
-    // mappedChallenges[id]!.addAll(questions);
-  }
-
-  return mappedChallenges;
-}
-
-// Example usage:
-
-// now i need to load the challenge content and send it to groupChallenge
-
-//
-Future<void> getChallenge(int challengeId, String user,
-    Map<int, List<String>> mappedChallenges) async {
-  final url = Uri.parse(BackendService.getBackendUrl() +
-      '$challengeId/' +
-      '$user/' +
-      'getChallengeQs');
-
-  final headers = <String, String>{'Content-Type': 'application/json'};
-
-/*
-  final response = await http.post(url,
-      headers: headers,
-      body: json.encode(({
-        'challengeId': challengeId,
-        'username': user,
-      })));
-      */
-  final response = await http.get(url);
-  if (response.statusCode == 200) {
-    print('got challenge Qs in groups');
-    final dynamic jsonData = json.decode(response.body);
-    print('this is the jsondata $jsonData');
-    if (jsonData is List) {
-      contentList = jsonData.expand<String>((innerList) {
-        return innerList.map<String>((item) {
-          return item['content'].toString();
-        });
-      }).toList();
-
-      if (mappedChallenges.containsKey(challengeId)) {
-        mappedChallenges[challengeId]!.addAll(contentList);
-      } else {
-        //   print('total failure');
-      }
-      getChallengeMappedChallenges = mappedChallenges;
-    } else {
-      //  print("bad format");
-    }
-  } else {
-    print(
-        'failed to get challenge beeeeepp questions. Status code: ${response.statusCode}');
-  }
-}
-
-// get the content for each active challenge
-
-// create standard challenge
-
-Future<void> createStandardChallenge(String username, int groupId) async {
-  final url =
-      Uri.parse(BackendService.getBackendUrl() + 'createStandardChallenge');
-  final headers = <String, String>{'Content-Type': 'application/json'};
-  print('this is $username and this is groupId $groupId');
-  final response = await http.post(url,
-      headers: headers,
-      body: json.encode({'createdByUsername': username, 'groupId': groupId}));
-  if (response.statusCode == 200) {
-  } else {
-    print(
-        'te standard chalfailed to crealenge. Status code: ${response.statusCode}');
-  }
-}
-
-List<String> groupUsers = ['frances', '2', '2', '3', '33', '44'];
-
-Future<void> preloadImages(BuildContext context) async {
-  for (int i = 0; i < min(groupUsers!.length + 1, 6); i++) {
-    final key = 'assets/Ellipse ${41 + i}.png';
-    final image = AssetImage(key);
-    await precacheImage(image, context);
-  }
-}
-
-Future<void> _showChallengeOptions(
-    BuildContext context, String groupName, int? groupId) async {
-  return showDialog<void>(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        contentPadding: EdgeInsets.zero,
-        content: Container(
-          width: 200,
-          height: 230,
-          clipBehavior: Clip.antiAlias,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: Color(0xFF9E503C).withOpacity(0.5),
-                blurRadius: 4,
-                offset: Offset(2, 3),
-              )
-            ],
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(height: 5),
-              Padding(
-                padding: EdgeInsets.all(8),
-                child: Container(
-                    child: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: 'New Challenge with ',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        // if groupname is a certain length, make it a new line
-                        TextSpan(
-                          text: '$groupName',
-                          style: TextStyle(
-                            color: Colors.orange,
-                            fontSize: 24,
-                            fontWeight: FontWeight.w900,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                )),
-              ),
-              SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildOptionButton(
-                      context,
-                      'Standard',
-                      'Leave the categories to us',
-                      Icons.my_library_books_rounded,
-                      groupName,
-                      groupId),
-                  _buildOptionButton(
-                      context,
-                      'Custom',
-                      'Create your own categories',
-                      Icons.card_giftcard_rounded,
-                      groupName,
-                      groupId),
-                ],
-              ),
-              SizedBox(height: 10),
-            ],
-          ),
-        ),
-      );
-    },
-  );
-}
-
-Widget _buildOptionButton(BuildContext context, title, String description,
-    IconData iconData, String groupName, int? groupId) {
-  return Container(
-      constraints: BoxConstraints(
-          minWidth: 80.0, maxWidth: 150.0, minHeight: 80.0, maxHeight: 150.0),
-      width: 125,
-      height: 125,
-      padding: EdgeInsets.all(10),
-      clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(
-        color: Color(0xFFE76F51),
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Color(0xFF997048).withOpacity(0.5),
-            blurRadius: 4,
-            offset: Offset(0, 2),
-          )
-        ],
-      ),
-      child: GestureDetector(
-        onTap: () {
-          //talk to backend/add new popup - make something change so it pops up immediately
-          // some bool that can automatically call set state from other widget?
-
-          if (title == 'Standard') {
-            int groupID = groupId!;
-            //   activeChallengesHard.add('New Standard Challenge');
-
-            Navigator.pop(context);
-            String username = SharedPrefs().getUserName() ?? "";
-
-            createStandardChallenge(username, groupID);
-            // re-initiate to load
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => myGroup(
-                  groupName: groupName,
-                  groupId: groupId,
-                ),
-              ),
-            );
-
-            //
-          } else if (title == 'Custom') {
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => customChallenge(
-                  groupName: groupName,
-                  groupId: groupId,
-                  friendship: false,
-                ),
-              ),
-            );
-          }
-        },
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(height: 5),
-            Icon(
-              iconData,
-              color: Color.fromARGB(255, 250, 192, 94),
-              size: 20,
-            ),
-            SizedBox(height: 5),
-            Text(
-              title,
-              style: TextStyle(
-                color: Color(0xFFFFF7EE),
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            SizedBox(height: 5),
-            SizedBox(
-              width: double.infinity,
-              child: Text(
-                description,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Color(0xFFFFF7EE),
-                  fontSize: 12,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ));
-}
 
 class myGroup extends StatefulWidget {
   final String groupName;
@@ -394,6 +32,346 @@ class myGroup extends StatefulWidget {
 
 class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
   late TabController _tabController;
+
+  double groupRating = 0;
+  List<String> verbaMatch = [];
+  List<String> groupMembers = [];
+
+  Future<void> getGroupStats(int groupId) async {
+    final url =
+        Uri.parse(BackendService.getBackendUrl() + 'group/' + '$groupId');
+
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final dynamic jsonData = json.decode(response.body);
+
+      int rating = jsonData["groupRating"];
+      groupRating = rating as double;
+      verbaMatch = List<String>.from(jsonData["verbaMatch"]);
+      groupMembers = List<String>.from(jsonData["groupMembers"]);
+
+      print('this is jsondata $jsonData');
+    } else {
+      print('failed to get group stats. Status code: ${response.statusCode}');
+    }
+  }
+
+  Future<void> leaveGroup(int groupId, String username) async {
+    final url = Uri.parse(BackendService.getBackendUrl() + 'leaveGroup');
+    final headers = <String, String>{'Content-Type': 'application/json'};
+
+    final response = await http.post(url,
+        headers: headers,
+        body: json.encode(({'groupId': groupId, 'username': username})));
+    if (response.statusCode == 200) {
+      print("success");
+    } else {
+      print("failure");
+    }
+  }
+
+  List<Map<String, dynamic>> activeChallenges = [];
+  List<int> activeChallengeIds = [];
+  Map<int, List<String>> mappedChallenges = {};
+  List<String> titles = [];
+  List<String> contentList = [];
+  Map<int, List<String>> getChallengeMappedChallenges = {};
+
+  Future<void> getActiveChallenges(int groupId) async {
+    final url = Uri.parse(
+        BackendService.getBackendUrl() + 'group/' + '$groupId/' + 'challenges');
+
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      final dynamic jsonData = json.decode(response.body);
+
+      if (jsonData is Map<String, dynamic> &&
+          jsonData.containsKey("activeChallenges") &&
+          jsonData["activeChallenges"] is List) {
+        activeChallenges =
+            List<Map<String, dynamic>>.from(jsonData["activeChallenges"]);
+
+        activeChallengeIds = activeChallenges
+            .map((challenge) => challenge["id"] as int)
+            .toList();
+
+        mappedChallenges = getMappedChallenges(activeChallenges);
+      } else {}
+    } else {}
+  }
+
+  Map<int, List<String>> getMappedChallenges(List<dynamic> activeChallenges) {
+    Map<int, List<String>> mappedChallenges = {};
+
+    for (var challenge in activeChallenges) {
+      int id = challenge["id"];
+      String createdByUsername = challenge["createdBy"]["username"];
+      bool isCustom = challenge["isCustom"];
+
+      List<String> challengeInfo = [
+        createdByUsername,
+        isCustom ? "Custom" : "Not Custom"
+      ];
+      mappedChallenges[id] = challengeInfo;
+      // List<String> questions = await getChallenge(id);
+      // mappedChallenges[id]!.addAll(questions);
+    }
+
+    return mappedChallenges;
+  }
+
+// Example usage:
+
+// now i need to load the challenge content and send it to groupChallenge
+
+//
+  Future<void> getChallenge(int challengeId, String user,
+      Map<int, List<String>> mappedChallenges) async {
+    final url = Uri.parse(BackendService.getBackendUrl() +
+        '$challengeId/' +
+        '$user/' +
+        'getChallengeQs');
+
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      print('got challenge Qs in groups');
+      final dynamic jsonData = json.decode(response.body);
+      print('this is the jsondata $jsonData');
+      if (jsonData is List) {
+        contentList = jsonData.expand<String>((innerList) {
+          return innerList.map<String>((item) {
+            return item['content'].toString();
+          });
+        }).toList();
+
+        if (mappedChallenges.containsKey(challengeId)) {
+          mappedChallenges[challengeId]!.addAll(contentList);
+        } else {
+          //   print('total failure');
+        }
+        getChallengeMappedChallenges = mappedChallenges;
+      } else {
+        //  print("bad format");
+      }
+    } else {
+      print(
+          'failed to get challenge beeeeepp questions. Status code: ${response.statusCode}');
+    }
+  }
+
+// get the content for each active challenge
+
+// create standard challenge
+
+  Future<void> createStandardChallenge(String username, int groupId) async {
+    final url =
+        Uri.parse(BackendService.getBackendUrl() + 'createStandardChallenge');
+    final headers = <String, String>{'Content-Type': 'application/json'};
+    print('this is $username and this is groupId $groupId');
+    final response = await http.post(url,
+        headers: headers,
+        body: json.encode({'createdByUsername': username, 'groupId': groupId}));
+    if (response.statusCode == 200) {
+    } else {
+      print(
+          'te standard chalfailed to crealenge. Status code: ${response.statusCode}');
+    }
+  }
+
+  List<String> groupUsers = ['frances', '2', '2', '3', '33', '44'];
+
+  Future<void> preloadImages(BuildContext context) async {
+    for (int i = 0; i < min(groupUsers!.length + 1, 6); i++) {
+      final key = 'assets/Ellipse ${41 + i}.png';
+      final image = AssetImage(key);
+      await precacheImage(image, context);
+    }
+  }
+
+  Future<void> _showChallengeOptions(
+      BuildContext context, String groupName, int? groupId) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          contentPadding: EdgeInsets.zero,
+          content: Container(
+            width: 200,
+            height: 230,
+            clipBehavior: Clip.antiAlias,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Color(0xFF9E503C).withOpacity(0.5),
+                  blurRadius: 4,
+                  offset: Offset(2, 3),
+                )
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: 5),
+                Padding(
+                  padding: EdgeInsets.all(8),
+                  child: Container(
+                      child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'New Challenge with ',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          // if groupname is a certain length, make it a new line
+                          TextSpan(
+                            text: '$groupName',
+                            style: TextStyle(
+                              color: Colors.orange,
+                              fontSize: 24,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )),
+                ),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildOptionButton(
+                        context,
+                        'Standard',
+                        'Leave the categories to us',
+                        Icons.my_library_books_rounded,
+                        groupName,
+                        groupId),
+                    _buildOptionButton(
+                        context,
+                        'Custom',
+                        'Create your own categories',
+                        Icons.card_giftcard_rounded,
+                        groupName,
+                        groupId),
+                  ],
+                ),
+                SizedBox(height: 10),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  Widget _buildOptionButton(BuildContext context, title, String description,
+      IconData iconData, String groupName, int? groupId) {
+    return Container(
+        constraints: BoxConstraints(
+            minWidth: 80.0, maxWidth: 150.0, minHeight: 80.0, maxHeight: 150.0),
+        width: 125,
+        height: 125,
+        padding: EdgeInsets.all(10),
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(
+          color: Color(0xFFE76F51),
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Color(0xFF997048).withOpacity(0.5),
+              blurRadius: 4,
+              offset: Offset(0, 2),
+            )
+          ],
+        ),
+        child: GestureDetector(
+          onTap: () {
+            //talk to backend/add new popup - make something change so it pops up immediately
+            // some bool that can automatically call set state from other widget?
+
+            if (title == 'Standard') {
+              int groupID = groupId!;
+              //   activeChallengesHard.add('New Standard Challenge');
+
+              Navigator.pop(context);
+              String username = SharedPrefs().getUserName() ?? "";
+
+              createStandardChallenge(username, groupID);
+              // re-initiate to load
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => myGroup(
+                    groupName: groupName,
+                    groupId: groupId,
+                  ),
+                ),
+              );
+
+              //
+            } else if (title == 'Custom') {
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => customChallenge(
+                    groupName: groupName,
+                    groupId: groupId,
+                    friendship: false,
+                  ),
+                ),
+              );
+            }
+          },
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 5),
+              Icon(
+                iconData,
+                color: Color.fromARGB(255, 250, 192, 94),
+                size: 20,
+              ),
+              SizedBox(height: 5),
+              Text(
+                title,
+                style: TextStyle(
+                  color: Color(0xFFFFF7EE),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              SizedBox(height: 5),
+              SizedBox(
+                width: double.infinity,
+                child: Text(
+                  description,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Color(0xFFFFF7EE),
+                    fontSize: 12,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ));
+  }
 
   @override
   void initState() {
@@ -705,7 +683,10 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                     ),
                                   ),
                                   // Content for Stats
-                                  Container(child: StatsContent()),
+                                  Container(
+                                      child: StatsContent(
+                                          verbaMatch: verbaMatch,
+                                          groupRating: groupRating)),
                                 ],
                               ),
                             ),
@@ -718,6 +699,14 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
 }
 
 class StatsContent extends StatelessWidget {
+  List<String> verbaMatch;
+  double groupRating;
+
+  StatsContent({
+    required this.verbaMatch,
+    required this.groupRating,
+  });
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(

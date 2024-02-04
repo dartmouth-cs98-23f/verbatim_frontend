@@ -12,307 +12,6 @@ import 'dart:convert';
 import 'package:verbatim_frontend/widgets/custom_app_bar.dart';
 import 'package:fl_chart/fl_chart.dart';
 
-double groupRating = 0;
-List<String> verbaMatch = [];
-List<String> groupMembers = [];
-
-Future<void> getFriendStats(String user, String friend) async {
-  final url = Uri.parse(BackendService.getBackendUrl() + '$user/' + '$friend');
-
-  final response = await http.get(url);
-
-  if (response.statusCode == 200) {
-    final dynamic jsonData = json.decode(response.body);
-    print('here is the json $jsonData');
-    int rating = jsonData["groupRating"];
-    groupRating = rating as double;
-    verbaMatch = List<String>.from(jsonData["verbaMatch"]);
-    groupMembers = List<String>.from(jsonData["groupMembers"]);
-  } else {
-    print('failed to get group stats. Status code: ${response.statusCode}');
-  }
-}
-
-List<Map<String, dynamic>> activeChallenges = [];
-List<int> activeChallengeIds = [];
-Map<int, List<String>> mappedChallenges = {};
-List<String> titles = [];
-List<String> contentList = [];
-Map<int, List<String>> getChallengeMappedChallenges = {};
-int groupId = -1; // get from getActiveChallenge
-
-// but version for friends
-Future<void> getActiveChallenges(String user, String friend) async {
-  final url = Uri.parse(
-      BackendService.getBackendUrl() + '$user/' + '$friend/' + 'challenges');
-
-  final response = await http.get(url);
-  if (response.statusCode == 200) {
-    final dynamic jsonData = json.decode(response.body);
-
-    if (jsonData is Map<String, dynamic> &&
-        jsonData.containsKey("activeChallenges") &&
-        jsonData["activeChallenges"] is List) {
-      activeChallenges =
-          List<Map<String, dynamic>>.from(jsonData["activeChallenges"]);
-      groupId = jsonData["groupId"];
-
-      activeChallengeIds =
-          activeChallenges.map((challenge) => challenge["id"] as int).toList();
-
-      mappedChallenges = getMappedChallenges(activeChallenges);
-    } else {}
-  } else {}
-}
-
-Map<int, List<String>> getMappedChallenges(List<dynamic> activeChallenges) {
-  Map<int, List<String>> mappedChallenges = {};
-
-  for (var challenge in activeChallenges) {
-    int id = challenge["id"];
-    String createdByUsername = challenge["createdBy"]["username"];
-    bool isCustom = challenge["isCustom"];
-    print('$isCustom $createdByUsername here iam sometimes');
-
-    List<String> challengeInfo = [
-      createdByUsername,
-      isCustom ? "Custom" : "Not Custom"
-    ];
-    mappedChallenges[id] = challengeInfo;
-  }
-
-  return mappedChallenges;
-}
-
-Future<void> getChallenge(
-    int challengeId, Map<int, List<String>> mappedChallenges) async {
-  final url = Uri.parse(BackendService.getBackendUrl() + 'getChallengeQs');
-  final headers = <String, String>{'Content-Type': 'application/json'};
-
-  final response = await http.post(url,
-      headers: headers,
-      body: json.encode(
-        challengeId,
-      ));
-  if (response.statusCode == 200) {
-    print('got challenge Qs in freindship');
-    final dynamic jsonData = json.decode(response.body);
-    if (jsonData is List) {
-      contentList = jsonData.expand<String>((innerList) {
-        return innerList.map<String>((item) {
-          return item['content'].toString();
-        });
-      }).toList();
-
-      if (mappedChallenges.containsKey(challengeId)) {
-        mappedChallenges[challengeId]!.addAll(contentList);
-      } else {
-        print('total failure');
-      }
-      getChallengeMappedChallenges = mappedChallenges;
-    } else {
-      print("bad format");
-    }
-  } else {
-    print(
-        'failed to get challenge beeeeepp questions. Status code: ${response.statusCode}');
-  }
-}
-
-Future<void> createStandardChallenge(String username, int groupId) async {
-  final url =
-      Uri.parse(BackendService.getBackendUrl() + 'createStandardChallenge');
-  final headers = <String, String>{'Content-Type': 'application/json'};
-  print('this is $username and this is groupId $groupId');
-  final response = await http.post(url,
-      headers: headers,
-      body: json.encode({'createdByUsername': username, 'groupId': groupId}));
-  if (response.statusCode == 200) {
-  } else {
-    print(
-        'failed to create standard challenge. Status code: ${response.statusCode}');
-  }
-}
-
-Future<void> _showChallengeOptions(
-    BuildContext context, String groupName) async {
-  return showDialog<void>(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        contentPadding: EdgeInsets.zero,
-        content: Container(
-          width: 200,
-          height: 230,
-          clipBehavior: Clip.antiAlias,
-          decoration: BoxDecoration(
-            color: Colors.white,
-            borderRadius: BorderRadius.circular(20),
-            boxShadow: [
-              BoxShadow(
-                color: Color(0xFF9E503C).withOpacity(0.5),
-                blurRadius: 4,
-                offset: Offset(2, 3),
-              )
-            ],
-          ),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.center,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              SizedBox(height: 5),
-              Padding(
-                padding: EdgeInsets.all(8),
-                child: Container(
-                    child: FittedBox(
-                  fit: BoxFit.scaleDown,
-                  child: RichText(
-                    textAlign: TextAlign.center,
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: 'New Challenge with ',
-                          style: TextStyle(
-                            color: Colors.black,
-                            fontSize: 22,
-                            fontWeight: FontWeight.bold,
-                          ),
-                        ),
-                        TextSpan(
-                          text: '$groupName',
-                          style: TextStyle(
-                            color: Colors.orange,
-                            fontSize: 24,
-                            fontWeight: FontWeight.w900,
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                )),
-              ),
-              SizedBox(height: 20),
-              Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  _buildOptionButton(
-                      context,
-                      'Standard',
-                      'Leave the categories to us',
-                      Icons.my_library_books_rounded,
-                      groupName),
-                  _buildOptionButton(
-                      context,
-                      'Custom',
-                      'Create your own categories',
-                      Icons.card_giftcard_rounded,
-                      groupName),
-                ],
-              ),
-              SizedBox(height: 10),
-            ],
-          ),
-        ),
-      );
-    },
-  );
-}
-
-Widget _buildOptionButton(BuildContext context, title, String description,
-    IconData iconData, String groupName) {
-  return Container(
-      constraints: BoxConstraints(
-          minWidth: 80.0, maxWidth: 150.0, minHeight: 80.0, maxHeight: 150.0),
-      width: 125,
-      height: 125,
-      padding: EdgeInsets.all(10.h),
-      clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(
-        color: Color(0xFFE76F51),
-        borderRadius: BorderRadius.circular(20),
-        boxShadow: [
-          BoxShadow(
-            color: Color(0xFF997048).withOpacity(0.5),
-            blurRadius: 4,
-            offset: Offset(0, 2),
-          )
-        ],
-      ),
-      child: GestureDetector(
-        onTap: () {
-          //talk to backend/add new popup - make something change so it pops up immediately
-          // some bool that can automatically call set state from other widget?
-
-          if (title == 'Standard') {
-            String username = SharedPrefs().getUserName() ?? "";
-
-            Navigator.pop(context);
-            createStandardChallenge(username, groupId);
-
-            Navigator.pushReplacement(
-              context,
-              MaterialPageRoute(
-                builder: (context) => friendship(
-                  friendUsername: groupName,
-                ),
-              ),
-            );
-
-            //
-          } else if (title == 'Custom') {
-            // does this 'groupname' thing work?
-
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => customChallenge(
-                  groupName: groupName,
-                  groupId: groupId,
-                  friendship: true,
-                ),
-              ),
-            );
-          }
-        },
-        child: Column(
-          mainAxisSize: MainAxisSize.min,
-          mainAxisAlignment: MainAxisAlignment.center,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            SizedBox(height: 5),
-            Icon(
-              iconData,
-              color: Color.fromARGB(255, 250, 192, 94),
-              size: 20,
-            ),
-            SizedBox(height: 5),
-            Text(
-              title,
-              style: TextStyle(
-                color: Color(0xFFFFF7EE),
-                fontSize: 16,
-                fontWeight: FontWeight.w700,
-              ),
-            ),
-            SizedBox(height: 5),
-            SizedBox(
-              width: double.infinity,
-              child: Text(
-                description,
-                textAlign: TextAlign.center,
-                style: TextStyle(
-                  color: Color(0xFFFFF7EE),
-                  fontSize: 11,
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
-            ),
-          ],
-        ),
-      ));
-}
-
 class friendship extends StatefulWidget {
   final String friendUsername;
 
@@ -328,6 +27,329 @@ class friendship extends StatefulWidget {
 class _FriendshipState extends State<friendship>
     with SingleTickerProviderStateMixin {
   late TabController _tabController;
+
+  // variables for friendgroup Stats
+  double groupRating = 0;
+  List<String> verbaMatch = [];
+  List<String> groupMembers = [];
+
+  // builds challenge option pop
+  Future<void> _showChallengeOptions(
+      BuildContext context, String groupName) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          contentPadding: EdgeInsets.zero,
+          content: Container(
+            width: 200,
+            height: 230,
+            clipBehavior: Clip.antiAlias,
+            decoration: BoxDecoration(
+              color: Colors.white,
+              borderRadius: BorderRadius.circular(20),
+              boxShadow: [
+                BoxShadow(
+                  color: Color(0xFF9E503C).withOpacity(0.5),
+                  blurRadius: 4,
+                  offset: Offset(2, 3),
+                )
+              ],
+            ),
+            child: Column(
+              mainAxisSize: MainAxisSize.min,
+              mainAxisAlignment: MainAxisAlignment.center,
+              crossAxisAlignment: CrossAxisAlignment.center,
+              children: [
+                SizedBox(height: 5),
+                Padding(
+                  padding: EdgeInsets.all(8),
+                  child: Container(
+                      child: FittedBox(
+                    fit: BoxFit.scaleDown,
+                    child: RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'New Challenge with ',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 22,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          TextSpan(
+                            text: '$groupName',
+                            style: TextStyle(
+                              color: Colors.orange,
+                              fontSize: 24,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )),
+                ),
+                SizedBox(height: 20),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    _buildOptionButton(
+                        context,
+                        'Standard',
+                        'Leave the categories to us',
+                        Icons.my_library_books_rounded,
+                        groupName),
+                    _buildOptionButton(
+                        context,
+                        'Custom',
+                        'Create your own categories',
+                        Icons.card_giftcard_rounded,
+                        groupName),
+                  ],
+                ),
+                SizedBox(height: 10),
+              ],
+            ),
+          ),
+        );
+      },
+    );
+  }
+
+  //builds the actual buttons themselves
+
+  Widget _buildOptionButton(BuildContext context, title, String description,
+      IconData iconData, String groupName) {
+    return Container(
+        constraints: BoxConstraints(
+            minWidth: 80.0, maxWidth: 150.0, minHeight: 80.0, maxHeight: 150.0),
+        width: 125,
+        height: 125,
+        padding: EdgeInsets.all(10.h),
+        clipBehavior: Clip.antiAlias,
+        decoration: BoxDecoration(
+          color: Color(0xFFE76F51),
+          borderRadius: BorderRadius.circular(20),
+          boxShadow: [
+            BoxShadow(
+              color: Color(0xFF997048).withOpacity(0.5),
+              blurRadius: 4,
+              offset: Offset(0, 2),
+            )
+          ],
+        ),
+        child: GestureDetector(
+          onTap: () {
+            //talk to backend/add new popup - make something change so it pops up immediately
+            // some bool that can automatically call set state from other widget?
+
+            if (title == 'Standard') {
+              String username = SharedPrefs().getUserName() ?? "";
+
+              Navigator.pop(context);
+              createStandardChallenge(username, groupId);
+
+              Navigator.pushReplacement(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => friendship(
+                    friendUsername: groupName,
+                  ),
+                ),
+              );
+
+              //
+            } else if (title == 'Custom') {
+              // does this 'groupname' thing work?
+
+              Navigator.push(
+                context,
+                MaterialPageRoute(
+                  builder: (context) => customChallenge(
+                    groupName: groupName,
+                    groupId: groupId,
+                    friendship: true,
+                  ),
+                ),
+              );
+            }
+          },
+          child: Column(
+            mainAxisSize: MainAxisSize.min,
+            mainAxisAlignment: MainAxisAlignment.center,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 5),
+              Icon(
+                iconData,
+                color: Color.fromARGB(255, 250, 192, 94),
+                size: 20,
+              ),
+              SizedBox(height: 5),
+              Text(
+                title,
+                style: TextStyle(
+                  color: Color(0xFFFFF7EE),
+                  fontSize: 16,
+                  fontWeight: FontWeight.w700,
+                ),
+              ),
+              SizedBox(height: 5),
+              SizedBox(
+                width: double.infinity,
+                child: Text(
+                  description,
+                  textAlign: TextAlign.center,
+                  style: TextStyle(
+                    color: Color(0xFFFFF7EE),
+                    fontSize: 11,
+                    fontWeight: FontWeight.w600,
+                  ),
+                ),
+              ),
+            ],
+          ),
+        ));
+  }
+
+// ask backend for stats between the two friends
+  Future<void> getFriendStats(String user, String friend) async {
+    final url =
+        Uri.parse(BackendService.getBackendUrl() + '$user/' + '$friend');
+
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final dynamic jsonData = json.decode(response.body);
+      print('here is the friend stats jsondata $jsonData');
+      int rating = jsonData["groupRating"];
+      groupRating = rating as double;
+      verbaMatch = List<String>.from(jsonData["verbaMatch"]);
+      groupMembers = List<String>.from(jsonData["groupMembers"]);
+    } else {
+      print('failed to get group stats. Status code: ${response.statusCode}');
+    }
+  }
+
+//active challenge variables
+  List<Map<String, dynamic>> activeChallenges = [];
+  List<int> activeChallengeIds = [];
+  Map<int, List<String>> mappedChallenges = {};
+  List<String> titles = [];
+  List<String> contentList = [];
+  Map<int, List<String>> getChallengeMappedChallenges = {};
+  int groupId = -1; // get from getActiveChallenge
+
+// asks backend for active challenges between these friends
+  Future<void> getActiveChallenges(String user, String friend) async {
+    final url = Uri.parse(
+        BackendService.getBackendUrl() + '$user/' + '$friend/' + 'challenges');
+
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      final dynamic jsonData = json.decode(response.body);
+
+      if (jsonData is Map<String, dynamic> &&
+          jsonData.containsKey("activeChallenges") &&
+          jsonData["activeChallenges"] is List) {
+        activeChallenges =
+            List<Map<String, dynamic>>.from(jsonData["activeChallenges"]);
+        groupId = jsonData["groupId"];
+
+        activeChallengeIds = activeChallenges
+            .map((challenge) => challenge["id"] as int)
+            .toList();
+        print('active challenges from bacend $activeChallenges');
+
+        mappedChallenges = getMappedChallenges(activeChallenges);
+        print('mapped challenges from getmappedchallenges $mappedChallenges');
+      } else {}
+    } else {
+      print("active challenges not obtained succesfuly");
+    }
+  }
+
+  Map<int, List<String>> getMappedChallenges(List<dynamic> activeChallenges) {
+    Map<int, List<String>> mappedChallenges = {};
+
+    for (var challenge in activeChallenges) {
+      int id = challenge["id"];
+      String createdByUsername = challenge["createdBy"]["username"];
+      bool isCustom = challenge["isCustom"];
+      print('$isCustom $createdByUsername here iam sometimes');
+
+      List<String> challengeInfo = [
+        createdByUsername,
+        isCustom ? "Custom" : "Not Custom"
+      ];
+      mappedChallenges[id] = challengeInfo;
+    }
+
+    return mappedChallenges;
+  }
+
+// fill mapped challenges in
+  Future<void> getChallenge(int challengeId, String user,
+      Map<int, List<String>> mappedChallenges) async {
+    final url = Uri.parse(BackendService.getBackendUrl() +
+        '$challengeId/' +
+        '$user/' +
+        'getChallengeQs');
+
+    final response = await http.get(url);
+    if (response.statusCode == 200) {
+      final dynamic jsonData = json.decode(response.body);
+      print('this is jsondata in getchallengeqs $jsonData');
+
+      bool userHasCompleted = jsonData['userHasCompleted'];
+      print('User has completed: $userHasCompleted');
+      String completed = userHasCompleted.toString();
+      // put completion status in mapped challenges
+      mappedChallenges[challengeId]!.add(completed);
+
+      if (jsonData.containsKey('questions')) {
+        List<dynamic> questionsList = jsonData['questions'];
+        for (List<dynamic> questionList in questionsList) {
+          List<String> contentList = questionList
+              .map<String>((item) => item['content'].toString())
+              .toList();
+
+          //put this question in mapped Challenges
+          if (mappedChallenges.containsKey(challengeId)) {
+            mappedChallenges[challengeId]!.addAll(contentList);
+          } else {
+            print('total failure');
+          }
+
+          print(
+              'this is mapped challenges from getChallengeQuestions $mappedChallenges');
+        }
+      } else {
+        print("No questions in the challenge");
+      }
+    } else {
+      print(
+          'failed to get challenge beeeeepp questions. Status code: ${response.statusCode}');
+    }
+  }
+
+  Future<void> createStandardChallenge(String username, int groupId) async {
+    final url =
+        Uri.parse(BackendService.getBackendUrl() + 'createStandardChallenge');
+    final headers = <String, String>{'Content-Type': 'application/json'};
+    print('this is $username and this is groupId $groupId');
+    final response = await http.post(url,
+        headers: headers,
+        body: json.encode({'createdByUsername': username, 'groupId': groupId}));
+    if (response.statusCode == 200) {
+    } else {
+      print(
+          'failed to create standard challenge. Status code: ${response.statusCode}');
+    }
+  }
 
   @override
   void initState() {
@@ -353,7 +375,7 @@ class _FriendshipState extends State<friendship>
     await getActiveChallenges(username, widget.friendUsername);
 
     for (var challengeId in activeChallengeIds) {
-      await getChallenge(challengeId, mappedChallenges);
+      await getChallenge(challengeId, username, mappedChallenges);
     }
 
     if (mounted) {
@@ -506,34 +528,64 @@ class _FriendshipState extends State<friendship>
                                                                 "Custom"
                                                             ? "custom"
                                                             : "standard";
+
+                                                    // if challenge is completed, mark it as such
+                                                    // it doesn't seem like the challenges are being marked as completed
+                                                    String challengeInfo2 =
+                                                        challengeInfo[2];
+                                                    print(
+                                                        "challengeInfo $challengeInfo2");
+                                                    bool completed =
+                                                        (challengeInfo2 !=
+                                                            "false");
+                                                    print(
+                                                        "the bool completed $completed");
+
                                                     List<String>
                                                         challengeQuestions =
                                                         challengeInfo
-                                                            .skip(2)
+                                                            .skip(3)
                                                             .toList();
 
                                                     String title =
                                                         "$createdByUsername's $challengeType challenge";
                                                     return GestureDetector(
                                                       onTap: () {
-                                                        Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                groupChallenge(
-                                                                    groupName:
-                                                                        widget
-                                                                            .friendUsername,
-                                                                    groupId:
-                                                                        groupId,
-                                                                    challengeQs:
-                                                                        challengeQuestions,
-                                                                    challengeId:
-                                                                        id),
-                                                          ),
-                                                        );
-                                                        print(
-                                                            'this is the groupId when you send a challenge$groupId');
+                                                        if (!completed) {
+                                                          Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder: (context) => groupChallenge(
+                                                                  groupName: widget
+                                                                      .friendUsername,
+                                                                  groupId:
+                                                                      groupId,
+                                                                  challengeQs:
+                                                                      challengeQuestions,
+                                                                  challengeId:
+                                                                      id),
+                                                            ),
+                                                          );
+                                                        } else {
+                                                          /*
+                                                          Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder: (context) => groupChallenge(
+                                                                  groupName: widget
+                                                                      .friendUsername,
+                                                                  groupId:
+                                                                      groupId,
+                                                                  challengeQs:
+                                                                      challengeQuestions,
+                                                                  challengeId:
+                                                                      id),
+                                                            ),
+                                                          );
+                                                          */
+                                                          print(
+                                                              'they did this challenge but im still sending them here for now idk');
+                                                        }
                                                       },
                                                       child: Container(
                                                         margin: EdgeInsets
@@ -616,7 +668,10 @@ class _FriendshipState extends State<friendship>
                                           ),
                                         ),
                                         // Content for Stats
-                                        Container(child: StatsContent()),
+                                        Container(
+                                            child: StatsContent(
+                                                verbaMatch: verbaMatch,
+                                                groupRating: groupRating)),
                                       ],
                                     ),
                                   ),
@@ -630,6 +685,14 @@ class _FriendshipState extends State<friendship>
 }
 
 class StatsContent extends StatelessWidget {
+  List<String> verbaMatch;
+  double groupRating;
+
+  StatsContent({
+    required this.verbaMatch,
+    required this.groupRating,
+  });
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(

@@ -56,12 +56,15 @@ Future<void> submitChallenge(
   if (response.statusCode == 200) {
     print('responses submitted succesfully');
     final Map<String, dynamic> stats = json.decode(response.body);
-    // need to do lots of things to this
+    // need to do lots of things to these stats!
     print(stats);
   } else {
     print("failedright here Status code: ${response.statusCode} ");
   }
 }
+
+// HARD CODED - load pics a diff way
+List<int> groupUsers = [1, 2, 3, 4, 5, 6];
 
 //fix image getting but jsut use this for now
 Future<void> preloadImages(BuildContext context) async {
