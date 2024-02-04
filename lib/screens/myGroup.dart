@@ -723,19 +723,6 @@ class StatsContent extends StatelessWidget {
             ),
           ),
           SizedBox(height: 15.v),
-          /*
-          Container(
-            height: 200,
-            child: Padding(
-              padding: EdgeInsets.all(16.0),
-              child: DonutChart(
-                groupSimilarity: 60,
-                title: 'Group Challenges',
-              ),
-            ),
-          ),
-          SizedBox(height: 20.v),
-          */
           Visibility(
             visible: verbaMatch.length != 0,
             child: Container(
@@ -913,27 +900,101 @@ class DonutChart extends StatefulWidget {
 }
 
 class _DonutChartState extends State<DonutChart> {
+  Future<void> _showPopup(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          contentPadding: EdgeInsets.zero,
+          content: Container(
+              width: 160,
+              height: 145,
+              clipBehavior: Clip.antiAlias,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: Color(0xFF9E503C).withOpacity(0.5),
+                    blurRadius: 4,
+                    offset: Offset(2, 3),
+                  )
+                ],
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  SizedBox(height: 5),
+                  Padding(
+                    padding: EdgeInsets.all(6),
+                    child: RichText(
+                      textAlign: TextAlign.center,
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'Your score increases when you:\n\n',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 19,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          // if groupname is a certain length, make it a new line
+                          TextSpan(
+                            text:
+                                'Verbatim, Build Streaks, and Play Challenges!',
+                            style: TextStyle(
+                              color: Colors.orange,
+                              fontSize: 21,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              )),
+        );
+      },
+    );
+  }
+
   @override
   Widget build(BuildContext context) {
     Color calculateColor(double similarity) {
-      int score = similarity as int;
-      score = (score / 2) as int;
+      int score = (similarity / 2).toInt();
 
       return Color.fromARGB(255, 250, 192 + score, 94 + score);
     }
+
+    double sim = widget.groupSimilarity;
+    int simint = sim as int;
 
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Text(
-            widget.title,
-            style: TextStyle(
-              fontSize: 18,
-              fontWeight: FontWeight.bold,
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Text(
+              widget.title,
+              style: TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
             ),
-          ),
+            SizedBox(width: 8),
+            InkWell(
+              onTap: () => _showPopup(context),
+              child: Icon(
+                Icons.help_outline,
+                color: Color(0xFFE76F51),
+              ),
+            )
+          ]),
           SizedBox(height: 17.v),
           SizedBox(
             height: 125,
@@ -987,7 +1048,7 @@ class _DonutChartState extends State<DonutChart> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                "${widget.groupSimilarity.toStringAsFixed(2)}",
+                                "${simint.toStringAsFixed(2)}",
                                 style: TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.bold,

@@ -362,17 +362,6 @@ class _FriendshipState extends State<friendship>
     _loadChallenges();
   }
 
-// this doesnt work
-/*
-  @override
-  void didUpdateWidget(covariant friendship oldWidget) {
-    super.didUpdateWidget(oldWidget);
-
-    if (widget.friendUsername != oldWidget.friendUsername) {
-      _loadChallenges();
-    }
-  }*/
-
   Future<void> _loadChallenges() async {
     String username = SharedPrefs().getUserName() ?? "";
 
