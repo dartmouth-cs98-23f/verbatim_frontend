@@ -2,6 +2,7 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 // import 'package:google_sign_in/google_sign_in.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/gameObject.dart';
@@ -15,16 +16,31 @@ import 'globalChallenge.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'onboardingPage1.dart';
-// import 'package:google_sign_in/google_sign_in';
+import 'globalChallenge.dart';
+
 
 class SignUp extends StatefulWidget {
-  final GameObject data;
-  //TODO: figure out how to not need the 
-  const SignUp({super.key, required this.data});
+  //TODO: figure out how to not need the
+  const SignUp({
+    super.key,
+  });
 
   @override
   State<SignUp> createState() => _SignUpState();
 }
+
+/** 
+                    firstName(request.getFirstName())
+                    lastName(request.getLastName())
+                    email(request.getEmail())
+                    .username(request.getUsername())
+                    .password(passwordEncoder.encode(request.getPassword()))
+                    .numGlobalChallengesCompleted(0)
+                    .numCustomChallengesCompleted(0)
+                    .role(roleRepository.findByRolename("ROLE_USER"))
+                    .streak(0)
+                    .hasCompletedDailyChallenge(false)
+      */
 
 class _SignUpState extends State<SignUp> {
   Map<String, Text> validationErrors = {};
@@ -34,8 +50,8 @@ class _SignUpState extends State<SignUp> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
-  
-  Object? get data => data;
+
+//TODO: gets widget data
 
   // final GoogleSignIn _googleSignIn = GoogleSignIn(
   //     scopes: ['email'],
@@ -44,7 +60,6 @@ class _SignUpState extends State<SignUp> {
 
   void signUp(BuildContext context, String firstName, String lastName,
       String username, String email, String password, String confirmPassword) {
-
     saveUsersInfo(context, firstName, lastName, username, email, password,
         confirmPassword);
   }
@@ -58,7 +73,6 @@ class _SignUpState extends State<SignUp> {
       String email,
       String password,
       String confirmPassword) async {
-    print("Sign up url is: " + BackendService.getBackendUrl());
     try {
       final response = await http.post(
         Uri.parse(BackendService.getBackendUrl() + 'register'),
@@ -97,6 +111,42 @@ class _SignUpState extends State<SignUp> {
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => SignupErrorMessage(pageName: 'sign up'),
       ));
+    }
+  }
+
+  void guestSignUp(BuildContext context, String firstName, String lastName,
+      String username, String email, String password) async {
+    final response = await http.post(
+      Uri.parse('${BackendService.getBackendUrl()}submitResponseAfterLoginOrRegister'),
+        
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'responseQ1': SharedPrefs().getResponse1(),
+        'responseQ2': SharedPrefs().getResponse2(),
+        'responseQ3': SharedPrefs().getResponse3(),
+        'isLogin': false,
+        'emailOrUsername': email,
+        'password': password,
+        'username': username,
+        'firstName': firstName,
+        'lastName': lastName,
+        'email': email,
+        'withReferral': SharedPrefs().getReferer() != '',
+        'referringUsername': SharedPrefs().getReferer(),
+      }),
+    );
+    if (response.statusCode == 200) {
+      print("LetsssGOOO");
+      SharedPrefs().setEmail(email);
+      SharedPrefs().setFirstName(firstName);
+      SharedPrefs().setLastName(lastName);
+      SharedPrefs().setPassword(password);
+      SharedPrefs().setUserName(username);
+
+      // Successful sign-up: Navigate to the 'OnBoardingPage1' page
+      Navigator.pushNamed(context, '/global_challenge');//push them to the stats page if we have one
     }
   }
 
@@ -210,9 +260,17 @@ class _SignUpState extends State<SignUp> {
       // Continue with sign-up
       print(
           'Successfully signed up with this info: $firstName, $lastName, $username, $email, $password, $confirmedPassword');
-   
-      signUp(context, firstName, lastName, username.toLowerCase(),
-          email.toLowerCase(), password, confirmedPassword);
+      if (SharedPrefs().getResponse1() == '') {
+        //if user hasnt played global challenge yer
+        
+        signUp(context, firstName, lastName, username.toLowerCase(),
+            email.toLowerCase(), password, confirmedPassword);
+      } else {
+           //signUp(context, firstName, lastName, username.toLowerCase(),
+            //email.toLowerCase(), password, confirmedPassword);
+        guestSignUp(context, firstName, lastName, username.toLowerCase(),
+            email.toLowerCase(), password);
+      }
     }
   }
 
@@ -237,6 +295,7 @@ class _SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
+    //TODO: homie use this
     return Scaffold(
       backgroundColor: Color(0xFFFFF3EE),
       body: SafeArea(
@@ -361,10 +420,10 @@ class _SignUpState extends State<SignUp> {
                       ),
                       const SizedBox(height: 10),
                       MyButtonWithImage(
-                        buttonText: 'Sign up with Google',
+                        buttonText: "Sign in with Google",
                         hasButtonImage: true,
                         onTap: () {
-                          print(this.data);
+                          // print(this.data);
                           // signUpWithGoogle();
                         },
                       ),

@@ -154,7 +154,7 @@ var settingsHandler = Handler(
         // Update the current page in the shared prefs
         SharedPrefs().setCurrentPage('/settings');
         return settings();
-      }
+      }});
 
 Handler onBoardingPage1Handler = Handler(
   handlerFunc: (context, parameters) {
@@ -232,7 +232,9 @@ Handler signUpHandler = Handler(
     SharedPrefs().setCurrentPage('/signup');
     //TODO: check for this
 
-    return SignUp(data: GameObject('','','',''));
+    return SignUp();
+    //return SignUp(data: data);
+  
   },
 );
 
@@ -248,7 +250,7 @@ Handler globalChallengeHandler = Handler(
   handlerFunc: (context, parameters) {
       // Update the current page in the shared prefs
       SharedPrefs().setCurrentPage('/global_challenge');
-      return globalChallenge();
+      return globalChallenge();}
 );
 
 Handler addFriendHandler = Handler(

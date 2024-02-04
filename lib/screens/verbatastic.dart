@@ -27,7 +27,7 @@ class Verbatastic extends StatelessWidget {
     //Navigator.pushNamed(context, '/details', arguments: {'referer': 'friend123'});
 
     //String tempLink = http://localhost:3000/#/landingPage?referer=$username;
-    String inviteLink = 'ttp://localhost:3000/#/landingPage?referer=$username';
+    String inviteLink = 'http://localhost:3000/#/landingPage?referer=$username';
     Clipboard.setData(new ClipboardData(text: inviteLink));
   }
 

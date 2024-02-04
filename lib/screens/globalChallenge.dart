@@ -15,6 +15,7 @@ import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:intl/intl.dart';
 import 'verbatastic.dart';
 import 'globalSubmitGuest.dart';
+import 'package:provider/provider.dart';
 
 class globalChallenge extends StatefulWidget {
   globalChallenge({
@@ -95,6 +96,31 @@ class _GlobalChallengeState extends State<globalChallenge> {
   final StreamController<bool> _streamController = StreamController<bool>();
   double progressValue = 0.0;
 
+  Future<void> _fecthNoSignInData() async {
+    final url =
+        Uri.parse("${BackendService.getBackendUrl()}globalChallengeNoSignIn");
+    final headers = <String, String>{'Content-Type': 'application/json'};
+    final fetchQuestions = await http.get(url, headers: headers );
+    print("Before getting qs with no username");
+
+    if (fetchQuestions.statusCode == 200) {
+      print("Success getting qs with no username");
+      final Map<String, dynamic>? data = json.decode(fetchQuestions.body);
+
+      question1 = data!['q1'];
+
+      question2 = data['q2'];
+
+      question3 = data['q3'];
+
+      id = data['globalChallengeId'];
+
+      categoryQ1 = data['categoryQ1'];
+      categoryQ2 = data['categoryQ2'];
+      categoryQ3 = data['categoryQ3'];
+    }
+  }
+
   Future<void> _fetchData(String username) async {
     final url = Uri.parse(BackendService.getBackendUrl() + 'globalChallenge');
     final headers = <String, String>{'Content-Type': 'application/json'};
@@ -142,7 +168,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
             {};
 
         if (verbatasticUsers.isNotEmpty) {
-          final MapEntry<String, List<String>?>? firstEntry =
+          final MapEntry<String, List<String>?> firstEntry =
               verbatasticUsers.entries.first;
 
           if (firstEntry != null) {
@@ -161,15 +187,28 @@ class _GlobalChallengeState extends State<globalChallenge> {
   @override
   void initState() {
     super.initState();
-    _fetchData(username).then((_) {
-      setState(() {
-        questions = [question1, question2, question3];
+    if (username == '') {
+      _fecthNoSignInData().then((_) {
+        setState(() {
+          questions = [question1, question2, question3];
+        });
       });
-    });
+    } else {
+      _fetchData(username).then((_) {
+        setState(() {
+          questions = [question1, question2, question3];
+        });
+      });
+    }
   }
 
-  Future<void> sendUserResponses(String username, String email,
-      List<String> userResponses, GameObject responsesGM) async {
+  void setGuestUserResponses() {
+    SharedPrefs()
+        .updateGameValues(responses123[0], responses123[1], responses123[2]);
+  }
+
+  Future<void> sendUserResponses(
+      String username, String email, List<String> userResponses) async {
     final url =
         Uri.parse(BackendService.getBackendUrl() + 'submitGlobalResponse');
     final headers = <String, String>{'Content-Type': 'application/json'};
@@ -198,9 +237,10 @@ class _GlobalChallengeState extends State<globalChallenge> {
 
 //make sure we can send responses to stats on the first go
     responses123 = modifiedResponses;
-    //TODO: add variable referer //on submit check for username , if username is null the
-    responsesGM = GameObject(
-        modifiedResponses[0], modifiedResponses[1], modifiedResponses[2], '');
+    //final CounterModel _counter = CounterModel();
+
+    //     builder:(context)=>
+    // Provider.of<GameObject>(context, listen:false).updateValues(responses123[0], responses123[1], responses123[2]);
 
     final response = await http.post(
       url,
@@ -264,7 +304,10 @@ class _GlobalChallengeState extends State<globalChallenge> {
   @override
   Widget build(BuildContext context) {
     String idString = id.toString();
-    GameObject responsesGM = GameObject('', '', '', '');
+
+    //TODO: check that this shit here works
+
+
     username = SharedPrefs().getUserName() ?? "";
     DateTime now = DateTime.now();
     DateTime midnight =
@@ -325,7 +368,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                 child: Center(
                                   child: Text(
                                     'Global Challenge #$idString',
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 24,
                                       color: Colors.white,
                                       fontWeight: FontWeight.w900,
@@ -350,7 +393,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                               color: Colors.black,
                                               fontSize: 15),
                                         ),
-                                        TextSpan(
+                                        const TextSpan(
                                             text: " users have played today",
                                             style: TextStyle(
                                               fontSize: 15,
@@ -449,9 +492,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                         SizedBox(height: 40.0),
                                         ElevatedButton(
                                           style: ElevatedButton.styleFrom(
-                                            backgroundColor:
-                                                const Color.fromARGB(
-                                                    255, 255, 106, 0),
+                                            backgroundColor: Color(0xFFE76F51),
                                             foregroundColor: Colors.white,
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
@@ -470,11 +511,8 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                                 updateProgress();
                                                 currentQuestionIndex += 1;
                                               } else {
-                                                sendUserResponses(
-                                                    username,
-                                                    email,
-                                                    userResponses,
-                                                    responsesGM);
+                                                sendUserResponses(username,
+                                                    email, userResponses);
                                                 setState(() {
                                                   responded = true;
                                                 });
@@ -487,15 +525,15 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                                 : 'Next',
                                           ),
                                         ),
-                                        SizedBox(height: 20),
+                                        const SizedBox(height: 20),
                                         Container(
                                           width: 200,
                                           child: LinearProgressIndicator(
                                             value: progressValue,
                                             backgroundColor: Colors.grey[300],
                                             valueColor:
-                                                AlwaysStoppedAnimation<Color>(
-                                                    Colors.orange),
+                                                const AlwaysStoppedAnimation<
+                                                    Color>(Color(0xFFE76F51)),
                                             minHeight: 10,
                                           ),
                                         ),
@@ -512,9 +550,10 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                               child: Text(
                                                 'Play the',
                                                 style: TextStyle(
+                                                  
                                                   fontSize: 30,
                                                   fontWeight: FontWeight.bold,
-                                                  color: Colors.orange,
+                                                  color: Color(0xFFE76F51),
                                                 ),
                                               ),
                                             ),
@@ -524,7 +563,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                                 style: TextStyle(
                                                   fontSize: 30,
                                                   fontWeight: FontWeight.bold,
-                                                  color: Colors.orange,
+                                                  color: Color(0xFFE76F51),
                                                 ),
                                               ),
                                             ),
@@ -534,7 +573,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                                 style: TextStyle(
                                                   fontSize: 30,
                                                   fontWeight: FontWeight.bold,
-                                                  color: Colors.orange,
+                                                  color: Color(0xFFE76F51),
                                                 ),
                                               ),
                                             ),
@@ -544,7 +583,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                                 style: TextStyle(
                                                   fontSize: 30,
                                                   fontWeight: FontWeight.bold,
-                                                  color: Colors.orange,
+                                                  color: Color(0xFFE76F51),
                                                 ),
                                               ),
                                             ),
@@ -556,13 +595,12 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                   //if guest
                                   else if (username == '' &&
                                       responded == true) {
-                                    print("Looking for username" + SharedPrefs.UserName);
+                                    setGuestUserResponses();
                                     return Column(
                                       children: [
                                         Guest(
                                           formattedTimeUntilMidnight:
                                               formattedTimeUntilMidnight,
-                                          data: responsesGM,
                                         ),
                                       ],
                                     );

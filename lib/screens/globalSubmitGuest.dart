@@ -1,22 +1,31 @@
 import 'dart:math';
 
+import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:verbatim_frontend/gameObject.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
 import 'package:verbatim_frontend/widgets/my_button_with_svg.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
 import 'package:verbatim_frontend/widgets/my_button_with_image.dart';
 import 'package:verbatim_frontend/screens/signUp.dart';
+import 'package:verbatim_frontend/Components/shared_prefs.dart';
+
 
 class Guest extends StatelessWidget {
   final String formattedTimeUntilMidnight;
-  final GameObject data;
+  // final GameObject data;
+
+  
 
   const Guest({
     super.key,
     required this.formattedTimeUntilMidnight,
-    required this.data,
+    // required this.data,
   });
+
+
+ 
 
   @override
   Widget build(BuildContext context) {
@@ -29,9 +38,11 @@ class Guest extends StatelessWidget {
     void onTap() {
       String routeName = ModalRoute.of(context)?.settings.name ?? '';
       Map<String, dynamic>? arguments = Uri.parse(routeName).queryParameters;
-      data.referer = arguments['referer'];
-      //TODO: //ADDD THE ARGUMENTS: GAMEOBJECT
 
+      //data.referer = arguments['referer'];
+      //TODO: //ADDD THE ARGUMENTS: GAMEOBJECT
+     
+      SharedPrefs().updateReferer(arguments['referer']);
       Navigator.pushNamed(context, '/signup');
     }
 
@@ -94,19 +105,43 @@ class Guest extends StatelessWidget {
         SizedBox(height: 20),
         MyButtonNoImage(
           buttonText: "Sign Up",
-          onTap: () {
-            // Navigate to the sign-in page
-            //TODO: Change this
-            Navigator.push(
-              context,
-              MaterialPageRoute(
-                builder: (context) => SignUp(data: data),
-              ),
-            );
-            //Navigator.pushNamed(context, '/signup');
-          },
+          onTap: onTap,
         ),
         SizedBox(height: 20),
+
+        Center(
+              child: RichText(
+                text: TextSpan(
+                  children: [
+                    TextSpan(
+                      text: 'Already have an account? ',
+                      style: GoogleFonts.poppins(
+                        textStyle: const TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.w700,
+                          fontSize: 16,
+                        ),
+                      ),
+                    ),
+                    TextSpan(
+                      text: 'Sign in',
+                      style: GoogleFonts.poppins(
+                        textStyle: const TextStyle(
+                          color: Color(0xFF3C64B1),
+                          fontWeight: FontWeight.w800,
+                          fontSize: 16,
+                        ),
+                      ),
+                      recognizer: TapGestureRecognizer()
+                        ..onTap = () {
+                          // Navigate to the sign-in page
+                          Navigator.pushNamed(context, '/login');
+                        },
+                    ),
+                  ],
+                ),
+              ),
+            ),
       ],
     );
   }

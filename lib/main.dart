@@ -1,5 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:verbatim_frontend/gameObject.dart';
 import 'package:verbatim_frontend/screens/landingPage.dart';
 import 'package:verbatim_frontend/screens/logIn.dart';
 import 'BackendService.dart';
@@ -21,6 +23,8 @@ Future<void> main() async {
 
   runApp(MyApp());
 
+  ChangeNotifierProvider(
+      create: (context) => GameObject(), child: MyApp());
   defineRoutes();
 }
 
@@ -30,6 +34,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //https://maketintsandshades.com/#E76F51 alternate shades are not yet added
+
+
     const MaterialColor paleColor = MaterialColor(
       0xFFF3EE,
       <int, Color>{
@@ -62,7 +68,6 @@ class MyApp extends StatelessWidget {
       onGenerateRoute: Application.router.generator,
       initialRoute: SharedPrefs().getCurrentPage() ?? '/landingPage',
       home: LandingPage(),
-
     );
   }
 }

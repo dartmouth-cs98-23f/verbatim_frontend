@@ -108,7 +108,7 @@ class _GroupChallengeState extends State<groupChallenge> {
                                   responded
                                       ? 'Verba-Tastical!'
                                       : 'Group Challenge',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 27,
                                     color: Colors.white,
                                     fontWeight: FontWeight.w900,
@@ -149,7 +149,7 @@ class _GroupChallengeState extends State<groupChallenge> {
                                   const EdgeInsets.symmetric(horizontal: 16.0),
                               child: Text(
                                 questions[currentQuestionIndex],
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
                                 ),
@@ -257,7 +257,7 @@ class _GroupChallengeState extends State<groupChallenge> {
                       );
                     }, //send prompts to backend
 
-                    child: Text(
+                    child: const Text(
                       'Back to Challenge Feed',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,

@@ -379,8 +379,7 @@ class _ProfileState extends State<Profile> {
                                 ]),
                                 // Profile picture
                                 const SizedBox(height: 10),
-                                Positioned(
-                                    child: Center(
+                                Center(
                                   child: Text.rich(TextSpan(
                                     children: [
                                       TextSpan(
@@ -410,13 +409,12 @@ class _ProfileState extends State<Profile> {
                                           )),
                                     ],
                                   )),
-                                )),
+                                ),
 
                                 const SizedBox(height: 5),
 
-                                const Positioned(
-                                  child: Center(
-                                    child: Text(
+                                const Center(
+                                  child: Text(
                                       "86% similarity",
                                       style: TextStyle(
                                         fontSize: 16,
@@ -424,8 +422,8 @@ class _ProfileState extends State<Profile> {
                                         color: Colors.black,
                                       ),
                                     ),
-                                  ),
                                 ),
+
                                 const SizedBox(height: 5),
                                 Row(
                                   mainAxisAlignment: MainAxisAlignment.center,

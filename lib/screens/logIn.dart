@@ -35,12 +35,51 @@ class _LogInState extends State<LogIn> {
     saveUsersInfo(usernameOrEmail, password);
   }
 
+  void logInGuest(
+      BuildContext context, String usernameOrEmail, String password) async {
+    final response = await http.post(
+      Uri.parse(
+          '${BackendService.getBackendUrl()}submitResponseAfterLoginOrRegister'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'responseQ1': SharedPrefs().getResponse1(),
+        'responseQ2': SharedPrefs().getResponse2(),
+        'responseQ3': SharedPrefs().getResponse3(),
+        'isLogin': true,
+        'emailOrUsername': usernameOrEmail,
+        'password': password,
+        'username': '',
+        'firstName': '',
+        'lastName': '',
+        'email': '',
+        'withReferral': SharedPrefs().getReferer() != '',
+        'referringUsername': SharedPrefs().getReferer(),
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      //save user SharedPrefs
+      final responseData = json.decode(response.body);
+      SharedPrefs().setEmail(responseData['email']);
+      SharedPrefs().setUserName(responseData['username']);
+      SharedPrefs().setPassword(responseData['password']);
+      SharedPrefs().setFirstName(responseData['firstName'] ?? '');
+      SharedPrefs().setLastName(responseData['lastName'] ?? '');
+      SharedPrefs().setBio(responseData['bio'] ?? '');
+      // SharedPrefs().setBio(responseData['profilePicture']);
+      Navigator.pushNamed(context, '/global_challenge');
+      print('Log-in successful');
+      print("Yaaaay lets go");
+    }
+  }
+
   // Function to save user's info to the database
   void saveUsersInfo(String usernameOrEmail, String password) async {
     try {
       final response = await http.post(
         Uri.parse(BackendService.getBackendUrl() + 'login'),
-
         headers: <String, String>{
           'Content-Type': 'application/json',
         },
@@ -69,15 +108,13 @@ class _LogInState extends State<LogIn> {
       } else {
         print('Error during log-in: ${response.statusCode.toString()}');
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) =>
-              SignupErrorMessage(pageName: 'log in'),
+          builder: (context) => SignupErrorMessage(pageName: 'log in'),
         ));
       }
     } catch (e) {
       print('Error during sign-up: $e');
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) =>
-            SignupErrorMessage(pageName: 'log in'),
+        builder: (context) => SignupErrorMessage(pageName: 'log in'),
       ));
     }
   }
@@ -128,8 +165,13 @@ class _LogInState extends State<LogIn> {
     validateField(password, "password", "Password is required");
 
     // All validations passed; proceed with login
-    if (validationErrors.isEmpty) {
+    print("Lying ass mfers: "  +SharedPrefs().getResponse1());
+    if (validationErrors.isEmpty && SharedPrefs().getResponse1() == '') {
+      //user not played
       logIn(context, email, password);
+    } else if (SharedPrefs().getResponse1() != '') {
+      //logIn(context, email, password);
+      logInGuest(context, email, password);
     }
   }
 
