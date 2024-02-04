@@ -303,6 +303,7 @@ class _FriendshipState extends State<friendship>
         '$user/' +
         'getChallengeQs');
 
+    print("$url");
     final response = await http.get(url);
     if (response.statusCode == 200) {
       final dynamic jsonData = json.decode(response.body);
@@ -358,6 +359,7 @@ class _FriendshipState extends State<friendship>
   @override
   void initState() {
     super.initState();
+    print('INIT STATE');
     _tabController = TabController(length: 2, vsync: this);
     _loadChallenges();
   }
@@ -511,6 +513,7 @@ class _FriendshipState extends State<friendship>
                                                     int id = mappedChallenges
                                                         .keys
                                                         .elementAt(index);
+                                                    print("challenge id $id");
                                                     List<String> challengeInfo =
                                                         mappedChallenges[id]!;
                                                     String createdByUsername =
@@ -945,8 +948,7 @@ class _DonutChartState extends State<DonutChart> {
   @override
   Widget build(BuildContext context) {
     Color calculateColor(double similarity) {
-      int score = similarity as int;
-      score = (score / 2) as int;
+      int score = (similarity / 2).toInt();
 
       return Color.fromARGB(255, 250, 192 + score, 94 + score);
     }

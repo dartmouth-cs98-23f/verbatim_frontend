@@ -138,21 +138,29 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
       print('got challenge Qs in groups');
       final dynamic jsonData = json.decode(response.body);
       print('this is the jsondata $jsonData');
-      if (jsonData is List) {
-        contentList = jsonData.expand<String>((innerList) {
-          return innerList.map<String>((item) {
-            return item['content'].toString();
-          });
-        }).toList();
+      bool userHasCompleted = jsonData['userHasCompleted'];
+      String completed = userHasCompleted.toString();
+      mappedChallenges[challengeId]!.add(completed);
 
-        if (mappedChallenges.containsKey(challengeId)) {
-          mappedChallenges[challengeId]!.addAll(contentList);
-        } else {
-          //   print('total failure');
+      if (jsonData.containsKey('questions')) {
+        List<dynamic> questionsList = jsonData['questions'];
+        for (List<dynamic> questionList in questionsList) {
+          List<String> contentList = questionList
+              .map<String>((item) => item['content'].toString())
+              .toList();
+
+          //put this question in mapped Challenges
+          if (mappedChallenges.containsKey(challengeId)) {
+            mappedChallenges[challengeId]!.addAll(contentList);
+          } else {
+            print('total failure');
+          }
+
+          print(
+              'this is mapped challenges from getChallengeQuestions $mappedChallenges');
         }
-        getChallengeMappedChallenges = mappedChallenges;
       } else {
-        //  print("bad format");
+        print("No questions in the challenge");
       }
     } else {
       print(
@@ -580,14 +588,31 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                                   mappedChallenges[id]!;
                                               String createdByUsername =
                                                   challengeInfo[0];
-
+                                              print(
+                                                  'this is mapped challenges $mappedChallenges');
+                                              print(
+                                                  'this is challenge info $challengeInfo');
                                               String challengeType =
                                                   challengeInfo[1] == "Custom"
                                                       ? "custom"
                                                       : "standard";
+
+                                              String challengeInfo2 =
+                                                  challengeInfo[2];
+
+                                              // if challengeInfo[2] is false they have not completed
+                                              print(
+                                                  "challengeInfo $challengeInfo2");
+                                              bool completed =
+                                                  (challengeInfo2 == "true");
+                                              // if challengeInfo2 is true, they have completed
+                                              // if not, completed is false.
+                                              print(
+                                                  "the bool completed $completed");
+
                                               List<String> challengeQuestions =
                                                   challengeInfo
-                                                      .skip(2)
+                                                      .skip(3)
                                                       .toList();
 
                                               String title =
@@ -595,22 +620,42 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
 
                                               return GestureDetector(
                                                 onTap: () {
-                                                  Navigator.push(
-                                                    context,
-                                                    MaterialPageRoute(
-                                                      builder: (context) =>
-                                                          groupChallenge(
-                                                              groupName: widget
-                                                                  .groupName,
-                                                              groupId: widget
-                                                                  .groupId,
-                                                              challengeQs:
-                                                                  challengeQuestions,
-                                                              challengeId: id),
-                                                    ),
-                                                  );
-                                                  //  print(
-                                                  //  "Pressed ${activeChallengesHard[index]}");
+                                                  if (!completed) {
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            groupChallenge(
+                                                                groupName: widget
+                                                                    .groupName,
+                                                                groupId:
+                                                                    groupID,
+                                                                challengeQs:
+                                                                    challengeQuestions,
+                                                                challengeId:
+                                                                    id),
+                                                      ),
+                                                    );
+                                                  } else {
+                                                    /*
+                                                          Navigator.push(
+                                                            context,
+                                                            MaterialPageRoute(
+                                                              builder: (context) => groupChallenge(
+                                                                  groupName: widget
+                                                                      .friendUsername,
+                                                                  groupId:
+                                                                      groupId,
+                                                                  challengeQs:
+                                                                      challengeQuestions,
+                                                                  challengeId:
+                                                                      id),
+                                                            ),
+                                                          );
+                                                          */
+                                                    print(
+                                                        'they did this challenge but im still sending them here for now idk');
+                                                  }
                                                 },
                                                 child: Container(
                                                   margin: EdgeInsets.symmetric(

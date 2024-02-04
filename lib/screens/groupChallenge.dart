@@ -1,5 +1,4 @@
 import 'dart:math';
-
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/BackendService.dart';
@@ -20,7 +19,6 @@ Future<void> submitChallenge(
     String username, int challengeId, List<String> userResponses) async {
   final url = Uri.parse(BackendService.getBackendUrl() + 'submitGroupResponse');
   final headers = <String, String>{'Content-Type': 'application/json'};
-
   final modifiedResponses = userResponses.map((response) {
     final responseWithoutPunctuation =
         response.replaceAll(RegExp(r'[^\w\s]'), '');
@@ -43,8 +41,6 @@ Future<void> submitChallenge(
     return capitalizedWords.join(' ');
   }).toList();
 
-  print('these are modified responses: $modifiedResponses');
-
   final response = await http.post(url,
       headers: headers,
       body: json.encode({
@@ -55,9 +51,11 @@ Future<void> submitChallenge(
 
   if (response.statusCode == 200) {
     print('responses submitted succesfully');
+
     final Map<String, dynamic> stats = json.decode(response.body);
     // need to do lots of things to these stats!
-    print(stats);
+
+    print("STATS $stats");
   } else {
     print("failedright here Status code: ${response.statusCode} ");
   }
@@ -244,7 +242,6 @@ class _GroupChallengeState extends State<groupChallenge> {
                                 padding: EdgeInsets.all(16),
                               ),
                               onPressed: () {
-                                print('username is $username');
                                 setState(() {
                                   userResponse = responseController.text;
                                   userResponses.add(userResponse);
