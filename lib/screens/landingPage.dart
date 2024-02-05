@@ -1,13 +1,11 @@
-import 'dart:js';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
 
 class LandingPage extends StatefulWidget {
-  const LandingPage({Key? key});
+  const LandingPage({super.key});
 
   @override
   _LandingPageState createState() => _LandingPageState();
@@ -15,32 +13,39 @@ class LandingPage extends StatefulWidget {
 
 class _LandingPageState extends State<LandingPage> {
   void clearSharedPrefs() async {
-   await SharedPrefs().init();
+    await SharedPrefs().init();
     SharedPrefs().setEmail('');
     SharedPrefs().setUserName('');
     SharedPrefs().setPassword('');
     SharedPrefs().setFirstName('');
     SharedPrefs().setLastName('');
     SharedPrefs().setBio('');
+    SharedPrefs().updateGameValues('', '','');
+    SharedPrefs().updateReferer('');
     SharedPrefs().setCurrentPage('/global_challenge');
   }
 
   void onTap() {
-    clearSharedPrefs();
-    String routeName = ModalRoute.of(this.context)?.settings.name ?? '';
+
+    // String routeName = ModalRoute.of(this.context)?.settings.name ?? '';
+    // Uri uri = Uri.parse(routeName);
+    // Map<String, dynamic>? arguments = uri.queryParameters;
+    // //String referer = '';
+    // String referer = arguments['referer']?arguments['referer']: '';
+    String routeName = ModalRoute.of(context)?.settings.name ?? '';
     Uri uri = Uri.parse(routeName);
     Map<String, dynamic>? arguments = uri.queryParameters;
-    String referer = arguments['referer'];
+    String referer = arguments['referer'] ?? '';
 
-    Navigator.pushNamed(this.context, '/global_challenge?referer=$referer');
+    Navigator.pushNamed(context, '/global_challenge?referer=$referer');
   }
 
   @override
   Widget build(BuildContext context) {
     //clearSharedPrefs();
-
+    clearSharedPrefs();
     return Scaffold(
-      backgroundColor: Color(0xFFFFF3EE),
+      backgroundColor: const Color(0xFFFFF3EE),
       body: Center(
         child: Column(
           //mainAxisAlignment: MainAxisAlignment.center,

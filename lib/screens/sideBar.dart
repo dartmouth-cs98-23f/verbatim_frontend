@@ -47,7 +47,7 @@ class FriendAcceptOrDeclineRequest {
 }
 
 class SideBar extends StatefulWidget {
-  SideBar({
+  const SideBar({
     Key? key,
   }) : super(key: key);
 
@@ -58,13 +58,13 @@ class SideBar extends StatefulWidget {
 class _SideBarState extends State<SideBar> {
   String username = SharedPrefs().getUserName() ?? "";
 
-  final Color primary = Color.fromARGB(255, 231, 111, 81);
+  final Color primary = const Color.fromARGB(255, 231, 111, 81);
 
   Set<String> friendRequestUsernames = <String>{};
   List<String> usernamesList = [];
 
   Future<void> getFriends(String username) async {
-    final url = Uri.parse(BackendService.getBackendUrl() + 'getFriends');
+    final url = Uri.parse('${BackendService.getBackendUrl()}getFriends');
     final Map<String, String> headers = {
       'Content-Type': 'text/plain',
     };
@@ -81,7 +81,7 @@ class _SideBarState extends State<SideBar> {
   }
 
   Future<void> getFriendRequests(String username) async {
-    final url = Uri.parse(BackendService.getBackendUrl() + 'getFriendRequests');
+    final url = Uri.parse('${BackendService.getBackendUrl()}getFriendRequests');
     final Map<String, String> headers = {
       'Content-Type': 'text/plain',
     };
@@ -107,7 +107,7 @@ class _SideBarState extends State<SideBar> {
   Future<void> handleFriendRequests(
       String username, String requester, bool accept) async {
     final url =
-        Uri.parse(BackendService.getBackendUrl() + 'handleFriendRequest');
+        Uri.parse('${BackendService.getBackendUrl()}handleFriendRequest');
     final Map<String, String> headers = {
       'Content-Type': 'application/json',
     };
@@ -138,7 +138,7 @@ class _SideBarState extends State<SideBar> {
         ]),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
@@ -147,7 +147,7 @@ class _SideBarState extends State<SideBar> {
                 children: <Widget>[
                   Padding(
                     padding:
-                        EdgeInsets.symmetric(horizontal: 10, vertical: 20.0),
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 20.0),
                     child: Container(
                         height: 64,
                         decoration: ShapeDecoration(
@@ -161,11 +161,11 @@ class _SideBarState extends State<SideBar> {
                             title: Text(
                               username,
                               style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
+                                  const TextStyle(color: Colors.white, fontSize: 20),
                             ),
                             leading:
-                                Icon(Icons.mood, color: Colors.white, size: 32),
-                            trailing: Icon(Icons.settings,
+                                const Icon(Icons.mood, color: Colors.white, size: 32),
+                            trailing: const Icon(Icons.settings,
                                 color: Colors.white, size: 26),
                             onTap: () {
                               handleTap(context, 2);
@@ -175,7 +175,7 @@ class _SideBarState extends State<SideBar> {
                   ),
                   Padding(
                     padding:
-                        EdgeInsets.symmetric(horizontal: 10, vertical: 10.0),
+                        const EdgeInsets.symmetric(horizontal: 10, vertical: 10.0),
                     child: Container(
                       decoration: ShapeDecoration(
                         shape: RoundedRectangleBorder(
@@ -199,9 +199,9 @@ class _SideBarState extends State<SideBar> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20.0),
+                  const SizedBox(height: 20.0),
                   ExpansionTile(
-                    title: Text('Friends',
+                    title: const Text('Friends',
                         style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
@@ -212,20 +212,20 @@ class _SideBarState extends State<SideBar> {
                       onTap: () {
                         handleTap(context, 1);
                       },
-                      child: Icon(Icons.add, color: Colors.black, size: 25),
+                      child: const Icon(Icons.add, color: Colors.black, size: 25),
                     ),
 
                     initiallyExpanded: true,
                     shape:
-                        Border(), // this will expand all of them - need to make a custom expansion tile at some point to fix this (i think)
+                        const Border(), // this will expand all of them - need to make a custom expansion tile at some point to fix this (i think)
 
                     children: <Widget>[
-                      SizedBox(height: 10.0),
+                      const SizedBox(height: 10.0),
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: 5.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
                         child: ListView.builder(
                           shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemCount: usernamesList.length,
                           itemBuilder: (BuildContext context, int index) {
                             String friend = usernamesList[index];
@@ -233,13 +233,13 @@ class _SideBarState extends State<SideBar> {
                             return ListTile(
                               title: Text(
                                 friend,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 15,
                                 ),
                               ),
-                              leading: Icon(Icons.person, color: Colors.black),
+                              leading: const Icon(Icons.person, color: Colors.black),
                               onTap: () {},
                             );
                           },
@@ -247,9 +247,9 @@ class _SideBarState extends State<SideBar> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 20.0),
+                  const SizedBox(height: 20.0),
                   ExpansionTile(
-                    title: Text(
+                    title: const Text(
                       'Groups',
                       style: TextStyle(
                           color: Colors.black,
@@ -262,25 +262,25 @@ class _SideBarState extends State<SideBar> {
                       onTap: () {
                         handleTap(context, 4);
                       },
-                      child: Icon(Icons.add, color: Colors.black, size: 25),
+                      child: const Icon(Icons.add, color: Colors.black, size: 25),
                     ),
                     initiallyExpanded: true,
                     //  initiallyExpanded: true,
-                    shape: Border(),
+                    shape: const Border(),
                     children: <Widget>[
-                      SizedBox(height: 10.0),
+                      const SizedBox(height: 10.0),
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: 5.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
                         child: Container(
-                          padding: EdgeInsets.symmetric(
+                          padding: const EdgeInsets.symmetric(
                               horizontal: 0.0, vertical: .1),
                           child: ListTile(
-                            title: Text('Group 1',
+                            title: const Text('Group 1',
                                 style: TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15)),
-                            leading: Icon(Icons.people, color: Colors.black),
+                            leading: const Icon(Icons.people, color: Colors.black),
                             onTap: () {
                               handleTap(context, 5);
                             },
@@ -289,9 +289,9 @@ class _SideBarState extends State<SideBar> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 20.0),
+                  const SizedBox(height: 20.0),
                   ExpansionTile(
-                    title: Text(
+                    title: const Text(
                       'Friend Requests',
                       style: TextStyle(
                           color: Colors.black,
@@ -299,16 +299,16 @@ class _SideBarState extends State<SideBar> {
                           fontSize: 18),
                     ),
                     trailing: friendRequestUsernames.isNotEmpty
-                        ? Icon(Icons.pending, color: Colors.orange, size: 25)
-                        : Icon(Icons.pending, color: Colors.black, size: 25),
-                    shape: Border(),
+                        ? const Icon(Icons.pending, color: Colors.orange, size: 25)
+                        : const Icon(Icons.pending, color: Colors.black, size: 25),
+                    shape: const Border(),
                     children: <Widget>[
-                      SizedBox(height: 10.0),
+                      const SizedBox(height: 10.0),
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: 5.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
                         child: ListView.builder(
                           shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemCount: friendRequestUsernames.length,
                           itemBuilder: (BuildContext context, int index) {
                             List<String> requestsList =
@@ -318,13 +318,13 @@ class _SideBarState extends State<SideBar> {
                             return ListTile(
                               title: Text(
                                 requester,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 15,
                                 ),
                               ),
-                              leading: Icon(Icons.person, color: Colors.black),
+                              leading: const Icon(Icons.person, color: Colors.black),
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
@@ -337,7 +337,7 @@ class _SideBarState extends State<SideBar> {
                                             .remove(requester);
                                       });
                                     },
-                                    child: Icon(Icons.check_box,
+                                    child: const Icon(Icons.check_box,
                                         color: Colors.black),
                                   ),
                                   GestureDetector(
@@ -350,7 +350,7 @@ class _SideBarState extends State<SideBar> {
                                       });
                                     },
                                     child:
-                                        Icon(Icons.cancel, color: Colors.black),
+                                        const Icon(Icons.cancel, color: Colors.black),
                                   ),
                                 ],
                               ),
@@ -361,69 +361,69 @@ class _SideBarState extends State<SideBar> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 20.0),
+                  const SizedBox(height: 20.0),
                   ListTile(
-                    title: Text('More',
+                    title: const Text('More',
                         style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
                             fontSize: 18)),
                     onTap: () {},
                   ),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 5.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
                     child: Container(
                       padding:
-                          EdgeInsets.symmetric(horizontal: 0.0, vertical: .1),
+                          const EdgeInsets.symmetric(horizontal: 0.0, vertical: .1),
                       child: ListTile(
-                        title: Text('Custom Challenge',
+                        title: const Text('Custom Challenge',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18)),
-                        leading: Icon(Icons.play_arrow, color: Colors.black),
+                        leading: const Icon(Icons.play_arrow, color: Colors.black),
                         onTap: () {},
                       ),
                     ),
                   ),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 5.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
                     child: Container(
                       padding:
-                          EdgeInsets.symmetric(horizontal: 0.0, vertical: .1),
+                          const EdgeInsets.symmetric(horizontal: 0.0, vertical: .1),
                       child: ListTile(
-                        title: Text('Invite Friends',
+                        title: const Text('Invite Friends',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18)),
-                        leading: Icon(Icons.person_add, color: Colors.black),
+                        leading: const Icon(Icons.person_add, color: Colors.black),
                         onTap: () {},
                       ),
                     ),
                   ),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 5.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
                     child: Container(
                       padding:
-                          EdgeInsets.symmetric(horizontal: 0.0, vertical: .1),
+                          const EdgeInsets.symmetric(horizontal: 0.0, vertical: .1),
                       child: ListTile(
-                        title: Text('Logout',
+                        title: const Text('Logout',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18)),
-                        leading: Icon(Icons.logout, color: Colors.black),
+                        leading: const Icon(Icons.logout, color: Colors.black),
                         onTap: () {
                           Navigator.pushNamed(context, '/logout');
                         },
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                 ],
               ),
             );
@@ -461,7 +461,7 @@ void handleTap(BuildContext context, int index) {
       List<String> addedUsernames = ['frances'];
       Navigator.pushNamed(
         context,
-        '/my_group/${Uri.encodeComponent(userResponse!)}/${Uri.encodeComponent(addedUsernames!.join(','))}',
+        '/my_group/${Uri.encodeComponent(userResponse)}/${Uri.encodeComponent(addedUsernames.join(','))}',
       );
       break;
   }

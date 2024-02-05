@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/profile.dart';
 import 'package:verbatim_frontend/screens/settings.dart';
@@ -20,6 +21,7 @@ class CustomAppBarSettings extends StatelessWidget
     this.showBackButton = false,
   });
 
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -27,7 +29,7 @@ class CustomAppBarSettings extends StatelessWidget
       backgroundColor: Colors.transparent,
       toolbarHeight: 150,
       elevation: 0,
-      title: Column(
+      title: const Column(
         children: [
           SizedBox(height: 60),
           NewNavBar(),
@@ -52,6 +54,7 @@ class CustomAppBarSettings extends StatelessWidget
 }
 
 class NewNavBar extends StatelessWidget {
+
   @override
   Widget build(BuildContext context) {
     final String profileUrl =
@@ -60,13 +63,13 @@ class NewNavBar extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(),
+      decoration: const BoxDecoration(),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.menu,
               color: Colors.white,
             ),
@@ -74,11 +77,12 @@ class NewNavBar extends StatelessWidget {
               // Navigate to the SideBar widget
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SideBar()),
+                MaterialPageRoute(builder: (context) => const SideBar()),
               );
             },
           ),
           SearchBarTextField(),
+
           SizedBox(width: 20),
           FutureBuilder<Uint8List>(
             future: downloadImage(profileUrl),
@@ -129,6 +133,7 @@ class NewNavBar extends StatelessWidget {
                 ); // Placeholder widget while image is loading
               }
             },
+
           ),
         ],
       ),
@@ -156,7 +161,9 @@ class NewNavBar extends StatelessWidget {
 }
 
 class SearchBarTextField extends StatelessWidget {
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
+
+  SearchBarTextField({super.key});
 
   void handleSearch(String value) {
     // Handle the search input changes
@@ -184,11 +191,12 @@ class SearchBarTextField extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         clipBehavior: Clip.antiAlias,
         decoration: ShapeDecoration(
-          color: Color(0xFFFFF7EE),
+          color: const Color(0xFFFFF7EE),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
         ),
+
         child: Align(
           alignment: Alignment.centerLeft,
           child: Row(
@@ -207,6 +215,7 @@ class SearchBarTextField extends StatelessWidget {
                   onChanged: handleSearch,
                   onSubmitted: handleSubmit,
                   style: TextStyle(
+
                     color: Colors.black,
                     fontSize: 12,
                     fontFamily: 'Poppins',

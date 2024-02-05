@@ -6,7 +6,7 @@ class MyButtonWithSvg extends StatelessWidget {
   final String iconImage;
   final Function()? onTap;
 
-  MyButtonWithSvg({
+  const MyButtonWithSvg({
     Key? key,
     required this.buttonText,
     required this.iconImage,
@@ -22,7 +22,7 @@ class MyButtonWithSvg extends StatelessWidget {
         width: 333,
         height: 49,
         decoration: ShapeDecoration(
-          color: Color(0xFFE76F51),
+          color: const Color(0xFFE76F51),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(14),
           ),
@@ -38,7 +38,7 @@ class MyButtonWithSvg extends StatelessWidget {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                Container(
+                SizedBox(
                   width: 25,
                   height: 25,
                   child: SvgPicture.asset(
@@ -49,7 +49,7 @@ class MyButtonWithSvg extends StatelessWidget {
                     color: Colors.white, // Change the icon color
                   ),
                 ),
-                SizedBox(width: 10),
+                const SizedBox(width: 10),
                 Align(
                   alignment: Alignment.centerLeft,
                   child: Center(

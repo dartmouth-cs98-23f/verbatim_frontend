@@ -4,7 +4,7 @@ import 'package:verbatim_frontend/screens/onboardingPage2.dart';
 import 'getStarted.dart';
 
 class Draft extends StatefulWidget {
-  const Draft({Key? key});
+  const Draft({super.key});
 
   @override
   _DraftState createState() => _DraftState();
@@ -36,7 +36,7 @@ class _DraftState extends State<Draft> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFFF3EE),
+      backgroundColor: const Color(0xFFFFF3EE),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,
@@ -61,15 +61,15 @@ class _DraftState extends State<Draft> {
                   ElevatedButton(
                     onPressed: () {
                       // Navigate to the 'Sign Up' page
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => GetStarted()));
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const GetStarted()));
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xFFFFF3EE), // Background color
+                      backgroundColor: const Color(0xFFFFF3EE), // Background color
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(13.0), // Rectangular shape
                       ),
                     ),
-                    child: Text(
+                    child: const Text(
                       'Skip',
                       style: TextStyle(
                         color: Colors.black,
@@ -80,15 +80,15 @@ class _DraftState extends State<Draft> {
                   ElevatedButton(
                     onPressed: () {
                       // Navigate to the 'Sign Up' page
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => OnBoardingPage2()));
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const OnBoardingPage2()));
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xFFE76F51), // Background color
+                      backgroundColor: const Color(0xFFE76F51), // Background color
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(13.0), // Rectangular shape
                       ),
                     ),
-                    child: Text(
+                    child: const Text(
                       'Next',
                       style: TextStyle(
                         color: Colors.white,

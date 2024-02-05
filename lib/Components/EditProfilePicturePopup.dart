@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hovering/hovering.dart';
 
 class EditProfilePicturePopup extends StatefulWidget {
   final String imagePath;
@@ -9,7 +8,7 @@ class EditProfilePicturePopup extends StatefulWidget {
   final VoidCallback onChangeImageCamera;
   final VoidCallback onRemoveCurrentPicture;
 
-  EditProfilePicturePopup({
+  const EditProfilePicturePopup({super.key, 
     required this.imagePath,
     required this.selectedImage,
     required this.onImageTap,
@@ -33,6 +32,21 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+
+          const SizedBox(height: 5),
+          const Center(
+            child: Padding(
+              padding: EdgeInsets.all(16.0),
+              child: Text(
+                'Edit Profile Picture',
+                style: TextStyle(
+                  color: Color(0xFF3C63B0),
+                  fontSize: 16,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w400,
+                  height: 0.09,
+                  letterSpacing: 0.30,
+
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -51,6 +65,7 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
                       letterSpacing: 0.30,
                     ),
                   ),
+
                 ),
               ),
               IconButton(
@@ -103,11 +118,13 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
           ),
           const SizedBox(height: 20),
           ListTile(
+
             leading: Icon(
               Icons.photo_camera_outlined,
+
               color: Color(0xFFDE674A),
             ),
-            title: Text(
+            title: const Text(
               'Take a photo',
               style: TextStyle(
                 color: Colors.black,
@@ -122,11 +139,13 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
           ),
           const SizedBox(height: 10),
           ListTile(
+
             leading: Icon(
               Icons.photo_outlined,
+
               color: Color(0xFFDE674A),
             ),
-            title: Text(
+            title: const Text(
               'Choose from gallery',
               style: TextStyle(
                 color: Colors.black,
@@ -141,11 +160,13 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
           ),
           const SizedBox(height: 10),
           ListTile(
+
             leading: Icon(
               Icons.delete_outline,
+
               color: Color(0xFFDE674A),
             ),
-            title: Text(
+            title: const Text(
               'Remove current picture',
               style: TextStyle(
                 color: Colors.black,
