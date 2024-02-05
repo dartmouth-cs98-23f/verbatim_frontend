@@ -297,6 +297,8 @@ class _FriendshipState extends State<friendship>
   Map<int, Map<String, dynamic>> challengeStats = {};
 
   List<dynamic> groupAnswers = [];
+  int verbaMatchSimilarity = 0;
+  int totalResponses = 0;
 
   Future<void> getChallenge(int challengeId, String user,
       Map<int, List<String>> mappedChallenges) async {
@@ -349,10 +351,10 @@ class _FriendshipState extends State<friendship>
         );
 
         groupAnswers = jsonData['groupAnswers'];
-        int totalResponses = jsonData['totalResponses'];
+        totalResponses = jsonData['totalResponses'];
         // List<String> verbaMatch = jsonData['verbaMatch'];
         //double?
-        int verbaMatchSimilarity = jsonData['verbaMatchSimilarity'];
+        verbaMatchSimilarity = jsonData['verbaMatchSimilarity'];
         Map<String, dynamic> groupAnswersMap = {"groupAnswers": groupAnswers};
         Map<String, int> totalResponsesMap = {"totalResponses": totalResponses};
         Map<String, int> verbaMatchSimilarityMap = {
@@ -568,18 +570,45 @@ class _FriendshipState extends State<friendship>
                                                         (challengeInfo2 !=
                                                             "false");
 
+                                                    // initialize stats variables
+                                                    int verbaMatchStats = 0;
+                                                    int totalResponsesStats = 0;
+                                                    List<dynamic>
+                                                        groupAnswersStats = [];
+
                                                     if (completed) {
-                                                      dynamic groupAnswers =
+                                                      print(
+                                                          "\nthis is challenge stats $challengeStats");
+                                                      groupAnswersStats =
                                                           challengeStats[id]![
                                                               'groupAnswers'];
-                                                      dynamic
-                                                          verbaMatchSimilarity =
+
+                                                      print(
+                                                          '\nline 584 group answers stats $groupAnswersStats');
+
+                                                      verbaMatchStats =
                                                           challengeStats[id]![
                                                               'verbaMatchSimilarity'];
-                                                      dynamic totalResponses =
+
+                                                      print(
+                                                          '\n line 588 verbamatchsim $verbaMatchStats');
+                                                      totalResponsesStats =
                                                           challengeStats[id]![
                                                               'totalResponses'];
                                                     }
+                                                    List<dynamic> questions2 =
+                                                        groupAnswersStats
+                                                            .map((entry) =>
+                                                                entry[
+                                                                    'question'])
+                                                            .toList();
+                                                    List<String> questionList =
+                                                        questions2
+                                                            .map((dynamic
+                                                                    value) =>
+                                                                value
+                                                                    .toString())
+                                                            .toList();
 
                                                     List<String>
                                                         challengeQuestions =
@@ -595,34 +624,44 @@ class _FriendshipState extends State<friendship>
                                                           Navigator.push(
                                                             context,
                                                             MaterialPageRoute(
-                                                              builder: (context) => groupChallenge(
-                                                                  groupName: widget
-                                                                      .friendUsername,
-                                                                  groupId:
-                                                                      groupId,
-                                                                  challengeQs:
-                                                                      challengeQuestions,
-                                                                  challengeId:
-                                                                      id),
+                                                              builder: (context) =>
+                                                                  groupChallenge(
+                                                                groupName: widget
+                                                                    .friendUsername,
+                                                                groupId:
+                                                                    groupId,
+                                                                challengeQs:
+                                                                    challengeQuestions,
+                                                                challengeId: id,
+                                                                completed:
+                                                                    false,
+                                                              ),
                                                             ),
                                                           );
                                                         } else {
-                                                          /*
                                                           Navigator.push(
                                                             context,
                                                             MaterialPageRoute(
-                                                              builder: (context) => groupChallenge(
-                                                                  groupName: widget
-                                                                      .friendUsername,
-                                                                  groupId:
-                                                                      groupId,
-                                                                  challengeQs:
-                                                                      challengeQuestions,
-                                                                  challengeId:
-                                                                      id),
+                                                              builder: (context) =>
+                                                                  groupChallenge(
+                                                                groupName: widget
+                                                                    .friendUsername,
+                                                                groupId:
+                                                                    groupId,
+                                                                challengeQs:
+                                                                    questionList,
+                                                                challengeId: id,
+                                                                completed: true,
+                                                                groupAnswers:
+                                                                    groupAnswersStats,
+                                                                verbaMatchSimilarity:
+                                                                    verbaMatchStats,
+                                                                totalResponses:
+                                                                    totalResponsesStats,
+                                                              ),
                                                             ),
                                                           );
-                                                          */
+
                                                           print(
                                                               'yoyoyoo groupAnswers: $groupAnswers');
                                                         }

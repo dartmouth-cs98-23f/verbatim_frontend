@@ -78,12 +78,22 @@ class groupChallenge extends StatefulWidget {
   final int? groupId;
   final List<String> challengeQs;
   final int challengeId;
+  final bool completed;
+  final List<dynamic>?
+      groupAnswers; //dont need to send this i have question list lol but whatever no time
+  final int? verbaMatchSimilarity;
+  final int? totalResponses;
+
   groupChallenge({
     Key? key,
     required this.groupName,
     required this.groupId,
     required this.challengeQs,
     required this.challengeId,
+    required this.completed,
+    this.groupAnswers,
+    this.verbaMatchSimilarity,
+    this.totalResponses,
   }) : super(key: key);
 
   @override
@@ -98,18 +108,26 @@ class _GroupChallengeState extends State<groupChallenge> {
   List<String> userResponses = [];
   double progressValue = 0.0;
   int currentQuestionIndex = 0;
-  List<String> questions = ["beep", "bpoo", "bopp", "poop", "werewr"];
+  List<String> questions = [];
   bool responded = false;
 
-  List<bool> expandedStates = [false, false, false, false, false];
-  List<String> prompts = [
-    "challenge question one",
-    "challenge question two",
-    "challenge question three",
-    "challenge question four",
-    "challenge question five",
-  ];
-  List<bool> editingStates = [false, false, false, false, false];
+  List<bool> expandedStates = [];
+  List<String> prompts = [];
+  List<bool> editingStates = [];
+
+  @override
+  void initState() {
+    super.initState();
+
+    for (int i = 0; i < widget.challengeQs.length; i++) {
+      expandedStates.add(false);
+      String temp = widget.challengeQs[i];
+      prompts.add(temp);
+      editingStates.add(false);
+    }
+
+    expandedStates[0] = true;
+  }
 
   void updateProgress() {
     setState(() {
@@ -119,8 +137,11 @@ class _GroupChallengeState extends State<groupChallenge> {
 
   @override
   Widget build(BuildContext context) {
-    int numQuestions =
-        widget.challengeQs.length; // how many questions are there?
+    if (widget.completed) {
+      responded = true;
+    }
+    int numQuestions = widget.challengeQs.length;
+    print("numQuestions is $numQuestions"); // how many questions are there?
 
     List<String> sentquestions = widget.challengeQs;
 
@@ -128,7 +149,41 @@ class _GroupChallengeState extends State<groupChallenge> {
     prompts = sentquestions;
     updateProgress();
     final String assetName = 'assets/img1.svg';
+    List<dynamic>? groupAnswersStats = widget.groupAnswers;
+    // get questions from groupAnswersStats
+    if (groupAnswersStats != null) {
+      List<dynamic> questions2 =
+          groupAnswersStats.map((entry) => entry['question']).toList();
+      List<String> stringList =
+          questions2.map((dynamic value) => value.toString()).toList();
+      questions = stringList;
+    }
+    Map<String, Map<String, dynamic>> answersMap = {};
 
+    // get responses from groupAnswersStats
+    if (groupAnswersStats != null) {
+      for (var answer in groupAnswersStats) {
+        var question = answer['question'];
+        var responses = answer['responses'];
+
+        // Create a Map for the current question if not already created
+        answersMap.putIfAbsent(question, () => {});
+
+        // Iterate over responses and add them to the Map
+        for (var user in responses.keys) {
+          var response = responses[user];
+          answersMap[question]![user] = response;
+        }
+      }
+      print("this is the answersmap $answersMap");
+    }
+
+    final int? verbaMatchSimilarity2 = widget.verbaMatchSimilarity;
+    final int? totalResponses2 = widget.totalResponses;
+    bool comple = widget.completed;
+
+    print(
+        "here i am in group challenge these are GA $groupAnswersStats and completed $comple and ");
     return SafeArea(
         child: Scaffold(
       resizeToAvoidBottomInset: true,
@@ -297,7 +352,7 @@ class _GroupChallengeState extends State<groupChallenge> {
                 if (responded) _verbaMatch(),
                 if (responded)
                   for (int i = 0; i < numQuestions; i++)
-                    _buildResponseRectangle(i),
+                    _buildResponseRectangle(i, answersMap),
                 SizedBox(height: 50.v),
 
                 Visibility(
@@ -339,7 +394,15 @@ class _GroupChallengeState extends State<groupChallenge> {
     ));
   }
 
-  Widget _buildResponseRectangle(int index) {
+  Widget _buildResponseRectangle(
+      int index, Map<String, Map<String, dynamic>> answersMap) {
+// list of all users who have submitted responses
+    Set<String> users = {};
+    answersMap.forEach((question, userResponseMap) {
+      users.addAll(userResponseMap.keys);
+    });
+    List<String> usersList = users.toList();
+
     List<String> items = ['You', 'Jackie', 'Dahlia', 'Ryan', 'Eve'];
     List<String> answers = [
       'beep',
@@ -350,7 +413,14 @@ class _GroupChallengeState extends State<groupChallenge> {
       'beep',
     ];
     String selectedValue = 'Item 1';
-    List<bool> isDropdownVisible = [false, false, false];
+
+    List<bool> isDropdownVisible = [
+      false,
+      false,
+      false,
+      false,
+      false
+    ]; //how big shoudl this be?
 
     return GestureDetector(
       onTap: () {
@@ -394,9 +464,8 @@ class _GroupChallengeState extends State<groupChallenge> {
                       height: 70,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
-                        itemCount: items.length,
-                        itemBuilder: (context, index) {
-                          bool isSelected = selectedValue == items[index];
+                        itemCount: usersList.length,
+                        itemBuilder: (context, indexB) {
                           return Container(
                               height: 40.v,
                               width: 100.h,
@@ -411,14 +480,19 @@ class _GroupChallengeState extends State<groupChallenge> {
                               child: Center(
                                   child: Column(children: [
                                 Text(
-                                  items[index],
+                                  usersList[indexB],
                                   style: TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white),
                                 ),
                                 Text(
-                                  answers[index],
+                                  answersMap.containsKey(prompts[indexB]) &&
+                                          answersMap[prompts[indexB]]!
+                                              .containsKey(usersList[indexB])
+                                      ? answersMap[prompts[index]]![
+                                          usersList[indexB]]
+                                      : 'No response found',
                                   style: TextStyle(
                                       fontSize: 12, color: Colors.white),
                                 )

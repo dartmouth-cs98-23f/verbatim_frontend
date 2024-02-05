@@ -619,8 +619,9 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                                                     groupID,
                                                                 challengeQs:
                                                                     challengeQuestions,
-                                                                challengeId:
-                                                                    id),
+                                                                challengeId: id,
+                                                                completed:
+                                                                    true),
                                                       ),
                                                     );
                                                   } else {
