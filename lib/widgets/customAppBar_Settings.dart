@@ -82,7 +82,7 @@ class NewNavBar extends StatelessWidget {
           // SearchBarTextField(),
           SizedBox(width: 80),
           FirebaseStorageImage(
-            profileUrl: profileUrl,
+            profileUrl: SharedPrefs().getProfileUrl() as String,
           ),
         ],
       ),
