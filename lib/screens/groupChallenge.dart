@@ -15,63 +15,6 @@ import 'package:verbatim_frontend/widgets/custom_app_bar.dart';
 import 'dart:math';
 
 // submit challenge
-Future<void> submitChallenge(
-    String username, int challengeId, List<String> userResponses) async {
-  final url = Uri.parse(BackendService.getBackendUrl() + 'submitGroupResponse');
-  final headers = <String, String>{'Content-Type': 'application/json'};
-  final modifiedResponses = userResponses.map((response) {
-    final responseWithoutPunctuation =
-        response.replaceAll(RegExp(r'[^\w\s]'), '');
-
-    final words = responseWithoutPunctuation
-        .split(' ')
-        .where((word) => word.isNotEmpty); // shld fix the whitespace thing
-
-    final capitalizedWords = words.map((word) {
-      if (word.isNotEmpty) {
-        final trimmed = word.trim();
-
-        return trimmed[0].toUpperCase() + trimmed.substring(1);
-      }
-
-      return word;
-    });
-
-// join them back into list<string>
-    return capitalizedWords.join(' ');
-  }).toList();
-
-  final response = await http.post(url,
-      headers: headers,
-      body: json.encode({
-        'username': username,
-        'responses': modifiedResponses,
-        'challengeId': challengeId,
-      }));
-
-  if (response.statusCode == 200) {
-    print('responses submitted succesfully');
-
-    final Map<String, dynamic> stats = json.decode(response.body);
-    // need to do lots of things to these stats!
-
-    print("STATS $stats");
-  } else {
-    print("failedright here Status code: ${response.statusCode} ");
-  }
-}
-
-// HARD CODED - load pics a diff way
-List<int> groupUsers = [1, 2, 3, 4, 5, 6];
-
-//fix image getting but jsut use this for now
-Future<void> preloadImages(BuildContext context) async {
-  for (int i = 0; i < min(groupUsers!.length + 1, 6); i++) {
-    final key = 'assets/Ellipse ${41 + i}.png';
-    final image = AssetImage(key);
-    await precacheImage(image, context);
-  }
-}
 
 class groupChallenge extends StatefulWidget {
   final String groupName;
@@ -101,6 +44,18 @@ class groupChallenge extends StatefulWidget {
 }
 
 class _GroupChallengeState extends State<groupChallenge> {
+// HARD CODED - load pics a diff way
+  List<int> groupUsers = [1, 2, 3, 4, 5, 6];
+
+//fix image getting but jsut use this for now
+  Future<void> preloadImages(BuildContext context) async {
+    for (int i = 0; i < min(groupUsers!.length + 1, 6); i++) {
+      final key = 'assets/Ellipse ${41 + i}.png';
+      final image = AssetImage(key);
+      await precacheImage(image, context);
+    }
+  }
+
   String username = SharedPrefs().getUserName() ?? "";
 
   TextEditingController responseController = TextEditingController();
@@ -114,6 +69,70 @@ class _GroupChallengeState extends State<groupChallenge> {
   List<bool> expandedStates = [];
   List<String> prompts = [];
   List<bool> editingStates = [];
+
+  List<dynamic> groupAnswersSubmit = [];
+  Map<String, Map<String, dynamic>> answersSubmitMap = {};
+
+  Future<void> submitChallenge(
+      String username, int challengeId, List<String> userResponses) async {
+    final url =
+        Uri.parse(BackendService.getBackendUrl() + 'submitGroupResponse');
+    final headers = <String, String>{'Content-Type': 'application/json'};
+    final modifiedResponses = userResponses.map((response) {
+      final responseWithoutPunctuation =
+          response.replaceAll(RegExp(r'[^\w\s]'), '');
+
+      final words = responseWithoutPunctuation
+          .split(' ')
+          .where((word) => word.isNotEmpty); // shld fix the whitespace thing
+
+      final capitalizedWords = words.map((word) {
+        if (word.isNotEmpty) {
+          final trimmed = word.trim();
+
+          return trimmed[0].toUpperCase() + trimmed.substring(1);
+        }
+
+        return word;
+      });
+
+// join them back into list<string>
+      return capitalizedWords.join(' ');
+    }).toList();
+
+    final response = await http.post(url,
+        headers: headers,
+        body: json.encode({
+          'username': username,
+          'responses': modifiedResponses,
+          'challengeId': challengeId,
+        }));
+
+    if (response.statusCode == 200) {
+      print('responses submitted succesfully');
+
+      final Map<String, dynamic> stats = json.decode(response.body);
+      // need to do lots of things to these stats!
+
+      groupAnswersSubmit = stats["groupAnswers"];
+
+      for (var answer in groupAnswersSubmit) {
+        var question = answer['question'];
+        var responses = answer['responses'];
+
+        // Create a Map for the current question if not already created
+        answersSubmitMap.putIfAbsent(question, () => {});
+
+        // Iterate over responses and add them to the Map
+        for (var user in responses.keys) {
+          var response = responses[user];
+          answersSubmitMap[question]![user] = response;
+        }
+      }
+    } else {
+      print("failedright here Status code: ${response.statusCode} ");
+    }
+  }
 
   @override
   void initState() {
@@ -141,7 +160,7 @@ class _GroupChallengeState extends State<groupChallenge> {
       responded = true;
     }
     int numQuestions = widget.challengeQs.length;
-    print("numQuestions is $numQuestions"); // how many questions are there?
+    // how many questions are there?
 
     List<String> sentquestions = widget.challengeQs;
 
@@ -151,13 +170,7 @@ class _GroupChallengeState extends State<groupChallenge> {
     final String assetName = 'assets/img1.svg';
     List<dynamic>? groupAnswersStats = widget.groupAnswers;
     // get questions from groupAnswersStats
-    if (groupAnswersStats != null) {
-      List<dynamic> questions2 =
-          groupAnswersStats.map((entry) => entry['question']).toList();
-      List<String> stringList =
-          questions2.map((dynamic value) => value.toString()).toList();
-      questions = stringList;
-    }
+
     Map<String, Map<String, dynamic>> answersMap = {};
 
     // get responses from groupAnswersStats
@@ -175,15 +188,12 @@ class _GroupChallengeState extends State<groupChallenge> {
           answersMap[question]![user] = response;
         }
       }
-      print("this is the answersmap $answersMap");
     }
 
     final int? verbaMatchSimilarity2 = widget.verbaMatchSimilarity;
     final int? totalResponses2 = widget.totalResponses;
     bool comple = widget.completed;
 
-    print(
-        "here i am in group challenge these are GA $groupAnswersStats and completed $comple and ");
     return SafeArea(
         child: Scaffold(
       resizeToAvoidBottomInset: true,
@@ -313,9 +323,10 @@ class _GroupChallengeState extends State<groupChallenge> {
                                         username,
                                         widget.challengeId,
                                         userResponses,
-                                      );
-                                      setState(() {
-                                        responded = true;
+                                      ).then((_) {
+                                        setState(() {
+                                          responded = true;
+                                        });
                                       });
                                     }
                                   }
@@ -352,7 +363,14 @@ class _GroupChallengeState extends State<groupChallenge> {
                 if (responded) _verbaMatch(),
                 if (responded)
                   for (int i = 0; i < numQuestions; i++)
-                    _buildResponseRectangle(i, answersMap),
+                    if (widget.completed == true)
+                      _buildResponseRectangle(i, answersMap),
+
+                if (responded)
+                  for (int x = 0; x < numQuestions; x++)
+                    if (widget.completed == false)
+                      _buildResponseRectangle(x, answersSubmitMap),
+
                 SizedBox(height: 50.v),
 
                 Visibility(
@@ -402,17 +420,6 @@ class _GroupChallengeState extends State<groupChallenge> {
       users.addAll(userResponseMap.keys);
     });
     List<String> usersList = users.toList();
-
-    List<String> items = ['You', 'Jackie', 'Dahlia', 'Ryan', 'Eve'];
-    List<String> answers = [
-      'beep',
-      'bop',
-      'kleep',
-      'klop',
-      'longone',
-      'beep',
-    ];
-    String selectedValue = 'Item 1';
 
     List<bool> isDropdownVisible = [
       false,
