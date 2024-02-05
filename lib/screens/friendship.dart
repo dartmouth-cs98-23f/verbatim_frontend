@@ -308,28 +308,36 @@ class _FriendshipState extends State<friendship>
     final response = await http.get(url);
     if (response.statusCode == 200) {
       final dynamic jsonData = json.decode(response.body);
-      print('jsondata in friendship getChallengeqS $jsonData');
+      print('\n jsondata in friendship getChallengeqS $jsonData');
+      print(
+          "\n for challengeId: $challengeId challenge right now $mappedChallenges");
       bool userHasCompleted = jsonData['userHasCompleted'];
       String completed = userHasCompleted.toString();
       // put completion status in mapped challenges
       mappedChallenges[challengeId]!.add(completed);
+      List<dynamic> map = mappedChallenges[challengeId]!;
+      int mapLength = map.length;
+      print(
+          "\n b4 completed check challenge id $challengeId this is mapped chalenges b4 failure $mappedChallenges \n and the map $map and  its length $mapLength ");
 
 // user has not completed the challenge
-      if (!userHasCompleted) {
+      if (completed == 'false') {
+        print(
+            "\n after completed challenge id $challengeId this is mapped chalenges b4 failure $mappedChallenges \n and its  and the map $map  and its length $mapLength");
         List<dynamic> questionsList = jsonData['questions'];
         for (List<dynamic> questionList in questionsList) {
           List<String> contentList = questionList
               .map<String>((item) => item['content'].toString())
               .toList();
 
-          //put this question in mapped Challenges
+          //put the questions in mapped Challenges
           if (mappedChallenges.containsKey(challengeId)) {
             mappedChallenges[challengeId]!.addAll(contentList);
           } else {
-            print('total failure');
+            print('\n couldnt put questions in mapped challenges');
           }
           print(
-              "\n\n the mapped challenge for the one i did not do is $mappedChallenges");
+              "\n the mapped challenge for the one i did not do is $mappedChallenges");
         }
       } else // user HAS completed the challenge - fill in stats
       {
@@ -396,6 +404,7 @@ class _FriendshipState extends State<friendship>
     await getActiveChallenges(username, widget.friendUsername);
 
     for (var challengeId in activeChallengeIds) {
+      print("here getting getChallenge for $challengeId");
       await getChallenge(challengeId, username, mappedChallenges);
     }
 
@@ -549,16 +558,6 @@ class _FriendshipState extends State<friendship>
                                                                 "Custom"
                                                             ? "custom"
                                                             : "standard";
-                                                    dynamic groupAnswers =
-                                                        challengeStats[id]![
-                                                            'groupAnswers'];
-                                                    dynamic
-                                                        verbaMatchSimilarity =
-                                                        challengeStats[id]![
-                                                            'verbaMatchSimilarity'];
-                                                    dynamic totalResponses =
-                                                        challengeStats[id]![
-                                                            'totalResponses'];
 
                                                     // if challenge is completed, mark it as such
                                                     // it doesn't seem like the challenges are being marked as completed
@@ -568,6 +567,19 @@ class _FriendshipState extends State<friendship>
                                                     bool completed =
                                                         (challengeInfo2 !=
                                                             "false");
+
+                                                    if (completed) {
+                                                      dynamic groupAnswers =
+                                                          challengeStats[id]![
+                                                              'groupAnswers'];
+                                                      dynamic
+                                                          verbaMatchSimilarity =
+                                                          challengeStats[id]![
+                                                              'verbaMatchSimilarity'];
+                                                      dynamic totalResponses =
+                                                          challengeStats[id]![
+                                                              'totalResponses'];
+                                                    }
 
                                                     List<String>
                                                         challengeQuestions =

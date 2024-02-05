@@ -244,21 +244,25 @@ class _GroupChallengeState extends State<groupChallenge> {
                               onPressed: () {
                                 setState(() {
                                   userResponse = responseController.text;
-                                  userResponses.add(userResponse);
-                                  responseController.clear();
-                                  if (currentQuestionIndex <=
-                                      (numQuestions - 2)) {
-                                    updateProgress();
-                                    currentQuestionIndex += 1;
+                                  if (userResponse == "") {
+                                    print("U GOTTA SAY SOMETHING");
                                   } else {
-                                    submitChallenge(
-                                      username,
-                                      widget.challengeId,
-                                      userResponses,
-                                    );
-                                    setState(() {
-                                      responded = true;
-                                    });
+                                    userResponses.add(userResponse);
+                                    responseController.clear();
+                                    if (currentQuestionIndex <=
+                                        (numQuestions - 2)) {
+                                      updateProgress();
+                                      currentQuestionIndex += 1;
+                                    } else {
+                                      submitChallenge(
+                                        username,
+                                        widget.challengeId,
+                                        userResponses,
+                                      );
+                                      setState(() {
+                                        responded = true;
+                                      });
+                                    }
                                   }
                                 });
                               },
