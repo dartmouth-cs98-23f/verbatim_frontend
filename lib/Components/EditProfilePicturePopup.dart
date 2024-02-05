@@ -8,13 +8,15 @@ class EditProfilePicturePopup extends StatefulWidget {
   final VoidCallback onChangeImageCamera;
   final VoidCallback onRemoveCurrentPicture;
 
-  const EditProfilePicturePopup({super.key, 
+  const EditProfilePicturePopup({
+    super.key, 
     required this.imagePath,
     required this.selectedImage,
     required this.onImageTap,
     required this.onChangeImageGallery,
     required this.onChangeImageCamera,
     required this.onRemoveCurrentPicture,
+    // ... (your existing parameters)
   });
 
   @override
@@ -32,26 +34,12 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
-
           const SizedBox(height: 5),
-          const Center(
-            child: Padding(
-              padding: EdgeInsets.all(16.0),
-              child: Text(
-                'Edit Profile Picture',
-                style: TextStyle(
-                  color: Color(0xFF3C63B0),
-                  fontSize: 16,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w400,
-                  height: 0.09,
-                  letterSpacing: 0.30,
-
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 56.0),
+                padding: const EdgeInsets.only(left: 16.0),
                 child: Align(
                   alignment: Alignment.topCenter,
                   child: Text(
@@ -65,7 +53,6 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
                       letterSpacing: 0.30,
                     ),
                   ),
-
                 ),
               ),
               IconButton(
@@ -83,45 +70,14 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
             child: GestureDetector(
               onTap: widget.onImageTap,
               child: Container(
-                width: 100.0,
-                height: 100.0,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: isHovered ? Colors.blue : Colors.transparent,
-                    width: 2.0,
-                  ),
-                ),
-                child: ClipOval(
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: widget.onImageTap,
-                      child: ClipOval(
-                        child: Container(
-                          width: 150.0,
-                          height: 150.0,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: widget.selectedImage,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                // ... (your existing image container)
               ),
             ),
           ),
           const SizedBox(height: 20),
           ListTile(
-
             leading: Icon(
               Icons.photo_camera_outlined,
-
               color: Color(0xFFDE674A),
             ),
             title: const Text(
@@ -139,10 +95,8 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
           ),
           const SizedBox(height: 10),
           ListTile(
-
             leading: Icon(
               Icons.photo_outlined,
-
               color: Color(0xFFDE674A),
             ),
             title: const Text(
@@ -160,10 +114,8 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
           ),
           const SizedBox(height: 10),
           ListTile(
-
             leading: Icon(
               Icons.delete_outline,
-
               color: Color(0xFFDE674A),
             ),
             title: const Text(
