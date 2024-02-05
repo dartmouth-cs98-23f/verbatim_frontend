@@ -584,7 +584,9 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                   //if guest
                                   else if (username == '' &&
                                       responded == true) {
+
                                     setGuestUserResponses();
+
                                     return Column(
                                       children: [
                                         Guest(

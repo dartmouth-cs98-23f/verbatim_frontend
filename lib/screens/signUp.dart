@@ -13,10 +13,13 @@ import 'dart:convert';
 
 
 class SignUp extends StatefulWidget {
+
   //TODO: figure out how to not need the
   const SignUp({
     super.key,
   });
+
+
 
   @override
   State<SignUp> createState() => _SignUpState();
@@ -44,7 +47,9 @@ class _SignUpState extends State<SignUp> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
+
 //TODO: gets widget data
+
 
   // final GoogleSignIn _googleSignIn = GoogleSignIn(
   //     scopes: ['email'],
@@ -88,6 +93,8 @@ class _SignUpState extends State<SignUp> {
         SharedPrefs().setLastName(lastName);
         SharedPrefs().setPassword(password);
         SharedPrefs().setUserName(username);
+        SharedPrefs().setBio("");
+        SharedPrefs().setProfileUrl("");
 
         // Successful sign-up: Navigate to the 'OnBoardingPage1' page
         Navigator.pushNamed(context, '/onboarding_page1');
@@ -253,6 +260,7 @@ class _SignUpState extends State<SignUp> {
       // Continue with sign-up
       print(
           'Successfully signed up with this info: $firstName, $lastName, $username, $email, $password, $confirmedPassword');
+
       if (SharedPrefs().getResponse1() == '') {
         //if user hasnt played global challenge yer
         
@@ -264,6 +272,7 @@ class _SignUpState extends State<SignUp> {
         guestSignUp(context, firstName, lastName, username.toLowerCase(),
             email.toLowerCase(), password);
       }
+
     }
   }
 

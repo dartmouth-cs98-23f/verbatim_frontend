@@ -24,8 +24,10 @@ class MyButtonNoImage extends StatelessWidget {
               borderRadius: BorderRadius.circular(14),
             ),
           ),
-          child: Material( // Use Material widget to enable ink splash
-            color: Colors.transparent, // Make it transparent to prevent background color overlay
+          child: Material(
+            // Use Material widget to enable ink splash
+            color: Colors
+                .transparent, // Make it transparent to prevent background color overlay
             child: InkWell(
               onTap: onTap,
               child: Row(

@@ -1,9 +1,26 @@
+import 'dart:typed_data';
+
 import 'package:flutter/material.dart';
+
+import 'package:verbatim_frontend/Components/shared_prefs.dart';
+import 'package:verbatim_frontend/screens/profile.dart';
+import 'package:verbatim_frontend/screens/settings.dart';
 import 'size.dart';
 import 'package:verbatim_frontend/screens/sideBar.dart';
 
-class CustomAppBarSettings extends StatelessWidget implements PreferredSizeWidget {
-  const CustomAppBarSettings({super.key});
+import 'package:flutter/material.dart';
+import 'package:http/http.dart' as http;
+
+class CustomAppBarSettings extends StatelessWidget
+    implements PreferredSizeWidget {
+  final String title;
+  final bool showBackButton;
+
+  CustomAppBarSettings({
+    required this.title,
+    this.showBackButton = false,
+  });
+
 
   @override
   Widget build(BuildContext context) {
@@ -15,11 +32,13 @@ class CustomAppBarSettings extends StatelessWidget implements PreferredSizeWidge
       title: const Column(
         children: [
           SizedBox(height: 60),
-          NewNavBar(
-            profileImagePath: 'assets/profile2.jpeg',
-          ),
+          NewNavBar(),
           SizedBox(height: 30), // Adjust the distance as needed
-          TitleFrame(),
+
+          TitleFrame(
+            title: title,
+            showBackArrow: showBackButton,
+          ),
           SizedBox(height: 30),
         ],
       ),
@@ -35,12 +54,12 @@ class CustomAppBarSettings extends StatelessWidget implements PreferredSizeWidge
 }
 
 class NewNavBar extends StatelessWidget {
-  final String profileImagePath;
-
-  const NewNavBar({super.key, required this.profileImagePath});
 
   @override
   Widget build(BuildContext context) {
+    final String profileUrl =
+        SharedPrefs().getProfileUrl() ?? 'assets/profile_pic.png';
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       clipBehavior: Clip.antiAlias,
@@ -63,21 +82,81 @@ class NewNavBar extends StatelessWidget {
             },
           ),
           SearchBarTextField(),
-          const SizedBox(width: 20),
-          Container(
-            width: 40,
-            height: 40.45,
-            decoration: ShapeDecoration(
-              image: DecorationImage(
-                image: NetworkImage(profileImagePath),
-                fit: BoxFit.fill,
-              ),
-              shape: const OvalBorder(),
-            ),
+
+          SizedBox(width: 20),
+          FutureBuilder<Uint8List>(
+            future: downloadImage(profileUrl),
+            builder: (context, snapshot) {
+              if (snapshot.connectionState == ConnectionState.done &&
+                  snapshot.hasData) {
+                return GestureDetector(
+                  onTap: () {
+                    // Navigate to the Profile page
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Profile()),
+                    );
+                  },
+                  child: Container(
+                    width: 40,
+                    height: 40.45,
+                    decoration: ShapeDecoration(
+                      image: DecorationImage(
+                        image: MemoryImage(snapshot.data!),
+                        fit: BoxFit.fill,
+                      ),
+                      shape: CircleBorder(),
+                    ),
+                  ),
+                );
+              } else {
+                return GestureDetector(
+                  onTap: () {
+                    // Navigate to the Profile page
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(builder: (context) => Profile()),
+                    );
+                  },
+                  child: Container(
+                    width: 40,
+                    height: 40.45,
+                    decoration: BoxDecoration(
+                      shape: BoxShape.circle,
+                      image: DecorationImage(
+                        fit: BoxFit.cover,
+                        image: AssetImage('assets/profile_pic.png')
+                            as ImageProvider<Object>,
+                      ),
+                    ),
+                  ),
+                ); // Placeholder widget while image is loading
+              }
+            },
+
           ),
         ],
       ),
     );
+  }
+
+  Future<Uint8List> downloadImage(String? url) async {
+    if (url != null) {
+      try {
+        final response = await http.get(Uri.parse(url));
+        if (response.statusCode == 200) {
+          return response.bodyBytes;
+        } else {
+          print('\nError: ${response.statusCode} - ${response.reasonPhrase}\n');
+          throw Exception('Failed to load image');
+        }
+      } catch (e) {
+        print('Exception: $e');
+        throw Exception('Failed to load image');
+      }
+    } else {
+      throw Exception('Profile URL is null');
+    }
   }
 }
 
@@ -117,32 +196,26 @@ class SearchBarTextField extends StatelessWidget {
             borderRadius: BorderRadius.circular(20),
           ),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            IconButton(
-              icon: const Icon(Icons.search, color: Colors.black, size: 20),
-              onPressed: handleSearchIconPressed,
-            ),
-            const SizedBox(width: 20),
-            Flexible(
-              child: TextField(
-                controller: _searchController,
-                onChanged: handleSearch,
-                onSubmitted: handleSubmit,
-                style: const TextStyle(
-                  color: Colors.black,
-                  fontSize: 12,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w600,
-                  height: 0.11,
-                  letterSpacing: 0.20,
-                ),
-                cursorColor: Colors.black,
-                decoration: const InputDecoration(
-                  hintText: 'Search Users',
-                  hintStyle: TextStyle(
+
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              Icon(
+                Icons.search,
+                color: Colors.black,
+                size: 20,
+              ),
+              SizedBox(width: 8), // Adjust horizontal spacing as needed
+              Expanded(
+                child: TextField(
+                  controller: _searchController,
+                  onChanged: handleSearch,
+                  onSubmitted: handleSubmit,
+                  style: TextStyle(
+
                     color: Colors.black,
                     fontSize: 12,
                     fontFamily: 'Poppins',
@@ -150,95 +223,34 @@ class SearchBarTextField extends StatelessWidget {
                     height: 0.11,
                     letterSpacing: 0.20,
                   ),
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(
-                      vertical: -16), // Adjust vertical padding as needed
+                  cursorColor: Colors.black,
+                  decoration: InputDecoration(
+                    hintText: 'Search Users',
+                    hintStyle: TextStyle(
+                      color: Colors.black,
+                      fontSize: 12,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w600,
+                      height: 0.11,
+                      letterSpacing: 0.20,
+                    ),
+                    border: InputBorder.none,
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-// class SearchBarTextField extends StatelessWidget {
-//   TextEditingController _searchController = TextEditingController();
-
-//   void handleSearch(String value) {
-//     // Handle the search input changes
-//     print("Search onChanged: $value");
-//   }
-
-//   void handleSubmit(String value) {
-//     // Handle the search submission
-//     print("Search onSubmitted: $value");
-//   }
-
-//   void handleSearchIconPressed() {
-//     // Handle the search icon pressed
-//     print("Search icon pressed");
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Expanded(
-//       child: Container(
-//         padding: const EdgeInsets.all(10),
-//         clipBehavior: Clip.antiAlias,
-//         decoration: ShapeDecoration(
-//           color: Color(0xFFFFF7EE),
-//           shape: RoundedRectangleBorder(
-//             borderRadius: BorderRadius.circular(20),
-//           ),
-//         ),
-//         child: Row(
-//           mainAxisAlignment: MainAxisAlignment.start,
-//           crossAxisAlignment: CrossAxisAlignment.center,
-//           children: [
-//             IconButton(
-//               icon: Icon(Icons.search, color: Colors.black, size: 20),
-//               onPressed: handleSearchIconPressed,
-//             ),
-//             SizedBox(width: 20),
-//             Expanded(
-//               child: TextField(
-//                 controller: _searchController,
-//                 onChanged: handleSearch,
-//                 onSubmitted: handleSubmit,
-//                 style: TextStyle(
-//                   color: Colors.black,
-//                   fontSize: 12,
-//                   fontFamily: 'Poppins',
-//                   fontWeight: FontWeight.w600,
-//                   height: 0.11,
-//                   letterSpacing: 0.20,
-//                 ),
-//                 cursorColor: Colors.black,
-//                 decoration: InputDecoration(
-//                   hintText: 'Search Users',
-//                   hintStyle: TextStyle(
-//                     color: Colors.black,
-//                     fontSize: 12,
-//                     fontFamily: 'Poppins',
-//                     fontWeight: FontWeight.w600,
-//                     height: 0.11,
-//                     letterSpacing: 0.20,
-//                   ),
-//                   border: InputBorder.none,
-//                 ),
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 class TitleFrame extends StatelessWidget {
-  const TitleFrame({super.key});
+  final String title;
+  final bool showBackArrow;
+
+  TitleFrame({required this.title, this.showBackArrow = false});
 
   @override
   Widget build(BuildContext context) {
@@ -247,28 +259,40 @@ class TitleFrame extends StatelessWidget {
       height: 70,
       padding: const EdgeInsets.all(10),
       clipBehavior: Clip.antiAlias,
-      decoration: const BoxDecoration(),
-      child: const Column(
-        mainAxisSize: MainAxisSize.min,
+      decoration: BoxDecoration(),
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(
-            height: 10.0,
-          ),
-          Text(
-            'Account Settings',
-            style: TextStyle(
-              color: Color(0xFFFFF7EE),
-              fontSize: 32,
-              fontFamily: 'Poppins',
-              fontWeight: FontWeight.w700,
-              height: 0.04,
-              letterSpacing: 0.10,
+          if (showBackArrow)
+            Padding(
+              padding: EdgeInsets.only(bottom: 10),
+              child: IconButton(
+                icon: Icon(Icons.arrow_back_ios_new, color: Color(0xFFFFF7EE)),
+                onPressed: () {
+                  // Handle back arrow press
+                  Navigator.pop(context);
+                },
+              ),
             ),
-          ),
-          SizedBox(
-            height: 20.0,
+          SizedBox(width: showBackArrow ? 15.0 : 0.0),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              SizedBox(height: 10.0),
+              Text(
+                title,
+                style: TextStyle(
+                  color: Color(0xFFFFF7EE),
+                  fontSize: 32,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w700,
+                  height: 0.04,
+                  letterSpacing: 0.10,
+                ),
+              ),
+              SizedBox(height: 20.0),
+            ],
           ),
         ],
       ),

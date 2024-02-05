@@ -3,21 +3,39 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:verbatim_frontend/gameObject.dart';
 import 'package:verbatim_frontend/screens/landingPage.dart';
+import 'package:verbatim_frontend/screens/logIn.dart';
 import 'BackendService.dart';
 import 'Components/defineRoutes.dart';
 import 'Components/shared_prefs.dart';
+import 'package:clipboard/clipboard.dart';
+import 'package:firebase_core/firebase_core.dart';
+
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
-  WidgetsFlutterBinding
-      .ensureInitialized(); // Ensure WidgetsBinding is initialized
+  WidgetsFlutterBinding.ensureInitialized();
   await SharedPrefs().init();
 
   const String environment =
+
       String.fromEnvironment('FLUTTER_BACKEND_ENV', defaultValue: 'prod');
   //print("env in main is: " + environment);
+
   BackendService.loadProperties(environment);
+  try {
+    await Firebase.initializeApp(
+        //name: 'com.example.verbatim_frontend',
+        options: FirebaseOptions(
+      apiKey: 'AIzaSyAtNTGytXuzaYGDiWyzjiQ5qzZqyH3dqYk',
+      appId: '1:89436108608:android:58705820c58e09aa7b6ca5',
+      messagingSenderId: '89436108608',
+      projectId: 'verbatim-81617',
+      storageBucket: "gs://verbatim-81617.appspot.com",
+    ));
+  } catch (e) {
+    print('\n\nError initializing Firebase: $e\n\n');
+  }
 
   runApp(const MyApp());
 
@@ -64,8 +82,10 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey,
       onGenerateRoute: Application.router.generator,
+
       initialRoute: SharedPrefs().getCurrentPage() ?? '/landingPage',
       home: const LandingPage(),
+
     );
   }
 }

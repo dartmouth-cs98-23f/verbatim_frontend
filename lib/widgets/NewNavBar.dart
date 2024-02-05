@@ -29,7 +29,8 @@ class NewNavBar extends StatelessWidget {
                     Container(
                       width: 24,
                       height: 24,
-                      padding: const EdgeInsets.symmetric(horizontal: 4, vertical: 6),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 4, vertical: 6),
                       clipBehavior: Clip.antiAlias,
                       decoration: const BoxDecoration(),
                       child: const Row(
@@ -61,9 +62,9 @@ class NewNavBar extends StatelessWidget {
                       width: 16,
                       height: 16,
                       clipBehavior: Clip.antiAlias,
-                      decoration: const BoxDecoration(),
 
-                      child: const Stack(),
+                      decoration: BoxDecoration(),
+                      child: Stack(),
 
                     ),
                     const SizedBox(width: 10),
