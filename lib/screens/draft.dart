@@ -52,7 +52,6 @@ class _DraftState extends State<Draft> {
                 ),
               ),
             ),
-
             Padding(
               padding: const EdgeInsets.all(40.0),
               child: Row(
@@ -61,12 +60,14 @@ class _DraftState extends State<Draft> {
                   ElevatedButton(
                     onPressed: () {
                       // Navigate to the 'Sign Up' page
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => GetStarted()));
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => GetStarted()));
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xFFFFF3EE), // Background color
+                      backgroundColor: Color(0xFFFFF3EE), // Background color
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(13.0), // Rectangular shape
+                        borderRadius:
+                            BorderRadius.circular(13.0), // Rectangular shape
                       ),
                     ),
                     child: Text(
@@ -76,16 +77,17 @@ class _DraftState extends State<Draft> {
                       ),
                     ),
                   ),
-
                   ElevatedButton(
                     onPressed: () {
                       // Navigate to the 'Sign Up' page
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => OnBoardingPage2()));
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => OnBoardingPage2()));
                     },
                     style: ElevatedButton.styleFrom(
-                      primary: Color(0xFFE76F51), // Background color
+                      backgroundColor: Color(0xFFE76F51), // Background color
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(13.0), // Rectangular shape
+                        borderRadius:
+                            BorderRadius.circular(13.0), // Rectangular shape
                       ),
                     ),
                     child: Text(
@@ -98,7 +100,6 @@ class _DraftState extends State<Draft> {
                 ],
               ),
             ),
-
           ],
         ),
       ),

@@ -88,6 +88,25 @@ class NewNavBar extends StatelessWidget {
       ),
     );
   }
+
+  Future<Uint8List> downloadImage(String? url) async {
+    if (url != null) {
+      try {
+        final response = await http.get(Uri.parse(url));
+        if (response.statusCode == 200) {
+          return response.bodyBytes;
+        } else {
+          print('\nError: ${response.statusCode} - ${response.reasonPhrase}\n');
+          throw Exception('Failed to load image');
+        }
+      } catch (e) {
+        print('Exception: $e');
+        throw Exception('Failed to load image');
+      }
+    } else {
+      throw Exception('Profile URL is null');
+    }
+  }
 }
 
 class SearchBarTextField extends StatelessWidget {

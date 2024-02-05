@@ -174,6 +174,9 @@ class _AddFriendState extends State<addFriend> {
     final url = Uri.parse(BackendService.getBackendUrl() + 'users');
 
     final response = await http.get(url);
+
+    print("\nresponse is ${response}\n");
+
     if (response.statusCode == 200) {
       print("response succesfull");
       final List<dynamic> data = json.decode(response.body);
@@ -441,10 +444,20 @@ class _AddFriendState extends State<addFriend> {
                             itemCount: _searchResults().length,
                             itemBuilder: (context, index) {
                               final currentUser = _searchResults()[index];
-                              final name = currentUser.username;
-                              currentUser.isRequested =
-                                  myRequestedUsers_backend.contains(name);
-                              String profileUrl = currentUser.profilePicture;
+                              String name = '';
+                              String profileUrl = '';
+
+                              if (currentUser != null) {
+                                name = currentUser.username;
+                                currentUser.isRequested =
+                                    myRequestedUsers_backend.contains(name);
+                                profileUrl = currentUser.profilePicture ??
+                                    'assets/profile_pic.png'; // Provide a default value if profilePicture is null
+                                print(
+                                    "\nProfile here in listview is: $profileUrl");
+                              }
+                              print(
+                                  "\nProfile here in listview is: ${profileUrl}");
 
                               return ListTile(
                                 title: Row(
@@ -455,10 +468,23 @@ class _AddFriendState extends State<addFriend> {
                                       user: currentUser,
                                     ),
                                     SizedBox(width: 8),
-                                    Text(
-                                      name,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => Profile(
+                                                    user: currentUser,
+                                                  )),
+                                        );
+                                      },
+                                      child: Text(
+                                        name,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors
+                                              .black, // Optional: Change text color to blue for clickable effect
+                                        ),
                                       ),
                                     ),
                                   ],
@@ -492,7 +518,8 @@ class _AddFriendState extends State<addFriend> {
 
                               currentUser.isRequested =
                                   myRequestedUsers_backend.contains(name);
-                              String profileUrl = currentUser.profilePicture;
+                              String profileUrl = currentUser.profilePicture ??
+                                  'assets/profile_pic.png';
                               return ListTile(
                                 title: Row(
                                   children: [
@@ -501,10 +528,23 @@ class _AddFriendState extends State<addFriend> {
                                       user: currentUser,
                                     ),
                                     SizedBox(width: 8),
-                                    Text(
-                                      name,
-                                      style: TextStyle(
-                                        fontWeight: FontWeight.bold,
+                                    GestureDetector(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                              builder: (context) => Profile(
+                                                    user: currentUser,
+                                                  )),
+                                        );
+                                      },
+                                      child: Text(
+                                        name,
+                                        style: TextStyle(
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors
+                                              .black, // Optional: Change text color to blue for clickable effect
+                                        ),
                                       ),
                                     ),
                                   ],

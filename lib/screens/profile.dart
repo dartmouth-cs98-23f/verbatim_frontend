@@ -67,25 +67,6 @@ class _ProfileState extends State<Profile> {
     }
   }
 
-  // send friendrequest to backend
-  Future<void> sendFriendRequest(
-      String requestingUsername, String requestedUsername) async {
-    final url = Uri.parse(BackendService.getBackendUrl() + 'addFriend');
-    final headers = <String, String>{'Content-Type': 'application/json'};
-
-    final response = await http.post(url,
-        headers: headers,
-        body: json.encode({
-          "requestingUsername": requestingUsername,
-          "requestedUsername": requestedUsername
-        }));
-    if (response.statusCode == 200) {
-      print('responses sent succesfully');
-    } else {
-      print('Failed to send responses. Status code: ${response.statusCode}');
-    }
-  }
-
   final String field = "Friend";
   @override
   void initState() {
@@ -101,7 +82,7 @@ class _ProfileState extends State<Profile> {
       displayName = '$firstName $initial.';
       username = widget.user!.username;
       bio = widget.user!.bio ?? '';
-      profileUrl = widget.user!.profilePicture ?? '';
+      profileUrl = widget.user!.profilePicture ?? 'assets/profile_pic.png';
     } else {
       // If user object is null, fetch details from SharedPrefs
       firstName = SharedPrefs().getFirstName() ?? "User";
@@ -164,17 +145,6 @@ class _ProfileState extends State<Profile> {
                                 ),
 
                                 const SizedBox(width: 10),
-                                // Text(
-                                //   'User Profile',
-                                //   style: TextStyle(
-                                //     color: Colors.white,
-                                //     fontSize: 18,
-                                //     fontFamily: 'Poppins',
-                                //     fontWeight: FontWeight.w700,
-                                //     height: 0.07,
-                                //     letterSpacing: 0.10,
-                                //   ),
-                                // ),
                                 CustomAppBarSettings(title: '')
                               ],
                             ),
@@ -220,25 +190,12 @@ class _ProfileState extends State<Profile> {
                                           SafeArea(
                                             child: GestureDetector(
                                               onTap: () {
-                                                if (widget.user == null) {
-                                                  // Navigate to settings
-                                                  Navigator.of(context)
-                                                      .push(MaterialPageRoute(
-                                                    builder: (context) =>
-                                                        settings(),
-                                                  ));
-                                                } else {
-                                                  if (widget
-                                                          .user!.isRequested ==
-                                                      false) {
-                                                    sendFriendRequest(username,
-                                                        widget.user!.username);
-                                                  } else {
-                                                    print(
-                                                        "\nProvide the option to unfriend if they want to.");
-                                                  }
-                                                }
-
+                                                // Navigate to settings
+                                                Navigator.of(context)
+                                                    .push(MaterialPageRoute(
+                                                  builder: (context) =>
+                                                      settings(),
+                                                ));
                                                 //func
                                               },
                                               child: Container(
@@ -267,27 +224,12 @@ class _ProfileState extends State<Profile> {
                                                   child: InkWell(
                                                     onTap: () {
                                                       // Navigate to the settings page
-                                                      if (widget.user == null) {
-                                                        // Navigate to settings
-                                                        Navigator.of(context)
-                                                            .push(
-                                                                MaterialPageRoute(
-                                                          builder: (context) =>
-                                                              settings(),
-                                                        ));
-                                                      } else {
-                                                        if (widget.user!
-                                                                .isRequested ==
-                                                            false) {
-                                                          sendFriendRequest(
-                                                              username,
-                                                              widget.user!
-                                                                  .username);
-                                                        } else {
-                                                          print(
-                                                              "\nProvide the option to unfriend if they want to.");
-                                                        }
-                                                      }
+                                                      Navigator.of(context)
+                                                          .push(
+                                                              MaterialPageRoute(
+                                                        builder: (context) =>
+                                                            settings(),
+                                                      ));
                                                     },
                                                     child: Row(
                                                       mainAxisSize:
