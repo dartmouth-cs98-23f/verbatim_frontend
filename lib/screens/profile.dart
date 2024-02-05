@@ -67,6 +67,24 @@ class _ProfileState extends State<Profile> {
     }
   }
 
+  Future<void> sendFriendRequest(
+      String requestingUsername, String requestedUsername) async {
+    final url = Uri.parse(BackendService.getBackendUrl() + 'addFriend');
+    final headers = <String, String>{'Content-Type': 'application/json'};
+
+    final response = await http.post(url,
+        headers: headers,
+        body: json.encode({
+          "requestingUsername": requestingUsername,
+          "requestedUsername": requestedUsername
+        }));
+    if (response.statusCode == 200) {
+      print('responses sent succesfully');
+    } else {
+      print('Failed to send responses. Status code: ${response.statusCode}');
+    }
+  }
+
   final String field = "Friend";
   @override
   void initState() {
@@ -196,7 +214,6 @@ class _ProfileState extends State<Profile> {
                                                   builder: (context) =>
                                                       settings(),
                                                 ));
-                                                //func
                                               },
                                               child: Container(
                                                 width: 200,
@@ -223,7 +240,7 @@ class _ProfileState extends State<Profile> {
                                                       .transparent, // Make it transparent to prevent background color overlay
                                                   child: InkWell(
                                                     onTap: () {
-                                                      // Navigate to the settings page
+                                                      // Navigate to settings
                                                       Navigator.of(context)
                                                           .push(
                                                               MaterialPageRoute(
