@@ -26,7 +26,7 @@ class GameObject extends ChangeNotifier{
     responseQ3 = response3;
     // this.responseQ4 = response;
     // this.responseQ5 = response;
-    print("In update of game object" + response1);
+    print("In update of game object$response1");
    
     notifyListeners(); 
   }

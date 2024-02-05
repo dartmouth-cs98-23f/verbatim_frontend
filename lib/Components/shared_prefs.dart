@@ -1,5 +1,4 @@
 //import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class SharedPrefs {
@@ -85,8 +84,6 @@ class SharedPrefs {
   }
 
   String getReferer() {
-    // return "${_sharedPrefs!.getString("referer")!} ";
-    print("In shared prefs scouting for referer: ${_sharedPrefs!.getString("referer")}");
     return "${_sharedPrefs!.getString("referer")}";
   }
 

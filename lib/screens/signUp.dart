@@ -1,22 +1,15 @@
 import 'package:email_validator/email_validator.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 // import 'package:google_sign_in/google_sign_in.dart';
 import 'package:verbatim_frontend/BackendService.dart';
-import 'package:verbatim_frontend/gameObject.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
-import 'package:verbatim_frontend/screens/logIn.dart';
 import 'package:verbatim_frontend/screens/signupErrorMessage.dart';
 import '../widgets/my_button_with_image.dart';
-import 'globalChallenge.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'onboardingPage1.dart';
-import 'globalChallenge.dart';
 
 
 class SignUp extends StatefulWidget {
@@ -75,7 +68,7 @@ class _SignUpState extends State<SignUp> {
       String confirmPassword) async {
     try {
       final response = await http.post(
-        Uri.parse(BackendService.getBackendUrl() + 'register'),
+        Uri.parse('${BackendService.getBackendUrl()}register'),
         headers: <String, String>{
           'Content-Type': 'application/json',
         },
@@ -103,13 +96,13 @@ class _SignUpState extends State<SignUp> {
       } else {
         print('Error during sign-up: ${response.statusCode.toString()}');
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => SignupErrorMessage(pageName: 'sign up'),
+          builder: (context) => const SignupErrorMessage(pageName: 'sign up'),
         ));
       }
     } catch (e) {
       print('Error during sign-up: ${e.toString()}');
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => SignupErrorMessage(pageName: 'sign up'),
+        builder: (context) => const SignupErrorMessage(pageName: 'sign up'),
       ));
     }
   }
@@ -284,7 +277,7 @@ class _SignUpState extends State<SignUp> {
     setState(() {
       validationErrors[field] = Text(
         message,
-        style: TextStyle(color: Colors.red),
+        style: const TextStyle(color: Colors.red),
       );
     });
   }
@@ -297,7 +290,7 @@ class _SignUpState extends State<SignUp> {
   Widget build(BuildContext context) {
     //TODO: homie use this
     return Scaffold(
-      backgroundColor: Color(0xFFFFF3EE),
+      backgroundColor: const Color(0xFFFFF3EE),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Center(
@@ -456,7 +449,7 @@ class _SignUpState extends State<SignUp> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                     ],
                   ),
                 ),

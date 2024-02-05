@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:flutter/services.dart';
 import 'package:verbatim_frontend/BackendService.dart';
-import 'package:verbatim_frontend/gameObject.dart';
 import 'sideBar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -15,10 +13,9 @@ import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:intl/intl.dart';
 import 'verbatastic.dart';
 import 'globalSubmitGuest.dart';
-import 'package:provider/provider.dart';
 
 class globalChallenge extends StatefulWidget {
-  globalChallenge({
+  const globalChallenge({
     Key? key,
   }) : super(key: key);
 
@@ -122,7 +119,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
   }
 
   Future<void> _fetchData(String username) async {
-    final url = Uri.parse(BackendService.getBackendUrl() + 'globalChallenge');
+    final url = Uri.parse('${BackendService.getBackendUrl()}globalChallenge');
     final headers = <String, String>{'Content-Type': 'application/json'};
 
     final fetchQuestions =
@@ -171,13 +168,9 @@ class _GlobalChallengeState extends State<globalChallenge> {
           final MapEntry<String, List<String>?> firstEntry =
               verbatasticUsers.entries.first;
 
-          if (firstEntry != null) {
-            verbatimedWord = firstEntry.key;
-            verbatasticUsernames = firstEntry.value;
-          } else {
-            print("The first entry is null");
-          }
-        } else {
+          verbatimedWord = firstEntry.key;
+          verbatasticUsernames = firstEntry.value;
+                } else {
           print("verbatasticUsers is empty");
         }
       }
@@ -210,7 +203,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
   Future<void> sendUserResponses(
       String username, String email, List<String> userResponses) async {
     final url =
-        Uri.parse(BackendService.getBackendUrl() + 'submitGlobalResponse');
+        Uri.parse('${BackendService.getBackendUrl()}submitGlobalResponse');
     final headers = <String, String>{'Content-Type': 'application/json'};
 
     final modifiedResponses = userResponses.map((response) {
@@ -274,16 +267,12 @@ class _GlobalChallengeState extends State<globalChallenge> {
       });
 
       if (verbatasticUsers.isNotEmpty) {
-        final MapEntry<String, List<String>?>? firstEntry =
+        final MapEntry<String, List<String>?> firstEntry =
             verbatasticUsers.entries.first;
 
-        if (firstEntry != null) {
-          verbatimedWord = firstEntry.key;
-          verbatasticUsernames = firstEntry.value;
-        } else {
-          print("The first entry is null");
-        }
-      } else {
+        verbatimedWord = firstEntry.key;
+        verbatasticUsernames = firstEntry.value;
+            } else {
         print("verbatasticUsers is empty");
       }
 
@@ -318,7 +307,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
     String formattedTimeUntilMidnight =
         DateFormat.Hms().format(DateTime(0).add(timeUntilMidnight));
 
-    final String assetName = 'assets/img1.svg';
+    const String assetName = 'assets/img1.svg';
     List<String> tabLables = [categoryQ1, categoryQ2, categoryQ3];
 
     bool showText = true;
@@ -332,10 +321,10 @@ class _GlobalChallengeState extends State<globalChallenge> {
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: true,
-        backgroundColor: Color.fromARGB(255, 255, 243, 238),
+        backgroundColor: const Color.fromARGB(255, 255, 243, 238),
         body: SingleChildScrollView(
           child: Container(
-              color: Color.fromARGB(255, 255, 243, 238),
+              color: const Color.fromARGB(255, 255, 243, 238),
               child: Column(
                 children: [
                   SizedBox(
@@ -361,7 +350,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                               ),
 
                               // app bar on top of background
-                              CustomAppBar(),
+                              const CustomAppBar(),
 
                               // 'Global Challenge #'
                               Positioned(
@@ -429,7 +418,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                       ],
                     ),
                   ),
-                  SizedBox(height: 30),
+                  const SizedBox(height: 30),
                   Stack(
                     alignment: Alignment.bottomRight,
                     children: [
@@ -446,7 +435,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                               color: const Color.fromARGB(255, 117, 19, 12)
                                   .withOpacity(0.9),
                               blurRadius: 5,
-                              offset: Offset(3, 7),
+                              offset: const Offset(3, 7),
                             ),
                           ],
                           color: Colors.white,
@@ -460,7 +449,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                   if (snapshot.data! && responded == false) {
                                     return Column(
                                       children: [
-                                        SizedBox(height: 30),
+                                        const SizedBox(height: 30),
                                         Padding(
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 16.0),
@@ -472,7 +461,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                             ),
                                           ),
                                         ),
-                                        SizedBox(height: 30.0),
+                                        const SizedBox(height: 30.0),
                                         Container(
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 20.0),
@@ -489,17 +478,17 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                             ),
                                           ),
                                         ),
-                                        SizedBox(height: 40.0),
+                                        const SizedBox(height: 40.0),
                                         ElevatedButton(
                                           style: ElevatedButton.styleFrom(
-                                            backgroundColor: Color(0xFFE76F51),
+                                            backgroundColor: const Color(0xFFE76F51),
                                             foregroundColor: Colors.white,
                                             shape: RoundedRectangleBorder(
                                               borderRadius:
                                                   BorderRadius.circular(30),
                                             ),
-                                            minimumSize: Size(150, 40),
-                                            padding: EdgeInsets.all(16),
+                                            minimumSize: const Size(150, 40),
+                                            padding: const EdgeInsets.all(16),
                                           ),
                                           onPressed: () {
                                             setState(() {
@@ -526,7 +515,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                           ),
                                         ),
                                         const SizedBox(height: 20),
-                                        Container(
+                                        SizedBox(
                                           width: 200,
                                           child: LinearProgressIndicator(
                                             value: progressValue,
@@ -607,7 +596,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                   } else if (!snapshot.data! &&
                                       responded == true) {
                                     return Column(children: [
-                                      Container(
+                                      SizedBox(
                                           width: 300.h,
                                           height: 500.v,
                                           child: Stats(
@@ -669,7 +658,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                 ],
               )),
         ),
-        drawer: SideBar(),
+        drawer: const SideBar(),
       ),
     );
   }

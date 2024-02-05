@@ -4,6 +4,8 @@ import 'package:flutter/material.dart';
 
 
 class testCustomBar extends StatelessWidget {
+  const testCustomBar({super.key});
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -11,18 +13,18 @@ class testCustomBar extends StatelessWidget {
       elevation: 0,
       toolbarHeight: 100,
       leading: IconButton(
-        icon: Icon(Icons.arrow_back),
+        icon: const Icon(Icons.arrow_back),
         onPressed: () {
           // Implement your back button functionality here
         },
       ),
       title: Container(
-        padding: EdgeInsets.symmetric(horizontal: 16.0),
+        padding: const EdgeInsets.symmetric(horizontal: 16.0),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(8.0),
         ),
-        child: TextField(
+        child: const TextField(
           decoration: InputDecoration(
             hintText: 'Search users',
             border: InputBorder.none,
@@ -32,7 +34,7 @@ class testCustomBar extends StatelessWidget {
       ),
       actions: <Widget>[
         IconButton(
-          icon: Icon(Icons.person),
+          icon: const Icon(Icons.person),
           onPressed: () {
             // Implement your profile icon functionality here
           },

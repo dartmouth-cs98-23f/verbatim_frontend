@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hovering/hovering.dart';
 
 class EditProfilePicturePopup extends StatefulWidget {
   final String imagePath;
@@ -9,7 +8,7 @@ class EditProfilePicturePopup extends StatefulWidget {
   final VoidCallback onChangeImageCamera;
   final VoidCallback onRemoveCurrentPicture;
 
-  EditProfilePicturePopup({
+  const EditProfilePicturePopup({super.key, 
     required this.imagePath,
     required this.selectedImage,
     required this.onImageTap,
@@ -34,9 +33,9 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
         mainAxisSize: MainAxisSize.min,
         children: [
           const SizedBox(height: 5),
-          Center(
+          const Center(
             child: Padding(
-              padding: const EdgeInsets.all(16.0),
+              padding: EdgeInsets.all(16.0),
               child: Text(
                 'Edit Profile Picture',
                 style: TextStyle(
@@ -99,11 +98,11 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
           ),
           const SizedBox(height: 20),
           ListTile(
-            leading: Icon(
+            leading: const Icon(
               Icons.photo_camera,
               color: Color(0xFFDE674A),
             ),
-            title: Text(
+            title: const Text(
               'Take a photo',
               style: TextStyle(
                 color: Colors.black,
@@ -118,11 +117,11 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
           ),
           const SizedBox(height: 10),
           ListTile(
-            leading: Icon(
+            leading: const Icon(
               Icons.photo,
               color: Color(0xFFDE674A),
             ),
-            title: Text(
+            title: const Text(
               'Choose from gallery',
               style: TextStyle(
                 color: Colors.black,
@@ -137,11 +136,11 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
           ),
           const SizedBox(height: 10),
           ListTile(
-            leading: Icon(
+            leading: const Icon(
               Icons.delete,
               color: Color(0xFFDE674A),
             ),
-            title: Text(
+            title: const Text(
               'Remove current picture',
               style: TextStyle(
                 color: Colors.black,

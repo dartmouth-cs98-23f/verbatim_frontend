@@ -1,14 +1,8 @@
-import 'dart:math';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:verbatim_frontend/gameObject.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
-import 'package:verbatim_frontend/widgets/my_button_with_svg.dart';
-import 'package:verbatim_frontend/widgets/size.dart';
-import 'package:verbatim_frontend/widgets/my_button_with_image.dart';
-import 'package:verbatim_frontend/screens/signUp.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 
 
@@ -48,7 +42,7 @@ class Guest extends StatelessWidget {
 
     return Column(
       children: [
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         Center(
           // child: Padding(
           // padding: const EdgeInsets.only(left: 25, right: 25.0),
@@ -80,7 +74,7 @@ class Guest extends StatelessWidget {
         const SizedBox(height: 10),
         Center(
             child: Padding(
-          padding: EdgeInsets.only(left: 25, right: 25),
+          padding: const EdgeInsets.only(left: 25, right: 25),
           child: Text(
             inviteText,
             style: const TextStyle(
@@ -90,7 +84,7 @@ class Guest extends StatelessWidget {
           ),
         )),
         const SizedBox(height: 25),
-        Container(
+        SizedBox(
           width: 220,
           child: Center(
             child: Text(
@@ -102,12 +96,12 @@ class Guest extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
         MyButtonNoImage(
           buttonText: "Sign Up",
           onTap: onTap,
         ),
-        SizedBox(height: 20),
+        const SizedBox(height: 20),
 
         Center(
               child: RichText(

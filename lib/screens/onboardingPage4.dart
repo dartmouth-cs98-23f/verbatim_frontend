@@ -1,11 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:verbatim_frontend/screens/getStarted.dart';
-import 'package:verbatim_frontend/screens/signUp.dart';
-import 'package:verbatim_frontend/Components/shared_prefs.dart';
-import 'globalChallenge.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
 
-import 'logIn.dart';
 
 class OnBoardingPage4 extends StatelessWidget {
   const OnBoardingPage4({super.key});
@@ -13,7 +8,7 @@ class OnBoardingPage4 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFFF3EE),
+      backgroundColor: const Color(0xFFFFF3EE),
       body: SafeArea(
         child: Column(
           children: [
@@ -35,7 +30,7 @@ class OnBoardingPage4 extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Center(
+                      const Center(
                         child: Text(
                           'Custom \nChallenges',
                           textAlign: TextAlign.center,
@@ -50,8 +45,8 @@ class OnBoardingPage4 extends StatelessWidget {
                         ),
                       ),
                       SizedBox(height: 30.v),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 30.0, right: 30.0),
+                      const Padding(
+                        padding: EdgeInsets.only(left: 30.0, right: 30.0),
                         child: Align(
                           alignment: Alignment.center,
                           child: Text(
@@ -83,13 +78,13 @@ class OnBoardingPage4 extends StatelessWidget {
                       Navigator.pushNamed(context, '/global_challenge');
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFFFFF3EE), // Background color
+                      backgroundColor: const Color(0xFFFFF3EE), // Background color
                       shape: RoundedRectangleBorder(
                         borderRadius:
                             BorderRadius.circular(13.0), // Rectangular shape
                       ),
                     ),
-                    child: Text(
+                    child: const Text(
                       'Skip',
                       style: TextStyle(
                         color: Colors.black,
@@ -102,13 +97,13 @@ class OnBoardingPage4 extends StatelessWidget {
                       Navigator.pushNamed(context, '/global_challenge');
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFFE76F51), // Background color
+                      backgroundColor: const Color(0xFFE76F51), // Background color
                       shape: RoundedRectangleBorder(
                         borderRadius:
                             BorderRadius.circular(13.0), // Rectangular shape
                       ),
                     ),
-                    child: Text(
+                    child: const Text(
                       'Get Started',
                       style: TextStyle(
                         color: Colors.white,

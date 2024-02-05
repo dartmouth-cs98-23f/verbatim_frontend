@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:verbatim_frontend/screens/settings.dart';
 import 'size.dart';
 import 'package:verbatim_frontend/screens/sideBar.dart';
 
 class CustomAppBarSettings extends StatelessWidget implements PreferredSizeWidget {
+  const CustomAppBarSettings({super.key});
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -11,7 +12,7 @@ class CustomAppBarSettings extends StatelessWidget implements PreferredSizeWidge
       backgroundColor: Colors.transparent,
       toolbarHeight: 150,
       elevation: 0,
-      title: Column(
+      title: const Column(
         children: [
           SizedBox(height: 60),
           NewNavBar(
@@ -36,20 +37,20 @@ class CustomAppBarSettings extends StatelessWidget implements PreferredSizeWidge
 class NewNavBar extends StatelessWidget {
   final String profileImagePath;
 
-  NewNavBar({required this.profileImagePath});
+  const NewNavBar({super.key, required this.profileImagePath});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(),
+      decoration: const BoxDecoration(),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.menu,
               color: Colors.white,
             ),
@@ -57,12 +58,12 @@ class NewNavBar extends StatelessWidget {
               // Navigate to the SideBar widget
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SideBar()),
+                MaterialPageRoute(builder: (context) => const SideBar()),
               );
             },
           ),
           SearchBarTextField(),
-          SizedBox(width: 20),
+          const SizedBox(width: 20),
           Container(
             width: 40,
             height: 40.45,
@@ -71,7 +72,7 @@ class NewNavBar extends StatelessWidget {
                 image: NetworkImage(profileImagePath),
                 fit: BoxFit.fill,
               ),
-              shape: OvalBorder(),
+              shape: const OvalBorder(),
             ),
           ),
         ],
@@ -81,7 +82,9 @@ class NewNavBar extends StatelessWidget {
 }
 
 class SearchBarTextField extends StatelessWidget {
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
+
+  SearchBarTextField({super.key});
 
   void handleSearch(String value) {
     // Handle the search input changes
@@ -109,7 +112,7 @@ class SearchBarTextField extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         clipBehavior: Clip.antiAlias,
         decoration: ShapeDecoration(
-          color: Color(0xFFFFF7EE),
+          color: const Color(0xFFFFF7EE),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
@@ -119,16 +122,16 @@ class SearchBarTextField extends StatelessWidget {
           crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             IconButton(
-              icon: Icon(Icons.search, color: Colors.black, size: 20),
+              icon: const Icon(Icons.search, color: Colors.black, size: 20),
               onPressed: handleSearchIconPressed,
             ),
-            SizedBox(width: 20),
+            const SizedBox(width: 20),
             Flexible(
               child: TextField(
                 controller: _searchController,
                 onChanged: handleSearch,
                 onSubmitted: handleSubmit,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Colors.black,
                   fontSize: 12,
                   fontFamily: 'Poppins',
@@ -137,7 +140,7 @@ class SearchBarTextField extends StatelessWidget {
                   letterSpacing: 0.20,
                 ),
                 cursorColor: Colors.black,
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Search Users',
                   hintStyle: TextStyle(
                     color: Colors.black,
@@ -235,6 +238,8 @@ class SearchBarTextField extends StatelessWidget {
 // }
 
 class TitleFrame extends StatelessWidget {
+  const TitleFrame({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -242,8 +247,8 @@ class TitleFrame extends StatelessWidget {
       height: 70,
       padding: const EdgeInsets.all(10),
       clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(),
-      child: Column(
+      decoration: const BoxDecoration(),
+      child: const Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,

@@ -1,5 +1,4 @@
 import 'package:email_validator/email_validator.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
@@ -25,7 +24,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     try {
       validateField(email, "email", "Email is required");
       final response = await http.post(
-        Uri.parse(BackendService.getBackendUrl() + 'resetPassword'),
+        Uri.parse('${BackendService.getBackendUrl()}resetPassword'),
         headers: <String, String>{
           'Content-Type': 'application/json',
         },
@@ -43,13 +42,13 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           String email = responseData['email'];
           String password = responseData['password'];
 
-          print("\nThe email is : ${email}");
+          print("\nThe email is : $email");
 
           Navigator.push(
             context,
             MaterialPageRoute(
               builder: (context) =>
-                  LogIn(),
+                  const LogIn(),
             ),
           );
           print('Reset password successful');
@@ -60,7 +59,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
         Navigator.push(
           context,
           MaterialPageRoute(
-            builder: (context) => SignupErrorMessage(pageName: 'log in'),
+            builder: (context) => const SignupErrorMessage(pageName: 'log in'),
           ),
         );
       }
@@ -70,7 +69,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
       Navigator.push(
         context,
         MaterialPageRoute(
-          builder: (context) => SignupErrorMessage(pageName: 'log in'),
+          builder: (context) => const SignupErrorMessage(pageName: 'log in'),
         ),
       );
     }
@@ -82,7 +81,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     setState(() {
       validationErrors.clear();
     });
-    print('email in reset: ${email}');
+    print('email in reset: $email');
 
     validateField(email, "email", "Email is required");
     // Validate email
@@ -106,7 +105,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     setState(() {
       validationErrors[field] = Text(
         message,
-        style: TextStyle(color: Colors.red),
+        style: const TextStyle(color: Colors.red),
       );
     });
   }
@@ -118,7 +117,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFFF3EE),
+      backgroundColor: const Color(0xFFFFF3EE),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Center(
@@ -137,7 +136,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 ),
 
                 const SizedBox(height: 180),
-                Center(
+                const Center(
                   child: Text(
                     'Set a New Password',
                     textAlign: TextAlign.center,
@@ -153,12 +152,12 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                 ),
 
                 const SizedBox(height: 30),
-                Padding(
-                  padding: const EdgeInsets.only(left: 15.0),
+                const Padding(
+                  padding: EdgeInsets.only(left: 15.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20),
                       Text(
                         'To set a new password, please enter your email address below. You will receive an email with instructions on how to set a new password.',
                         style: TextStyle(

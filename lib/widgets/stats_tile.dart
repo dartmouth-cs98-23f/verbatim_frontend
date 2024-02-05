@@ -1,4 +1,3 @@
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 
@@ -7,7 +6,7 @@ class MyStatsTile extends StatelessWidget {
   final String icon;
   final String field;
   const MyStatsTile(
-      {required this.stat, required this.icon, required this.field});
+      {super.key, required this.stat, required this.icon, required this.field});
 
   @override
   Widget build(BuildContext context) {

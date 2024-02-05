@@ -3,11 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:verbatim_frontend/gameObject.dart';
 import 'package:verbatim_frontend/screens/landingPage.dart';
-import 'package:verbatim_frontend/screens/logIn.dart';
 import 'BackendService.dart';
 import 'Components/defineRoutes.dart';
 import 'Components/shared_prefs.dart';
-import 'package:clipboard/clipboard.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -17,14 +15,14 @@ Future<void> main() async {
   await SharedPrefs().init();
 
   const String environment =
-      const String.fromEnvironment('FLUTTER_BACKEND_ENV', defaultValue: 'prod');
+      String.fromEnvironment('FLUTTER_BACKEND_ENV', defaultValue: 'prod');
   //print("env in main is: " + environment);
   BackendService.loadProperties(environment);
 
-  runApp(MyApp());
+  runApp(const MyApp());
 
   ChangeNotifierProvider(
-      create: (context) => GameObject(), child: MyApp());
+      create: (context) => GameObject(), child: const MyApp());
   defineRoutes();
 }
 
@@ -57,7 +55,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         //primarySwatch: paleColor,
-        scaffoldBackgroundColor: Color.fromARGB(255, 255, 243, 238),
+        scaffoldBackgroundColor: const Color.fromARGB(255, 255, 243, 238),
         textTheme: GoogleFonts.poppinsTextTheme(),
         textSelectionTheme: const TextSelectionThemeData(
           cursorColor: Color(0xFFE76F51),
@@ -67,7 +65,7 @@ class MyApp extends StatelessWidget {
       navigatorKey: navigatorKey,
       onGenerateRoute: Application.router.generator,
       initialRoute: SharedPrefs().getCurrentPage() ?? '/landingPage',
-      home: LandingPage(),
+      home: const LandingPage(),
     );
   }
 }

@@ -1,8 +1,7 @@
 import 'package:flutter/material.dart';
-import 'package:verbatim_frontend/screens/onboardingPage2.dart';
 
 class OnBoardingPage1 extends StatefulWidget {
-  const OnBoardingPage1({Key? key});
+  const OnBoardingPage1({super.key});
 
   @override
   _OnBoardingPage1State createState() => _OnBoardingPage1State();
@@ -13,7 +12,7 @@ class _OnBoardingPage1State extends State<OnBoardingPage1> {
   void initState() {
     super.initState();
     // Wait for 4 seconds and then navigate to the new page
-    Future.delayed(Duration(seconds: 3), () {
+    Future.delayed(const Duration(seconds: 3), () {
       Navigator.pushNamed(context, '/onboarding_page2');
     });
   }
@@ -21,7 +20,7 @@ class _OnBoardingPage1State extends State<OnBoardingPage1> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFFF3EE),
+      backgroundColor: const Color(0xFFFFF3EE),
       body: Center(
         child: Column(
           mainAxisAlignment: MainAxisAlignment.center,

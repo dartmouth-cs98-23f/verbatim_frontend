@@ -3,7 +3,7 @@ import 'package:flutter/material.dart';
 class PlayTab extends StatefulWidget {
   final void Function(bool) onTabSelectionChanged;
 
-  PlayTab({Key? key, required this.onTabSelectionChanged}) : super(key: key);
+  const PlayTab({Key? key, required this.onTabSelectionChanged}) : super(key: key);
 
   @override
   _PlayTabState createState() => _PlayTabState();
@@ -41,7 +41,7 @@ class _PlayTabState extends State<PlayTab> {
             BoxShadow(
               color: Colors.black.withOpacity(0.5),
               blurRadius: 5,
-              offset: Offset(3, 7),
+              offset: const Offset(3, 7),
             ),
           ],
         ),
@@ -60,7 +60,7 @@ class _PlayTabState extends State<PlayTab> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50),
               ),
-              child: Icon(
+              child: const Icon(
                 Icons.lightbulb,
                 color: Colors.black,
               ),
@@ -71,7 +71,7 @@ class _PlayTabState extends State<PlayTab> {
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(50),
               ),
-              child: Icon(
+              child: const Icon(
                 Icons.bar_chart,
                 color: Colors.black,
               ),

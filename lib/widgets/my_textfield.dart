@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 
 class MyTextField extends StatelessWidget {
@@ -20,7 +19,7 @@ class MyTextField extends StatelessWidget {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0), // Adjust the radius as needed
-          border: Border.all(color: Color(0xFFE76F51)),
+          border: Border.all(color: const Color(0xFFE76F51)),
           color: Colors.white,
         ),
         child: Padding(
@@ -31,7 +30,7 @@ class MyTextField extends StatelessWidget {
             decoration: InputDecoration(
               border: InputBorder.none, // Remove the default TextField border
               hintText: hintText,
-              hintStyle: TextStyle(
+              hintStyle: const TextStyle(
                 color: Color(0xFF6C7476),
                 fontSize: 14,
                 fontFamily: 'Mulish',

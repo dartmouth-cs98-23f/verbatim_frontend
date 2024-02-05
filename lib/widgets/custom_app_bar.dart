@@ -1,9 +1,10 @@
 import 'package:flutter/material.dart';
-import 'package:verbatim_frontend/screens/settings.dart';
 import 'size.dart';
 import 'package:verbatim_frontend/screens/sideBar.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
+  const CustomAppBar({super.key});
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -14,7 +15,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       // toolbarHeight: 150,
 
       elevation: 0,
-      title: Column(
+      title: const Column(
         children: [
           SizedBox(height: 60),
           NewNavBar(
@@ -39,20 +40,20 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
 class NewNavBar extends StatelessWidget {
   final String profileImagePath;
 
-  NewNavBar({required this.profileImagePath});
+  const NewNavBar({super.key, required this.profileImagePath});
 
   @override
   Widget build(BuildContext context) {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(),
+      decoration: const BoxDecoration(),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
           IconButton(
-            icon: Icon(
+            icon: const Icon(
               Icons.menu,
               color: Colors.white,
             ),
@@ -60,12 +61,12 @@ class NewNavBar extends StatelessWidget {
               // Navigate to the SideBar widget
               Navigator.push(
                 context,
-                MaterialPageRoute(builder: (context) => SideBar()),
+                MaterialPageRoute(builder: (context) => const SideBar()),
               );
             },
           ),
           SearchBarTextField(),
-          SizedBox(width: 20),
+          const SizedBox(width: 20),
           Container(
             width: 40,
             height: 40.45,
@@ -74,7 +75,7 @@ class NewNavBar extends StatelessWidget {
                 image: NetworkImage(profileImagePath),
                 fit: BoxFit.fill,
               ),
-              shape: OvalBorder(),
+              shape: const OvalBorder(),
             ),
           ),
         ],
@@ -85,6 +86,8 @@ class NewNavBar extends StatelessWidget {
 
 class SearchBarTextField extends StatelessWidget {
   final TextEditingController _searchController = TextEditingController();
+
+  SearchBarTextField({super.key});
 
   void handleSearchChange(String value) {
     // Add your logic for handling search input changes
@@ -103,7 +106,7 @@ class SearchBarTextField extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         clipBehavior: Clip.antiAlias,
         decoration: ShapeDecoration(
-          color: Color(0xFFFFF7EE),
+          color: const Color(0xFFFFF7EE),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
@@ -114,13 +117,13 @@ class SearchBarTextField extends StatelessWidget {
           children: [
             IconButton(
               onPressed: handleSearchPress, // Add onPressed function
-              icon: Icon(
+              icon: const Icon(
                 Icons.search,
                 color: Colors.black,
                 size: 20,
               ),
             ),
-            SizedBox(width: 20),
+            const SizedBox(width: 20),
             Expanded(
               child: TextField(
                 controller: _searchController,
@@ -128,7 +131,7 @@ class SearchBarTextField extends StatelessWidget {
                 onSubmitted: (value) =>
                     handleSearchPress(), // Add onSubmitted for Enter key press
 
-                decoration: InputDecoration(
+                decoration: const InputDecoration(
                   hintText: 'Search Users',
                   hintStyle: TextStyle(
                     color: Colors.black,
@@ -150,6 +153,8 @@ class SearchBarTextField extends StatelessWidget {
 }
 
 class TitleFrame extends StatelessWidget {
+  const TitleFrame({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -157,8 +162,8 @@ class TitleFrame extends StatelessWidget {
       height: 70,
       padding: const EdgeInsets.all(10),
       clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(),
-      child: Column(
+      decoration: const BoxDecoration(),
+      child: const Column(
         mainAxisSize: MainAxisSize.min,
         mainAxisAlignment: MainAxisAlignment.start,
         crossAxisAlignment: CrossAxisAlignment.center,

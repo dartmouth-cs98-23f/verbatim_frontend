@@ -1,20 +1,17 @@
 import 'dart:math';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:uni_links/uni_links.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/widgets/my_button_with_svg.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
-import 'package:verbatim_frontend/widgets/my_button_with_image.dart';
-import 'package:clipboard/clipboard.dart';
 
 class Verbatastic extends StatelessWidget {
   final String verbatimedWord;
   final String formattedTimeUntilMidnight;
   final List<String>? verbatasticUsernames;
 
-  Verbatastic({
+  const Verbatastic({super.key, 
     required this.verbatimedWord,
     required this.formattedTimeUntilMidnight,
     required this.verbatasticUsernames,
@@ -28,7 +25,7 @@ class Verbatastic extends StatelessWidget {
 
     //String tempLink = http://localhost:3000/#/landingPage?referer=$username;
     String inviteLink = 'http://localhost:3000/#/landingPage?referer=$username';
-    Clipboard.setData(new ClipboardData(text: inviteLink));
+    Clipboard.setData(ClipboardData(text: inviteLink));
   }
 
   void sendInvite() {
@@ -51,7 +48,7 @@ class Verbatastic extends StatelessWidget {
 
     return Column(
       children: [
-        SizedBox(height: 40),
+        const SizedBox(height: 40),
         Center(
           child: Padding(
             padding: const EdgeInsets.only(right: 0.0),
@@ -83,10 +80,10 @@ class Verbatastic extends StatelessWidget {
             ),
           ),
         ),
-        SizedBox(height: 10),
+        const SizedBox(height: 10),
         Center(
             child: verbatasticUsernames!.isEmpty
-                ? Container(
+                ? SizedBox(
                     width: 100,
                     height: 48,
                     child: Stack(
@@ -103,7 +100,7 @@ class Verbatastic extends StatelessWidget {
                     ),
                   )
                 : Center(
-                    child: Container(
+                    child: SizedBox(
                       width: min(verbatasticUsernames!.length + 1, 6) * 38,
                       height: 45,
                       child: Stack(
@@ -123,8 +120,8 @@ class Verbatastic extends StatelessWidget {
                       ),
                     ),
                   )),
-        SizedBox(height: 10),
-        Container(
+        const SizedBox(height: 10),
+        SizedBox(
           width: 200,
           child: RichText(
             textAlign: TextAlign.center,
@@ -203,7 +200,7 @@ class Verbatastic extends StatelessWidget {
         // MyButtonWithSvg(
         //     buttonText: "Send Invite", iconImage: sendIcon, onTap: sendInvite),
         SizedBox(height: 25.v),
-        Container(
+        SizedBox(
           width: 220,
           child: Center(
             child: Text(
