@@ -228,7 +228,7 @@ class _FriendshipState extends State<friendship>
 
     if (response.statusCode == 200) {
       final dynamic jsonData = json.decode(response.body);
-      print('here is the friend stats jsondata $jsonData');
+
       int rating = jsonData["groupRating"];
       groupRating = rating as double;
       verbaMatch = List<String>.from(jsonData["verbaMatch"]);
@@ -266,10 +266,8 @@ class _FriendshipState extends State<friendship>
         activeChallengeIds = activeChallenges
             .map((challenge) => challenge["id"] as int)
             .toList();
-        print('active challenges from bacend $activeChallenges');
 
         mappedChallenges = getMappedChallenges(activeChallenges);
-        print('mapped challenges from getmappedchallenges $mappedChallenges');
       } else {}
     } else {
       print("active challenges not obtained succesfuly");
@@ -283,7 +281,6 @@ class _FriendshipState extends State<friendship>
       int id = challenge["id"];
       String createdByUsername = challenge["createdBy"]["username"];
       bool isCustom = challenge["isCustom"];
-      print('$isCustom $createdByUsername here iam sometimes');
 
       List<String> challengeInfo = [
         createdByUsername,
@@ -295,7 +292,12 @@ class _FriendshipState extends State<friendship>
     return mappedChallenges;
   }
 
-// fill mapped challenges in
+// STATS variables
+
+  Map<int, Map<String, dynamic>> challengeStats = {};
+
+  List<dynamic> groupAnswers = [];
+
   Future<void> getChallenge(int challengeId, String user,
       Map<int, List<String>> mappedChallenges) async {
     final url = Uri.parse(BackendService.getBackendUrl() +
@@ -303,19 +305,17 @@ class _FriendshipState extends State<friendship>
         '$user/' +
         'getChallengeQs');
 
-    print("$url");
     final response = await http.get(url);
     if (response.statusCode == 200) {
       final dynamic jsonData = json.decode(response.body);
-      print('this is jsondata in getchallengeqs $jsonData');
-
+      print('jsondata in friendship getChallengeqS $jsonData');
       bool userHasCompleted = jsonData['userHasCompleted'];
-      print('User has completed: $userHasCompleted');
       String completed = userHasCompleted.toString();
       // put completion status in mapped challenges
       mappedChallenges[challengeId]!.add(completed);
 
-      if (jsonData.containsKey('questions')) {
+// user has not completed the challenge
+      if (!userHasCompleted) {
         List<dynamic> questionsList = jsonData['questions'];
         for (List<dynamic> questionList in questionsList) {
           List<String> contentList = questionList
@@ -328,12 +328,39 @@ class _FriendshipState extends State<friendship>
           } else {
             print('total failure');
           }
-
           print(
-              'this is mapped challenges from getChallengeQuestions $mappedChallenges');
+              "\n\n the mapped challenge for the one i did not do is $mappedChallenges");
         }
-      } else {
-        print("No questions in the challenge");
+      } else // user HAS completed the challenge - fill in stats
+      {
+        // set up challenge stats
+        challengeStats = Map.fromIterable(
+          activeChallengeIds,
+          key: (id) => id,
+          value: (_) => {},
+        );
+
+        groupAnswers = jsonData['groupAnswers'];
+        int totalResponses = jsonData['totalResponses'];
+        // List<String> verbaMatch = jsonData['verbaMatch'];
+        //double?
+        int verbaMatchSimilarity = jsonData['verbaMatchSimilarity'];
+        Map<String, dynamic> groupAnswersMap = {"groupAnswers": groupAnswers};
+        Map<String, int> totalResponsesMap = {"totalResponses": totalResponses};
+        Map<String, int> verbaMatchSimilarityMap = {
+          "verbaMatchSimilarity": verbaMatchSimilarity
+        };
+
+        print(
+            "\n\n the mapped challenge is $mappedChallenges \n challenge stats: $challengeStats");
+        if (challengeStats.containsKey(challengeId)) {
+          challengeStats[challengeId]!.addAll(groupAnswersMap);
+          challengeStats[challengeId]!.addAll(totalResponsesMap);
+          challengeStats[challengeId]!.addAll(verbaMatchSimilarityMap);
+          print("\n now we have challengeStats $challengeStats");
+        } else {
+          print("didnt happen geqrwgrwe");
+        }
       }
     } else {
       print(
@@ -345,7 +372,6 @@ class _FriendshipState extends State<friendship>
     final url =
         Uri.parse(BackendService.getBackendUrl() + 'createStandardChallenge');
     final headers = <String, String>{'Content-Type': 'application/json'};
-    print('this is $username and this is groupId $groupId');
     final response = await http.post(url,
         headers: headers,
         body: json.encode({'createdByUsername': username, 'groupId': groupId}));
@@ -359,7 +385,7 @@ class _FriendshipState extends State<friendship>
   @override
   void initState() {
     super.initState();
-    print('INIT STATE');
+
     _tabController = TabController(length: 2, vsync: this);
     _loadChallenges();
   }
@@ -513,7 +539,6 @@ class _FriendshipState extends State<friendship>
                                                     int id = mappedChallenges
                                                         .keys
                                                         .elementAt(index);
-                                                    print("challenge id $id");
                                                     List<String> challengeInfo =
                                                         mappedChallenges[id]!;
                                                     String createdByUsername =
@@ -524,18 +549,25 @@ class _FriendshipState extends State<friendship>
                                                                 "Custom"
                                                             ? "custom"
                                                             : "standard";
+                                                    dynamic groupAnswers =
+                                                        challengeStats[id]![
+                                                            'groupAnswers'];
+                                                    dynamic
+                                                        verbaMatchSimilarity =
+                                                        challengeStats[id]![
+                                                            'verbaMatchSimilarity'];
+                                                    dynamic totalResponses =
+                                                        challengeStats[id]![
+                                                            'totalResponses'];
 
                                                     // if challenge is completed, mark it as such
                                                     // it doesn't seem like the challenges are being marked as completed
                                                     String challengeInfo2 =
                                                         challengeInfo[2];
-                                                    print(
-                                                        "challengeInfo $challengeInfo2");
+
                                                     bool completed =
                                                         (challengeInfo2 !=
                                                             "false");
-                                                    print(
-                                                        "the bool completed $completed");
 
                                                     List<String>
                                                         challengeQuestions =
@@ -580,7 +612,7 @@ class _FriendshipState extends State<friendship>
                                                           );
                                                           */
                                                           print(
-                                                              'they did this challenge but im still sending them here for now idk');
+                                                              'yoyoyoo groupAnswers: $groupAnswers');
                                                         }
                                                       },
                                                       child: Container(
