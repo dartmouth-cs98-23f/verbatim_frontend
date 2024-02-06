@@ -144,7 +144,7 @@ class _GroupChallengeState extends State<groupChallenge> {
 
     for (int i = 0; i < widget.challengeQs.length; i++) {
       expandedStates.add(false);
-      print("here");
+
       String temp = widget.challengeQs[i];
       prompts.add(temp);
       editingStates.add(false);
@@ -162,7 +162,7 @@ class _GroupChallengeState extends State<groupChallenge> {
   @override
   Widget build(BuildContext context) {
     List<String> challengeQss = widget.challengeQs;
-    print("widget challenge Qs $challengeQss");
+
     if (widget.completed) {
       responded = true;
     }

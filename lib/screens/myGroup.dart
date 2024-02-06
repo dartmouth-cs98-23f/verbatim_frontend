@@ -419,7 +419,6 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
     String username = SharedPrefs().getUserName() ?? "";
 
     for (var challengeId in activeChallengeIds) {
-      print("getting challenge in line 419");
       await getChallenge(
           challengeId, username, mappedChallenges, challengeStats);
     }

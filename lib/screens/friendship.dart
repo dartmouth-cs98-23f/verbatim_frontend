@@ -403,7 +403,7 @@ class _FriendshipState extends State<friendship>
     await getActiveChallenges(username, widget.friendUsername);
 
     for (var challengeId in activeChallengeIds) {
-      print("here getting getChallenge for $challengeId");
+      //  print("here getting getChallenge for $challengeId");
       await getChallenge(
           challengeId, username, mappedChallenges, challengeStats);
     }
