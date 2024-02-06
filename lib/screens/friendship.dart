@@ -215,10 +215,6 @@ class _FriendshipState extends State<friendship>
         ));
   }
 
-// get the stats for each challenge
-
-  Future<void> getChallengeStats(int challengeId) async {}
-
 // ask backend for stats between the two friends
   Future<void> getFriendStats(String user, String friend) async {
     final url =
@@ -229,7 +225,7 @@ class _FriendshipState extends State<friendship>
     if (response.statusCode == 200) {
       final dynamic jsonData = json.decode(response.body);
 
-      int rating = jsonData["groupRating"];
+      double rating = jsonData["groupRating"];
       groupRating = rating as double;
       verbaMatch = List<String>.from(jsonData["verbaMatch"]);
       groupMembers = List<String>.from(jsonData["groupMembers"]);
@@ -240,6 +236,7 @@ class _FriendshipState extends State<friendship>
 
 //active challenge variables
   List<Map<String, dynamic>> activeChallenges = [];
+  Map<int, Map<String, dynamic>> challengeStats = {};
   List<int> activeChallengeIds = [];
   Map<int, List<String>> mappedChallenges = {};
   List<String> titles = [];
@@ -251,7 +248,7 @@ class _FriendshipState extends State<friendship>
   Future<void> getActiveChallenges(String user, String friend) async {
     final url = Uri.parse(
         BackendService.getBackendUrl() + '$user/' + '$friend/' + 'challenges');
-
+    print("top of activechallenges\n");
     final response = await http.get(url);
     if (response.statusCode == 200) {
       final dynamic jsonData = json.decode(response.body);
@@ -268,6 +265,11 @@ class _FriendshipState extends State<friendship>
             .toList();
 
         mappedChallenges = getMappedChallenges(activeChallenges);
+        challengeStats = Map.fromIterable(
+          activeChallengeIds,
+          key: (id) => id,
+          value: (_) => {},
+        );
       } else {}
     } else {
       print("active challenges not obtained succesfuly");
@@ -294,18 +296,20 @@ class _FriendshipState extends State<friendship>
 
 // STATS variables
 
-  Map<int, Map<String, dynamic>> challengeStats = {};
-
   List<dynamic> groupAnswers = [];
-  int verbaMatchSimilarity = 0;
+  double verbaMatchSimilarity = 0;
   int totalResponses = 0;
 
-  Future<void> getChallenge(int challengeId, String user,
-      Map<int, List<String>> mappedChallenges) async {
+  Future<void> getChallenge(
+      int challengeId,
+      String user,
+      Map<int, List<String>> mappedChallenges,
+      Map<int, Map<String, dynamic>> challengeStats) async {
     final url = Uri.parse(BackendService.getBackendUrl() +
         '$challengeId/' +
         '$user/' +
         'getChallengeQs');
+    print("here in getChallenge the challengeId is $challengeId");
 
     final response = await http.get(url);
     if (response.statusCode == 200) {
@@ -320,12 +324,12 @@ class _FriendshipState extends State<friendship>
       List<dynamic> map = mappedChallenges[challengeId]!;
       int mapLength = map.length;
       print(
-          "\n b4 completed check challenge id $challengeId this is mapped chalenges b4 failure $mappedChallenges \n and the map $map and  its length $mapLength ");
+          "\n b4 completed check challenge id $challengeId this is mapped chalenges  $mappedChallenges \n and the map $map and  its length $mapLength ");
 
 // user has not completed the challenge
       if (completed == 'false') {
         print(
-            "\n after completed challenge id $challengeId this is mapped chalenges b4 failure $mappedChallenges \n and its  and the map $map  and its length $mapLength");
+            "\n after completed challenge id $challengeId this is mapped chalenges  $mappedChallenges \n and its  and the map $map  and its length $mapLength");
         List<dynamic> questionsList = jsonData['questions'];
         for (List<dynamic> questionList in questionsList) {
           List<String> contentList = questionList
@@ -344,11 +348,6 @@ class _FriendshipState extends State<friendship>
       } else // user HAS completed the challenge - fill in stats
       {
         // set up challenge stats
-        challengeStats = Map.fromIterable(
-          activeChallengeIds,
-          key: (id) => id,
-          value: (_) => {},
-        );
 
         groupAnswers = jsonData['groupAnswers'];
         totalResponses = jsonData['totalResponses'];
@@ -357,7 +356,7 @@ class _FriendshipState extends State<friendship>
         verbaMatchSimilarity = jsonData['verbaMatchSimilarity'];
         Map<String, dynamic> groupAnswersMap = {"groupAnswers": groupAnswers};
         Map<String, int> totalResponsesMap = {"totalResponses": totalResponses};
-        Map<String, int> verbaMatchSimilarityMap = {
+        Map<String, double> verbaMatchSimilarityMap = {
           "verbaMatchSimilarity": verbaMatchSimilarity
         };
 
@@ -369,7 +368,7 @@ class _FriendshipState extends State<friendship>
           challengeStats[challengeId]!.addAll(verbaMatchSimilarityMap);
           print("\n now we have challengeStats $challengeStats");
         } else {
-          print("didnt happen geqrwgrwe");
+          print("didnt happen ");
         }
       }
     } else {
@@ -407,7 +406,8 @@ class _FriendshipState extends State<friendship>
 
     for (var challengeId in activeChallengeIds) {
       print("here getting getChallenge for $challengeId");
-      await getChallenge(challengeId, username, mappedChallenges);
+      await getChallenge(
+          challengeId, username, mappedChallenges, challengeStats);
     }
 
     if (mounted) {
@@ -635,6 +635,8 @@ class _FriendshipState extends State<friendship>
                                                                 challengeId: id,
                                                                 completed:
                                                                     false,
+                                                                fromFriend:
+                                                                    true,
                                                               ),
                                                             ),
                                                           );
@@ -658,6 +660,8 @@ class _FriendshipState extends State<friendship>
                                                                     verbaMatchStats,
                                                                 totalResponses:
                                                                     totalResponsesStats,
+                                                                fromFriend:
+                                                                    true,
                                                               ),
                                                             ),
                                                           );

@@ -3,6 +3,7 @@ import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
+import 'package:verbatim_frontend/screens/friendship.dart';
 import 'sideBar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:verbatim_frontend/widgets/create_group_app_bar.dart';
@@ -26,6 +27,7 @@ class groupChallenge extends StatefulWidget {
       groupAnswers; //dont need to send this i have question list lol but whatever no time
   final int? verbaMatchSimilarity;
   final int? totalResponses;
+  final bool? fromFriend;
 
   groupChallenge({
     Key? key,
@@ -37,6 +39,7 @@ class groupChallenge extends StatefulWidget {
     this.groupAnswers,
     this.verbaMatchSimilarity,
     this.totalResponses,
+    this.fromFriend,
   }) : super(key: key);
 
   @override
@@ -387,14 +390,23 @@ class _GroupChallengeState extends State<groupChallenge> {
                     ),
                     // add 'create challenge'
                     onPressed: () {
-                      Navigator.push(
-                        context,
-                        MaterialPageRoute(
-                          builder: (context) => myGroup(
-                              groupName: widget.groupName,
-                              groupId: widget.groupId),
-                        ),
-                      );
+                      widget.fromFriend == true
+                          ? Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => friendship(
+                                  friendUsername: widget.groupName,
+                                ),
+                              ),
+                            )
+                          : Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => myGroup(
+                                    groupName: widget.groupName,
+                                    groupId: widget.groupId),
+                              ),
+                            );
                     }, //send prompts to backend
 
                     child: Text(
