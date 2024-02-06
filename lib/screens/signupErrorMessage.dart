@@ -1,12 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:verbatim_frontend/screens/signUp.dart';
 import '../widgets/my_button_no_image.dart';
 import 'logIn.dart';
 
 class SignupErrorMessage extends StatelessWidget {
   final String pageName;
 
-  SignupErrorMessage({required this.pageName});
+  const SignupErrorMessage({super.key, required this.pageName});
 
   String getErrorMessage() {
     if (pageName == 'sign up') {
@@ -21,7 +20,7 @@ class SignupErrorMessage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFFF3EE),
+      backgroundColor: const Color(0xFFFFF3EE),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Center(
@@ -40,7 +39,7 @@ class SignupErrorMessage extends StatelessWidget {
                 ),
 
                 const SizedBox(height: 230),
-                Center(
+                const Center(
                   child: Text(
                     'Oops, something went wrong!',
                     textAlign: TextAlign.center,
@@ -62,7 +61,7 @@ class SignupErrorMessage extends StatelessWidget {
                       const SizedBox(height: 20),
                       Text(
                         getErrorMessage(), // Use the error message based on the pageName
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.black,
                           fontSize: 16,
                           fontFamily: 'Mulish',
@@ -80,7 +79,7 @@ class SignupErrorMessage extends StatelessWidget {
                   buttonText: 'Try Again',
                   onTap: () {
                     // Navigate back to the 'SignUp' page
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => LogIn()));
+                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LogIn()));
                   },
                 ),
               ],

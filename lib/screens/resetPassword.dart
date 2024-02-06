@@ -1,26 +1,21 @@
-import 'package:flutter/widgets.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/widgets/button_settings.dart';
 import 'package:verbatim_frontend/widgets/customAppBar_Settings.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
-import 'sideBar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:verbatim_frontend/widgets/custom_app_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
-import 'package:verbatim_frontend/widgets/custom_tab.dart';
-import 'dart:async';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 
 void reset(BuildContext context, String newPassword, String oldPassword) async {
   try {
     final response = await http.post(
       //need a reset password endpoint
-      Uri.parse(BackendService.getBackendUrl() + 'resetPassword'),
+      Uri.parse('${BackendService.getBackendUrl()}resetPassword'),
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
@@ -56,10 +51,11 @@ class _ResetPasswordState extends State<ResetPassword> {
 
   void reset(
       BuildContext context, String newPassword, String oldPassword) async {
+
     try {
       final response = await http.post(
         //need a reset password endpoint
-        Uri.parse(BackendService.getBackendUrl() + 'resetPassword'),
+        Uri.parse('${BackendService.getBackendUrl()}resetPassword'),
         headers: <String, String>{
           'Content-Type': 'application/json',
         },
@@ -162,21 +158,21 @@ class _ResetPasswordState extends State<ResetPassword> {
     setState(() {
       validationErrors[field] = Text(
         message,
-        style: TextStyle(color: Colors.red),
+        style: const TextStyle(color: Colors.red),
       );
     });
   }
 
   @override
   Widget build(BuildContext context) {
-    final String assetName = 'assets/img1.svg';
+    const String assetName = 'assets/img1.svg';
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: false,
-        backgroundColor: Color.fromARGB(255, 255, 243, 238),
+        backgroundColor: const Color.fromARGB(255, 255, 243, 238),
         body: SingleChildScrollView(
           child: Container(
-            color: Color.fromARGB(255, 255, 243, 238),
+            color: const Color.fromARGB(255, 255, 243, 238),
             child: Column(
               children: [
                 SizedBox(
@@ -199,16 +195,21 @@ class _ResetPasswordState extends State<ResetPassword> {
                                 fit: BoxFit.fill,
                               ),
                             ),
+
                             CustomAppBarSettings(
                               title: 'Reset Password',
                               showBackButton: true,
+
                             ),
                           ],
                         ),
                       ),
                       // field form boxes
+
+
                       SizedBox(height: 42),
                       Padding(
+
                         padding: EdgeInsets.only(left: 30.0),
                         child: Align(
                           alignment: Alignment.centerLeft,
@@ -225,14 +226,17 @@ class _ResetPasswordState extends State<ResetPassword> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       MyTextField(
                         controller: oldPassword,
                         hintText: 'current password',
                         obscureText: true,
                       ),
+
+
                       SizedBox(height: 42),
                       Padding(
+
                         padding: EdgeInsets.only(left: 30.0),
                         child: Align(
                           alignment: Alignment.centerLeft,
@@ -249,14 +253,16 @@ class _ResetPasswordState extends State<ResetPassword> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       MyTextField(
                         controller: newPassword,
                         hintText: 'new password',
                         obscureText: true,
                       ),
+
                       SizedBox(height: 42),
                       Padding(
+
                         padding: EdgeInsets.only(left: 30.0),
                         child: Align(
                           alignment: Alignment.centerLeft,
@@ -273,16 +279,17 @@ class _ResetPasswordState extends State<ResetPassword> {
                           ),
                         ),
                       ),
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       MyTextField(
                         controller: confirmPassword,
                         hintText: 'confirm password',
                         obscureText: true,
                       ),
                       Padding(
-                        padding: EdgeInsets.only(left: 30.0),
+                        padding: const EdgeInsets.only(left: 30.0),
                         child: Column(
                           children: [
+
                             SizedBox(height: 42),
                             Padding(
                               padding: EdgeInsets.only(left: 1.5),
@@ -300,6 +307,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                                 ),
                               ),
                             )
+
                           ],
                         ),
                       ),

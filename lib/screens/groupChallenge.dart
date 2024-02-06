@@ -2,22 +2,16 @@ import 'dart:math';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
-import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'sideBar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:verbatim_frontend/widgets/create_group_app_bar.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:verbatim_frontend/Components/defineRoutes.dart';
 import 'package:verbatim_frontend/screens/myGroup.dart';
 import 'package:verbatim_frontend/widgets/custom_app_bar.dart';
-import 'dart:math';
 
 //fix image getting but jsut use this for now
 Future<void> preloadImages(BuildContext context) async {
-  for (int i = 0; i < min(groupUsers!.length + 1, 6); i++) {
+  for (int i = 0; i < min(groupUsers.length + 1, 6); i++) {
     final key = 'assets/Ellipse ${41 + i}.png';
     final image = AssetImage(key);
     await precacheImage(image, context);
@@ -26,7 +20,7 @@ Future<void> preloadImages(BuildContext context) async {
 
 class groupChallenge extends StatefulWidget {
   final String groupName;
-  groupChallenge({
+  const groupChallenge({
     Key? key,
     required this.groupName,
   }) : super(key: key);
@@ -68,15 +62,15 @@ class _GroupChallengeState extends State<groupChallenge> {
   @override
   Widget build(BuildContext context) {
     updateProgress();
-    final String assetName = 'assets/img1.svg';
+    const String assetName = 'assets/img1.svg';
 
     return SafeArea(
         child: Scaffold(
       resizeToAvoidBottomInset: true,
-      backgroundColor: Color.fromARGB(255, 255, 243, 238),
+      backgroundColor: const Color.fromARGB(255, 255, 243, 238),
       body: SingleChildScrollView(
           child: Container(
-              color: Color.fromARGB(255, 255, 243, 238),
+              color: const Color.fromARGB(255, 255, 243, 238),
               child: Column(children: [
                 SizedBox(
                     width: double.maxFinite,
@@ -99,7 +93,7 @@ class _GroupChallengeState extends State<groupChallenge> {
                             ),
 
                             // app bar on top of background
-                            CustomAppBar(),
+                            const CustomAppBar(),
 
                             // 'Global Challenge #'
                             Positioned(
@@ -108,7 +102,7 @@ class _GroupChallengeState extends State<groupChallenge> {
                                   responded
                                       ? 'Verba-Tastical!'
                                       : 'Group Challenge',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 27,
                                     color: Colors.white,
                                     fontWeight: FontWeight.w900,
@@ -135,7 +129,7 @@ class _GroupChallengeState extends State<groupChallenge> {
                               color: const Color.fromARGB(255, 117, 19, 12)
                                   .withOpacity(0.9),
                               blurRadius: 5,
-                              offset: Offset(3, 7),
+                              offset: const Offset(3, 7),
                             ),
                           ],
                           color: Colors.white,
@@ -143,21 +137,21 @@ class _GroupChallengeState extends State<groupChallenge> {
 
                         child: Column(
                           children: [
-                            SizedBox(height: 30),
+                            const SizedBox(height: 30),
                             Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 16.0),
                               child: Text(
                                 questions[currentQuestionIndex],
-                                style: TextStyle(
+                                style: const TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
                             ),
-                            SizedBox(height: 30.0),
+                            const SizedBox(height: 30.0),
                             Container(
-                              padding: EdgeInsets.symmetric(horizontal: 20.0),
+                              padding: const EdgeInsets.symmetric(horizontal: 20.0),
                               child: TextField(
                                 controller: responseController,
                                 onChanged: (value) {
@@ -165,12 +159,12 @@ class _GroupChallengeState extends State<groupChallenge> {
                                     userResponse = value;
                                   });
                                 },
-                                decoration: InputDecoration(
+                                decoration: const InputDecoration(
                                   hintText: 'Type your answer here...',
                                 ),
                               ),
                             ),
-                            SizedBox(height: 40.0),
+                            const SizedBox(height: 40.0),
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 backgroundColor:
@@ -179,8 +173,8 @@ class _GroupChallengeState extends State<groupChallenge> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30),
                                 ),
-                                minimumSize: Size(150, 40),
-                                padding: EdgeInsets.all(16),
+                                minimumSize: const Size(150, 40),
+                                padding: const EdgeInsets.all(16),
                               ),
                               onPressed: () {
                                 setState(() {
@@ -206,13 +200,13 @@ class _GroupChallengeState extends State<groupChallenge> {
                                 currentQuestionIndex == 2 ? 'Submit' : 'Next',
                               ),
                             ),
-                            SizedBox(height: 20),
-                            Container(
+                            const SizedBox(height: 20),
+                            SizedBox(
                               width: 200,
                               child: LinearProgressIndicator(
                                 value: progressValue,
                                 backgroundColor: Colors.grey[300],
-                                valueColor: AlwaysStoppedAnimation<Color>(
+                                valueColor: const AlwaysStoppedAnimation<Color>(
                                     Colors.orange),
                                 minHeight: 10,
                               ),
@@ -239,7 +233,7 @@ class _GroupChallengeState extends State<groupChallenge> {
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
-                      backgroundColor: Color(0xFFE76F51),
+                      backgroundColor: const Color(0xFFE76F51),
                       enableFeedback: true,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -257,7 +251,7 @@ class _GroupChallengeState extends State<groupChallenge> {
                       );
                     }, //send prompts to backend
 
-                    child: Text(
+                    child: const Text(
                       'Back to Challenge Feed',
                       style: TextStyle(
                         fontWeight: FontWeight.bold,
@@ -268,7 +262,7 @@ class _GroupChallengeState extends State<groupChallenge> {
                 ),
                 SizedBox(height: 30.v),
               ]))),
-      drawer: SideBar(),
+      drawer: const SideBar(),
     ));
   }
 
@@ -293,11 +287,11 @@ class _GroupChallengeState extends State<groupChallenge> {
         });
       },
       child: AnimatedContainer(
-          duration: Duration(milliseconds: 400),
+          duration: const Duration(milliseconds: 400),
           height: expandedStates[index] ? 120 : 50,
           width: double.infinity,
-          margin: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-          padding: EdgeInsets.all(8),
+          margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+          padding: const EdgeInsets.all(8),
 
           //remove this decoration?
           decoration: BoxDecoration(
@@ -305,9 +299,9 @@ class _GroupChallengeState extends State<groupChallenge> {
             borderRadius: BorderRadius.circular(10),
             boxShadow: [
               BoxShadow(
-                color: Color(0xFF9E503C).withOpacity(1),
+                color: const Color(0xFF9E503C).withOpacity(1),
                 blurRadius: 5,
-                offset: Offset(2, 3),
+                offset: const Offset(2, 3),
               )
             ],
           ),
@@ -325,18 +319,18 @@ class _GroupChallengeState extends State<groupChallenge> {
                           Expanded(
                             child: Text(
                               prompts[index],
-                              style: TextStyle(
+                              style: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                               ),
                             ),
                           ),
-                          Icon(Icons.arrow_upward),
+                          const Icon(Icons.arrow_upward),
                         ],
                       ),
                     ),
                     AnimatedContainer(
-                      duration: Duration(milliseconds: 1000),
+                      duration: const Duration(milliseconds: 1000),
                       height: 70,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
@@ -347,25 +341,25 @@ class _GroupChallengeState extends State<groupChallenge> {
                               height: 40.v,
                               width: 100.h,
                               margin:
-                                  EdgeInsets.only(left: 8, right: 8, top: 10),
-                              padding: EdgeInsets.only(
+                                  const EdgeInsets.only(left: 8, right: 8, top: 10),
+                              padding: const EdgeInsets.only(
                                   left: 20, right: 20, top: 8, bottom: 8),
                               decoration: BoxDecoration(
-                                color: Color(0xFFE76F51),
+                                color: const Color(0xFFE76F51),
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               child: Center(
                                   child: Column(children: [
                                 Text(
                                   items[index],
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontSize: 14,
                                       fontWeight: FontWeight.bold,
                                       color: Colors.white),
                                 ),
                                 Text(
                                   answers[index],
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                       fontSize: 12, color: Colors.white),
                                 )
                               ])));
@@ -383,13 +377,13 @@ class _GroupChallengeState extends State<groupChallenge> {
                       Expanded(
                         child: Text(
                           prompts[index],
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
                           ),
                         ),
                       ),
-                      Icon(Icons.arrow_downward),
+                      const Icon(Icons.arrow_downward),
                     ],
                   ),
                 ),
@@ -402,7 +396,7 @@ class _GroupChallengeState extends State<groupChallenge> {
 Widget _verbaMatch() {
   return Align(
       alignment: Alignment.topCenter,
-      child: Container(
+      child: SizedBox(
           width: 600.v,
           height: 200.v,
           child: Row(
@@ -412,7 +406,7 @@ Widget _verbaMatch() {
                 mainAxisAlignment: MainAxisAlignment.start,
                 children: [
                   RichText(
-                    text: TextSpan(
+                    text: const TextSpan(
                       children: [
                         TextSpan(
                           text: 'Verba',
@@ -432,13 +426,13 @@ Widget _verbaMatch() {
                     ),
                     textAlign: TextAlign.left,
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Row(children: [
                     Image.asset('assets/Ellipse 42.png', height: 50, width: 50),
                     Image.asset('assets/Ellipse 43.png', height: 50, width: 50),
                   ]),
-                  SizedBox(height: 10),
-                  Text(
+                  const SizedBox(height: 10),
+                  const Text(
                     'Jackie and Eric',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
@@ -449,7 +443,7 @@ Widget _verbaMatch() {
                   height: 200.v,
                   width: 200.v,
                   alignment: Alignment.center,
-                  child: DonutChart(groupSimilarity: 67),
+                  child: const DonutChart(groupSimilarity: 67),
                 ),
               ])
             ],
@@ -459,7 +453,7 @@ Widget _verbaMatch() {
 class DonutChart extends StatefulWidget {
   final double groupSimilarity;
 
-  DonutChart({
+  const DonutChart({
     Key? key,
     required this.groupSimilarity,
   }) : super(key: key);
@@ -480,7 +474,7 @@ class _DonutChartState extends State<DonutChart> {
 
     return Scaffold(
         backgroundColor: Colors.transparent,
-        body: Container(
+        body: SizedBox(
           height: 200.v,
           width: 200.v,
           child: Column(
@@ -499,7 +493,7 @@ class _DonutChartState extends State<DonutChart> {
                         sections: [
                           PieChartSectionData(
                             value: widget.groupSimilarity,
-                            color: Color(0xFFE76F51),
+                            color: const Color(0xFFE76F51),
                             radius: 19,
                             showTitle: false,
                           ),
@@ -520,7 +514,7 @@ class _DonutChartState extends State<DonutChart> {
                           Container(
                             height: 80.v,
                             width: 80.h,
-                            decoration: BoxDecoration(
+                            decoration: const BoxDecoration(
                               color: Color.fromARGB(255, 255, 243, 238),
                               shape: BoxShape.circle,
                               /*
@@ -540,12 +534,12 @@ class _DonutChartState extends State<DonutChart> {
                                 children: [
                                   Text(
                                     "${widget.groupSimilarity.toStringAsFixed(2)}%",
-                                    style: TextStyle(
+                                    style: const TextStyle(
                                       fontSize: 13,
                                       fontWeight: FontWeight.bold,
                                     ),
                                   ),
-                                  Text(
+                                  const Text(
                                     "Similarity",
                                     style: TextStyle(
                                       fontSize: 10,
@@ -569,6 +563,8 @@ class _DonutChartState extends State<DonutChart> {
 }
 
 class HorizontalScrollDropdown extends StatefulWidget {
+  const HorizontalScrollDropdown({super.key});
+
   @override
   _HorizontalScrollDropdownState createState() =>
       _HorizontalScrollDropdownState();
@@ -582,7 +578,7 @@ class _HorizontalScrollDropdownState extends State<HorizontalScrollDropdown> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.black),
         borderRadius: BorderRadius.circular(5),
@@ -599,14 +595,14 @@ class _HorizontalScrollDropdownState extends State<HorizontalScrollDropdown> {
                 },
                 child: Text(
                   selectedValue,
-                  style: TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 16),
                 ),
               ),
-              Icon(Icons.arrow_drop_down),
+              const Icon(Icons.arrow_drop_down),
             ],
           ),
           if (isDropdownVisible)
-            Container(
+            SizedBox(
               height: 150,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
@@ -621,9 +617,9 @@ class _HorizontalScrollDropdownState extends State<HorizontalScrollDropdown> {
                       });
                     },
                     child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 8),
+                      margin: const EdgeInsets.symmetric(horizontal: 8),
                       padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                          const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
                       decoration: BoxDecoration(
                         gradient: isSelected
                             ? LinearGradient(
@@ -646,7 +642,7 @@ class _HorizontalScrollDropdownState extends State<HorizontalScrollDropdown> {
                       ),
                       child: Text(
                         items[index],
-                        style: TextStyle(fontSize: 16),
+                        style: const TextStyle(fontSize: 16),
                       ),
                     ),
                   );
