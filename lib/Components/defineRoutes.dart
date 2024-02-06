@@ -101,7 +101,6 @@ void defineRoutes() {
     '/my_group/:param1/:param2',
     handler: myGroupHandler,
   );
- 
 }
 
 var myGroupHandler = Handler(
@@ -143,19 +142,17 @@ var landingPageHandler = Handler(handlerFunc: (context, parameters) {
   }
 });
 
-
-
-
-var settingsHandler = Handler(
-    handlerFunc:(context, parameters) {
-      if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
-        return const LogIn();
-      } else {
-        // Update the current page in the shared prefs
-        SharedPrefs().setCurrentPage('/settings');
-        return const settings();
-      }});
-
+var settingsHandler = Handler(handlerFunc: (context, parameters) {
+  if (SharedPrefs().getEmail() == '' ||
+      SharedPrefs().getUserName() == '' ||
+      SharedPrefs().getPassword() == '') {
+    return const LogIn();
+  } else {
+    // Update the current page in the shared prefs
+    SharedPrefs().setCurrentPage('/settings');
+    return const settings();
+  }
+});
 
 Handler onBoardingPage1Handler = Handler(
   handlerFunc: (context, parameters) {
@@ -168,8 +165,6 @@ Handler onBoardingPage1Handler = Handler(
       SharedPrefs().setCurrentPage('/onboarding_page1');
 
       return const OnBoardingPage1();
-
-
     }
   },
 );
@@ -234,10 +229,8 @@ Handler signUpHandler = Handler(
     SharedPrefs().setCurrentPage('/signup');
     //TODO: check for this
 
-
     return const SignUp();
     //return SignUp(data: data);
-
   },
 );
 
@@ -249,13 +242,11 @@ Handler logInHandler = Handler(
   },
 );
 
-
 Handler globalChallengeHandler = Handler(handlerFunc: (context, parameters) {
   // Update the current page in the shared prefs
   SharedPrefs().setCurrentPage('/global_challenge');
   return globalChallenge();
 });
-
 
 Handler addFriendHandler = Handler(
   handlerFunc: (context, parameters) {
@@ -266,7 +257,7 @@ Handler addFriendHandler = Handler(
     } else {
       // Update the current page in the shared prefs
       SharedPrefs().setCurrentPage('/add_friend');
-      return const addFriend();
+      return addFriend();
     }
   },
 );

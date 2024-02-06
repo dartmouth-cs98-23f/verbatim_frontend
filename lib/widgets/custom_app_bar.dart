@@ -1,16 +1,21 @@
 import 'package:flutter/material.dart';
+import 'package:verbatim_frontend/Components/shared_prefs.dart';
+import 'package:verbatim_frontend/screens/settings.dart';
 import 'size.dart';
-import 'package:verbatim_frontend/widgets/my_textfield.dart';
+import 'package:verbatim_frontend/screens/sideBar.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-
   const CustomAppBar({super.key});
 
   @override
   Widget build(BuildContext context) {
     return AppBar(
+      scrolledUnderElevation: 0.0,
       backgroundColor: Colors.transparent,
-      toolbarHeight: 100,
+
+      toolbarHeight: 100.v,
+      // toolbarHeight: 150,
+
       elevation: 0,
       title: const Column(
         children: [
@@ -107,10 +112,10 @@ class SearchBarTextField extends StatelessWidget {
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
-
         ),
         child: Row(
           mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
           children: [
             IconButton(
               onPressed: handleSearchPress, // Add onPressed function
@@ -145,15 +150,9 @@ class SearchBarTextField extends StatelessWidget {
           ],
         ),
       ),
-      actions: <Widget>[
-        IconButton(
-          icon: Icon(Icons.person),
-          onPressed: () {},
-        ),
-      ],
-      centerTitle: false,
     );
   }
+}
 
 class TitleFrame extends StatelessWidget {
   const TitleFrame({super.key});
