@@ -4,7 +4,7 @@ import 'size.dart';
 class groupAppBar extends StatelessWidget implements PreferredSizeWidget {
   final String title;
 
-  groupAppBar({
+  const groupAppBar({
     Key? key,
     this.height,
     required this.title,
@@ -22,7 +22,7 @@ class groupAppBar extends StatelessWidget implements PreferredSizeWidget {
       title: Container(
         height: 50,
         width: 160,
-        alignment: Alignment(-2.0, 0),
+        alignment: const Alignment(-2.0, 0),
         decoration: BoxDecoration(
           color: Colors.transparent,
           borderRadius: BorderRadius.circular(10),
@@ -32,7 +32,7 @@ class groupAppBar extends StatelessWidget implements PreferredSizeWidget {
             Center(
               child: Text(
                 title,
-                style: TextStyle(
+                style: const TextStyle(
                   fontSize: 24,
                   color: Colors.white,
                   fontWeight: FontWeight.w900,
@@ -44,7 +44,7 @@ class groupAppBar extends StatelessWidget implements PreferredSizeWidget {
       ),
       actions: <Widget>[
         IconButton(
-          icon: Icon(Icons.person),
+          icon: const Icon(Icons.person),
           onPressed: () {},
         ),
       ],

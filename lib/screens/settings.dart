@@ -3,7 +3,6 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/widgets.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
@@ -17,13 +16,11 @@ import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:verbatim_frontend/widgets/custom_app_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
 import 'dart:async';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/resetPassword.dart';
-import 'sideBar.dart';
 
 void edits(
   BuildContext context,
@@ -41,7 +38,7 @@ void edits(
     String lastName = nameMap['lastName'] ?? '';
 
     final response = await http.post(
-      Uri.parse(BackendService.getBackendUrl() + 'accountSettings'),
+      Uri.parse('${BackendService.getBackendUrl()}accountSettings'),
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
@@ -173,12 +170,15 @@ class _settingsState extends State<settings> {
       : 'assets/profile_pic.png';
 
   final ImagePicker picker = ImagePicker();
+
   ImageProvider<Object> selectedImage = AssetImage('assets/profile_pic.png');
+
 
   @override
   @override
   void initState() {
     super.initState();
+
     _loadProfileImage();
   }
 
@@ -207,6 +207,7 @@ class _settingsState extends State<settings> {
       print('Exception: $e');
       throw Exception('Failed to load image');
     }
+
   }
 
   // Function to show the centered edit profile picture pop-up
@@ -227,6 +228,7 @@ class _settingsState extends State<settings> {
   }
 
   Future<void> _pickImage(ImageSource source) async {
+
     final ImagePicker _picker = ImagePicker();
     XFile? image = await _picker.pickImage(source: source);
 
@@ -243,6 +245,7 @@ class _settingsState extends State<settings> {
       // Delete previous profile picture if URL is not empty and different from new URL
       if (prevProfileUrl.isNotEmpty && prevProfileUrl != newProfileUrl) {
         await deleteFileFromFirebase(prevProfileUrl);
+
       }
       _currentProfileUrl = newProfileUrl;
 
@@ -309,8 +312,10 @@ class _settingsState extends State<settings> {
     String newProfileUrl = 'assets/profile_pic.png';
 
     setState(() {
+
       selectedImage = AssetImage('assets/profile_pic.png');
       SharedPrefs().setProfileUrl(newProfileUrl);
+
 
       // Close the pop-up
       Navigator.pop(context);
@@ -339,7 +344,7 @@ class _settingsState extends State<settings> {
       body: SingleChildScrollView(
           child: SafeArea(
         child: Container(
-            color: Color.fromARGB(255, 255, 243, 238),
+            color: const Color.fromARGB(255, 255, 243, 238),
             child: Column(
               children: [
                 SizedBox(
@@ -365,6 +370,7 @@ class _settingsState extends State<settings> {
                             ),
 
                             // app bar on top of background
+
                             CustomAppBarSettings(
                               title: 'Account Settings',
                             ),
@@ -377,7 +383,7 @@ class _settingsState extends State<settings> {
 
                 // const SizedBox(height: 10),
                 Padding(
-                  padding: EdgeInsets.only(
+                  padding: const EdgeInsets.only(
                       left: 50.0), // Adjust the left padding as needed
                   child: Align(
                     alignment: Alignment.topLeft,
@@ -404,7 +410,7 @@ class _settingsState extends State<settings> {
                                   image: DecorationImage(
                                     fit: BoxFit.cover,
                                     image:
-                                        selectedImage as ImageProvider<Object>,
+                                        selectedImage,
                                   ),
                                 ),
                               ),
@@ -421,10 +427,10 @@ class _settingsState extends State<settings> {
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(22.0),
                                 side:
-                                    BorderSide(color: Colors.white, width: 2.0),
+                                    const BorderSide(color: Colors.white, width: 2.0),
                               ),
                               child: Container(
-                                child: Center(
+                                child: const Center(
                                   child: Icon(
                                     Icons.create_outlined,
                                     size: 30.0,
@@ -443,6 +449,7 @@ class _settingsState extends State<settings> {
                 //Reset password
                 const SizedBox(height: 30),
                 Align(
+
                     alignment: Alignment.topLeft,
                     child: Padding(
                       padding: EdgeInsets.only(left: 30.0),
@@ -466,6 +473,7 @@ class _settingsState extends State<settings> {
                         ),
                       ),
                     )),
+
 
                 const SizedBox(height: 38),
                 const Padding(
@@ -493,10 +501,12 @@ class _settingsState extends State<settings> {
                         " " +
                         (SharedPrefs().getLastName() ?? ""),
                     obscureText: false),
+
                 //username
                 const SizedBox(height: 38),
                 Padding(
                   padding: const EdgeInsets.only(left: 30.0),
+
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -519,6 +529,7 @@ class _settingsState extends State<settings> {
                     obscureText: false),
 
                 //bio
+
                 const SizedBox(height: 38),
                 Padding(
                   padding: const EdgeInsets.only(left: 30.0),
@@ -545,9 +556,11 @@ class _settingsState extends State<settings> {
 
                 //email
                 //bio
+
                 const SizedBox(height: 38),
                 Padding(
                   padding: const EdgeInsets.only(left: 30.0),
+
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -611,7 +624,7 @@ class _settingsState extends State<settings> {
 class EnlargedImageView extends StatelessWidget {
   final ImageProvider<Object> imageProvider;
 
-  const EnlargedImageView({required this.imageProvider});
+  const EnlargedImageView({super.key, required this.imageProvider});
 
   @override
   Widget build(BuildContext context) {

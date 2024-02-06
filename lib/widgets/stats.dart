@@ -25,7 +25,7 @@ class Stats extends StatelessWidget {
   final List<String> questions;
   final List<String> responses;
 
-  Stats({
+  const Stats({super.key, 
     required this.tabLabels,
     required this.totalResponses,
     required this.statsQ1,
@@ -138,9 +138,9 @@ class Stats extends StatelessWidget {
               elevation: 0,
               title: TabBar(
                 unselectedLabelColor: Colors.black,
-                labelPadding: EdgeInsets.symmetric(horizontal: 4.0),
-                indicatorColor: Color(0xFFE76F51),
-                labelColor: Color(0xFFE76F51),
+                labelPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                indicatorColor: const Color(0xFFE76F51),
+                labelColor: const Color(0xFFE76F51),
                 indicatorPadding: EdgeInsets.zero,
                 indicatorSize: TabBarIndicatorSize.label,
                 tabs: tabLabels
@@ -177,7 +177,7 @@ class Stats extends StatelessWidget {
                               ),
                             ),
                           ),
-                          Container(
+                          SizedBox(
                             width: 300.h,
                             height: 350.v,
                             child: PieChart(
@@ -208,7 +208,7 @@ class Stats extends StatelessWidget {
                               ),
                             ),
                           ),
-                          Container(
+                          SizedBox(
                               width: 300.h,
                               child: Center(
                                 child: Legend(
@@ -229,13 +229,13 @@ class Stats extends StatelessWidget {
                               )),
                           SizedBox(height: 15.v),
                           Container(
-                            padding: EdgeInsets.all(16.0),
+                            padding: const EdgeInsets.all(16.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   "You Said: '$yourAnswer1'",
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 16.0,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -243,7 +243,7 @@ class Stats extends StatelessWidget {
                               ],
                             ),
                           ),
-                          Container(
+                          const SizedBox(
                               width: 200,
                               child: Center(
                                 child: Text(
@@ -254,12 +254,12 @@ class Stats extends StatelessWidget {
                                   ),
                                 ),
                               )),
-                          SizedBox(height: 10),
-                          Container(
+                          const SizedBox(height: 10),
+                          SizedBox(
                             width: 300.h,
                             height: 250,
                             child: friends.isEmpty
-                                ? Padding(
+                                ? const Padding(
                                     padding: EdgeInsets.only(top: 20.0),
                                     child: Text(
                                       "None of your friends have played today. Add friends to see their answers!",
@@ -296,7 +296,7 @@ class Stats extends StatelessWidget {
                                                     child: ListTile(
                                                   title: Center(
                                                     child: Row(children: [
-                                                      Icon(
+                                                      const Icon(
                                                           Icons.account_circle),
                                                       Flexible(
                                                         child: RichText(
@@ -309,7 +309,7 @@ class Stats extends StatelessWidget {
                                                                 text:
                                                                     '$friendName: ',
                                                                 style:
-                                                                    TextStyle(
+                                                                    const TextStyle(
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .bold,
@@ -319,7 +319,7 @@ class Stats extends StatelessWidget {
                                                                 text:
                                                                     friendAnswer1,
                                                                 style:
-                                                                    TextStyle(
+                                                                    const TextStyle(
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .normal,
@@ -337,7 +337,7 @@ class Stats extends StatelessWidget {
                                                     child: ListTile(
                                                       title: Center(
                                                         child: Row(children: [
-                                                          Icon(Icons
+                                                          const Icon(Icons
                                                               .account_circle),
                                                           Flexible(
                                                             child: RichText(
@@ -350,7 +350,7 @@ class Stats extends StatelessWidget {
                                                                     text:
                                                                         '$nextFriendName: ',
                                                                     style:
-                                                                        TextStyle(
+                                                                        const TextStyle(
                                                                       fontWeight:
                                                                           FontWeight
                                                                               .bold,
@@ -360,7 +360,7 @@ class Stats extends StatelessWidget {
                                                                     text:
                                                                         nextAnswer,
                                                                     style:
-                                                                        TextStyle(
+                                                                        const TextStyle(
                                                                       fontWeight:
                                                                           FontWeight
                                                                               .normal,
@@ -378,7 +378,7 @@ class Stats extends StatelessWidget {
                                             ),
                                           );
                                         } else {
-                                          return SizedBox();
+                                          return const SizedBox();
                                         }
                                       },
                                     ).toList(),
@@ -402,7 +402,7 @@ class Stats extends StatelessWidget {
                               ),
                             ),
                           ),
-                          Container(
+                          SizedBox(
                             width: 300.h,
                             height: 350.v,
                             child: PieChart(
@@ -433,7 +433,7 @@ class Stats extends StatelessWidget {
                               ),
                             ),
                           ),
-                          Container(
+                          SizedBox(
                               width: 300.h,
                               child: Center(
                                 child: Legend(
@@ -454,13 +454,13 @@ class Stats extends StatelessWidget {
                               )),
                           SizedBox(height: 15.v),
                           Container(
-                            padding: EdgeInsets.all(16.0),
+                            padding: const EdgeInsets.all(16.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   "You Said: '$yourAnswer2'",
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 16.0,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -468,7 +468,7 @@ class Stats extends StatelessWidget {
                               ],
                             ),
                           ),
-                          Container(
+                          const SizedBox(
                               width: 200,
                               child: Center(
                                 child: Text(
@@ -479,12 +479,12 @@ class Stats extends StatelessWidget {
                                   ),
                                 ),
                               )),
-                          SizedBox(height: 10),
-                          Container(
+                          const SizedBox(height: 10),
+                          SizedBox(
                               width: 300.h,
                               height: 250,
                               child: friends.isEmpty
-                                  ? Padding(
+                                  ? const Padding(
                                       padding: EdgeInsets.only(top: 20.0),
                                       child: Text(
                                         "None of your friends have played today. Add friends to see their answers!",
@@ -521,7 +521,7 @@ class Stats extends StatelessWidget {
                                                       child: ListTile(
                                                     title: Center(
                                                       child: Row(children: [
-                                                        Icon(Icons
+                                                        const Icon(Icons
                                                             .account_circle),
                                                         Flexible(
                                                           child: RichText(
@@ -534,7 +534,7 @@ class Stats extends StatelessWidget {
                                                                   text:
                                                                       '$friendName: ',
                                                                   style:
-                                                                      TextStyle(
+                                                                      const TextStyle(
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .bold,
@@ -544,7 +544,7 @@ class Stats extends StatelessWidget {
                                                                   text:
                                                                       friendAnswer2,
                                                                   style:
-                                                                      TextStyle(
+                                                                      const TextStyle(
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .normal,
@@ -562,7 +562,7 @@ class Stats extends StatelessWidget {
                                                       child: ListTile(
                                                         title: Center(
                                                           child: Row(children: [
-                                                            Icon(Icons
+                                                            const Icon(Icons
                                                                 .account_circle),
                                                             Flexible(
                                                               child: RichText(
@@ -575,7 +575,7 @@ class Stats extends StatelessWidget {
                                                                       text:
                                                                           '$nextFriendName: ',
                                                                       style:
-                                                                          TextStyle(
+                                                                          const TextStyle(
                                                                         fontWeight:
                                                                             FontWeight.bold,
                                                                       ),
@@ -584,7 +584,7 @@ class Stats extends StatelessWidget {
                                                                       text:
                                                                           nextAnswer,
                                                                       style:
-                                                                          TextStyle(
+                                                                          const TextStyle(
                                                                         fontWeight:
                                                                             FontWeight.normal,
                                                                       ),
@@ -601,7 +601,7 @@ class Stats extends StatelessWidget {
                                               ),
                                             );
                                           } else {
-                                            return SizedBox();
+                                            return const SizedBox();
                                           }
                                         },
                                       ).toList(),
@@ -624,7 +624,7 @@ class Stats extends StatelessWidget {
                               ),
                             ),
                           ),
-                          Container(
+                          SizedBox(
                             height: 300.v,
                             child: PieChart(
                               PieChartData(
@@ -654,7 +654,7 @@ class Stats extends StatelessWidget {
                               ),
                             ),
                           ),
-                          Container(
+                          SizedBox(
                               width: 300.h,
                               child: Center(
                                 child: Legend(
@@ -675,13 +675,13 @@ class Stats extends StatelessWidget {
                               )),
                           SizedBox(height: 15.v),
                           Container(
-                            padding: EdgeInsets.all(16.0),
+                            padding: const EdgeInsets.all(16.0),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
                                 Text(
                                   "You Said: '$yourAnswer3'",
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 16.0,
                                     fontWeight: FontWeight.bold,
                                   ),
@@ -689,7 +689,7 @@ class Stats extends StatelessWidget {
                               ],
                             ),
                           ),
-                          Container(
+                          const SizedBox(
                               width: 200,
                               child: Center(
                                 child: Text(
@@ -700,12 +700,12 @@ class Stats extends StatelessWidget {
                                   ),
                                 ),
                               )),
-                          SizedBox(height: 10),
-                          Container(
+                          const SizedBox(height: 10),
+                          SizedBox(
                             width: 300.h,
                             height: 250,
                             child: friends.isEmpty
-                                ? Padding(
+                                ? const Padding(
                                     padding: EdgeInsets.only(top: 20.0),
                                     child: Text(
                                       "None of your friends have played today. Add friends to see their answers!",
@@ -742,7 +742,7 @@ class Stats extends StatelessWidget {
                                                   child: ListTile(
                                                     title: Center(
                                                       child: Row(children: [
-                                                        Icon(Icons
+                                                        const Icon(Icons
                                                             .account_circle),
                                                         Flexible(
                                                           child: RichText(
@@ -755,7 +755,7 @@ class Stats extends StatelessWidget {
                                                                   text:
                                                                       '$friendName: ',
                                                                   style:
-                                                                      TextStyle(
+                                                                      const TextStyle(
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .bold,
@@ -765,7 +765,7 @@ class Stats extends StatelessWidget {
                                                                   text:
                                                                       friendAnswer3,
                                                                   style:
-                                                                      TextStyle(
+                                                                      const TextStyle(
                                                                     fontWeight:
                                                                         FontWeight
                                                                             .normal,
@@ -784,7 +784,7 @@ class Stats extends StatelessWidget {
                                                     child: ListTile(
                                                       title: Center(
                                                         child: Row(children: [
-                                                          Icon(Icons
+                                                          const Icon(Icons
                                                               .account_circle),
                                                           Flexible(
                                                             child: RichText(
@@ -797,7 +797,7 @@ class Stats extends StatelessWidget {
                                                                     text:
                                                                         '$nextFriendName: ',
                                                                     style:
-                                                                        TextStyle(
+                                                                        const TextStyle(
                                                                       fontWeight:
                                                                           FontWeight
                                                                               .bold,
@@ -807,7 +807,7 @@ class Stats extends StatelessWidget {
                                                                     text:
                                                                         nextAnswer,
                                                                     style:
-                                                                        TextStyle(
+                                                                        const TextStyle(
                                                                       fontWeight:
                                                                           FontWeight
                                                                               .normal,
@@ -825,7 +825,7 @@ class Stats extends StatelessWidget {
                                             ),
                                           );
                                         } else {
-                                          return SizedBox();
+                                          return const SizedBox();
                                         }
                                       },
                                     ).toList(),
@@ -855,11 +855,11 @@ class LegendData {
 class Legend extends StatelessWidget {
   final List<LegendData> data;
 
-  Legend({required this.data});
+  const Legend({super.key, required this.data});
 
   @override
   Widget build(BuildContext context) {
-    final itemsPerRow = 1;
+    const itemsPerRow = 1;
 
     final rows = <Widget>[];
     for (int i = 0; i < data.length; i += itemsPerRow) {
@@ -868,6 +868,7 @@ class Legend extends StatelessWidget {
         mainAxisAlignment: MainAxisAlignment.center,
         children: rowItems.map((item) {
           return Flexible(
+              flex: 0,
               child: Center(
                   child: Row(
                 children: <Widget>[
@@ -876,16 +877,15 @@ class Legend extends StatelessWidget {
                     height: 20,
                     color: item.color,
                   ),
-                  SizedBox(width: 5),
+                  const SizedBox(width: 5),
                   Text(item.title),
-                  SizedBox(width: 5),
+                  const SizedBox(width: 5),
                 ],
-              )),
-              flex: 0);
+              )));
         }).toList(),
       );
       rows.add(row);
-      rows.add(SizedBox(height: 5));
+      rows.add(const SizedBox(height: 5));
     }
 
     return Center(child: Column(children: rows));

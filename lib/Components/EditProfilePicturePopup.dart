@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hovering/hovering.dart';
 
 class EditProfilePicturePopup extends StatefulWidget {
   final String imagePath;
@@ -9,13 +8,15 @@ class EditProfilePicturePopup extends StatefulWidget {
   final VoidCallback onChangeImageCamera;
   final VoidCallback onRemoveCurrentPicture;
 
-  EditProfilePicturePopup({
+  const EditProfilePicturePopup({
+    super.key, 
     required this.imagePath,
     required this.selectedImage,
     required this.onImageTap,
     required this.onChangeImageGallery,
     required this.onChangeImageCamera,
     required this.onRemoveCurrentPicture,
+    // ... (your existing parameters)
   });
 
   @override
@@ -33,11 +34,12 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
       content: Column(
         mainAxisSize: MainAxisSize.min,
         children: [
+          const SizedBox(height: 5),
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
-                padding: const EdgeInsets.only(left: 56.0),
+                padding: const EdgeInsets.only(left: 16.0),
                 child: Align(
                   alignment: Alignment.topCenter,
                   child: Text(
@@ -68,36 +70,7 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
             child: GestureDetector(
               onTap: widget.onImageTap,
               child: Container(
-                width: 100.0,
-                height: 100.0,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: isHovered ? Colors.blue : Colors.transparent,
-                    width: 2.0,
-                  ),
-                ),
-                child: ClipOval(
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: widget.onImageTap,
-                      child: ClipOval(
-                        child: Container(
-                          width: 150.0,
-                          height: 150.0,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: widget.selectedImage,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
+                // ... (your existing image container)
               ),
             ),
           ),
@@ -107,7 +80,7 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
               Icons.photo_camera_outlined,
               color: Color.fromARGB(255, 72, 72, 72),
             ),
-            title: Text(
+            title: const Text(
               'Take a photo',
               style: TextStyle(
                 color: Colors.black,
@@ -126,7 +99,7 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
               Icons.photo_outlined,
               color: Color(0xFFDE674A),
             ),
-            title: Text(
+            title: const Text(
               'Choose from gallery',
               style: TextStyle(
                 color: Colors.black,
@@ -145,7 +118,7 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
               Icons.delete_outline,
               color: Color(0xFFDE674A),
             ),
-            title: Text(
+            title: const Text(
               'Remove current picture',
               style: TextStyle(
                 color: Colors.black,

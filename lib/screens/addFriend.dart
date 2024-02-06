@@ -451,12 +451,9 @@ class _AddFriendState extends State<addFriend> {
                                     myRequestedUsers_backend.contains(name);
                                 profileUrl = currentUser.profilePicture ??
                                     'assets/profile_pic.png'; // Provide a default value if profilePicture is null
-                                print(
-                                    "\nProfile here in listview is: $profileUrl");
+                                
                               }
-                              print(
-                                  "\nProfile here in listview is: ${profileUrl}");
-
+                              
                               return ListTile(
                                 title: Row(
                                   mainAxisSize: MainAxisSize.min,

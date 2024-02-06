@@ -1,11 +1,10 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:verbatim_frontend/gameObject.dart';
 import 'package:verbatim_frontend/screens/signUp.dart';
 import 'logIn.dart';
 
 class GetStarted extends StatelessWidget {
-  const GetStarted({Key? key});
+  const GetStarted({super.key});
 
   @override
   Widget build(BuildContext context) {
@@ -50,13 +49,13 @@ class GetStarted extends StatelessWidget {
                     onPressed: () {
                       // Navigate to the 'Sign Up' page
 
-                      Navigator.of(context).push(MaterialPageRoute(
-                          builder: (context) => SignUp(
-                                data: new GameObject('', '', '', ''),
-                              )));
+
+                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SignUp()));
+
+
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFFE76F51), // Background color
+                      backgroundColor: const Color(0xFFE76F51), // Background color
                       shape: RoundedRectangleBorder(
                         borderRadius:
                             BorderRadius.circular(0.0), // Rectangular shape
@@ -73,7 +72,7 @@ class GetStarted extends StatelessWidget {
                   RichText(
                     text: TextSpan(
                       text: 'Already have an account? ',
-                      style: TextStyle(color: Colors.black),
+                      style: const TextStyle(color: Colors.black),
                       children: [
                         TextSpan(
                           text: 'Sign-in',
@@ -85,7 +84,7 @@ class GetStarted extends StatelessWidget {
                             ..onTap = () {
                               // Navigate to the 'Log In' page
                               Navigator.of(context).push(MaterialPageRoute(
-                                  builder: (context) => LogIn()));
+                                  builder: (context) => const LogIn()));
                             },
                         ),
                       ],

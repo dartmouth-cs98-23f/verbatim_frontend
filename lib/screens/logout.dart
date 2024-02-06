@@ -1,8 +1,6 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/screens/logIn.dart';
 import '../Components/shared_prefs.dart';
-import '../widgets/my_button_no_image.dart';
 
 class LogoutPage extends StatefulWidget {
   const LogoutPage({super.key});
@@ -29,7 +27,7 @@ class _LogoutPageState extends State<LogoutPage> {
     Navigator.push(
       context,
       MaterialPageRoute(
-        builder: (context) => LogIn(),
+        builder: (context) => const LogIn(),
       ),
     );
   }
@@ -37,7 +35,7 @@ class _LogoutPageState extends State<LogoutPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFFF3EE),
+      backgroundColor: const Color(0xFFFFF3EE),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Center(
@@ -55,7 +53,7 @@ class _LogoutPageState extends State<LogoutPage> {
                   ),
                 ),
                 const SizedBox(height: 160),
-                Center(
+                const Center(
                   child: Text(
                     'Log out from your account',
                     textAlign: TextAlign.center,
@@ -70,12 +68,12 @@ class _LogoutPageState extends State<LogoutPage> {
                   ),
                 ),
                 const SizedBox(height: 30),
-                Padding(
-                  padding: const EdgeInsets.only(left: 15.0),
+                const Padding(
+                  padding: EdgeInsets.only(left: 15.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      const SizedBox(height: 20),
+                      SizedBox(height: 20),
                       Text(
                         'Are you sure you want to log out?',
                         style: TextStyle(
@@ -100,33 +98,33 @@ class _LogoutPageState extends State<LogoutPage> {
                         Navigator.pop(context);
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFFE76F51), // Background color
+                        backgroundColor: const Color(0xFFE76F51), // Background color
                         shape: RoundedRectangleBorder(
                           borderRadius:
                               BorderRadius.circular(13.0), // Rectangular shape
                         ),
                       ),
-                      child: Text(
+                      child: const Text(
                         'Go Back',
                         style: TextStyle(
                           color: Colors.white,
                         ),
                       ),
                     ),
-                    SizedBox(width: 30.0),
+                    const SizedBox(width: 30.0),
                     ElevatedButton(
                       onPressed: () {
                         // Log out
                         logout(context);
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFFFFF3EE), // Background color
+                        backgroundColor: const Color(0xFFFFF3EE), // Background color
                         shape: RoundedRectangleBorder(
                           borderRadius:
                               BorderRadius.circular(13.0), // Rectangular shape
                         ),
                       ),
-                      child: Text(
+                      child: const Text(
                         'Log Out',
                         style: TextStyle(
                           color: Colors.black,

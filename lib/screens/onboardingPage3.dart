@@ -1,10 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:verbatim_frontend/screens/globalChallenge.dart';
-import 'package:verbatim_frontend/screens/onboardingPage4.dart';
 
-import '../Components/shared_prefs.dart';
-import 'getStarted.dart';
-import 'logIn.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
 
 class OnBoardingPage3 extends StatelessWidget {
@@ -13,7 +8,7 @@ class OnBoardingPage3 extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFFF3EE),
+      backgroundColor: const Color(0xFFFFF3EE),
       body: SafeArea(
         child: Column(
           children: [
@@ -35,7 +30,7 @@ class OnBoardingPage3 extends StatelessWidget {
                           ),
                         ),
                       ),
-                      Center(
+                      const Center(
                         child: Text(
                           'Compare & \nCompete',
                           textAlign: TextAlign.center,
@@ -55,7 +50,7 @@ class OnBoardingPage3 extends StatelessWidget {
                         child: Align(
                           alignment: Alignment.center,
                           child: RichText(
-                            text: TextSpan(
+                            text: const TextSpan(
                               style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 15,
@@ -102,13 +97,13 @@ class OnBoardingPage3 extends StatelessWidget {
                       Navigator.pushNamed(context, '/global_challenge');
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFFFFF3EE), // Background color
+                      backgroundColor: const Color(0xFFFFF3EE), // Background color
                       shape: RoundedRectangleBorder(
                         borderRadius:
                             BorderRadius.circular(13.0), // Rectangular shape
                       ),
                     ),
-                    child: Text(
+                    child: const Text(
                       'Skip',
                       style: TextStyle(
                         color: Colors.black,
@@ -121,13 +116,13 @@ class OnBoardingPage3 extends StatelessWidget {
                       Navigator.pushNamed(context, '/onboarding_page4');
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: Color(0xFFE76F51), // Background color
+                      backgroundColor: const Color(0xFFE76F51), // Background color
                       shape: RoundedRectangleBorder(
                         borderRadius:
                             BorderRadius.circular(13.0), // Rectangular shape
                       ),
                     ),
-                    child: Text(
+                    child: const Text(
                       'Next',
                       style: TextStyle(
                         color: Colors.white,
