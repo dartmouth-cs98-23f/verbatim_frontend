@@ -69,6 +69,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
   }
 
   List<Map<String, dynamic>> activeChallenges = [];
+  Map<int, Map<String, dynamic>> challengeStats = {}; //jadded
   List<int> activeChallengeIds = [];
   Map<int, List<String>> mappedChallenges = {};
   List<String> titles = [];
@@ -78,6 +79,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
   Future<void> getActiveChallenges(int groupId) async {
     final url = Uri.parse(
         BackendService.getBackendUrl() + 'group/' + '$groupId/' + 'challenges');
+    print("top of activechallenges\n");
 
     final response = await http.get(url);
     if (response.statusCode == 200) {
@@ -94,8 +96,17 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
             .toList();
 
         mappedChallenges = getMappedChallenges(activeChallenges);
+        challengeStats = Map.fromIterable(
+          //jadded
+          activeChallengeIds,
+          key: (id) => id,
+          value: (_) => {},
+        );
+        print("challengestats in active challenges is $challengeStats");
       } else {}
-    } else {}
+    } else {
+      print("active challenges not obtained succesfuly");
+    }
   }
 
   Map<int, List<String>> getMappedChallenges(List<dynamic> activeChallenges) {
@@ -111,20 +122,21 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
         isCustom ? "Custom" : "Not Custom"
       ];
       mappedChallenges[id] = challengeInfo;
-      // List<String> questions = await getChallenge(id);
-      // mappedChallenges[id]!.addAll(questions);
     }
-
+    print("mappedChallenges are $mappedChallenges");
     return mappedChallenges;
   }
 
-// Example usage:
+//jadded
+  List<dynamic> groupAnswers = [];
+  double verbaMatchSimilarity = 0;
+  int totalResponses = 0;
 
-// now i need to load the challenge content and send it to groupChallenge
-
-//
-  Future<void> getChallenge(int challengeId, String user,
-      Map<int, List<String>> mappedChallenges) async {
+  Future<void> getChallenge(
+      int challengeId,
+      String user,
+      Map<int, List<String>> mappedChallenges,
+      Map<int, Map<String, dynamic>> challengeStats) async {
     final url = Uri.parse(BackendService.getBackendUrl() +
         '$challengeId/' +
         '$user/' +
@@ -133,13 +145,12 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
     final response = await http.get(url);
     if (response.statusCode == 200) {
       final dynamic jsonData = json.decode(response.body);
-      print('jsondata in friendship getChallengeqS $jsonData');
-
+      print("the jsonData in getChallenge is $jsonData");
       bool userHasCompleted = jsonData['userHasCompleted'];
       String completed = userHasCompleted.toString();
       mappedChallenges[challengeId]!.add(completed);
 
-      if (jsonData.containsKey('questions')) {
+      if (completed == 'false') {
         List<dynamic> questionsList = jsonData['questions'];
         for (List<dynamic> questionList in questionsList) {
           List<String> contentList = questionList
@@ -153,16 +164,36 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
             print('total failure');
           }
         }
+        print("now the mapped challenge is $mappedChallenges");
       } else {
-        print("No questions in the challenge");
+        // user HAS completed the challenge
+
+        groupAnswers = jsonData['groupAnswers'];
+        totalResponses = jsonData['totalResponses'];
+        // List<String> verbaMatch = jsonData['verbaMatch'];
+        //double?
+        verbaMatchSimilarity = jsonData['verbaMatchSimilarity'];
+        Map<String, dynamic> groupAnswersMap = {"groupAnswers": groupAnswers};
+        Map<String, int> totalResponsesMap = {"totalResponses": totalResponses};
+        Map<String, double> verbaMatchSimilarityMap = {
+          "verbaMatchSimilarity": verbaMatchSimilarity
+        };
+        print(
+            "\n\n the mapped challenge is $mappedChallenges \n challenge stats: $challengeStats");
+        if (challengeStats.containsKey(challengeId)) {
+          challengeStats[challengeId]!.addAll(groupAnswersMap);
+          challengeStats[challengeId]!.addAll(totalResponsesMap);
+          challengeStats[challengeId]!.addAll(verbaMatchSimilarityMap);
+          print("\n now we have challengeStats $challengeStats");
+        } else {
+          print("didnt happen ");
+        }
       }
     } else {
       print(
           'failed to get challenge beeeeepp questions. Status code: ${response.statusCode}');
     }
   }
-
-// get the content for each active challenge
 
 // create standard challenge
 
@@ -310,17 +341,18 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
               Navigator.pop(context);
               String username = SharedPrefs().getUserName() ?? "";
 
-              createStandardChallenge(username, groupID);
-              // re-initiate to load
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => myGroup(
-                    groupName: groupName,
-                    groupId: groupId,
+              createStandardChallenge(username, groupID).then((_) {
+                // re-initiate to load
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => myGroup(
+                      groupName: groupName,
+                      groupId: groupId,
+                    ),
                   ),
-                ),
-              );
+                );
+              });
 
               //
             } else if (title == 'Custom') {
@@ -387,7 +419,9 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
     String username = SharedPrefs().getUserName() ?? "";
 
     for (var challengeId in activeChallengeIds) {
-      await getChallenge(challengeId, username, mappedChallenges);
+      print("getting challenge in line 419");
+      await getChallenge(
+          challengeId, username, mappedChallenges, challengeStats);
     }
 
     if (mounted) {
@@ -593,9 +627,38 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                               // if challengeInfo[2] is false they have not completed
 
                                               bool completed =
-                                                  (challengeInfo2 == "true");
+                                                  (challengeInfo2 != "false");
                                               // if challengeInfo2 is true, they have completed
                                               // if not, completed is false.
+                                              // initialize stats variables
+                                              double verbaMatchStats = 0;
+                                              int totalResponsesStats = 0;
+                                              List<dynamic> groupAnswersStats =
+                                                  [];
+
+                                              if (completed) {
+                                                groupAnswersStats =
+                                                    challengeStats[id]![
+                                                        'groupAnswers'];
+
+                                                verbaMatchStats =
+                                                    challengeStats[id]![
+                                                        'verbaMatchSimilarity'];
+
+                                                totalResponsesStats =
+                                                    challengeStats[id]![
+                                                        'totalResponses'];
+                                              }
+                                              List<dynamic> questions2 =
+                                                  groupAnswersStats
+                                                      .map((entry) =>
+                                                          entry['question'])
+                                                      .toList();
+                                              List<String> questionList =
+                                                  questions2
+                                                      .map((dynamic value) =>
+                                                          value.toString())
+                                                      .toList();
 
                                               List<String> challengeQuestions =
                                                   challengeInfo
@@ -613,36 +676,38 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                                       MaterialPageRoute(
                                                         builder: (context) =>
                                                             groupChallenge(
-                                                                groupName: widget
-                                                                    .groupName,
-                                                                groupId:
-                                                                    groupID,
-                                                                challengeQs:
-                                                                    challengeQuestions,
-                                                                challengeId: id,
-                                                                completed:
-                                                                    true),
+                                                          groupName:
+                                                              widget.groupName,
+                                                          groupId: groupID,
+                                                          challengeQs:
+                                                              challengeQuestions,
+                                                          challengeId: id,
+                                                          completed: false,
+                                                        ),
                                                       ),
                                                     );
                                                   } else {
-                                                    /*
-                                                          Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                              builder: (context) => groupChallenge(
-                                                                  groupName: widget
-                                                                      .friendUsername,
-                                                                  groupId:
-                                                                      groupId,
-                                                                  challengeQs:
-                                                                      challengeQuestions,
-                                                                  challengeId:
-                                                                      id),
-                                                            ),
-                                                          );
-                                                          */
-                                                    print(
-                                                        'they did this challenge but im still sending them here for now idk');
+                                                    Navigator.push(
+                                                      context,
+                                                      MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              groupChallenge(
+                                                                groupName: widget
+                                                                    .groupName,
+                                                                groupId: widget
+                                                                    .groupId,
+                                                                challengeQs:
+                                                                    questionList,
+                                                                challengeId: id,
+                                                                completed: true,
+                                                                groupAnswers:
+                                                                    groupAnswersStats,
+                                                                verbaMatchSimilarity:
+                                                                    verbaMatchStats,
+                                                                totalResponses:
+                                                                    totalResponsesStats,
+                                                              )),
+                                                    );
                                                   }
                                                 },
                                                 child: Container(

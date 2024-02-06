@@ -163,31 +163,34 @@ class _CustomChallengeState extends State<customChallenge>
                         if (widget.friendship) {
                           int groupID = widget.groupId!;
                           String username = SharedPrefs().getUserName() ?? "";
-                          createCustomChallenge(username, prompts, groupID);
-                          //send custom challenge to the backend
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => friendship(
-                                friendUsername: widget.groupName,
+                          createCustomChallenge(username, prompts, groupID)
+                              .then((_) {
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => friendship(
+                                  friendUsername: widget.groupName,
+                                ),
                               ),
-                            ),
-                          );
+                            );
+                          });
                         } else {
                           print("this is prompts $prompts");
 
                           int groupID = widget.groupId!;
                           String username = SharedPrefs().getUserName() ?? "";
-                          createCustomChallenge(username, prompts, groupID);
-                          //send custom challenge to the backend
-                          Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                              builder: (context) => myGroup(
-                                  groupName: widget.groupName,
-                                  groupId: widget.groupId),
-                            ),
-                          );
+                          createCustomChallenge(username, prompts, groupID)
+                              .then((_) {
+                            //send custom challenge to the backend
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => myGroup(
+                                    groupName: widget.groupName,
+                                    groupId: widget.groupId),
+                              ),
+                            );
+                          });
                         }
                       }, //send prompts to backend
                       child: Text(

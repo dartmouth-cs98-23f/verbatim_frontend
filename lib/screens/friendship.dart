@@ -29,7 +29,7 @@ class _FriendshipState extends State<friendship>
   late TabController _tabController;
 
   // variables for friendgroup Stats
-  double groupRating = 0;
+  double groupRating = 0.0;
   List<String> verbaMatch = [];
   List<String> groupMembers = [];
 
@@ -150,16 +150,16 @@ class _FriendshipState extends State<friendship>
               String username = SharedPrefs().getUserName() ?? "";
 
               Navigator.pop(context);
-              createStandardChallenge(username, groupId);
-
-              Navigator.pushReplacement(
-                context,
-                MaterialPageRoute(
-                  builder: (context) => friendship(
-                    friendUsername: groupName,
+              createStandardChallenge(username, groupId).then((_) {
+                Navigator.pushReplacement(
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => friendship(
+                      friendUsername: groupName,
+                    ),
                   ),
-                ),
-              );
+                );
+              });
 
               //
             } else if (title == 'Custom') {
@@ -226,7 +226,7 @@ class _FriendshipState extends State<friendship>
       final dynamic jsonData = json.decode(response.body);
 
       double rating = jsonData["groupRating"];
-      groupRating = rating as double;
+      groupRating = rating;
       verbaMatch = List<String>.from(jsonData["verbaMatch"]);
       groupMembers = List<String>.from(jsonData["groupMembers"]);
     } else {
@@ -248,7 +248,6 @@ class _FriendshipState extends State<friendship>
   Future<void> getActiveChallenges(String user, String friend) async {
     final url = Uri.parse(
         BackendService.getBackendUrl() + '$user/' + '$friend/' + 'challenges');
-    print("top of activechallenges\n");
     final response = await http.get(url);
     if (response.statusCode == 200) {
       final dynamic jsonData = json.decode(response.body);
@@ -259,6 +258,7 @@ class _FriendshipState extends State<friendship>
         activeChallenges =
             List<Map<String, dynamic>>.from(jsonData["activeChallenges"]);
         groupId = jsonData["groupId"];
+        print(groupId);
 
         activeChallengeIds = activeChallenges
             .map((challenge) => challenge["id"] as int)
@@ -297,7 +297,7 @@ class _FriendshipState extends State<friendship>
 // STATS variables
 
   List<dynamic> groupAnswers = [];
-  double verbaMatchSimilarity = 0;
+  double verbaMatchSimilarity = 0.0;
   int totalResponses = 0;
 
   Future<void> getChallenge(
@@ -323,8 +323,6 @@ class _FriendshipState extends State<friendship>
       mappedChallenges[challengeId]!.add(completed);
       List<dynamic> map = mappedChallenges[challengeId]!;
       int mapLength = map.length;
-      print(
-          "\n b4 completed check challenge id $challengeId this is mapped chalenges  $mappedChallenges \n and the map $map and  its length $mapLength ");
 
 // user has not completed the challenge
       if (completed == 'false') {
@@ -571,27 +569,20 @@ class _FriendshipState extends State<friendship>
                                                             "false");
 
                                                     // initialize stats variables
-                                                    int verbaMatchStats = 0;
+                                                    double verbaMatchStats = 0;
                                                     int totalResponsesStats = 0;
                                                     List<dynamic>
                                                         groupAnswersStats = [];
 
                                                     if (completed) {
-                                                      print(
-                                                          "\nthis is challenge stats $challengeStats");
                                                       groupAnswersStats =
                                                           challengeStats[id]![
                                                               'groupAnswers'];
-
-                                                      print(
-                                                          '\nline 584 group answers stats $groupAnswersStats');
 
                                                       verbaMatchStats =
                                                           challengeStats[id]![
                                                               'verbaMatchSimilarity'];
 
-                                                      print(
-                                                          '\n line 588 verbamatchsim $verbaMatchStats');
                                                       totalResponsesStats =
                                                           challengeStats[id]![
                                                               'totalResponses'];

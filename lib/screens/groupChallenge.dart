@@ -25,7 +25,7 @@ class groupChallenge extends StatefulWidget {
   final bool completed;
   final List<dynamic>?
       groupAnswers; //dont need to send this i have question list lol but whatever no time
-  final int? verbaMatchSimilarity;
+  final double? verbaMatchSimilarity;
   final int? totalResponses;
   final bool? fromFriend;
 
@@ -115,6 +115,7 @@ class _GroupChallengeState extends State<groupChallenge> {
       print('responses submitted succesfully');
 
       final Map<String, dynamic> stats = json.decode(response.body);
+      print("stats when i submit $stats");
       // need to do lots of things to these stats!
 
       groupAnswersSubmit = stats["groupAnswers"];
@@ -143,6 +144,7 @@ class _GroupChallengeState extends State<groupChallenge> {
 
     for (int i = 0; i < widget.challengeQs.length; i++) {
       expandedStates.add(false);
+      print("here");
       String temp = widget.challengeQs[i];
       prompts.add(temp);
       editingStates.add(false);
@@ -159,9 +161,12 @@ class _GroupChallengeState extends State<groupChallenge> {
 
   @override
   Widget build(BuildContext context) {
+    List<String> challengeQss = widget.challengeQs;
+    print("widget challenge Qs $challengeQss");
     if (widget.completed) {
       responded = true;
     }
+
     int numQuestions = widget.challengeQs.length;
     // how many questions are there?
 
@@ -193,7 +198,7 @@ class _GroupChallengeState extends State<groupChallenge> {
       }
     }
 
-    final int? verbaMatchSimilarity2 = widget.verbaMatchSimilarity;
+    final double? verbaMatchSimilarity2 = widget.verbaMatchSimilarity;
     final int? totalResponses2 = widget.totalResponses;
     bool comple = widget.completed;
 
