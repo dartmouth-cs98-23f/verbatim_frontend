@@ -100,7 +100,7 @@ class _AddFriendState extends State<addFriend> {
     final response = await http.post(url, headers: headers, body: username);
 
     if (response.statusCode == 200) {
-      print('getfriendrequests responses sent succesfully');
+      print('\ngetfriendrequests responses sent succesfully\n');
 
       List<Map<String, dynamic>> friendRequests =
           List<Map<String, dynamic>>.from(json.decode(response.body));
@@ -111,14 +111,13 @@ class _AddFriendState extends State<addFriend> {
         }
       }
     } else {
-      print('Failed to send responses. Status code: ${response.statusCode}');
+      print(
+          '\nFailed to send responses. Status code: ${response.statusCode}\n');
     }
   }
 
   void toggleFriend(String friendName) {
-    if (myRequestedUsers_backend.contains(friendName)) {
-      //do nothing
-    } else {
+    if (!myRequestedUsers_backend.contains(friendName)) {
       myRequestedUsers_backend.add(friendName);
     }
   }
@@ -134,19 +133,19 @@ class _AddFriendState extends State<addFriend> {
     final response = await http.post(url, headers: headers, body: username);
 
     if (response.statusCode == 200) {
-      print(
-          'myRequestedUsers_backend responses sent succesfully $myRequestedUsers_backend');
-
       List<Map<String, dynamic>> myfriendRequests =
           List<Map<String, dynamic>>.from(json.decode(response.body));
       if (myfriendRequests.isNotEmpty) {
         for (var request in myfriendRequests) {
           String username = request['username'];
-          myRequestedUsers_backend.add(username);
+          if (!myRequestedUsers_backend.contains(username)) {
+            myRequestedUsers_backend.add(username);
+          }
         }
       }
     } else {
-      print('Failed to send responses. Status code: ${response.statusCode}');
+      print(
+          '\nIn addFriends getUsersIHaveRequested: Failed to send responses. Status code: ${response.statusCode}\n');
     }
   }
 
@@ -175,8 +174,6 @@ class _AddFriendState extends State<addFriend> {
 
     final response = await http.get(url);
 
-    print("\nresponse is ${response}\n");
-
     if (response.statusCode == 200) {
       print("response succesfull");
       final List<dynamic> data = json.decode(response.body);
@@ -204,6 +201,7 @@ class _AddFriendState extends State<addFriend> {
   @override
   void initState() {
     super.initState();
+    getUsersIHaveRequested(username);
 
     _searchController.addListener(() {
       setState(() {
@@ -501,6 +499,7 @@ class _AddFriendState extends State<addFriend> {
                                       sendFriendRequest(username, name);
 
                                       setState(() {
+                                        currentUser.isRequested = true;
                                         toggleFriend(name);
                                       });
                                     }
@@ -558,8 +557,7 @@ class _AddFriendState extends State<addFriend> {
                                       sendFriendRequest(username, name);
                                       setState(() {
                                         toggleFriend(name);
-                                        myRequestedUsers_backend.add(
-                                            name); // keeps the icon from changing if you navigate away from the page
+                                        // keeps the icon from changing if you navigate away from the page
                                       });
                                     }
                                   },

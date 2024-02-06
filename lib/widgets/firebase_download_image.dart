@@ -29,10 +29,13 @@ class FirebaseStorageImage extends StatelessWidget {
                   MaterialPageRoute(builder: (context) => Profile(user: user!)),
                 );
               } else {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(builder: (context) => Profile()),
-                );
+                // Navigator.push(
+                //   context,
+                //   MaterialPageRoute(builder: (context) => Profile()),
+
+                // );
+                // SharedPrefs().setCurrentPage('/profile');
+                Navigator.pushNamed(context, '/profile');
               }
             },
             child: Container(
@@ -51,9 +54,13 @@ class FirebaseStorageImage extends StatelessWidget {
           return GestureDetector(
             onTap: () {
               // Navigate to the Profile page
-              Navigator.push(
+              // Navigator.push(
+              //   context,
+              //   MaterialPageRoute(builder: (context) => Profile()),
+              // );
+              Navigator.pushNamed(
                 context,
-                MaterialPageRoute(builder: (context) => Profile()),
+                '/profile',
               );
             },
             child: Container(

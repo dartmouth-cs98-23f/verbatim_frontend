@@ -50,6 +50,7 @@ class _ProfileState extends State<Profile> {
 
   String bio = '';
   String profileUrl = '';
+  List<String> myRequestedUsers_backend = [];
 
   Future<void> _getStats(String username) async {
     final url = Uri.parse("${BackendService.getBackendUrl()}getUserStats");
@@ -69,6 +70,8 @@ class _ProfileState extends State<Profile> {
 
   Future<void> sendFriendRequest(
       String requestingUsername, String requestedUsername) async {
+    print(
+        "\nIn profile: Requested backend users: ${myRequestedUsers_backend}\n");
     final url = Uri.parse(BackendService.getBackendUrl() + 'addFriend');
     final headers = <String, String>{'Content-Type': 'application/json'};
 
@@ -79,10 +82,74 @@ class _ProfileState extends State<Profile> {
           "requestedUsername": requestedUsername
         }));
     if (response.statusCode == 200) {
-      print('responses sent succesfully');
+      _showSuccessDialog();
+      setState(() {
+        widget.user!.isRequested = true;
+      });
+
+      print(
+          '\nresponses sent succesfully: ${requestingUsername} and ${requestedUsername}\n');
     } else {
       print('Failed to send responses. Status code: ${response.statusCode}');
     }
+  }
+
+  void _showSuccessDialog() {
+    showDialog(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(10.0), // Set the corner radius
+          ),
+          backgroundColor: const Color.fromARGB(
+              255, 255, 243, 238), // Set the background color
+          title: RichText(
+            text: const TextSpan(
+              children: [
+                TextSpan(
+                  text: 'Verba',
+                  style: TextStyle(
+                      color: Colors.orange,
+                      fontSize: 24,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.bold),
+                ),
+                TextSpan(
+                  text: '-tastic!',
+                  style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 24,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.bold),
+                ),
+              ],
+            ),
+          ),
+          content: const Text(
+            'Your friend request has been sent!',
+            style: TextStyle(
+              color: Colors.black,
+              fontFamily: 'Poppins',
+            ), // Set text color
+          ),
+          actions: [
+            TextButton(
+              onPressed: () {
+                Navigator.of(context).pop(); // Close the dialog
+              },
+              child: const Text(
+                'OK',
+                style: TextStyle(
+                  color: Colors.blue,
+                  fontFamily: 'Poppins',
+                ), // Set button text color
+              ),
+            ),
+          ],
+        );
+      },
+    );
   }
 
   final String field = "Friend";
@@ -92,6 +159,7 @@ class _ProfileState extends State<Profile> {
 
     // If user object is provided, populate profile details from user object
     if (widget.user != null) {
+      print("\nFriend is req status: ${widget.user!.isRequested}\n");
       firstName = widget.user!.firstName.replaceFirst(
           widget.user!.firstName[0], widget.user!.firstName[0].toUpperCase());
 
@@ -208,12 +276,34 @@ class _ProfileState extends State<Profile> {
                                           SafeArea(
                                             child: GestureDetector(
                                               onTap: () {
-                                                // Navigate to settings
-                                                Navigator.of(context)
-                                                    .push(MaterialPageRoute(
-                                                  builder: (context) =>
-                                                      settings(),
-                                                ));
+                                                if (widget.user == null) {
+                                                  // Navigate to settings
+                                                  Navigator.of(context)
+                                                      .push(MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        settings(),
+                                                  ));
+                                                } else {
+                                                  if (!widget
+                                                      .user!.isRequested) {
+                                                    sendFriendRequest(
+                                                        SharedPrefs()
+                                                                .getUserName()
+                                                            as String,
+                                                        widget.user!.username);
+
+                                                    setState(() {
+                                                      setState(() {
+                                                        widget.user!
+                                                                .isRequested =
+                                                            true; // keeps the icon from changing if you navigate away from the page
+                                                      });
+                                                    });
+                                                  } else {
+                                                    print(
+                                                        "\nImplement the method to handle when the user is already a friend or the FR has been sent!\n");
+                                                  }
+                                                }
                                               },
                                               child: Container(
                                                 width: 200,
@@ -240,13 +330,28 @@ class _ProfileState extends State<Profile> {
                                                       .transparent, // Make it transparent to prevent background color overlay
                                                   child: InkWell(
                                                     onTap: () {
-                                                      // Navigate to settings
-                                                      Navigator.of(context)
-                                                          .push(
-                                                              MaterialPageRoute(
-                                                        builder: (context) =>
-                                                            settings(),
-                                                      ));
+                                                      if (widget.user == null) {
+                                                        // Navigate to settings
+                                                        Navigator.of(context)
+                                                            .push(
+                                                                MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              settings(),
+                                                        ));
+                                                      } else {
+                                                        if (!widget.user!
+                                                            .isRequested) {
+                                                          sendFriendRequest(
+                                                              SharedPrefs()
+                                                                      .getUserName()
+                                                                  as String,
+                                                              widget.user!
+                                                                  .username);
+                                                        } else {
+                                                          print(
+                                                              "\nImplement the method to handle when the user is already a friend or the FR has been sent!\n");
+                                                        }
+                                                      }
                                                     },
                                                     child: Row(
                                                       mainAxisSize:
@@ -271,16 +376,23 @@ class _ProfileState extends State<Profile> {
                                                           child: Stack(
                                                             children: [
                                                               if (widget.user !=
-                                                                  null)
+                                                                      null &&
+                                                                  widget.user!
+                                                                      .isRequested)
                                                                 Icon(
-                                                                  widget.user != null &&
-                                                                          widget
-                                                                              .user!
-                                                                              .isRequested
-                                                                      ? Icons
-                                                                          .person_outlined
-                                                                      : Icons
-                                                                          .person_add_alt_outlined,
+                                                                  Icons
+                                                                      .person_outlined,
+                                                                  color: Colors
+                                                                      .white,
+                                                                  size: 20,
+                                                                ),
+                                                              if (widget.user !=
+                                                                      null &&
+                                                                  !widget.user!
+                                                                      .isRequested)
+                                                                Icon(
+                                                                  Icons
+                                                                      .person_add_alt_outlined,
                                                                   color: Colors
                                                                       .white,
                                                                   size: 20,
@@ -598,5 +710,11 @@ class _ProfileState extends State<Profile> {
         ),
       ),
     );
+  }
+
+  void toggleFriend(String friendName) {
+    if (!myRequestedUsers_backend.contains(friendName)) {
+      myRequestedUsers_backend.add(friendName);
+    }
   }
 }

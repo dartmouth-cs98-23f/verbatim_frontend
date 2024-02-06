@@ -105,7 +105,7 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
           ListTile(
             leading: Icon(
               Icons.photo_camera_outlined,
-              color: Color(0xFFDE674A),
+              color: Color.fromARGB(255, 72, 72, 72),
             ),
             title: Text(
               'Take a photo',
