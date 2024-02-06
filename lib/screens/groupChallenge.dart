@@ -115,7 +115,7 @@ class _GroupChallengeState extends State<groupChallenge> {
       print('responses submitted succesfully');
 
       final Map<String, dynamic> stats = json.decode(response.body);
-      print("stats when i submit $stats");
+
       // need to do lots of things to these stats!
 
       groupAnswersSubmit = stats["groupAnswers"];

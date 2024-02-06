@@ -164,8 +164,9 @@ class _FriendshipState extends State<friendship>
               //
             } else if (title == 'Custom') {
               // does this 'groupname' thing work?
-
-              Navigator.push(
+              //shld i navigator.pop?
+              Navigator.pop(context);
+              Navigator.pushReplacement(
                 context,
                 MaterialPageRoute(
                   builder: (context) => customChallenge(
@@ -230,7 +231,8 @@ class _FriendshipState extends State<friendship>
       verbaMatch = List<String>.from(jsonData["verbaMatch"]);
       groupMembers = List<String>.from(jsonData["groupMembers"]);
     } else {
-      print('failed to get group stats. Status code: ${response.statusCode}');
+      print(
+          'failed to get friendship stats. Status code: ${response.statusCode}');
     }
   }
 
@@ -258,7 +260,6 @@ class _FriendshipState extends State<friendship>
         activeChallenges =
             List<Map<String, dynamic>>.from(jsonData["activeChallenges"]);
         groupId = jsonData["groupId"];
-        print(groupId);
 
         activeChallengeIds = activeChallenges
             .map((challenge) => challenge["id"] as int)
@@ -300,6 +301,21 @@ class _FriendshipState extends State<friendship>
   double verbaMatchSimilarity = 0.0;
   int totalResponses = 0;
 
+  Future<void> getUserHasCompleted(int challengeId, String user) async {
+    final url = Uri.parse(BackendService.getBackendUrl() +
+        '$challengeId/' +
+        '$user/' +
+        'userHasCompleted');
+
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final dynamic jsonData = json.decode(response.body);
+    } else {
+      print("failure");
+    }
+  }
+
   Future<void> getChallenge(
       int challengeId,
       String user,
@@ -309,14 +325,13 @@ class _FriendshipState extends State<friendship>
         '$challengeId/' +
         '$user/' +
         'getChallengeQs');
-    print("here in getChallenge the challengeId is $challengeId");
+
+    // await getUserHasCompleted(challengeId, user);
 
     final response = await http.get(url);
     if (response.statusCode == 200) {
       final dynamic jsonData = json.decode(response.body);
-      print('\n jsondata in friendship getChallengeqS $jsonData');
-      print(
-          "\n for challengeId: $challengeId challenge right now $mappedChallenges");
+
       bool userHasCompleted = jsonData['userHasCompleted'];
       String completed = userHasCompleted.toString();
       // put completion status in mapped challenges
@@ -326,8 +341,6 @@ class _FriendshipState extends State<friendship>
 
 // user has not completed the challenge
       if (completed == 'false') {
-        print(
-            "\n after completed challenge id $challengeId this is mapped chalenges  $mappedChallenges \n and its  and the map $map  and its length $mapLength");
         List<dynamic> questionsList = jsonData['questions'];
         for (List<dynamic> questionList in questionsList) {
           List<String> contentList = questionList
@@ -340,8 +353,6 @@ class _FriendshipState extends State<friendship>
           } else {
             print('\n couldnt put questions in mapped challenges');
           }
-          print(
-              "\n the mapped challenge for the one i did not do is $mappedChallenges");
         }
       } else // user HAS completed the challenge - fill in stats
       {
@@ -358,13 +369,10 @@ class _FriendshipState extends State<friendship>
           "verbaMatchSimilarity": verbaMatchSimilarity
         };
 
-        print(
-            "\n\n the mapped challenge is $mappedChallenges \n challenge stats: $challengeStats");
         if (challengeStats.containsKey(challengeId)) {
           challengeStats[challengeId]!.addAll(groupAnswersMap);
           challengeStats[challengeId]!.addAll(totalResponsesMap);
           challengeStats[challengeId]!.addAll(verbaMatchSimilarityMap);
-          print("\n now we have challengeStats $challengeStats");
         } else {
           print("didnt happen ");
         }
@@ -392,7 +400,6 @@ class _FriendshipState extends State<friendship>
   @override
   void initState() {
     super.initState();
-
     _tabController = TabController(length: 2, vsync: this);
     _loadChallenges();
   }
@@ -401,6 +408,7 @@ class _FriendshipState extends State<friendship>
     String username = SharedPrefs().getUserName() ?? "";
 
     await getActiveChallenges(username, widget.friendUsername);
+    print("These are the active challenges: $activeChallenges");
 
     for (var challengeId in activeChallengeIds) {
       //  print("here getting getChallenge for $challengeId");
@@ -656,9 +664,6 @@ class _FriendshipState extends State<friendship>
                                                               ),
                                                             ),
                                                           );
-
-                                                          print(
-                                                              'yoyoyoo groupAnswers: $groupAnswers');
                                                         }
                                                       },
                                                       child: Container(

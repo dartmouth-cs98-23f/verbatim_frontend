@@ -101,7 +101,6 @@ class _SideBarState extends State<SideBar> {
 
     if (response.statusCode == 200) {
       final Map<String, dynamic> data = json.decode(response.body);
-      print("this is groups data $data");
 
       List<dynamic> groups = data['groups'];
 

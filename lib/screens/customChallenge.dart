@@ -18,7 +18,7 @@ Future<void> createCustomChallenge(
   final url =
       Uri.parse(BackendService.getBackendUrl() + 'createCustomChallenge');
   final headers = <String, String>{'Content-Type': 'application/json'};
-  print('this is $username and this is groupId $groupId');
+
   final response = await http.post(url,
       headers: headers,
       body: json.encode({
@@ -27,7 +27,6 @@ Future<void> createCustomChallenge(
         'groupId': groupId
       }));
   if (response.statusCode == 200) {
-    print('success');
   } else {
     print(
         'failed to create standard challenge. Status code: ${response.statusCode}');
@@ -124,7 +123,6 @@ class _CustomChallengeState extends State<customChallenge>
                           editingStates.add(false);
                           bird.add(false);
                         });
-                        print('Add Prompt button pressed');
                       },
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
@@ -162,23 +160,24 @@ class _CustomChallengeState extends State<customChallenge>
                       onPressed: () {
                         if (widget.friendship) {
                           int groupID = widget.groupId!;
+                          String name = widget.groupName;
                           String username = SharedPrefs().getUserName() ?? "";
+                          Navigator.pop(context);
                           createCustomChallenge(username, prompts, groupID)
                               .then((_) {
-                            Navigator.push(
+                            Navigator.pushReplacement(
                               context,
                               MaterialPageRoute(
                                 builder: (context) => friendship(
-                                  friendUsername: widget.groupName,
+                                  friendUsername: name,
                                 ),
                               ),
                             );
                           });
                         } else {
-                          print("this is prompts $prompts");
-
                           int groupID = widget.groupId!;
                           String username = SharedPrefs().getUserName() ?? "";
+                          Navigator.pop(context);
                           createCustomChallenge(username, prompts, groupID)
                               .then((_) {
                             //send custom challenge to the backend

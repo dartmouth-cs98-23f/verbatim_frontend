@@ -79,7 +79,6 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
   Future<void> getActiveChallenges(int groupId) async {
     final url = Uri.parse(
         BackendService.getBackendUrl() + 'group/' + '$groupId/' + 'challenges');
-    print("top of activechallenges\n");
 
     final response = await http.get(url);
     if (response.statusCode == 200) {
@@ -102,7 +101,6 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
           key: (id) => id,
           value: (_) => {},
         );
-        print("challengestats in active challenges is $challengeStats");
       } else {}
     } else {
       print("active challenges not obtained succesfuly");
@@ -123,7 +121,6 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
       ];
       mappedChallenges[id] = challengeInfo;
     }
-    print("mappedChallenges are $mappedChallenges");
     return mappedChallenges;
   }
 
@@ -145,7 +142,6 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
     final response = await http.get(url);
     if (response.statusCode == 200) {
       final dynamic jsonData = json.decode(response.body);
-      print("the jsonData in getChallenge is $jsonData");
       bool userHasCompleted = jsonData['userHasCompleted'];
       String completed = userHasCompleted.toString();
       mappedChallenges[challengeId]!.add(completed);
@@ -164,7 +160,6 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
             print('total failure');
           }
         }
-        print("now the mapped challenge is $mappedChallenges");
       } else {
         // user HAS completed the challenge
 
@@ -178,21 +173,16 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
         Map<String, double> verbaMatchSimilarityMap = {
           "verbaMatchSimilarity": verbaMatchSimilarity
         };
-        print(
-            "\n\n the mapped challenge is $mappedChallenges \n challenge stats: $challengeStats");
+
         if (challengeStats.containsKey(challengeId)) {
           challengeStats[challengeId]!.addAll(groupAnswersMap);
           challengeStats[challengeId]!.addAll(totalResponsesMap);
           challengeStats[challengeId]!.addAll(verbaMatchSimilarityMap);
-          print("\n now we have challengeStats $challengeStats");
         } else {
           print("didnt happen ");
         }
       }
-    } else {
-      print(
-          'failed to get challenge beeeeepp questions. Status code: ${response.statusCode}');
-    }
+    } else {}
   }
 
 // create standard challenge
