@@ -711,10 +711,4 @@ class _ProfileState extends State<Profile> {
       ),
     );
   }
-
-  void toggleFriend(String friendName) {
-    if (!myRequestedUsers_backend.contains(friendName)) {
-      myRequestedUsers_backend.add(friendName);
-    }
-  }
 }
