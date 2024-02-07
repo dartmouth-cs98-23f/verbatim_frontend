@@ -369,7 +369,8 @@ class _SideBarState extends State<SideBar> {
                                       setState(() {
                                         friendRequestUsernames
                                             .remove(requester);
-                                        friendRequestList.remove()
+                                        friendRequestList.removeWhere((user) =>
+                                            user.username == requester);
                                       });
                                     },
                                     child: const Icon(Icons.check_box,

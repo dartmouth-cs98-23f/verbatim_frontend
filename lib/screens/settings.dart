@@ -173,7 +173,6 @@ class _settingsState extends State<settings> {
 
   ImageProvider<Object> selectedImage = AssetImage('assets/profile_pic.png');
 
-
   @override
   @override
   void initState() {
@@ -183,7 +182,7 @@ class _settingsState extends State<settings> {
   }
 
   Future<void> _loadProfileImage() async {
-    String? profileUrl = SharedPrefs().getProfileUrl();
+    String profileUrl = SharedPrefs().getProfileUrl() as String;
     if (profileUrl != null) {
       // Download the image bytes
       Uint8List imageBytes = await downloadImage(profileUrl);
@@ -207,7 +206,6 @@ class _settingsState extends State<settings> {
       print('Exception: $e');
       throw Exception('Failed to load image');
     }
-
   }
 
   // Function to show the centered edit profile picture pop-up
@@ -228,7 +226,6 @@ class _settingsState extends State<settings> {
   }
 
   Future<void> _pickImage(ImageSource source) async {
-
     final ImagePicker _picker = ImagePicker();
     XFile? image = await _picker.pickImage(source: source);
 
@@ -245,7 +242,6 @@ class _settingsState extends State<settings> {
       // Delete previous profile picture if URL is not empty and different from new URL
       if (prevProfileUrl.isNotEmpty && prevProfileUrl != newProfileUrl) {
         await deleteFileFromFirebase(prevProfileUrl);
-
       }
       _currentProfileUrl = newProfileUrl;
 
@@ -312,10 +308,8 @@ class _settingsState extends State<settings> {
     String newProfileUrl = 'assets/profile_pic.png';
 
     setState(() {
-
       selectedImage = AssetImage('assets/profile_pic.png');
       SharedPrefs().setProfileUrl(newProfileUrl);
-
 
       // Close the pop-up
       Navigator.pop(context);
@@ -409,8 +403,7 @@ class _settingsState extends State<settings> {
                                   shape: BoxShape.circle,
                                   image: DecorationImage(
                                     fit: BoxFit.cover,
-                                    image:
-                                        selectedImage,
+                                    image: selectedImage,
                                   ),
                                 ),
                               ),
@@ -426,8 +419,8 @@ class _settingsState extends State<settings> {
                               backgroundColor: Color(0xFFE76F51),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(22.0),
-                                side:
-                                    const BorderSide(color: Colors.white, width: 2.0),
+                                side: const BorderSide(
+                                    color: Colors.white, width: 2.0),
                               ),
                               child: Container(
                                 child: const Center(
@@ -449,7 +442,6 @@ class _settingsState extends State<settings> {
                 //Reset password
                 const SizedBox(height: 30),
                 Align(
-
                     alignment: Alignment.topLeft,
                     child: Padding(
                       padding: EdgeInsets.only(left: 30.0),
@@ -473,7 +465,6 @@ class _settingsState extends State<settings> {
                         ),
                       ),
                     )),
-
 
                 const SizedBox(height: 38),
                 const Padding(
@@ -506,7 +497,6 @@ class _settingsState extends State<settings> {
                 const SizedBox(height: 38),
                 Padding(
                   padding: const EdgeInsets.only(left: 30.0),
-
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -560,7 +550,6 @@ class _settingsState extends State<settings> {
                 const SizedBox(height: 38),
                 Padding(
                   padding: const EdgeInsets.only(left: 30.0),
-
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
