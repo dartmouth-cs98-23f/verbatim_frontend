@@ -3,28 +3,29 @@ import 'package:http/http.dart' as http;
 import 'package:verbatim_frontend/BackendService.dart';
 import 'dart:convert';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
+import 'package:verbatim_frontend/screens/addFriend.dart';
 
-class User {
-  int id = 0;
-  String email = "";
-  String username = "";
-  String lastName = "";
-  String password = "";
-  dynamic profilePicture;
-  String? bio = "";
-  int numGlobalChallengesCompleted = 0;
-  int numCustomChallengesCompleted = 0;
-  int streak = 0;
-  bool hasCompletedDailyChallenge = false;
+// class User {
+//   int id = 0;
+//   String email = "";
+//   String username = "";
+//   String lastName = "";
+//   String password = "";
+//   dynamic profilePicture;
+//   String? bio = "";
+//   int numGlobalChallengesCompleted = 0;
+//   int numCustomChallengesCompleted = 0;
+//   int streak = 0;
+//   bool hasCompletedDailyChallenge = false;
 
-  User({required this.username});
+//   User({required this.username});
 
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
-      username: json['username'],
-    );
-  }
-}
+//   factory User.fromJson(Map<String, dynamic> json) {
+//     return User(
+//       username: json['username'],
+//     );
+//   }
+// }
 
 class FriendAcceptOrDeclineRequest {
   String requestingUsername;

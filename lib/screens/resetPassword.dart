@@ -72,9 +72,8 @@ class _ResetPasswordState extends State<ResetPassword> {
         _showSuccessDialog(context);
       }
     } catch (error) {
-      print('Sorry, cannot edit account settings: $error');
+      print('\nSorry, cannot edit account settings: $error');
     }
-    _showSuccessDialog(context);
   }
 
   void _showSuccessDialog(BuildContext context) {

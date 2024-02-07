@@ -52,7 +52,6 @@ class _DraftState extends State<Draft> {
                 ),
               ),
             ),
-
             Padding(
               padding: const EdgeInsets.all(40.0),
               child: Row(
@@ -66,7 +65,8 @@ class _DraftState extends State<Draft> {
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFFFFF3EE), // Background color
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(13.0), // Rectangular shape
+                        borderRadius:
+                            BorderRadius.circular(13.0), // Rectangular shape
                       ),
                     ),
                     child: const Text(
@@ -76,16 +76,18 @@ class _DraftState extends State<Draft> {
                       ),
                     ),
                   ),
-
                   ElevatedButton(
                     onPressed: () {
                       // Navigate to the 'Sign Up' page
+
                       Navigator.of(context).push(MaterialPageRoute(builder: (context) => const OnBoardingPage2()));
                     },
                     style: ElevatedButton.styleFrom(
                       backgroundColor: const Color(0xFFE76F51), // Background color
+
                       shape: RoundedRectangleBorder(
-                        borderRadius: BorderRadius.circular(13.0), // Rectangular shape
+                        borderRadius:
+                            BorderRadius.circular(13.0), // Rectangular shape
                       ),
                     ),
                     child: const Text(
@@ -98,7 +100,6 @@ class _DraftState extends State<Draft> {
                 ],
               ),
             ),
-
           ],
         ),
       ),

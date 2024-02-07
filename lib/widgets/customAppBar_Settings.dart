@@ -1,10 +1,10 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
-
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/profile.dart';
 import 'package:verbatim_frontend/screens/settings.dart';
+import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 import 'size.dart';
 import 'package:verbatim_frontend/screens/sideBar.dart';
 
@@ -21,7 +21,6 @@ class CustomAppBarSettings extends StatelessWidget
     this.showBackButton = false,
   });
 
-
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -31,9 +30,9 @@ class CustomAppBarSettings extends StatelessWidget
       elevation: 0,
       title: Column(
         children: [
-          SizedBox(height: 60),
+          SizedBox(height: 100),
           NewNavBar(),
-          SizedBox(height: 30), // Adjust the distance as needed
+          // SizedBox(height: 30), // Adjust the distance as needed
 
           TitleFrame(
             title: title,
@@ -54,7 +53,6 @@ class CustomAppBarSettings extends StatelessWidget
 }
 
 class NewNavBar extends StatelessWidget {
-
   @override
   Widget build(BuildContext context) {
     final String profileUrl =
@@ -63,77 +61,28 @@ class NewNavBar extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       clipBehavior: Clip.antiAlias,
-      decoration: const BoxDecoration(),
+      decoration: BoxDecoration(),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          IconButton(
-            icon: const Icon(
-              Icons.menu,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              // Navigate to the SideBar widget
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => const SideBar()),
-              );
-            },
-          ),
-          SearchBarTextField(),
-
-          SizedBox(width: 20),
-          FutureBuilder<Uint8List>(
-            future: downloadImage(profileUrl),
-            builder: (context, snapshot) {
-              if (snapshot.connectionState == ConnectionState.done &&
-                  snapshot.hasData) {
-                return GestureDetector(
-                  onTap: () {
-                    // Navigate to the Profile page
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Profile()),
-                    );
-                  },
-                  child: Container(
-                    width: 40,
-                    height: 40.45,
-                    decoration: ShapeDecoration(
-                      image: DecorationImage(
-                        image: MemoryImage(snapshot.data!),
-                        fit: BoxFit.fill,
-                      ),
-                      shape: CircleBorder(),
-                    ),
-                  ),
-                );
-              } else {
-                return GestureDetector(
-                  onTap: () {
-                    // Navigate to the Profile page
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(builder: (context) => Profile()),
-                    );
-                  },
-                  child: Container(
-                    width: 40,
-                    height: 40.45,
-                    decoration: BoxDecoration(
-                      shape: BoxShape.circle,
-                      image: DecorationImage(
-                        fit: BoxFit.cover,
-                        image: AssetImage('assets/profile_pic.png')
-                            as ImageProvider<Object>,
-                      ),
-                    ),
-                  ),
-                ); // Placeholder widget while image is loading
-              }
-            },
-
+          // IconButton(
+          //   icon: Icon(
+          //     Icons.menu,
+          //     color: Colors.white,
+          //   ),
+          //   onPressed: () {
+          //     // Navigate to the SideBar widget
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(builder: (context) => SideBar()),
+          //     );
+          //   },
+          // ),
+          // SearchBarTextField(),
+          SizedBox(width: 80),
+          FirebaseStorageImage(
+            profileUrl: SharedPrefs().getProfileUrl() as String,
           ),
         ],
       ),
@@ -161,9 +110,7 @@ class NewNavBar extends StatelessWidget {
 }
 
 class SearchBarTextField extends StatelessWidget {
-  final TextEditingController _searchController = TextEditingController();
-
-  SearchBarTextField({super.key});
+  TextEditingController _searchController = TextEditingController();
 
   void handleSearch(String value) {
     // Handle the search input changes
@@ -191,12 +138,11 @@ class SearchBarTextField extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         clipBehavior: Clip.antiAlias,
         decoration: ShapeDecoration(
-          color: const Color(0xFFFFF7EE),
+          color: Color(0xFFFFF7EE),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
         ),
-
         child: Align(
           alignment: Alignment.centerLeft,
           child: Row(
@@ -215,7 +161,6 @@ class SearchBarTextField extends StatelessWidget {
                   onChanged: handleSearch,
                   onSubmitted: handleSubmit,
                   style: TextStyle(
-
                     color: Colors.black,
                     fontSize: 12,
                     fontFamily: 'Poppins',
