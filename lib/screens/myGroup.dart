@@ -802,7 +802,8 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                               ),
                             ),
                           ],
-                        )))
+                        ))),
+                Center(child: SizedBox(height: 50))
               ]))),
       drawer: SideBar(),
     ));

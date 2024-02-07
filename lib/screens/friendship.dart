@@ -41,8 +41,9 @@ class _FriendshipState extends State<friendship>
       builder: (BuildContext context) {
         return AlertDialog(
           contentPadding: EdgeInsets.zero,
+          insetPadding: EdgeInsets.symmetric(horizontal: 16.0),
           content: Container(
-            width: 200,
+            width: 220,
             height: 230,
             clipBehavior: Clip.antiAlias,
             decoration: BoxDecoration(
@@ -128,7 +129,7 @@ class _FriendshipState extends State<friendship>
             minWidth: 80.0, maxWidth: 150.0, minHeight: 80.0, maxHeight: 150.0),
         width: 130,
         height: 130,
-        padding: EdgeInsets.all(5),
+        padding: EdgeInsets.all(8),
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
           color: Color(0xFFE76F51),
@@ -479,302 +480,288 @@ class _FriendshipState extends State<friendship>
                         ),
                       ),
                       Center(
-                          child: Container(
-                              clipBehavior: Clip.hardEdge,
-                              margin: EdgeInsets.only(top: 10),
-                              width: 340,
-                              height: 450,
-                              decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(30),
-                                boxShadow: [
-                                  BoxShadow(
-                                    color:
-                                        const Color.fromARGB(255, 117, 19, 12)
-                                            .withOpacity(0.5),
-                                    blurRadius: 5,
-                                    offset: Offset(3, 7),
-                                  ),
-                                ],
-                                color: Colors.white,
-                              ),
-                              child: Column(
-                                children: [
-                                  DefaultTabController(
-                                    length: 2,
-                                    child: Column(
-                                      children: [
-                                        TabBar(
-                                          unselectedLabelColor: Colors.black,
-                                          controller: _tabController,
-                                          indicatorColor: Color(0xFFE76F51),
-                                          labelColor: Color(0xFFE76F51),
-                                          indicatorPadding: EdgeInsets.zero,
-                                          indicatorSize:
-                                              TabBarIndicatorSize.label,
-                                          tabs: [
-                                            Tab(
-                                              child: Align(
-                                                alignment: Alignment.center,
-                                                child: Text(
-                                                  "Play",
-                                                  style: TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
+                        child: Container(
+                            clipBehavior: Clip.hardEdge,
+                            margin: EdgeInsets.only(top: 10),
+                            width: 340,
+                            height: 450,
+                            decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(30),
+                              boxShadow: [
+                                BoxShadow(
+                                  color: const Color.fromARGB(255, 117, 19, 12)
+                                      .withOpacity(0.5),
+                                  blurRadius: 5,
+                                  offset: Offset(3, 7),
+                                ),
+                              ],
+                              color: Colors.white,
+                            ),
+                            child: Column(
+                              children: [
+                                DefaultTabController(
+                                  length: 2,
+                                  child: Column(
+                                    children: [
+                                      TabBar(
+                                        unselectedLabelColor: Colors.black,
+                                        controller: _tabController,
+                                        indicatorColor: Color(0xFFE76F51),
+                                        labelColor: Color(0xFFE76F51),
+                                        indicatorPadding: EdgeInsets.zero,
+                                        indicatorSize:
+                                            TabBarIndicatorSize.label,
+                                        tabs: [
+                                          Tab(
+                                            child: Align(
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                "Play",
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
                                                 ),
                                               ),
                                             ),
-                                            Tab(
-                                              child: Align(
-                                                alignment: Alignment.center,
-                                                child: Text(
-                                                  "Group Stats",
-                                                  style: TextStyle(
-                                                    fontSize: 16,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
+                                          ),
+                                          Tab(
+                                            child: Align(
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                "Group Stats",
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.bold,
                                                 ),
+                                              ),
+                                            ),
+                                          ),
+                                        ],
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                Expanded(
+                                  child: TabBarView(
+                                    controller: _tabController,
+                                    children: [
+                                      // Active Challenges
+                                      Container(
+                                        padding: EdgeInsets.only(
+                                            top: 10,
+                                            right: 10,
+                                            left: 10,
+                                            bottom: 20),
+                                        child: Column(
+                                          children: [
+                                            Expanded(
+                                              child: ListView.builder(
+                                                itemCount:
+                                                    mappedChallenges.length,
+                                                itemBuilder: (context, index) {
+                                                  int id = mappedChallenges.keys
+                                                      .elementAt(index);
+                                                  List<String> challengeInfo =
+                                                      mappedChallenges[id]!;
+                                                  String createdByUsername =
+                                                      challengeInfo[0];
+
+                                                  String challengeType =
+                                                      challengeInfo[1] ==
+                                                              "Custom"
+                                                          ? "custom"
+                                                          : "standard";
+
+                                                  // if challenge is completed, mark it as such
+                                                  // it doesn't seem like the challenges are being marked as completed
+                                                  String challengeInfo2 =
+                                                      challengeInfo[2];
+
+                                                  bool completed =
+                                                      (challengeInfo2 !=
+                                                          "false");
+
+                                                  // initialize stats variables
+                                                  List<dynamic>
+                                                      verbaMatchUsersStats = [];
+                                                  double verbaMatchStats = 0;
+                                                  int totalResponsesStats = 0;
+                                                  List<dynamic>
+                                                      groupAnswersStats = [];
+
+                                                  if (completed) {
+                                                    verbaMatchUsersStats =
+                                                        challengeStats[id]![
+                                                            'verbaMatchUsers'];
+                                                    groupAnswersStats =
+                                                        challengeStats[id]![
+                                                            'groupAnswers'];
+
+                                                    verbaMatchStats =
+                                                        challengeStats[id]![
+                                                            'verbaMatchSimilarity'];
+
+                                                    totalResponsesStats =
+                                                        challengeStats[id]![
+                                                            'totalResponses'];
+                                                    print(
+                                                        "Challenge stats sent to backend: verbaMatchUsers: $verbaMatchUsersStats,\n  verbaMatchSimilarity: $verbaMatchSimilarity");
+                                                  }
+
+                                                  List<dynamic> questions2 =
+                                                      groupAnswersStats
+                                                          .map((entry) =>
+                                                              entry['question'])
+                                                          .toList();
+                                                  List<String> questionList =
+                                                      questions2
+                                                          .map((dynamic
+                                                                  value) =>
+                                                              value.toString())
+                                                          .toList();
+
+                                                  List<String>
+                                                      challengeQuestions =
+                                                      challengeInfo
+                                                          .skip(3)
+                                                          .toList();
+
+                                                  String title =
+                                                      "$createdByUsername's $challengeType challenge";
+                                                  return GestureDetector(
+                                                    onTap: () {
+                                                      if (!completed) {
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                groupChallenge(
+                                                              groupName: widget
+                                                                  .friendUsername,
+                                                              groupId: groupId,
+                                                              challengeQs:
+                                                                  challengeQuestions,
+                                                              challengeId: id,
+                                                              completed: false,
+                                                              fromFriend: true,
+                                                            ),
+                                                          ),
+                                                        );
+                                                      } else {
+                                                        Navigator.push(
+                                                          context,
+                                                          MaterialPageRoute(
+                                                            builder: (context) =>
+                                                                groupChallenge(
+                                                              groupName: widget
+                                                                  .friendUsername,
+                                                              groupId: groupId,
+                                                              challengeQs:
+                                                                  questionList,
+                                                              challengeId: id,
+                                                              completed: true,
+                                                              groupAnswers:
+                                                                  groupAnswersStats,
+                                                              verbaMatchSimilarity:
+                                                                  verbaMatchStats,
+                                                              totalResponses:
+                                                                  totalResponsesStats,
+                                                              fromFriend: true,
+                                                              verbaMatchUsers:
+                                                                  verbaMatchUsersStats,
+                                                            ),
+                                                          ),
+                                                        );
+                                                      }
+                                                    },
+                                                    child: Container(
+                                                      margin:
+                                                          EdgeInsets.symmetric(
+                                                        vertical: 10,
+                                                      ),
+                                                      padding:
+                                                          EdgeInsets.all(10),
+                                                      decoration: BoxDecoration(
+                                                        color: Color.fromARGB(
+                                                            255, 231, 111, 81),
+                                                        borderRadius:
+                                                            BorderRadius
+                                                                .circular(10),
+                                                      ),
+                                                      child: Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .spaceBetween,
+                                                        children: [
+                                                          Text(
+                                                            title,
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.white,
+                                                              fontSize: 14,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                            ),
+                                                          ),
+                                                          Icon(
+                                                            Icons
+                                                                .arrow_forward_ios,
+                                                            color: Colors.white,
+                                                            size: 16,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  );
+                                                },
+                                              ),
+                                            ),
+                                            SizedBox(height: 10.v),
+                                            GestureDetector(
+                                              onTap: () {
+                                                _showChallengeOptions(context,
+                                                    widget.friendUsername);
+                                              },
+                                              child: Row(
+                                                mainAxisAlignment:
+                                                    MainAxisAlignment.end,
+                                                children: [
+                                                  Text(
+                                                    'New Challenge',
+                                                    style: TextStyle(
+                                                      fontSize: 18,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Color(0xFFE76F51),
+                                                    ),
+                                                  ),
+                                                  SizedBox(width: 5),
+                                                  Icon(
+                                                    Icons.add,
+                                                    size: 20,
+                                                    color: Color(0xFFE76F51),
+                                                  ),
+                                                ],
                                               ),
                                             ),
                                           ],
                                         ),
-                                      ],
-                                    ),
+                                      ),
+
+                                      // Content for Stats
+                                      Container(
+                                          child: StatsContent(
+                                        verbaMatchGroup: verbaMatchGroup,
+                                        groupRating: groupRating,
+                                      )),
+                                    ],
                                   ),
-                                  Expanded(
-                                    child: TabBarView(
-                                      controller: _tabController,
-                                      children: [
-                                        // Active Challenges
-                                        Container(
-                                          padding: EdgeInsets.only(
-                                              top: 10,
-                                              right: 10,
-                                              left: 10,
-                                              bottom: 20),
-                                          child: Column(
-                                            children: [
-                                              Expanded(
-                                                child: ListView.builder(
-                                                  itemCount:
-                                                      mappedChallenges.length,
-                                                  itemBuilder:
-                                                      (context, index) {
-                                                    int id = mappedChallenges
-                                                        .keys
-                                                        .elementAt(index);
-                                                    List<String> challengeInfo =
-                                                        mappedChallenges[id]!;
-                                                    String createdByUsername =
-                                                        challengeInfo[0];
-
-                                                    String challengeType =
-                                                        challengeInfo[1] ==
-                                                                "Custom"
-                                                            ? "custom"
-                                                            : "standard";
-
-                                                    // if challenge is completed, mark it as such
-                                                    // it doesn't seem like the challenges are being marked as completed
-                                                    String challengeInfo2 =
-                                                        challengeInfo[2];
-
-                                                    bool completed =
-                                                        (challengeInfo2 !=
-                                                            "false");
-
-                                                    // initialize stats variables
-                                                    List<dynamic>
-                                                        verbaMatchUsersStats =
-                                                        [];
-                                                    double verbaMatchStats = 0;
-                                                    int totalResponsesStats = 0;
-                                                    List<dynamic>
-                                                        groupAnswersStats = [];
-
-                                                    if (completed) {
-                                                      verbaMatchUsersStats =
-                                                          challengeStats[id]![
-                                                              'verbaMatchUsers'];
-                                                      groupAnswersStats =
-                                                          challengeStats[id]![
-                                                              'groupAnswers'];
-
-                                                      verbaMatchStats =
-                                                          challengeStats[id]![
-                                                              'verbaMatchSimilarity'];
-
-                                                      totalResponsesStats =
-                                                          challengeStats[id]![
-                                                              'totalResponses'];
-                                                      print(
-                                                          "Challenge stats sent to backend: verbaMatchUsers: $verbaMatchUsersStats,\n  verbaMatchSimilarity: $verbaMatchSimilarity");
-                                                    }
-
-                                                    List<dynamic> questions2 =
-                                                        groupAnswersStats
-                                                            .map((entry) =>
-                                                                entry[
-                                                                    'question'])
-                                                            .toList();
-                                                    List<String> questionList =
-                                                        questions2
-                                                            .map((dynamic
-                                                                    value) =>
-                                                                value
-                                                                    .toString())
-                                                            .toList();
-
-                                                    List<String>
-                                                        challengeQuestions =
-                                                        challengeInfo
-                                                            .skip(3)
-                                                            .toList();
-
-                                                    String title =
-                                                        "$createdByUsername's $challengeType challenge";
-                                                    return GestureDetector(
-                                                      onTap: () {
-                                                        if (!completed) {
-                                                          Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  groupChallenge(
-                                                                groupName: widget
-                                                                    .friendUsername,
-                                                                groupId:
-                                                                    groupId,
-                                                                challengeQs:
-                                                                    challengeQuestions,
-                                                                challengeId: id,
-                                                                completed:
-                                                                    false,
-                                                                fromFriend:
-                                                                    true,
-                                                              ),
-                                                            ),
-                                                          );
-                                                        } else {
-                                                          Navigator.push(
-                                                            context,
-                                                            MaterialPageRoute(
-                                                              builder: (context) =>
-                                                                  groupChallenge(
-                                                                groupName: widget
-                                                                    .friendUsername,
-                                                                groupId:
-                                                                    groupId,
-                                                                challengeQs:
-                                                                    questionList,
-                                                                challengeId: id,
-                                                                completed: true,
-                                                                groupAnswers:
-                                                                    groupAnswersStats,
-                                                                verbaMatchSimilarity:
-                                                                    verbaMatchStats,
-                                                                totalResponses:
-                                                                    totalResponsesStats,
-                                                                fromFriend:
-                                                                    true,
-                                                                verbaMatchUsers:
-                                                                    verbaMatchUsersStats,
-                                                              ),
-                                                            ),
-                                                          );
-                                                        }
-                                                      },
-                                                      child: Container(
-                                                        margin: EdgeInsets
-                                                            .symmetric(
-                                                          vertical: 10,
-                                                        ),
-                                                        padding:
-                                                            EdgeInsets.all(10),
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          color: Color.fromARGB(
-                                                              255,
-                                                              231,
-                                                              111,
-                                                              81),
-                                                          borderRadius:
-                                                              BorderRadius
-                                                                  .circular(10),
-                                                        ),
-                                                        child: Row(
-                                                          mainAxisAlignment:
-                                                              MainAxisAlignment
-                                                                  .spaceBetween,
-                                                          children: [
-                                                            Text(
-                                                              title,
-                                                              style: TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize: 14,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                              ),
-                                                            ),
-                                                            Icon(
-                                                              Icons
-                                                                  .arrow_forward_ios,
-                                                              color:
-                                                                  Colors.white,
-                                                              size: 16,
-                                                            ),
-                                                          ],
-                                                        ),
-                                                      ),
-                                                    );
-                                                  },
-                                                ),
-                                              ),
-                                              SizedBox(height: 10.v),
-                                              GestureDetector(
-                                                onTap: () {
-                                                  _showChallengeOptions(context,
-                                                      widget.friendUsername);
-                                                },
-                                                child: Row(
-                                                  mainAxisAlignment:
-                                                      MainAxisAlignment.end,
-                                                  children: [
-                                                    Text(
-                                                      'New Challenge',
-                                                      style: TextStyle(
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        color:
-                                                            Color(0xFFE76F51),
-                                                      ),
-                                                    ),
-                                                    SizedBox(width: 5),
-                                                    Icon(
-                                                      Icons.add,
-                                                      size: 20,
-                                                      color: Color(0xFFE76F51),
-                                                    ),
-                                                  ],
-                                                ),
-                                              ),
-                                            ],
-                                          ),
-                                        ),
-                                        // Content for Stats
-                                        Container(
-                                            child: StatsContent(
-                                          verbaMatchGroup: verbaMatchGroup,
-                                          groupRating: groupRating,
-                                        )),
-                                      ],
-                                    ),
-                                  ),
-                                ],
-                              )))
+                                ),
+                              ],
+                            )),
+                      ),
+                      Center(child: SizedBox(height: 50))
                     ]))
               ]))),
       drawer: SideBar(),
