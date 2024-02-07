@@ -4,6 +4,7 @@ import 'package:verbatim_frontend/BackendService.dart';
 import 'dart:convert';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/addFriend.dart';
+import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 
 // class User {
 //   int id = 0;
@@ -63,6 +64,8 @@ class _SideBarState extends State<SideBar> {
 
   Set<String> friendRequestUsernames = <String>{};
   List<String> usernamesList = [];
+  List<User> friendsList = [];
+  List<User> friendRequestList = [];
 
   Future<void> getFriends(String username) async {
     final url = Uri.parse('${BackendService.getBackendUrl()}getFriends');
@@ -74,7 +77,7 @@ class _SideBarState extends State<SideBar> {
 
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
-      List<User> friendsList = data.map((item) => User.fromJson(item)).toList();
+      friendsList = data.map((item) => User.fromJson(item)).toList();
       usernamesList = friendsList.map((user) => user.username).toList();
     } else {
       print('Failed to send responses. Status code: ${response.statusCode}');
@@ -92,6 +95,12 @@ class _SideBarState extends State<SideBar> {
     if (response.statusCode == 200) {
       List<Map<String, dynamic>> friendRequests =
           List<Map<String, dynamic>>.from(json.decode(response.body));
+
+      friendRequestList = json
+          .decode(response.body)
+          .map((item) => User.fromJson(item))
+          .toList();
+
       if (friendRequests.isNotEmpty) {
         print(friendRequests);
 
@@ -147,8 +156,8 @@ class _SideBarState extends State<SideBar> {
               child: ListView(
                 children: <Widget>[
                   Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 20.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 20.0),
                     child: Container(
                         height: 64,
                         decoration: ShapeDecoration(
@@ -161,11 +170,11 @@ class _SideBarState extends State<SideBar> {
                           child: ListTile(
                             title: Text(
                               username,
-                              style:
-                                  const TextStyle(color: Colors.white, fontSize: 20),
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 20),
                             ),
-                            leading:
-                                const Icon(Icons.mood, color: Colors.white, size: 32),
+                            leading: const Icon(Icons.mood,
+                                color: Colors.white, size: 32),
                             trailing: const Icon(Icons.settings,
                                 color: Colors.white, size: 26),
                             onTap: () {
@@ -175,8 +184,8 @@ class _SideBarState extends State<SideBar> {
                         )),
                   ),
                   Padding(
-                    padding:
-                        const EdgeInsets.symmetric(horizontal: 10, vertical: 10.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 10.0),
                     child: Container(
                       decoration: ShapeDecoration(
                         shape: RoundedRectangleBorder(
@@ -213,7 +222,8 @@ class _SideBarState extends State<SideBar> {
                       onTap: () {
                         handleTap(context, 1);
                       },
-                      child: const Icon(Icons.add, color: Colors.black, size: 25),
+                      child:
+                          const Icon(Icons.add, color: Colors.black, size: 25),
                     ),
 
                     initiallyExpanded: true,
@@ -229,19 +239,35 @@ class _SideBarState extends State<SideBar> {
                           physics: const NeverScrollableScrollPhysics(),
                           itemCount: usernamesList.length,
                           itemBuilder: (BuildContext context, int index) {
-                            String friend = usernamesList[index];
+                            // String friend = usernamesList[index];
+                            User currentUser = friendsList[index];
+                            String currentUsername =
+                                friendsList[index].username;
 
                             return ListTile(
+                              // Check if currentUser is not null before accessing its properties
                               title: Text(
-                                friend,
+                                currentUser != null
+                                    ? currentUser.username
+                                    : 'Unknown User',
                                 style: const TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 15,
                                 ),
                               ),
-                              leading: const Icon(Icons.person, color: Colors.black),
-                              onTap: () {},
+                              // Ensure profilePicture is not null before passing it to FirebaseStorageImage
+                              leading: currentUser != null &&
+                                      currentUser.profilePicture != null
+                                  ? FirebaseStorageImage(
+                                      profileUrl: currentUser.profilePicture!,
+                                      user: currentUser,
+                                    )
+                                  : Icon(Icons
+                                      .person), // Provide a default icon if profile picture is null
+                              onTap: () {
+                                // Implement onTap functionality here
+                              },
                             );
                           },
                         ),
@@ -263,7 +289,8 @@ class _SideBarState extends State<SideBar> {
                       onTap: () {
                         handleTap(context, 4);
                       },
-                      child: const Icon(Icons.add, color: Colors.black, size: 25),
+                      child:
+                          const Icon(Icons.add, color: Colors.black, size: 25),
                     ),
                     initiallyExpanded: true,
                     //  initiallyExpanded: true,
@@ -281,7 +308,8 @@ class _SideBarState extends State<SideBar> {
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15)),
-                            leading: const Icon(Icons.people, color: Colors.black),
+                            leading:
+                                const Icon(Icons.people, color: Colors.black),
                             onTap: () {
                               handleTap(context, 5);
                             },
@@ -300,8 +328,10 @@ class _SideBarState extends State<SideBar> {
                           fontSize: 18),
                     ),
                     trailing: friendRequestUsernames.isNotEmpty
-                        ? const Icon(Icons.pending, color: Colors.orange, size: 25)
-                        : const Icon(Icons.pending, color: Colors.black, size: 25),
+                        ? const Icon(Icons.pending,
+                            color: Colors.orange, size: 25)
+                        : const Icon(Icons.pending,
+                            color: Colors.black, size: 25),
                     shape: const Border(),
                     children: <Widget>[
                       const SizedBox(height: 10.0),
@@ -314,7 +344,9 @@ class _SideBarState extends State<SideBar> {
                           itemBuilder: (BuildContext context, int index) {
                             List<String> requestsList =
                                 friendRequestUsernames.toList();
-                            String requester = requestsList[index];
+                            // String requester = requestsList[index];
+                            User potentialFriend = friendRequestList[index];
+                            String requester = potentialFriend.username;
 
                             return ListTile(
                               title: Text(
@@ -325,7 +357,8 @@ class _SideBarState extends State<SideBar> {
                                   fontSize: 15,
                                 ),
                               ),
-                              leading: const Icon(Icons.person, color: Colors.black),
+                              leading:
+                                  const Icon(Icons.person, color: Colors.black),
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
@@ -336,6 +369,7 @@ class _SideBarState extends State<SideBar> {
                                       setState(() {
                                         friendRequestUsernames
                                             .remove(requester);
+                                        friendRequestList.remove()
                                       });
                                     },
                                     child: const Icon(Icons.check_box,
@@ -350,8 +384,8 @@ class _SideBarState extends State<SideBar> {
                                             .remove(requester);
                                       });
                                     },
-                                    child:
-                                        const Icon(Icons.cancel, color: Colors.black),
+                                    child: const Icon(Icons.cancel,
+                                        color: Colors.black),
                                   ),
                                 ],
                               ),
@@ -375,15 +409,16 @@ class _SideBarState extends State<SideBar> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 5.0),
                     child: Container(
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 0.0, vertical: .1),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 0.0, vertical: .1),
                       child: ListTile(
                         title: const Text('Custom Challenge',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18)),
-                        leading: const Icon(Icons.play_arrow, color: Colors.black),
+                        leading:
+                            const Icon(Icons.play_arrow, color: Colors.black),
                         onTap: () {},
                       ),
                     ),
@@ -392,15 +427,16 @@ class _SideBarState extends State<SideBar> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 5.0),
                     child: Container(
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 0.0, vertical: .1),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 0.0, vertical: .1),
                       child: ListTile(
                         title: const Text('Invite Friends',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18)),
-                        leading: const Icon(Icons.person_add, color: Colors.black),
+                        leading:
+                            const Icon(Icons.person_add, color: Colors.black),
                         onTap: () {},
                       ),
                     ),
@@ -409,8 +445,8 @@ class _SideBarState extends State<SideBar> {
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 5.0),
                     child: Container(
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 0.0, vertical: .1),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 0.0, vertical: .1),
                       child: ListTile(
                         title: const Text('Logout',
                             style: TextStyle(
