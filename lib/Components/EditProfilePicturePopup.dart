@@ -78,7 +78,7 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
           ListTile(
             leading: Icon(
               Icons.photo_camera_outlined,
-              color: Color.fromARGB(255, 72, 72, 72),
+              color: Color(0xFFDE674A),
             ),
             title: const Text(
               'Take a photo',
@@ -97,7 +97,7 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
           ListTile(
             leading: Icon(
               Icons.photo_outlined,
-              color: Color(0xFFDE674A),
+              color: ,
             ),
             title: const Text(
               'Choose from gallery',
