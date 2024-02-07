@@ -143,17 +143,7 @@ var landingPageHandler = Handler(handlerFunc: (context, parameters) {
 });
 
 
-var landingPageHandler = Handler(
-        handlerFunc:(context, parameters) {
-      if (SharedPrefs().getEmail() == '' || SharedPrefs().getUserName() == '' || SharedPrefs().getPassword() == '') {
-        return const LandingPage();
-      } else {
-        // Update the current page in the shared prefs
-        SharedPrefs().setCurrentPage('/landingPage');
-        return const LandingPage();
-      }
-    }
-);
+
 
 var settingsHandler = Handler(
     handlerFunc:(context, parameters) {

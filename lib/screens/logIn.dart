@@ -78,9 +78,7 @@ class _LogInState extends State<LogIn> {
   void saveUsersInfo(String usernameOrEmail, String password) async {
     try {
       final response = await http.post(
-
         Uri.parse('${BackendService.getBackendUrl()}login'),
-
         headers: <String, String>{
           'Content-Type': 'application/json',
         },
@@ -108,16 +106,13 @@ class _LogInState extends State<LogIn> {
       } else {
         print('Error during log-in: ${response.statusCode.toString()}');
         Navigator.of(context).push(MaterialPageRoute(
-
-
+          builder: (context) => SignupErrorMessage(pageName: 'log in'),
         ));
       }
     } catch (e) {
       print('Error during sign-up: $e');
       Navigator.of(context).push(MaterialPageRoute(
-
         builder: (context) => SignupErrorMessage(pageName: 'log in'),
-
       ));
     }
   }
@@ -168,7 +163,7 @@ class _LogInState extends State<LogIn> {
     validateField(password, "password", "Password is required");
 
     // All validations passed; proceed with login
-    
+
     if (validationErrors.isEmpty && SharedPrefs().getResponse1() == '') {
       //user not played
       logIn(context, email, password);

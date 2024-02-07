@@ -29,7 +29,7 @@ class CustomAppBarSettings extends StatelessWidget
       backgroundColor: Colors.transparent,
       toolbarHeight: 150,
       elevation: 0,
-      title: const Column(
+      title: Column(
         children: [
           SizedBox(height: 60),
           NewNavBar(),
