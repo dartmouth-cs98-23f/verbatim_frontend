@@ -270,6 +270,7 @@ class _CustomChallengeState extends State<customChallenge>
                     child: TextField(
                       focusNode: focusNode,
                       autofocus: true,
+                      //maxLength: 100,
                       controller: editingController,
                       decoration: InputDecoration(
                         hintText: "Enter your challenge question...",
@@ -281,25 +282,9 @@ class _CustomChallengeState extends State<customChallenge>
                       style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
-
-                    /*
-                    child: TextField(
-                      controller: editingController,
-                      decoration: InputDecoration(
-                        border: InputBorder.none,
-                      ),
-                      onChanged: (editedText) {
-                        prompts[index] = editedText;
-                        editingStates[index] = false;
-                      },
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                      ),
-                    ),
-                    */
                   )
                 ]),
               ),
@@ -325,11 +310,14 @@ class _CustomChallengeState extends State<customChallenge>
                         radius: 12,
                       ),
                     SizedBox(width: 10),
-                    Text(
-                      prompts[index],
-                      style: TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                    Flexible(
+                      child: Text(
+                        prompts[index],
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ),
                   ],
