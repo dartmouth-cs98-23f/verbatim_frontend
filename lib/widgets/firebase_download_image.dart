@@ -26,7 +26,7 @@ class FirebaseStorageImage extends StatelessWidget {
               if (user != null) {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Profile(user: user!)),
+                  MaterialPageRoute(builder: (context) => Profile()),
                 );
               } else {
                 // Navigator.push(

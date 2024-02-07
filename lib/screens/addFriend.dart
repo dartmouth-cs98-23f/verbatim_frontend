@@ -451,9 +451,8 @@ class _AddFriendState extends State<addFriend> {
                                     myRequestedUsers_backend.contains(name);
                                 profileUrl = currentUser.profilePicture ??
                                     'assets/profile_pic.png'; // Provide a default value if profilePicture is null
-                                
                               }
-                              
+
                               return ListTile(
                                 title: Row(
                                   mainAxisSize: MainAxisSize.min,
@@ -468,9 +467,7 @@ class _AddFriendState extends State<addFriend> {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) => Profile(
-                                                    user: currentUser,
-                                                  )),
+                                              builder: (context) => Profile()),
                                         );
                                       },
                                       child: Text(
@@ -529,9 +526,7 @@ class _AddFriendState extends State<addFriend> {
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
-                                              builder: (context) => Profile(
-                                                    user: currentUser,
-                                                  )),
+                                              builder: (context) => Profile()),
                                         );
                                       },
                                       child: Text(

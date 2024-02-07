@@ -1,5 +1,5 @@
 {
-    "java.configuration.updateBuildConfiguration": "interactive",
+    "java.configuration.updateBuildConfiguration": "disabled",
     "java.compile.nullAnalysis.mode": "disabled",
     "cmake.sourceDirectory": "C:/Users/dahli/OneDrive/Desktop/CS98_Project/verbatim_frontend/linux",
  
