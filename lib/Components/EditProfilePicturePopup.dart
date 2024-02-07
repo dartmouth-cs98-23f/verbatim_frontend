@@ -9,14 +9,16 @@ class EditProfilePicturePopup extends StatefulWidget {
   final VoidCallback onRemoveCurrentPicture;
 
   const EditProfilePicturePopup({
+
     super.key, 
+
     required this.imagePath,
     required this.selectedImage,
     required this.onImageTap,
     required this.onChangeImageGallery,
     required this.onChangeImageCamera,
     required this.onRemoveCurrentPicture,
-    // ... (your existing parameters)
+
   });
 
   @override
@@ -35,6 +37,8 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
         mainAxisSize: MainAxisSize.min,
         children: [
           const SizedBox(height: 5),
+
+
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
@@ -78,7 +82,9 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
           ListTile(
             leading: Icon(
               Icons.photo_camera_outlined,
+
               color: Color.fromARGB(255, 72, 72, 72),
+
             ),
             title: const Text(
               'Take a photo',
