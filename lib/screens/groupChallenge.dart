@@ -262,7 +262,6 @@ class _GroupChallengeState extends State<groupChallenge> {
                             ),
                           ]))
                     ])),
-                // SizedBox(height: 30),
                 Visibility(
                     visible: !responded,
                     child: Stack(alignment: Alignment.bottomRight, children: [
@@ -380,24 +379,19 @@ class _GroupChallengeState extends State<groupChallenge> {
                         ),
                       )
                     ])),
-
                 if (responded && widget.completed == true)
                   _verbaMatch(verbaMatchUsers2, verbaMatchSimilarity2)
                 else if (responded && (widget.completed != true))
                   _verbaMatch(verbaMatchSubmit, verbaMatchSimilaritySubmit),
-
                 if (responded)
                   for (int i = 0; i < numQuestions; i++)
                     if (widget.completed == true)
                       _buildResponseRectangle(i, answersMap),
-
                 if (responded)
                   for (int x = 0; x < numQuestions; x++)
                     if (widget.completed == false)
                       _buildResponseRectangle(x, answersSubmitMap),
-
                 SizedBox(height: 50.v),
-
                 Visibility(
                   visible: responded,
                   child: ElevatedButton(
@@ -472,10 +466,10 @@ class _GroupChallengeState extends State<groupChallenge> {
       },
       child: AnimatedContainer(
           duration: Duration(milliseconds: 400),
-          height: expandedStates[index] ? 120 : 50,
+          height: expandedStates[index] ? 125 : 50,
           width: double.infinity,
           margin: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-          padding: EdgeInsets.all(8),
+          padding: EdgeInsets.only(top: 1, bottom: 1, left: 1, right: 1),
           child: SingleChildScrollView(
               child: Column(
             children: [
@@ -508,35 +502,59 @@ class _GroupChallengeState extends State<groupChallenge> {
                         itemCount: usersList.length,
                         itemBuilder: (context, indexB) {
                           return Container(
-                              height: 40.v,
-                              width: 100.h,
+                              height: 40,
+                              //   width: 100,
                               margin:
                                   EdgeInsets.only(left: 8, right: 8, top: 10),
                               padding: EdgeInsets.only(
-                                  left: 20, right: 20, top: 8, bottom: 8),
+                                  left: 5, right: 5, top: 8, bottom: 8),
                               decoration: BoxDecoration(
                                 color: Color(0xFFE76F51),
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               child: Center(
                                   child: Column(children: [
-                                Text(
-                                  usersList[indexB],
-                                  style: TextStyle(
-                                      fontSize: 14,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.white),
+                                Flexible(
+                                  child: ConstrainedBox(
+                                    constraints: BoxConstraints(
+                                      minWidth: 100,
+                                    ),
+                                    child: Align(
+                                      alignment: Alignment.center,
+                                      child: Text(
+                                        usersList[indexB],
+                                        style: TextStyle(
+                                            fontSize: 14,
+                                            overflow: TextOverflow.ellipsis,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.white),
+                                      ),
+                                    ),
+                                  ),
                                 ),
-                                Text(
-                                  answersMap.containsKey(prompts[indexB]) &&
-                                          answersMap[prompts[indexB]]!
-                                              .containsKey(usersList[indexB])
-                                      ? answersMap[prompts[index]]![
-                                          usersList[indexB]]
-                                      : 'No response found',
-                                  style: TextStyle(
-                                      fontSize: 12, color: Colors.white),
-                                )
+                                Flexible(
+                                    child: ConstrainedBox(
+                                        constraints: BoxConstraints(
+                                          minWidth: 100,
+                                        ),
+                                        child: Align(
+                                            alignment: Alignment.center,
+                                            child: Text(
+                                              answersMap.containsKey(
+                                                          prompts[indexB]) &&
+                                                      answersMap[
+                                                              prompts[indexB]]!
+                                                          .containsKey(
+                                                              usersList[indexB])
+                                                  ? answersMap[prompts[index]]![
+                                                      usersList[indexB]]
+                                                  : 'No response found',
+                                              style: TextStyle(
+                                                  fontSize: 12,
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  color: Colors.white),
+                                            ))))
                               ])));
                         },
                       ),
@@ -549,12 +567,13 @@ class _GroupChallengeState extends State<groupChallenge> {
                 Center(
                   child: Row(
                     children: [
-                      Expanded(
+                      Flexible(
                         child: Text(
                           prompts[index],
                           style: TextStyle(
                             fontSize: 16,
                             fontWeight: FontWeight.bold,
+                            overflow: TextOverflow.ellipsis,
                           ),
                         ),
                       ),
@@ -589,7 +608,8 @@ Widget _verbaMatch(
       alignment: Alignment.topCenter,
       child: Container(
           width: 600,
-          height: 200,
+          height: 185,
+          // color: Colors.yellow,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
