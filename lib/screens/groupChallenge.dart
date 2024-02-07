@@ -28,6 +28,7 @@ class groupChallenge extends StatefulWidget {
   final double? verbaMatchSimilarity;
   final int? totalResponses;
   final bool? fromFriend;
+  final List<dynamic>? verbaMatchUsers;
 
   groupChallenge({
     Key? key,
@@ -40,6 +41,7 @@ class groupChallenge extends StatefulWidget {
     this.verbaMatchSimilarity,
     this.totalResponses,
     this.fromFriend,
+    this.verbaMatchUsers,
   }) : super(key: key);
 
   @override
@@ -73,8 +75,11 @@ class _GroupChallengeState extends State<groupChallenge> {
   List<String> prompts = [];
   List<bool> editingStates = [];
 
+// stats submit
   List<dynamic> groupAnswersSubmit = [];
   Map<String, Map<String, dynamic>> answersSubmitMap = {};
+  List<dynamic> verbaMatchSubmit = [];
+  double verbaMatchSimilaritySubmit = 0;
 
   Future<void> submitChallenge(
       String username, int challengeId, List<String> userResponses) async {
@@ -115,10 +120,16 @@ class _GroupChallengeState extends State<groupChallenge> {
       print('responses submitted succesfully');
 
       final Map<String, dynamic> stats = json.decode(response.body);
+      print("these are stats on submit challenge $stats");
 
       // need to do lots of things to these stats!
 
       groupAnswersSubmit = stats["groupAnswers"];
+      print("here before verbamatchsubmit assigned");
+      verbaMatchSubmit = stats["verbaMatch"];
+      print("here after verbamatchsubmit assigned");
+
+      verbaMatchSimilaritySubmit = stats["verbaMatchSimilarity"];
 
       for (var answer in groupAnswersSubmit) {
         var question = answer['question'];
@@ -198,7 +209,8 @@ class _GroupChallengeState extends State<groupChallenge> {
       }
     }
 
-    final double? verbaMatchSimilarity2 = widget.verbaMatchSimilarity;
+    final double verbaMatchSimilarity2 = widget.verbaMatchSimilarity ?? 0.0;
+    final List<dynamic> verbaMatchUsers2 = widget.verbaMatchUsers ?? [];
     final int? totalResponses2 = widget.totalResponses;
     bool comple = widget.completed;
 
@@ -368,7 +380,12 @@ class _GroupChallengeState extends State<groupChallenge> {
                         ),
                       )
                     ])),
-                if (responded) _verbaMatch(),
+
+                if (responded && widget.completed == true)
+                  _verbaMatch(verbaMatchUsers2, verbaMatchSimilarity2)
+                else if (responded && (widget.completed != true))
+                  _verbaMatch(verbaMatchSubmit, verbaMatchSimilaritySubmit),
+
                 if (responded)
                   for (int i = 0; i < numQuestions; i++)
                     if (widget.completed == true)
@@ -551,7 +568,28 @@ class _GroupChallengeState extends State<groupChallenge> {
   }
 }
 
-Widget _verbaMatch() {
+Widget _verbaMatch(
+    List<dynamic> verbaMatchInVerbaMatch, double verbaMatchSimilarity) {
+  print("Type of verbaMatchUsers: ${verbaMatchInVerbaMatch.runtimeType}");
+  print("verbaMatchUsers: $verbaMatchInVerbaMatch");
+
+  if (verbaMatchInVerbaMatch == null) {
+    print("verbaMatchInVerbaMatch is null");
+  } else if (verbaMatchInVerbaMatch.isEmpty) {
+    print("verbaMatchInVerbaMatch is empty");
+    verbaMatchInVerbaMatch = ["empty", "verbamatch"];
+  } else {
+    print("verbaMatchInVerbaMatch is not null or empty");
+  }
+  print(
+      "this is verbaMatchInVerbaMatch in _verba amtch $verbaMatchInVerbaMatch");
+  if (verbaMatchInVerbaMatch == []) {
+    print("in the if state");
+    verbaMatchInVerbaMatch = ["empty", "verbamatch"];
+    print("yea its empty");
+  }
+  String verb1 = verbaMatchInVerbaMatch[0];
+  String verb2 = verbaMatchInVerbaMatch[1];
   return Align(
       alignment: Alignment.topCenter,
       child: Container(
@@ -591,7 +629,7 @@ Widget _verbaMatch() {
                   ]),
                   SizedBox(height: 10),
                   Text(
-                    'Jackie and Eric',
+                    '$verb1 and $verb2',
                     style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
                   ),
                 ],
@@ -601,7 +639,7 @@ Widget _verbaMatch() {
                   height: 200.v,
                   width: 200.v,
                   alignment: Alignment.center,
-                  child: DonutChart(groupSimilarity: 67),
+                  child: DonutChart(groupSimilarity: verbaMatchSimilarity),
                 ),
               ])
             ],

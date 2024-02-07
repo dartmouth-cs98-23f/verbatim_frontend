@@ -30,7 +30,7 @@ class _FriendshipState extends State<friendship>
 
   // variables for friendgroup Stats
   double groupRating = 0.0;
-  List<String> verbaMatch = [];
+  List<dynamic> verbaMatch = [];
   List<String> groupMembers = [];
 
   // builds challenge option pop
@@ -225,11 +225,15 @@ class _FriendshipState extends State<friendship>
 
     if (response.statusCode == 200) {
       final dynamic jsonData = json.decode(response.body);
+      print("this is the jsonData from getFriendStats $jsonData");
 
       double rating = jsonData["groupRating"];
       groupRating = rating;
-      verbaMatch = List<String>.from(jsonData["verbaMatch"]);
+
+      // verbaMatch = List<String>.from(jsonData["verbaMatch"]);
       groupMembers = List<String>.from(jsonData["groupMembers"]);
+      print(
+          "In GetFriendStats this is the rating: $groupRating verbaMatch: $verbaMatch, groupmebers: $groupMembers");
     } else {
       print(
           'failed to get friendship stats. Status code: ${response.statusCode}');
@@ -295,7 +299,7 @@ class _FriendshipState extends State<friendship>
     return mappedChallenges;
   }
 
-// STATS variables
+// challengeSTATS variables
 
   List<dynamic> groupAnswers = [];
   double verbaMatchSimilarity = 0.0;
@@ -337,7 +341,6 @@ class _FriendshipState extends State<friendship>
       // put completion status in mapped challenges
       mappedChallenges[challengeId]!.add(completed);
       List<dynamic> map = mappedChallenges[challengeId]!;
-      int mapLength = map.length;
 
 // user has not completed the challenge
       if (completed == 'false') {
@@ -357,7 +360,7 @@ class _FriendshipState extends State<friendship>
       } else // user HAS completed the challenge - fill in stats
       {
         // set up challenge stats
-
+        verbaMatch = jsonData['verbaMatch'];
         groupAnswers = jsonData['groupAnswers'];
         totalResponses = jsonData['totalResponses'];
         // List<String> verbaMatch = jsonData['verbaMatch'];
@@ -368,11 +371,15 @@ class _FriendshipState extends State<friendship>
         Map<String, double> verbaMatchSimilarityMap = {
           "verbaMatchSimilarity": verbaMatchSimilarity
         };
+        Map<String, List<dynamic>> verbaMatchMap = {
+          "verbaMatchUsers": verbaMatch
+        };
 
         if (challengeStats.containsKey(challengeId)) {
           challengeStats[challengeId]!.addAll(groupAnswersMap);
           challengeStats[challengeId]!.addAll(totalResponsesMap);
           challengeStats[challengeId]!.addAll(verbaMatchSimilarityMap);
+          challengeStats[challengeId]!.addAll(verbaMatchMap);
         } else {
           print("didnt happen ");
         }
@@ -404,11 +411,14 @@ class _FriendshipState extends State<friendship>
     _loadChallenges();
   }
 
+  List<String> verbaMatchGroup = [];
   Future<void> _loadChallenges() async {
     String username = SharedPrefs().getUserName() ?? "";
 
+    getFriendStats(username, widget.friendUsername);
+    verbaMatchGroup = [username, widget.friendUsername];
+
     await getActiveChallenges(username, widget.friendUsername);
-    print("These are the active challenges: $activeChallenges");
 
     for (var challengeId in activeChallengeIds) {
       //  print("here getting getChallenge for $challengeId");
@@ -422,9 +432,6 @@ class _FriendshipState extends State<friendship>
   }
 
   Widget build(BuildContext context) {
-    String username = SharedPrefs().getUserName() ?? "";
-
-    getFriendStats(username, widget.friendUsername);
     final String assetName = 'assets/img1.svg';
 
     return SafeArea(
@@ -577,12 +584,18 @@ class _FriendshipState extends State<friendship>
                                                             "false");
 
                                                     // initialize stats variables
+                                                    List<dynamic>
+                                                        verbaMatchUsersStats =
+                                                        [];
                                                     double verbaMatchStats = 0;
                                                     int totalResponsesStats = 0;
                                                     List<dynamic>
                                                         groupAnswersStats = [];
 
                                                     if (completed) {
+                                                      verbaMatchUsersStats =
+                                                          challengeStats[id]![
+                                                              'verbaMatchUsers'];
                                                       groupAnswersStats =
                                                           challengeStats[id]![
                                                               'groupAnswers'];
@@ -594,7 +607,10 @@ class _FriendshipState extends State<friendship>
                                                       totalResponsesStats =
                                                           challengeStats[id]![
                                                               'totalResponses'];
+                                                      print(
+                                                          "Challenge stats sent to backend: verbaMatchUsers: $verbaMatchUsersStats,\n  verbaMatchSimilarity: $verbaMatchSimilarity");
                                                     }
+
                                                     List<dynamic> questions2 =
                                                         groupAnswersStats
                                                             .map((entry) =>
@@ -661,6 +677,8 @@ class _FriendshipState extends State<friendship>
                                                                     totalResponsesStats,
                                                                 fromFriend:
                                                                     true,
+                                                                verbaMatchUsers:
+                                                                    verbaMatchUsersStats,
                                                               ),
                                                             ),
                                                           );
@@ -749,7 +767,7 @@ class _FriendshipState extends State<friendship>
                                         // Content for Stats
                                         Container(
                                             child: StatsContent(
-                                          verbaMatch: verbaMatch,
+                                          verbaMatchGroup: verbaMatchGroup,
                                           groupRating: groupRating,
                                         )),
                                       ],
@@ -765,16 +783,19 @@ class _FriendshipState extends State<friendship>
 }
 
 class StatsContent extends StatelessWidget {
-  List<String> verbaMatch;
+  List<String> verbaMatchGroup;
   double groupRating;
 
   StatsContent({
-    required this.verbaMatch,
+    required this.verbaMatchGroup,
     required this.groupRating,
   });
 
   @override
   Widget build(BuildContext context) {
+    String verba1 = verbaMatchGroup[0];
+    String verba2 = verbaMatchGroup[1];
+
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -790,7 +811,7 @@ class StatsContent extends StatelessWidget {
           ),
           SizedBox(height: 15.v),
           Visibility(
-            visible: verbaMatch.length != 0,
+            visible: verbaMatchGroup.length != 0,
             child: Container(
               child: Center(
                 child: Text(
@@ -804,7 +825,7 @@ class StatsContent extends StatelessWidget {
             ),
           ),
           Visibility(
-              visible: verbaMatch.length == 0,
+              visible: verbaMatchGroup.length == 0,
               child: Container(
                 child: Center(
                   child: RichText(
@@ -840,13 +861,13 @@ class StatsContent extends StatelessWidget {
                 ),
               )),
           Visibility(
-            visible: verbaMatch.length == 0,
+            visible: verbaMatchGroup.length == 0,
             child: SizedBox(
               height: 20,
             ),
           ),
           Visibility(
-            visible: verbaMatch.length == 0,
+            visible: verbaMatchGroup.length == 0,
             child: Container(
               child: Center(
                 child: Text(
@@ -860,7 +881,7 @@ class StatsContent extends StatelessWidget {
             ),
           ),
           Visibility(
-            visible: verbaMatch.length != 0,
+            visible: verbaMatchGroup.length != 0,
             child: Container(
               child: RichText(
                 text: TextSpan(
@@ -887,7 +908,7 @@ class StatsContent extends StatelessWidget {
             ),
           ),
           Visibility(
-            visible: verbaMatch.length != 0,
+            visible: verbaMatchGroup.length != 0,
             child: Container(
               child: Center(
                 child: Text(
@@ -901,11 +922,11 @@ class StatsContent extends StatelessWidget {
             ),
           ),
           Visibility(
-            visible: verbaMatch.length != 0,
+            visible: verbaMatchGroup.length != 0,
             child: SizedBox(height: 10.v),
           ),
           Visibility(
-            visible: verbaMatch.length != 0,
+            visible: verbaMatchGroup.length != 0,
             child: Center(
               child: Container(
                 width: 170,
@@ -927,15 +948,15 @@ class StatsContent extends StatelessWidget {
             ),
           ),
           Visibility(
-            visible: verbaMatch.length != 0,
+            visible: verbaMatchGroup.length != 0,
             child: SizedBox(height: 15.v),
           ),
           Visibility(
-            visible: verbaMatch.length != 0,
+            visible: verbaMatchGroup.length != 0,
             child: Container(
               child: Center(
                 child: Text(
-                  'Jackie and Erik',
+                  '$verba1 and $verba2',
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,

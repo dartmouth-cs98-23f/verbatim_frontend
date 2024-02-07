@@ -33,8 +33,9 @@ class myGroup extends StatefulWidget {
 class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
   late TabController _tabController;
 
+//group stats variables
   double groupRating = 0;
-  List<String> verbaMatch = [];
+  List<String> verbaMatchGroup = [];
   List<String> groupMembers = [];
 
   Future<void> getGroupStats(int groupId) async {
@@ -45,10 +46,18 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
 
     if (response.statusCode == 200) {
       final dynamic jsonData = json.decode(response.body);
+      print("this is groupstats json code $jsonData");
+      double rating = jsonData["groupRating"];
+      print("this is the rating in mygroup $rating");
+      groupRating = rating;
 
-      int rating = jsonData["groupRating"];
-      groupRating = rating as double;
-      verbaMatch = List<String>.from(jsonData["verbaMatch"]);
+      List<dynamic> verbaMatchList = jsonData["verbaMatch"];
+      List<String> usernames = [];
+      for (var item in verbaMatchList) {
+        usernames.add(item["username"]);
+      }
+      verbaMatchGroup = usernames;
+
       groupMembers = List<String>.from(jsonData["groupMembers"]);
     } else {
       print('failed to get group stats. Status code: ${response.statusCode}');
@@ -165,7 +174,9 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
 
         groupAnswers = jsonData['groupAnswers'];
         totalResponses = jsonData['totalResponses'];
-        // List<String> verbaMatch = jsonData['verbaMatch'];
+        print(
+            "this is json data check what verbamatch type is in getChallenge group $jsonData");
+        List<dynamic> verbaMatch = jsonData['verbaMatch'];
         //double?
         verbaMatchSimilarity = jsonData['verbaMatchSimilarity'];
         Map<String, dynamic> groupAnswersMap = {"groupAnswers": groupAnswers};
@@ -173,11 +184,15 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
         Map<String, double> verbaMatchSimilarityMap = {
           "verbaMatchSimilarity": verbaMatchSimilarity
         };
+        Map<String, List<dynamic>> verbaMatchMap = {
+          "verbaMatchUsers": verbaMatch
+        };
 
         if (challengeStats.containsKey(challengeId)) {
           challengeStats[challengeId]!.addAll(groupAnswersMap);
           challengeStats[challengeId]!.addAll(totalResponsesMap);
           challengeStats[challengeId]!.addAll(verbaMatchSimilarityMap);
+          challengeStats[challengeId]!.addAll(verbaMatchMap);
         } else {
           print("didnt happen ");
         }
@@ -404,6 +419,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
   }
 
   Future<void> _loadChallenges() async {
+    await getGroupStats(widget.groupId ?? 0);
     await getActiveChallenges(widget.groupId ?? 0);
 
     String username = SharedPrefs().getUserName() ?? "";
@@ -419,7 +435,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
   }
 
   Widget build(BuildContext context) {
-    getGroupStats(widget.groupId ?? 0);
+    // getGroupStats(widget.groupId ?? 0);
     final String assetName = 'assets/img1.svg';
     List<String>? addedUsernames = widget.addedUsernames;
     int groupID = widget.groupId!;
@@ -624,8 +640,13 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                               int totalResponsesStats = 0;
                                               List<dynamic> groupAnswersStats =
                                                   [];
+                                              List<dynamic>
+                                                  verbaMatchUsersStats = [];
 
                                               if (completed) {
+                                                verbaMatchUsersStats =
+                                                    challengeStats[id]![
+                                                        'verbaMatchUsers'];
                                                 groupAnswersStats =
                                                     challengeStats[id]![
                                                         'groupAnswers'];
@@ -695,6 +716,8 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                                                     verbaMatchStats,
                                                                 totalResponses:
                                                                     totalResponsesStats,
+                                                                verbaMatchUsers:
+                                                                    verbaMatchUsersStats,
                                                               )),
                                                     );
                                                   }
@@ -772,7 +795,8 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                   // Content for Stats
                                   Container(
                                       child: StatsContent(
-                                          verbaMatch: verbaMatch,
+                                          verbaMatchStatsContent:
+                                              verbaMatchGroup,
                                           groupRating: groupRating)),
                                 ],
                               ),
@@ -786,16 +810,22 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
 }
 
 class StatsContent extends StatelessWidget {
-  List<String> verbaMatch;
+  List<String> verbaMatchStatsContent;
   double groupRating;
 
   StatsContent({
-    required this.verbaMatch,
+    required this.verbaMatchStatsContent,
     required this.groupRating,
   });
 
   @override
   Widget build(BuildContext context) {
+    print("this is grouprating in groups stats content $groupRating");
+    String verb1 = verbaMatchStatsContent[0];
+    String verb2 = verbaMatchStatsContent[1];
+
+    print(
+        "this is verbamatch in groups stats content $String verb1 = verbaMatchStatsContent[0];");
     return SingleChildScrollView(
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
@@ -811,7 +841,7 @@ class StatsContent extends StatelessWidget {
           ),
           SizedBox(height: 15.v),
           Visibility(
-            visible: verbaMatch.length != 0,
+            visible: verbaMatchStatsContent.length != 0,
             child: Container(
               child: Center(
                 child: Text(
@@ -825,7 +855,7 @@ class StatsContent extends StatelessWidget {
             ),
           ),
           Visibility(
-              visible: verbaMatch.length == 0,
+              visible: verbaMatchStatsContent.length == 0,
               child: Container(
                 child: Center(
                   child: RichText(
@@ -861,13 +891,13 @@ class StatsContent extends StatelessWidget {
                 ),
               )),
           Visibility(
-            visible: verbaMatch.length == 0,
+            visible: verbaMatchStatsContent.isEmpty,
             child: SizedBox(
               height: 20,
             ),
           ),
           Visibility(
-            visible: verbaMatch.length == 0,
+            visible: verbaMatchStatsContent.isEmpty,
             child: Container(
               child: Center(
                 child: Text(
@@ -881,7 +911,7 @@ class StatsContent extends StatelessWidget {
             ),
           ),
           Visibility(
-            visible: verbaMatch.length != 0,
+            visible: verbaMatchStatsContent.length != 0,
             child: Container(
               child: RichText(
                 text: TextSpan(
@@ -908,7 +938,7 @@ class StatsContent extends StatelessWidget {
             ),
           ),
           Visibility(
-            visible: verbaMatch.length != 0,
+            visible: verbaMatchStatsContent.length != 0,
             child: Container(
               child: Center(
                 child: Text(
@@ -922,11 +952,11 @@ class StatsContent extends StatelessWidget {
             ),
           ),
           Visibility(
-            visible: verbaMatch.length != 0,
+            visible: verbaMatchStatsContent.length != 0,
             child: SizedBox(height: 10.v),
           ),
           Visibility(
-            visible: verbaMatch.length != 0,
+            visible: verbaMatchStatsContent.length != 0,
             child: Center(
               child: Container(
                 width: 170,
@@ -948,15 +978,15 @@ class StatsContent extends StatelessWidget {
             ),
           ),
           Visibility(
-            visible: verbaMatch.length != 0,
+            visible: verbaMatchStatsContent.length != 0,
             child: SizedBox(height: 15.v),
           ),
           Visibility(
-            visible: verbaMatch.length != 0,
+            visible: verbaMatchStatsContent.length != 0,
             child: Container(
               child: Center(
                 child: Text(
-                  'Jackie and Erik',
+                  '$verb1 and $verb2',
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
