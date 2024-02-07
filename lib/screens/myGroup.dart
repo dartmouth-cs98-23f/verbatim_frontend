@@ -261,7 +261,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                             ),
                           ),
                           // app bar on top of background - currently non functional
-                          const CustomAppBar(),
+                          CustomAppBar(),
                           Container(
                             margin: EdgeInsets.only(top: 80.v),
                             child: Column(

@@ -266,7 +266,7 @@ Handler addFriendHandler = Handler(
     } else {
       // Update the current page in the shared prefs
       SharedPrefs().setCurrentPage('/add_friend');
-      return const addFriend();
+      return addFriend();
     }
   },
 );

@@ -56,7 +56,7 @@ class _CustomChallengeState extends State<customChallenge>
                               fit: BoxFit.fill,
                             ),
                           ),
-                          const CustomAppBar(),
+                          CustomAppBar(),
                           Container(
                               margin: EdgeInsets.only(top: 100.v),
                               child: Column(children: [
