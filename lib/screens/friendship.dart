@@ -92,7 +92,7 @@ class _FriendshipState extends State<friendship>
                     ),
                   )),
                 ),
-                SizedBox(height: 20),
+                SizedBox(height: 15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -126,9 +126,9 @@ class _FriendshipState extends State<friendship>
     return Container(
         constraints: BoxConstraints(
             minWidth: 80.0, maxWidth: 150.0, minHeight: 80.0, maxHeight: 150.0),
-        width: 125,
-        height: 125,
-        padding: EdgeInsets.all(10.h),
+        width: 130,
+        height: 130,
+        padding: EdgeInsets.all(5),
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
           color: Color(0xFFE76F51),
@@ -206,7 +206,7 @@ class _FriendshipState extends State<friendship>
                   textAlign: TextAlign.center,
                   style: TextStyle(
                     color: Color(0xFFFFF7EE),
-                    fontSize: 11,
+                    fontSize: 12,
                     fontWeight: FontWeight.w600,
                   ),
                 ),

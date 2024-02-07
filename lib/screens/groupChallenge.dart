@@ -588,8 +588,8 @@ Widget _verbaMatch(
   return Align(
       alignment: Alignment.topCenter,
       child: Container(
-          width: 600.v,
-          height: 200.v,
+          width: 600,
+          height: 200,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
