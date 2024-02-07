@@ -570,20 +570,15 @@ class _GroupChallengeState extends State<groupChallenge> {
 
 Widget _verbaMatch(
     List<dynamic> verbaMatchInVerbaMatch, double verbaMatchSimilarity) {
-  print("Type of verbaMatchUsers: ${verbaMatchInVerbaMatch.runtimeType}");
   print("verbaMatchUsers: $verbaMatchInVerbaMatch");
+  bool isThereVerbaMatch = verbaMatchInVerbaMatch.isNotEmpty;
 
-  if (verbaMatchInVerbaMatch == null) {
-    print("verbaMatchInVerbaMatch is null");
-  } else if (verbaMatchInVerbaMatch.isEmpty) {
-    print("verbaMatchInVerbaMatch is empty");
-    verbaMatchInVerbaMatch = ["empty", "verbamatch"];
-  } else {
-    print("verbaMatchInVerbaMatch is not null or empty");
-  }
+  print("bool is there a verba match: $isThereVerbaMatch");
+
   print(
       "this is verbaMatchInVerbaMatch in _verba amtch $verbaMatchInVerbaMatch");
-  if (verbaMatchInVerbaMatch == []) {
+  // if there isnt a verbamatch hardcode it rn so it runs while i debug
+  if (!isThereVerbaMatch) {
     print("in the if state");
     verbaMatchInVerbaMatch = ["empty", "verbamatch"];
     print("yea its empty");
@@ -598,60 +593,135 @@ Widget _verbaMatch(
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
             children: [
-              Column(
-                mainAxisAlignment: MainAxisAlignment.start,
-                children: [
-                  RichText(
-                    text: TextSpan(
-                      children: [
-                        TextSpan(
-                          text: 'Verba',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFFE76F51),
-                              fontSize: 23),
-                        ),
-                        TextSpan(
-                            text: "Match!",
+              Visibility(
+                visible: !isThereVerbaMatch,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'No',
                             style: TextStyle(
-                              fontSize: 23,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            )),
-                      ],
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                                fontSize: 23),
+                          ),
+                          TextSpan(
+                            text: 'Verba',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFFE76F51),
+                                fontSize: 23),
+                          ),
+                          TextSpan(
+                              text: "Match",
+                              style: TextStyle(
+                                fontSize: 23,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              )),
+                        ],
+                      ),
+                      textAlign: TextAlign.left,
                     ),
-                    textAlign: TextAlign.left,
-                  ),
-                  SizedBox(height: 10),
-                  Row(children: [
-                    Image.asset('assets/Ellipse 42.png', height: 50, width: 50),
-                    Image.asset('assets/Ellipse 43.png', height: 50, width: 50),
-                  ]),
-                  SizedBox(height: 10),
-                  Text(
-                    '$verb1 and $verb2',
-                    style: TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
-                  ),
-                ],
-              ),
-              Column(mainAxisAlignment: MainAxisAlignment.start, children: [
-                Container(
-                  height: 200.v,
-                  width: 200.v,
-                  alignment: Alignment.center,
-                  child: DonutChart(groupSimilarity: verbaMatchSimilarity),
+                    SizedBox(height: 10),
+                    Row(children: [
+                      Icon(Icons.help_outline, size: 50),
+                      Icon(Icons.help_outline, size: 50),
+                    ]),
+                    SizedBox(height: 10),
+                    Text(
+                      '...yet!',
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  ],
                 ),
-              ])
+              ),
+              Visibility(
+                visible: isThereVerbaMatch,
+                child: Column(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    RichText(
+                      text: TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'Verba',
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFFE76F51),
+                                fontSize: 23),
+                          ),
+                          TextSpan(
+                              text: "Match!",
+                              style: TextStyle(
+                                fontSize: 23,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.black,
+                              )),
+                        ],
+                      ),
+                      textAlign: TextAlign.left,
+                    ),
+                    SizedBox(height: 10),
+                    Row(children: [
+                      Image.asset('assets/Ellipse 42.png',
+                          height: 50, width: 50),
+                      Image.asset('assets/Ellipse 43.png',
+                          height: 50, width: 50),
+                    ]),
+                    SizedBox(height: 10),
+                    Text(
+                      '$verb1 and $verb2',
+                      style:
+                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                    ),
+                  ],
+                ),
+              ),
+              Visibility(
+                  visible: isThereVerbaMatch,
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          height: 200.v,
+                          width: 200.v,
+                          alignment: Alignment.center,
+                          child: DonutChart(
+                              groupSimilarity: verbaMatchSimilarity,
+                              match: true),
+                        ),
+                      ])),
+              Visibility(
+                  visible: !isThereVerbaMatch,
+                  child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        Container(
+                          height: 200.v,
+                          width: 200.v,
+                          alignment: Alignment.center,
+                          child: DonutChart(
+                              groupSimilarity: verbaMatchSimilarity,
+                              match: false),
+                        ),
+                      ]))
             ],
           )));
 }
 
 class DonutChart extends StatefulWidget {
   final double groupSimilarity;
+  final bool match;
 
   DonutChart({
     Key? key,
     required this.groupSimilarity,
+    required this.match,
   }) : super(key: key);
 
   @override
@@ -703,17 +773,19 @@ class _DonutChartState extends State<DonutChart> {
                       ),
                     ),
                     // text inside chart
-                    Positioned.fill(
-                      child: Column(
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Container(
-                            height: 80.v,
-                            width: 80.h,
-                            decoration: BoxDecoration(
-                              color: Color.fromARGB(255, 255, 243, 238),
-                              shape: BoxShape.circle,
-                              /*
+                    Visibility(
+                        visible: widget.match,
+                        child: Positioned.fill(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                height: 80.v,
+                                width: 80.h,
+                                decoration: BoxDecoration(
+                                  color: Color.fromARGB(255, 255, 243, 238),
+                                  shape: BoxShape.circle,
+                                  /*
                               boxShadow: [
                                 BoxShadow(
                                     color: Color.fromARGB(132, 155, 131, 121),
@@ -722,33 +794,74 @@ class _DonutChartState extends State<DonutChart> {
                                     offset: const Offset(3, 3)),
                               ],
                               */
-                            ),
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Column(
-                                mainAxisSize: MainAxisSize.min,
-                                children: [
-                                  Text(
-                                    "${widget.groupSimilarity.toStringAsFixed(2)}%",
-                                    style: TextStyle(
-                                      fontSize: 13,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                ),
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        "${widget.groupSimilarity.toStringAsFixed(2)}%",
+                                        style: TextStyle(
+                                          fontSize: 13,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                      Text(
+                                        "Similarity",
+                                        style: TextStyle(
+                                          fontSize: 10,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                  Text(
-                                    "Similarity",
-                                    style: TextStyle(
-                                      fontSize: 10,
-                                      fontWeight: FontWeight.bold,
-                                    ),
+                                ),
+                              )
+                            ],
+                          ),
+                        )),
+                    Visibility(
+                        visible: !widget.match,
+                        child: Positioned.fill(
+                          child: Column(
+                            mainAxisAlignment: MainAxisAlignment.center,
+                            children: [
+                              Container(
+                                height: 80.v,
+                                width: 80.h,
+                                decoration: BoxDecoration(
+                                  color: Color.fromARGB(255, 255, 243, 238),
+                                  shape: BoxShape.circle,
+                                  /*
+                              boxShadow: [
+                                BoxShadow(
+                                    color: Color.fromARGB(132, 155, 131, 121),
+                                    blurRadius: 10.0,
+                                    spreadRadius: 10.0,
+                                    offset: const Offset(3, 3)),
+                              ],
+                              */
+                                ),
+                                child: Align(
+                                  alignment: Alignment.center,
+                                  child: Column(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      Text(
+                                        "?",
+                                        style: TextStyle(
+                                          fontSize: 17,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                    ],
                                   ),
-                                ],
-                              ),
-                            ),
-                          )
-                        ],
-                      ),
-                    )
+                                ),
+                              )
+                            ],
+                          ),
+                        )),
                   ],
                 ),
               )

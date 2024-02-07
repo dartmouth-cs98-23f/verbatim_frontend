@@ -942,7 +942,7 @@ class StatsContent extends StatelessWidget {
             child: Container(
               child: Center(
                 child: Text(
-                  '97% Similarity',
+                  'hardcoded% Similarity',
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
