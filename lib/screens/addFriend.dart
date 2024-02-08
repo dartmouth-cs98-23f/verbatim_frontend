@@ -277,14 +277,12 @@ class _AddFriendState extends State<addFriend> {
 
   // search feature control (adjust if necessary)
   List<User> _searchResults() {
-    // return userUsernames
-    //     .where((item) => item.toLowerCase().contains(_searchText.toLowerCase()))
-    //     .toList();
-
-    return searchResults
+    List<User> filteredSearchResults = searchResults
         .where((item) =>
-            item.username.toLowerCase().contains(_searchText.toLowerCase()))
+            item.username.toLowerCase().contains(_searchText.toLowerCase()) &&
+            item.username != SharedPrefs().getUserName())
         .toList();
+    return filteredSearchResults;
   }
 
   // send friendrequest to backend

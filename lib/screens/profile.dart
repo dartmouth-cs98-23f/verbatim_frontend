@@ -50,7 +50,7 @@ class _ProfileState extends State<Profile> {
 
   String bio = '';
   String profileUrl = 'assets/profile_pic.png';
-  List<String> myRequestedUsers_backend = [];
+  Map<String, bool> friendRequestStates = {};
 
   Future<void> _getStats(String username) async {
     final url = Uri.parse("${BackendService.getBackendUrl()}getUserStats");
@@ -70,6 +70,8 @@ class _ProfileState extends State<Profile> {
 
   Future<void> sendFriendRequest(
       String requestingUsername, String requestedUsername) async {
+    print(
+        "\n\nRequester: ${requestingUsername} while the requested: ${requestedUsername}\n");
     final url = Uri.parse(BackendService.getBackendUrl() + 'addFriend');
     final headers = <String, String>{'Content-Type': 'application/json'};
 
@@ -82,13 +84,38 @@ class _ProfileState extends State<Profile> {
     if (response.statusCode == 200) {
       _showSuccessDialog();
       setState(() {
-        widget.user!.isRequested = true;
+        friendRequestStates[requestedUsername] =
+            true; // Update request state for the user
       });
 
       print(
-          '\nresponses sent succesfully: ${requestingUsername} and ${requestedUsername}\n');
+          '\nresponses sent successfully: $requestingUsername and $requestedUsername\n');
     } else {
       print('Failed to send responses. Status code: ${response.statusCode}');
+    }
+  }
+
+  Future<void> getUsersIHaveRequested(String username) async {
+    final url =
+        Uri.parse(BackendService.getBackendUrl() + 'getUsersIHaveRequested');
+    final Map<String, String> headers = {
+      'Content-Type': 'text/plain',
+    };
+
+    final response = await http.post(url, headers: headers, body: username);
+
+    if (response.statusCode == 200) {
+      List<dynamic> myfriendRequests = json.decode(response.body);
+      if (myfriendRequests.isNotEmpty) {
+        for (var request in myfriendRequests) {
+          String requestedUsername = request['username'];
+          // Set the friend request state to true for each user requested
+          friendRequestStates[requestedUsername] = true;
+        }
+      }
+    } else {
+      print(
+          '\nIn addFriends getUsersIHaveRequested: Failed to send responses. Status code: ${response.statusCode}\n');
     }
   }
 
@@ -154,13 +181,19 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     super.initState();
+    getUsersIHaveRequested(SharedPrefs().getUserName() as String);
+
+    if (!friendRequestStates.containsKey(widget.user!.username)) {
+      friendRequestStates[widget.user!.username] = widget.user!.isRequested;
+    }
+
+    print("\nAfter calling getUsers.. here is the map: ${friendRequestStates}");
 
     // If user object is provided, populate profile details from user object
     if (widget.user != null) {
       if (widget.user!.bio == null) {
-        widget.user!.bio = ". ";
+        widget.user!.bio = " ";
       }
-      print("\nuser's bio in profile is : ${widget.user!.bio}\n");
       firstName = widget.user!.firstName.replaceFirst(
           widget.user!.firstName[0], widget.user!.firstName[0].toUpperCase());
 
@@ -277,31 +310,29 @@ class _ProfileState extends State<Profile> {
                                           ),
                                           SafeArea(
                                             child: GestureDetector(
-                                              onTap: () {
+                                              onTap: () async {
+                                                final currentUserUsername =
+                                                    widget.user!.username;
                                                 if (widget.user == null) {
-                                                  // Navigate to settings
                                                   Navigator.of(context)
                                                       .push(MaterialPageRoute(
                                                     builder: (context) =>
                                                         settings(),
                                                   ));
                                                 } else {
-                                                  if (!widget
-                                                      .user!.isRequested) {
-                                                    sendFriendRequest(
+                                                  if (friendRequestStates[
+                                                          currentUserUsername] ==
+                                                      false) {
+                                                    await sendFriendRequest(
                                                         SharedPrefs()
                                                                 .getUserName()
                                                             as String,
                                                         widget.user!.username);
-
-                                                    setState(() {
-                                                      setState(() {
-                                                        widget.user!
-                                                                .isRequested =
-                                                            true; // keeps the icon from changing if you navigate away from the page
-                                                      });
-                                                    });
                                                   } else {
+                                                    print(
+                                                        "\n\n Map is ${friendRequestStates}");
+                                                    print(
+                                                        "\n33 User's username is ${widget.user!.username}");
                                                     print(
                                                         "\nImplement the method to handle when the user is already a friend or the FR has been sent!\n");
                                                   }
@@ -332,6 +363,8 @@ class _ProfileState extends State<Profile> {
                                                       .transparent, // Make it transparent to prevent background color overlay
                                                   child: InkWell(
                                                     onTap: () {
+                                                      final currentUserUsername =
+                                                          widget.user!.username;
                                                       if (widget.user == null) {
                                                         // Navigate to settings
                                                         Navigator.of(context)
@@ -341,8 +374,9 @@ class _ProfileState extends State<Profile> {
                                                               settings(),
                                                         ));
                                                       } else {
-                                                        if (!widget.user!
-                                                            .isRequested) {
+                                                        if (friendRequestStates[
+                                                                currentUserUsername] ==
+                                                            false) {
                                                           sendFriendRequest(
                                                               SharedPrefs()
                                                                       .getUserName()
@@ -350,6 +384,11 @@ class _ProfileState extends State<Profile> {
                                                               widget.user!
                                                                   .username);
                                                         } else {
+                                                          print(
+                                                              "\n\n Map is ${friendRequestStates}");
+                                                          print(
+                                                              "\n33 User's username is ${widget.user!.username}");
+
                                                           print(
                                                               "\nImplement the method to handle when the user is already a friend or the FR has been sent!\n");
                                                         }
@@ -379,8 +418,10 @@ class _ProfileState extends State<Profile> {
                                                             children: [
                                                               if (widget.user !=
                                                                       null &&
-                                                                  widget.user!
-                                                                      .isRequested)
+                                                                  friendRequestStates[widget
+                                                                          .user!
+                                                                          .username] ==
+                                                                      true)
                                                                 Icon(
                                                                   Icons
                                                                       .person_outlined,
@@ -390,8 +431,10 @@ class _ProfileState extends State<Profile> {
                                                                 ),
                                                               if (widget.user !=
                                                                       null &&
-                                                                  !widget.user!
-                                                                      .isRequested)
+                                                                  friendRequestStates[widget
+                                                                          .user!
+                                                                          .username] ==
+                                                                      false)
                                                                 Icon(
                                                                   Icons
                                                                       .person_add_alt_outlined,
@@ -412,9 +455,10 @@ class _ProfileState extends State<Profile> {
                                                               widget.user ==
                                                                       null
                                                                   ? "Edit Profile"
-                                                                  : (widget
-                                                                          .user!
-                                                                          .isRequested
+                                                                  : ((friendRequestStates[widget
+                                                                              .user!
+                                                                              .username] ==
+                                                                          true)
                                                                       ? "Friends Since 10/27/23" // "Friends Since ${DateTime(2023, 12, 31).toString().substring(0, 10)}
                                                                       : "Add Friend"),
                                                               style: GoogleFonts
