@@ -49,7 +49,7 @@ class _ProfileState extends State<Profile> {
   String username = '';
 
   String bio = '';
-  String profileUrl = '';
+  String profileUrl = 'assets/profile_pic.png';
   List<String> myRequestedUsers_backend = [];
 
   Future<void> _getStats(String username) async {
@@ -70,8 +70,6 @@ class _ProfileState extends State<Profile> {
 
   Future<void> sendFriendRequest(
       String requestingUsername, String requestedUsername) async {
-    print(
-        "\nIn profile: Requested backend users: ${myRequestedUsers_backend}\n");
     final url = Uri.parse(BackendService.getBackendUrl() + 'addFriend');
     final headers = <String, String>{'Content-Type': 'application/json'};
 
@@ -159,7 +157,10 @@ class _ProfileState extends State<Profile> {
 
     // If user object is provided, populate profile details from user object
     if (widget.user != null) {
-      print("\nFriend is req status: ${widget.user!.isRequested}\n");
+      if (widget.user!.bio == null) {
+        widget.user!.bio = ". ";
+      }
+      print("\nuser's bio in profile is : ${widget.user!.bio}\n");
       firstName = widget.user!.firstName.replaceFirst(
           widget.user!.firstName[0], widget.user!.firstName[0].toUpperCase());
 
@@ -167,7 +168,8 @@ class _ProfileState extends State<Profile> {
       initial = lastName.substring(0, 1).toUpperCase();
       displayName = '$firstName $initial.';
       username = widget.user!.username;
-      bio = widget.user!.bio ?? '';
+      bio = widget.user!.bio as String ?? " ";
+      // Ensure profileUrl is assigned 'assets/profile_pic.png' if widget.user!.profilePicture is null
       profileUrl = widget.user!.profilePicture ?? 'assets/profile_pic.png';
     } else {
       // If user object is null, fetch details from SharedPrefs
@@ -176,8 +178,8 @@ class _ProfileState extends State<Profile> {
       initial = lastName.substring(0, 1);
       displayName = '$firstName $initial.';
       username = SharedPrefs().getUserName() ?? " ";
-      bio = SharedPrefs().getBio() ?? '';
-      profileUrl = SharedPrefs().getProfileUrl() ?? '';
+      bio = SharedPrefs().getBio() ?? " ";
+      profileUrl = SharedPrefs().getProfileUrl() ?? 'assets/profile_pic.png';
     }
     _getStats(username).then((_) {
       setState(() {

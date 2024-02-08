@@ -51,8 +51,8 @@ class User {
       username: json['username'],
       lastName: json['lastName'],
       firstName: json['firstName'],
-      profilePicture: json['profilePicture'],
-      bio: json['bio'],
+      profilePicture: json['profilePicture'] ?? "assets/profile_pic.png",
+      bio: json['bio'] ?? " ",
       numGlobalChallengesCompleted: json['numGlobalChallengesCompleted'],
       numCustomChallengesCompleted: json['numCustomChallengesCompleted'],
       streak: json['streak'],
@@ -442,18 +442,19 @@ class _AddFriendState extends State<addFriend> {
                             itemCount: _searchResults().length,
                             itemBuilder: (context, index) {
                               final currentUser = _searchResults()[index];
-                              String name = '';
-                              String profileUrl = '';
+                              String name = currentUser.username ?? '';
+                              String profileUrl = currentUser.profilePicture ??
+                                  'assets/profile_pic.png';
+                              ;
 
-                              if (currentUser != null) {
-                                name = currentUser.username;
-                                currentUser.isRequested =
-                                    myRequestedUsers_backend.contains(name);
-                                profileUrl = currentUser.profilePicture ??
-                                    'assets/profile_pic.png'; // Provide a default value if profilePicture is null
-                                
-                              }
-                              
+                              // if (currentUser != null) {
+                              //   name = currentUser.username;
+                              //   currentUser.isRequested =
+                              //       myRequestedUsers_backend.contains(name);
+                              //   profileUrl =
+                              //       currentUser.profilePicture as String;
+                              // }
+
                               return ListTile(
                                 title: Row(
                                   mainAxisSize: MainAxisSize.min,
@@ -465,6 +466,18 @@ class _AddFriendState extends State<addFriend> {
                                     SizedBox(width: 8),
                                     GestureDetector(
                                       onTap: () {
+                                        if (currentUser.bio == null) {
+                                          currentUser.bio =
+                                              ''; // Assigning an empty string if bio is null
+                                        }
+                                        if (currentUser.profilePicture ==
+                                            null) {
+                                          currentUser.profilePicture =
+                                              ''; // Assigning an empty string if profilePicture is null
+                                        }
+
+                                        print(
+                                            "\nUser's bio before routing to profile page is: ${currentUser.bio}\n");
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(
@@ -516,6 +529,7 @@ class _AddFriendState extends State<addFriend> {
                                   myRequestedUsers_backend.contains(name);
                               String profileUrl = currentUser.profilePicture ??
                                   'assets/profile_pic.png';
+
                               return ListTile(
                                 title: Row(
                                   children: [
@@ -526,6 +540,8 @@ class _AddFriendState extends State<addFriend> {
                                     SizedBox(width: 8),
                                     GestureDetector(
                                       onTap: () {
+                                        print(
+                                            "\nOn line 528 in add_friend, the profile url is ${currentUser.profilePicture}");
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(

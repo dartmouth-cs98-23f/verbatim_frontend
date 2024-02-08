@@ -9,7 +9,7 @@ class EditProfilePicturePopup extends StatefulWidget {
   final VoidCallback onRemoveCurrentPicture;
 
   const EditProfilePicturePopup({
-    super.key, 
+    super.key,
     required this.imagePath,
     required this.selectedImage,
     required this.onImageTap,
@@ -70,8 +70,8 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
             child: GestureDetector(
               onTap: widget.onImageTap,
               child: Container(
-                // ... (your existing image container)
-              ),
+                  // ... (your existing image container)
+                  ),
             ),
           ),
           const SizedBox(height: 20),
@@ -97,7 +97,7 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
           ListTile(
             leading: Icon(
               Icons.photo_outlined,
-              color: ,
+              color: Color(0xFFDE674A),
             ),
             title: const Text(
               'Choose from gallery',

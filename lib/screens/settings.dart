@@ -541,7 +541,7 @@ class _settingsState extends State<settings> {
                 const SizedBox(height: 20),
                 MyTextFieldSettings(
                     controller: bioSettings,
-                    hintText: SharedPrefs().getBio() ?? "",
+                    hintText: SharedPrefs().getBio() ?? "Enter your bio",
                     obscureText: false),
 
                 //email

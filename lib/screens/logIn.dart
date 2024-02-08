@@ -99,7 +99,8 @@ class _LogInState extends State<LogIn> {
           SharedPrefs().setFirstName(responseData['firstName'] ?? '');
           SharedPrefs().setLastName(responseData['lastName'] ?? '');
           SharedPrefs().setBio(responseData['bio'] ?? '');
-          SharedPrefs().setProfileUrl(responseData['profilePicture'] ?? '');
+          SharedPrefs().setProfileUrl(
+              responseData['profilePicture'] ?? 'assets/profile_pic.png');
 
           Navigator.pushNamed(context, '/global_challenge');
         }
