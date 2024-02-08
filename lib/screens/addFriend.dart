@@ -181,12 +181,12 @@ class _AddFriendState extends State<addFriend> {
           data.map((item) => User.fromJson(item)).toList();
 
       userUsernames = userList
-          .where((user) => user.username != username)
+          .where((user) => user.username != SharedPrefs().getUserName())
           .map((user) => user.username)
           .toList();
 
       searchResults = userList
-          .where((user) => user.username != username)
+          .where((user) => user.username != SharedPrefs().getUserName())
           .map((user) => user)
           .toList();
 
@@ -209,29 +209,39 @@ class _AddFriendState extends State<addFriend> {
       });
     });
     if (!usersFetched) {
+      final String currentUserUsername = SharedPrefs().getUserName() as String;
+
       // wait to load
       Future.wait([
-        getFriends(username),
+        getFriends(currentUserUsername),
         getUsers(),
-        getFriendRequests(username),
-        getUsersIHaveRequested(username),
+        getFriendRequests(currentUserUsername),
+        getUsersIHaveRequested(currentUserUsername),
       ]).then((_) {
         userUsernames
             .removeWhere((item) => friendsUsernamesList.contains(item));
         userUsernames.removeWhere((item) => requestingUsers.contains(item));
 
-        // Filter searchResults list to remove user objects based on friendsUsernamesList and requestingUsers
-        searchResults.removeWhere((user) =>
-            friendsUsernamesList.contains(user.username) ||
-            requestingUsers.contains(user.username));
+        // Remove current user's name from userUsernames and requestingUsers lists
+        userUsernames.removeWhere((item) => item == currentUserUsername);
+        requestingUsers.removeWhere((item) => item == currentUserUsername);
 
-        // Filter users based on search text and friends
+        // Filter searchResults list to remove users with the current user's name
+        searchResults
+            .removeWhere((user) => user.username == currentUserUsername);
+
+        // Filter users based on search text and friends, ensuring current user's name is not included
         searchResults = users
             .where((user) =>
-                user.username.toLowerCase().contains(_searchText.toLowerCase()))
+                user.username
+                    .toLowerCase()
+                    .contains(_searchText.toLowerCase()) &&
+                user.username != currentUserUsername)
             .toList();
         friendsList = users
-            .where((user) => friendsUsernamesList.contains(user.username))
+            .where((user) =>
+                friendsUsernamesList.contains(user.username) &&
+                user.username != currentUserUsername)
             .toList();
 
         usersFetched = true;
@@ -440,18 +450,11 @@ class _AddFriendState extends State<addFriend> {
                             itemCount: _searchResults().length,
                             itemBuilder: (context, index) {
                               final currentUser = _searchResults()[index];
+
                               String name = currentUser.username ?? '';
                               String profileUrl = currentUser.profilePicture ??
                                   'assets/profile_pic.png';
                               ;
-
-                              // if (currentUser != null) {
-                              //   name = currentUser.username;
-                              //   currentUser.isRequested =
-                              //       myRequestedUsers_backend.contains(name);
-                              //   profileUrl =
-                              //       currentUser.profilePicture as String;
-                              // }
 
                               return ListTile(
                                 title: Row(

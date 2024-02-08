@@ -6,28 +6,6 @@ import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 
-// class User {
-//   int id = 0;
-//   String email = "";
-//   String username = "";
-//   String lastName = "";
-//   String password = "";
-//   dynamic profilePicture;
-//   String? bio = "";
-//   int numGlobalChallengesCompleted = 0;
-//   int numCustomChallengesCompleted = 0;
-//   int streak = 0;
-//   bool hasCompletedDailyChallenge = false;
-
-//   User({required this.username});
-
-//   factory User.fromJson(Map<String, dynamic> json) {
-//     return User(
-//       username: json['username'],
-//     );
-//   }
-// }
-
 class FriendAcceptOrDeclineRequest {
   String requestingUsername;
   String requestedUsername;
@@ -58,14 +36,12 @@ class SideBar extends StatefulWidget {
 }
 
 class _SideBarState extends State<SideBar> {
-  String username = SharedPrefs().getUserName() ?? "";
+  String username = SharedPrefs().getUserName() as String;
 
   final Color primary = const Color.fromARGB(255, 231, 111, 81);
 
-  Set<String> friendRequestUsernames = <String>{};
-  List<String> usernamesList = [];
-  List<User> friendsList = [];
-  List<User> friendRequestList = [];
+  List<User> friendRequests = [];
+  List<User> friends = [];
 
   Future<void> getFriends(String username) async {
     final url = Uri.parse('${BackendService.getBackendUrl()}getFriends');
@@ -77,10 +53,10 @@ class _SideBarState extends State<SideBar> {
 
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
-      friendsList = data.map((item) => User.fromJson(item)).toList();
-      usernamesList = friendsList.map((user) => user.username).toList();
+      friends = data.map((item) => User.fromJson(item)).toList();
+      friends.removeWhere((user) => user.username == username);
     } else {
-      print('Failed to send responses. Status code: ${response.statusCode}');
+      print('Failed to get friends. Status code: ${response.statusCode}');
     }
   }
 
@@ -93,24 +69,12 @@ class _SideBarState extends State<SideBar> {
     final response = await http.post(url, headers: headers, body: username);
 
     if (response.statusCode == 200) {
-      List<Map<String, dynamic>> friendRequests =
-          List<Map<String, dynamic>>.from(json.decode(response.body));
-
-      friendRequestList = json
-          .decode(response.body)
-          .map((item) => User.fromJson(item))
-          .toList();
-
-      if (friendRequests.isNotEmpty) {
-        print(friendRequests);
-
-        for (var request in friendRequests) {
-          String username = request['username'];
-          friendRequestUsernames.add(username);
-        }
-      }
+      final List<dynamic> data = json.decode(response.body);
+      friendRequests = data.map((item) => User.fromJson(item)).toList();
+      friendRequests.removeWhere((user) => user.username == username);
     } else {
-      print('Failed to send responses. Status code: ${response.statusCode}');
+      print(
+          'Failed to get friend requests. Status code: ${response.statusCode}');
     }
   }
 
@@ -173,8 +137,10 @@ class _SideBarState extends State<SideBar> {
                               style: const TextStyle(
                                   color: Colors.white, fontSize: 20),
                             ),
-                            leading: const Icon(Icons.mood,
-                                color: Colors.white, size: 32),
+                            leading: FirebaseStorageImage(
+                              profileUrl:
+                                  SharedPrefs().getProfileUrl() as String,
+                            ),
                             trailing: const Icon(Icons.settings,
                                 color: Colors.white, size: 26),
                             onTap: () {
@@ -237,37 +203,23 @@ class _SideBarState extends State<SideBar> {
                         child: ListView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          itemCount: usernamesList.length,
+                          itemCount: friends.length,
                           itemBuilder: (BuildContext context, int index) {
-                            // String friend = usernamesList[index];
-                            User currentUser = friendsList[index];
-                            String currentUsername =
-                                friendsList[index].username;
+                            User friend = friends[index];
 
                             return ListTile(
-                              // Check if currentUser is not null before accessing its properties
                               title: Text(
-                                currentUser != null
-                                    ? currentUser.username
-                                    : 'Unknown User',
+                                friend.username,
                                 style: const TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 15,
                                 ),
                               ),
-                              // Ensure profilePicture is not null before passing it to FirebaseStorageImage
-                              leading: currentUser != null &&
-                                      currentUser.profilePicture != null
-                                  ? FirebaseStorageImage(
-                                      profileUrl: currentUser.profilePicture!,
-                                      user: currentUser,
-                                    )
-                                  : Icon(Icons
-                                      .person), // Provide a default icon if profile picture is null
-                              onTap: () {
-                                // Implement onTap functionality here
-                              },
+                              leading: FirebaseStorageImage(
+                                  profileUrl: friend.profilePicture,
+                                  user: friend),
+                              onTap: () {},
                             );
                           },
                         ),
@@ -327,7 +279,7 @@ class _SideBarState extends State<SideBar> {
                           fontWeight: FontWeight.bold,
                           fontSize: 18),
                     ),
-                    trailing: friendRequestUsernames.isNotEmpty
+                    trailing: friendRequests.isNotEmpty
                         ? const Icon(Icons.pending,
                             color: Colors.orange, size: 25)
                         : const Icon(Icons.pending,
@@ -340,37 +292,33 @@ class _SideBarState extends State<SideBar> {
                         child: ListView.builder(
                           shrinkWrap: true,
                           physics: const NeverScrollableScrollPhysics(),
-                          itemCount: friendRequestUsernames.length,
+                          itemCount: friendRequests.length,
                           itemBuilder: (BuildContext context, int index) {
-                            List<String> requestsList =
-                                friendRequestUsernames.toList();
-                            // String requester = requestsList[index];
-                            User potentialFriend = friendRequestList[index];
-                            String requester = potentialFriend.username;
+                            // List<String> requestsList =
+                            //     friendRequestUsernames.toList();
+                            User requester = friendRequests[index];
 
                             return ListTile(
                               title: Text(
-                                requester,
+                                requester.username,
                                 style: const TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 15,
                                 ),
                               ),
-                              leading:
-                                  const Icon(Icons.person, color: Colors.black),
+                              leading: FirebaseStorageImage(
+                                  profileUrl: requester.profilePicture,
+                                  user: requester),
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
                                   GestureDetector(
                                     onTap: () {
                                       handleFriendRequests(
-                                          username, requester, true);
+                                          username, requester.username, true);
                                       setState(() {
-                                        friendRequestUsernames
-                                            .remove(requester);
-                                        friendRequestList.removeWhere((user) =>
-                                            user.username == requester);
+                                        friendRequests.remove(requester);
                                       });
                                     },
                                     child: const Icon(Icons.check_box,
@@ -379,10 +327,9 @@ class _SideBarState extends State<SideBar> {
                                   GestureDetector(
                                     onTap: () {
                                       handleFriendRequests(
-                                          username, requester, false);
+                                          username, requester.username, false);
                                       setState(() {
-                                        friendRequestUsernames
-                                            .remove(requester);
+                                        friendRequests.remove(requester);
                                       });
                                     },
                                     child: const Icon(Icons.cancel,
