@@ -124,7 +124,7 @@ class _ProfileState extends State<Profile> {
     if (!friendRequestStates.containsKey(widget.user!.username)) {
       friendRequestStates[widget.user!.username] = widget.user!.isRequested;
     }
-// Initialize username from SharedPrefs if not provided through the widget
+    // Initialize username from SharedPrefs if not provided through the widget
     username = widget.user?.username ?? SharedPrefs().getUserName() ?? " ";
 
     // Initialize bio, ensuring it's never null
