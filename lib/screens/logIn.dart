@@ -1,4 +1,3 @@
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 // import 'package:google_sign_in/google_sign_in.dart';
@@ -35,12 +34,51 @@ class _LogInState extends State<LogIn> {
     saveUsersInfo(usernameOrEmail, password);
   }
 
+  void logInGuest(
+      BuildContext context, String usernameOrEmail, String password) async {
+    final response = await http.post(
+      Uri.parse(
+          '${BackendService.getBackendUrl()}submitResponseAfterLoginOrRegister'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'responseQ1': SharedPrefs().getResponse1(),
+        'responseQ2': SharedPrefs().getResponse2(),
+        'responseQ3': SharedPrefs().getResponse3(),
+        'isLogin': true,
+        'emailOrUsername': usernameOrEmail,
+        'password': password,
+        'username': '',
+        'firstName': '',
+        'lastName': '',
+        'email': '',
+        'withReferral': SharedPrefs().getReferer() != '',
+        'referringUsername': SharedPrefs().getReferer(),
+      }),
+    );
+
+    if (response.statusCode == 200) {
+      //save user SharedPrefs
+      final responseData = json.decode(response.body);
+      SharedPrefs().setEmail(responseData['email']);
+      SharedPrefs().setUserName(responseData['username']);
+      SharedPrefs().setPassword(responseData['password']);
+      SharedPrefs().setFirstName(responseData['firstName'] ?? '');
+      SharedPrefs().setLastName(responseData['lastName'] ?? '');
+      SharedPrefs().setBio(responseData['bio'] ?? '');
+      // SharedPrefs().setBio(responseData['profilePicture']);
+      Navigator.pushNamed(context, '/global_challenge');
+      print('Log-in successful');
+      print("Yaaaay lets go");
+    }
+  }
+
   // Function to save user's info to the database
   void saveUsersInfo(String usernameOrEmail, String password) async {
     try {
       final response = await http.post(
-        Uri.parse(BackendService.getBackendUrl() + 'login'),
-
+        Uri.parse('${BackendService.getBackendUrl()}login'),
         headers: <String, String>{
           'Content-Type': 'application/json',
         },
@@ -52,7 +90,6 @@ class _LogInState extends State<LogIn> {
 
       if (response.statusCode == 200) {
         final responseData = json.decode(response.body);
-        print(responseData);
 
         if (responseData != null) {
           // Authentication successful: Save the user info to the disk so that they can persist to other pages
@@ -62,22 +99,21 @@ class _LogInState extends State<LogIn> {
           SharedPrefs().setFirstName(responseData['firstName'] ?? '');
           SharedPrefs().setLastName(responseData['lastName'] ?? '');
           SharedPrefs().setBio(responseData['bio'] ?? '');
-          // SharedPrefs().setBio(responseData['profilePicture']);
+          SharedPrefs().setProfileUrl(
+              responseData['profilePicture'] ?? 'assets/profile_pic.png');
+
           Navigator.pushNamed(context, '/global_challenge');
-          print('Log-in successful');
         }
       } else {
         print('Error during log-in: ${response.statusCode.toString()}');
         Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) =>
-              SignupErrorMessage(pageName: 'log in'),
-        ));
+            builder: (context) =>
+                const SignupErrorMessage(pageName: 'log in')));
       }
     } catch (e) {
       print('Error during sign-up: $e');
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) =>
-            SignupErrorMessage(pageName: 'log in'),
+        builder: (context) => const SignupErrorMessage(pageName: 'log in'),
       ));
     }
   }
@@ -107,7 +143,7 @@ class _LogInState extends State<LogIn> {
     setState(() {
       validationErrors[field] = Text(
         message,
-        style: TextStyle(color: Colors.red),
+        style: const TextStyle(color: Colors.red),
       );
     });
   }
@@ -128,8 +164,13 @@ class _LogInState extends State<LogIn> {
     validateField(password, "password", "Password is required");
 
     // All validations passed; proceed with login
-    if (validationErrors.isEmpty) {
+
+    if (validationErrors.isEmpty && SharedPrefs().getResponse1() == '') {
+      //user not played
       logIn(context, email, password);
+    } else if (SharedPrefs().getResponse1() != '') {
+      //logIn(context, email, password);
+      logInGuest(context, email, password);
     }
   }
 
@@ -140,7 +181,7 @@ class _LogInState extends State<LogIn> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      backgroundColor: Color(0xFFFFF3EE),
+      backgroundColor: const Color(0xFFFFF3EE),
       body: SafeArea(
         child: SingleChildScrollView(
           child: Center(
@@ -192,7 +233,7 @@ class _LogInState extends State<LogIn> {
                       children: [
                         TextSpan(
                           text: 'Forgot password?',
-                          style: TextStyle(
+                          style: const TextStyle(
                             color: Color(0xFF3C64B1),
                             fontWeight: FontWeight.w700,
                           ),
@@ -234,7 +275,7 @@ class _LogInState extends State<LogIn> {
                         child: RichText(
                           text: TextSpan(
                             children: [
-                              TextSpan(
+                              const TextSpan(
                                 text: "Don't have an account? ",
                                 style: TextStyle(
                                   color: Colors.black,
@@ -243,7 +284,7 @@ class _LogInState extends State<LogIn> {
                               ),
                               TextSpan(
                                 text: 'Register',
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Color(0xFF3C64B1),
                                   fontWeight: FontWeight
                                       .w700, // Blue color for the link
@@ -261,7 +302,7 @@ class _LogInState extends State<LogIn> {
                     ],
                   ),
                 ),
-                SizedBox(height: 20),
+                const SizedBox(height: 20),
               ],
             ),
           ),

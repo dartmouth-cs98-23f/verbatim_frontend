@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:hovering/hovering.dart';
 
 class EditProfilePicturePopup extends StatefulWidget {
   final String imagePath;
@@ -9,7 +8,8 @@ class EditProfilePicturePopup extends StatefulWidget {
   final VoidCallback onChangeImageCamera;
   final VoidCallback onRemoveCurrentPicture;
 
-  EditProfilePicturePopup({
+  const EditProfilePicturePopup({
+    super.key,
     required this.imagePath,
     required this.selectedImage,
     required this.onImageTap,
@@ -34,21 +34,35 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
         mainAxisSize: MainAxisSize.min,
         children: [
           const SizedBox(height: 5),
-          Center(
-            child: Padding(
-              padding: const EdgeInsets.all(16.0),
-              child: Text(
-                'Edit Profile Picture',
-                style: TextStyle(
-                  color: Color(0xFF3C63B0),
-                  fontSize: 16,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w400,
-                  height: 0.09,
-                  letterSpacing: 0.30,
+
+
+          Row(
+            mainAxisAlignment: MainAxisAlignment.spaceBetween,
+            children: [
+              const Padding(
+                padding: EdgeInsets.only(left: 16.0),
+                child: Align(
+                  alignment: Alignment.topCenter,
+                  child: Text(
+                    'Edit Profile Picture',
+                    style: TextStyle(
+                      color: Color(0xFF3C63B0),
+                      fontSize: 16,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w400,
+                      height: 0.09,
+                      letterSpacing: 0.30,
+                    ),
+                  ),
                 ),
               ),
-            ),
+              IconButton(
+                icon: const Icon(Icons.close),
+                onPressed: () {
+                  Navigator.of(context).pop(); // Close the popup
+                },
+              ),
+            ],
           ),
           const SizedBox(height: 5),
           MouseRegion(
@@ -57,53 +71,17 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
             child: GestureDetector(
               onTap: widget.onImageTap,
               child: Container(
-                width: 100.0,
-                height: 100.0,
-                decoration: BoxDecoration(
-                  shape: BoxShape.circle,
-                  border: Border.all(
-                    color: isHovered ? Colors.blue : Colors.transparent,
-                    width: 2.0,
+                  // ... (your existing image container)
                   ),
-                ),
-                child: ClipOval(
-                  child: Material(
-                    color: Colors.transparent,
-                    child: InkWell(
-                      onTap: widget.onImageTap,
-                      // child: Image.asset(
-                      //   widget.imagePath,
-                      //   width: 100.0,
-                      //   height: 100.0,
-                      //   fit: BoxFit.cover,
-                      // ),
-                      //selectedImage
-                      child: ClipOval(
-                        child: Container(
-                          width: 150.0,
-                          height: 150.0,
-                          decoration: BoxDecoration(
-                            shape: BoxShape.circle,
-                            image: DecorationImage(
-                              fit: BoxFit.cover,
-                              image: widget.selectedImage,
-                            ),
-                          ),
-                        ),
-                      ),
-                    ),
-                  ),
-                ),
-              ),
             ),
           ),
           const SizedBox(height: 20),
           ListTile(
-            leading: Icon(
-              Icons.photo_camera,
+            leading: const Icon(
+              Icons.photo_camera_outlined,
               color: Color(0xFFDE674A),
             ),
-            title: Text(
+            title: const Text(
               'Take a photo',
               style: TextStyle(
                 color: Colors.black,
@@ -118,11 +96,11 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
           ),
           const SizedBox(height: 10),
           ListTile(
-            leading: Icon(
-              Icons.photo,
+            leading: const Icon(
+              Icons.photo_outlined,
               color: Color(0xFFDE674A),
             ),
-            title: Text(
+            title: const Text(
               'Choose from gallery',
               style: TextStyle(
                 color: Colors.black,
@@ -137,11 +115,11 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
           ),
           const SizedBox(height: 10),
           ListTile(
-            leading: Icon(
-              Icons.delete,
+            leading: const Icon(
+              Icons.delete_outline,
               color: Color(0xFFDE674A),
             ),
-            title: Text(
+            title: const Text(
               'Remove current picture',
               style: TextStyle(
                 color: Colors.black,

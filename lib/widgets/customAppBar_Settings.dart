@@ -1,9 +1,22 @@
-import 'package:flutter/material.dart';
-import 'package:verbatim_frontend/screens/settings.dart';
-import 'size.dart';
-import 'package:verbatim_frontend/screens/sideBar.dart';
+import 'dart:typed_data';
 
-class CustomAppBarSettings extends StatelessWidget implements PreferredSizeWidget {
+import 'package:flutter/material.dart';
+import 'package:verbatim_frontend/Components/shared_prefs.dart';
+import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
+import 'size.dart';
+
+import 'package:http/http.dart' as http;
+
+class CustomAppBarSettings extends StatelessWidget
+    implements PreferredSizeWidget {
+  final String title;
+  final bool showBackButton;
+
+  const CustomAppBarSettings({super.key, 
+    required this.title,
+    this.showBackButton = false,
+  });
+
   @override
   Widget build(BuildContext context) {
     return AppBar(
@@ -13,13 +26,15 @@ class CustomAppBarSettings extends StatelessWidget implements PreferredSizeWidge
       elevation: 0,
       title: Column(
         children: [
-          SizedBox(height: 60),
-          NewNavBar(
-            profileImagePath: 'assets/profile2.jpeg',
+          const SizedBox(height: 100),
+          const NewNavBar(),
+          // SizedBox(height: 30), // Adjust the distance as needed
+
+          TitleFrame(
+            title: title,
+            showBackArrow: showBackButton,
           ),
-          SizedBox(height: 30), // Adjust the distance as needed
-          TitleFrame(),
-          SizedBox(height: 30),
+          const SizedBox(height: 30),
         ],
       ),
       centerTitle: true,
@@ -34,54 +49,68 @@ class CustomAppBarSettings extends StatelessWidget implements PreferredSizeWidge
 }
 
 class NewNavBar extends StatelessWidget {
-  final String profileImagePath;
-
-  NewNavBar({required this.profileImagePath});
+  const NewNavBar({super.key});
 
   @override
   Widget build(BuildContext context) {
+    final String profileUrl =
+        SharedPrefs().getProfileUrl() ?? 'assets/profile_pic.png';
+
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(),
+      decoration: const BoxDecoration(),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          IconButton(
-            icon: Icon(
-              Icons.menu,
-              color: Colors.white,
-            ),
-            onPressed: () {
-              // Navigate to the SideBar widget
-              Navigator.push(
-                context,
-                MaterialPageRoute(builder: (context) => SideBar()),
-              );
-            },
-          ),
-          SearchBarTextField(),
-          SizedBox(width: 20),
-          Container(
-            width: 40,
-            height: 40.45,
-            decoration: ShapeDecoration(
-              image: DecorationImage(
-                image: NetworkImage(profileImagePath),
-                fit: BoxFit.fill,
-              ),
-              shape: OvalBorder(),
-            ),
+          // IconButton(
+          //   icon: Icon(
+          //     Icons.menu,
+          //     color: Colors.white,
+          //   ),
+          //   onPressed: () {
+          //     // Navigate to the SideBar widget
+          //     Navigator.push(
+          //       context,
+          //       MaterialPageRoute(builder: (context) => SideBar()),
+          //     );
+          //   },
+          // ),
+          // SearchBarTextField(),
+          const SizedBox(width: 80),
+          FirebaseStorageImage(
+            profileUrl: SharedPrefs().getProfileUrl() as String,
           ),
         ],
       ),
     );
   }
+
+  Future<Uint8List> downloadImage(String? url) async {
+    if (url != null) {
+      try {
+        final response = await http.get(Uri.parse(url));
+        if (response.statusCode == 200) {
+          return response.bodyBytes;
+        } else {
+          print('\nError: ${response.statusCode} - ${response.reasonPhrase}\n');
+          throw Exception('Failed to load image');
+        }
+      } catch (e) {
+        print('Exception: $e');
+        throw Exception('Failed to load image');
+      }
+    } else {
+      throw Exception('Profile URL is null');
+    }
+  }
 }
 
 class SearchBarTextField extends StatelessWidget {
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
+
+  SearchBarTextField({super.key});
 
   void handleSearch(String value) {
     // Handle the search input changes
@@ -109,37 +138,29 @@ class SearchBarTextField extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         clipBehavior: Clip.antiAlias,
         decoration: ShapeDecoration(
-          color: Color(0xFFFFF7EE),
+          color: const Color(0xFFFFF7EE),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
         ),
-        child: Row(
-          mainAxisAlignment: MainAxisAlignment.start,
-          crossAxisAlignment: CrossAxisAlignment.center,
-          children: [
-            IconButton(
-              icon: Icon(Icons.search, color: Colors.black, size: 20),
-              onPressed: handleSearchIconPressed,
-            ),
-            SizedBox(width: 20),
-            Flexible(
-              child: TextField(
-                controller: _searchController,
-                onChanged: handleSearch,
-                onSubmitted: handleSubmit,
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 12,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w600,
-                  height: 0.11,
-                  letterSpacing: 0.20,
-                ),
-                cursorColor: Colors.black,
-                decoration: InputDecoration(
-                  hintText: 'Search Users',
-                  hintStyle: TextStyle(
+        child: Align(
+          alignment: Alignment.centerLeft,
+          child: Row(
+            mainAxisAlignment: MainAxisAlignment.start,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const Icon(
+                Icons.search,
+                color: Colors.black,
+                size: 20,
+              ),
+              const SizedBox(width: 8), // Adjust horizontal spacing as needed
+              Expanded(
+                child: TextField(
+                  controller: _searchController,
+                  onChanged: handleSearch,
+                  onSubmitted: handleSubmit,
+                  style: const TextStyle(
                     color: Colors.black,
                     fontSize: 12,
                     fontFamily: 'Poppins',
@@ -147,94 +168,35 @@ class SearchBarTextField extends StatelessWidget {
                     height: 0.11,
                     letterSpacing: 0.20,
                   ),
-                  border: InputBorder.none,
-                  contentPadding: EdgeInsets.symmetric(
-                      vertical: -16), // Adjust vertical padding as needed
+                  cursorColor: Colors.black,
+                  decoration: const InputDecoration(
+                    hintText: 'Search Users',
+                    hintStyle: TextStyle(
+                      color: Colors.black,
+                      fontSize: 12,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w600,
+                      height: 0.11,
+                      letterSpacing: 0.20,
+                    ),
+                    border: InputBorder.none,
+                  ),
                 ),
               ),
-            ),
-          ],
+            ],
+          ),
         ),
       ),
     );
   }
 }
 
-// class SearchBarTextField extends StatelessWidget {
-//   TextEditingController _searchController = TextEditingController();
-
-//   void handleSearch(String value) {
-//     // Handle the search input changes
-//     print("Search onChanged: $value");
-//   }
-
-//   void handleSubmit(String value) {
-//     // Handle the search submission
-//     print("Search onSubmitted: $value");
-//   }
-
-//   void handleSearchIconPressed() {
-//     // Handle the search icon pressed
-//     print("Search icon pressed");
-//   }
-
-//   @override
-//   Widget build(BuildContext context) {
-//     return Expanded(
-//       child: Container(
-//         padding: const EdgeInsets.all(10),
-//         clipBehavior: Clip.antiAlias,
-//         decoration: ShapeDecoration(
-//           color: Color(0xFFFFF7EE),
-//           shape: RoundedRectangleBorder(
-//             borderRadius: BorderRadius.circular(20),
-//           ),
-//         ),
-//         child: Row(
-//           mainAxisAlignment: MainAxisAlignment.start,
-//           crossAxisAlignment: CrossAxisAlignment.center,
-//           children: [
-//             IconButton(
-//               icon: Icon(Icons.search, color: Colors.black, size: 20),
-//               onPressed: handleSearchIconPressed,
-//             ),
-//             SizedBox(width: 20),
-//             Expanded(
-//               child: TextField(
-//                 controller: _searchController,
-//                 onChanged: handleSearch,
-//                 onSubmitted: handleSubmit,
-//                 style: TextStyle(
-//                   color: Colors.black,
-//                   fontSize: 12,
-//                   fontFamily: 'Poppins',
-//                   fontWeight: FontWeight.w600,
-//                   height: 0.11,
-//                   letterSpacing: 0.20,
-//                 ),
-//                 cursorColor: Colors.black,
-//                 decoration: InputDecoration(
-//                   hintText: 'Search Users',
-//                   hintStyle: TextStyle(
-//                     color: Colors.black,
-//                     fontSize: 12,
-//                     fontFamily: 'Poppins',
-//                     fontWeight: FontWeight.w600,
-//                     height: 0.11,
-//                     letterSpacing: 0.20,
-//                   ),
-//                   border: InputBorder.none,
-//                 ),
-//               ),
-//             ),
-//           ],
-//         ),
-//       ),
-//     );
-//   }
-// }
-
 class TitleFrame extends StatelessWidget {
+  final String title;
+  final bool showBackArrow;
+
+  const TitleFrame({super.key, required this.title, this.showBackArrow = false});
+
   @override
   Widget build(BuildContext context) {
     return Container(
@@ -242,28 +204,40 @@ class TitleFrame extends StatelessWidget {
       height: 70,
       padding: const EdgeInsets.all(10),
       clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
+      decoration: const BoxDecoration(),
+      child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
-        crossAxisAlignment: CrossAxisAlignment.center,
         children: [
-          SizedBox(
-            height: 10.0,
-          ),
-          Text(
-            'Account Settings',
-            style: TextStyle(
-              color: Color(0xFFFFF7EE),
-              fontSize: 32,
-              fontFamily: 'Poppins',
-              fontWeight: FontWeight.w700,
-              height: 0.04,
-              letterSpacing: 0.10,
+          if (showBackArrow)
+            Padding(
+              padding: const EdgeInsets.only(bottom: 10),
+              child: IconButton(
+                icon: const Icon(Icons.arrow_back_ios_new, color: Color(0xFFFFF7EE)),
+                onPressed: () {
+                  // Handle back arrow press
+                  Navigator.pop(context);
+                },
+              ),
             ),
-          ),
-          SizedBox(
-            height: 20.0,
+          SizedBox(width: showBackArrow ? 15.0 : 0.0),
+          Column(
+            mainAxisSize: MainAxisSize.min,
+            crossAxisAlignment: CrossAxisAlignment.center,
+            children: [
+              const SizedBox(height: 10.0),
+              Text(
+                title,
+                style: const TextStyle(
+                  color: Color(0xFFFFF7EE),
+                  fontSize: 32,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w700,
+                  height: 0.04,
+                  letterSpacing: 0.10,
+                ),
+              ),
+              const SizedBox(height: 20.0),
+            ],
           ),
         ],
       ),

@@ -4,7 +4,7 @@ class MyButtonNoImage extends StatelessWidget {
   final String buttonText;
   final Function()? onTap;
 
-  MyButtonNoImage({
+  const MyButtonNoImage({
     Key? key,
     required this.buttonText,
     required this.onTap,
@@ -19,13 +19,15 @@ class MyButtonNoImage extends StatelessWidget {
           width: 265,
           height: 50,
           decoration: ShapeDecoration(
-            color: Color(0xFFE76F51),
+            color: const Color(0xFFE76F51),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(14),
             ),
           ),
-          child: Material( // Use Material widget to enable ink splash
-            color: Colors.transparent, // Make it transparent to prevent background color overlay
+          child: Material(
+            // Use Material widget to enable ink splash
+            color: Colors
+                .transparent, // Make it transparent to prevent background color overlay
             child: InkWell(
               onTap: onTap,
               child: Row(
@@ -33,13 +35,13 @@ class MyButtonNoImage extends StatelessWidget {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Center(
                       child: Text(
                         buttonText,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 14,
                           fontFamily: 'Mulish',

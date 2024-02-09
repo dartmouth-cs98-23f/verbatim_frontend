@@ -5,7 +5,7 @@ class MyButtonWithImage extends StatelessWidget {
   final bool hasButtonImage;
   final Function()? onTap;
 
-  MyButtonWithImage({
+  const MyButtonWithImage({
     Key? key,
     required this.buttonText,
     required this.hasButtonImage,
@@ -21,7 +21,7 @@ class MyButtonWithImage extends StatelessWidget {
           width: 333,
           height: 49,
           decoration: ShapeDecoration(
-            color: Color(0xFFE76F51),
+            color: const Color(0xFFE76F51),
             shape: RoundedRectangleBorder(
               borderRadius: BorderRadius.circular(14),
             ),
@@ -40,7 +40,7 @@ class MyButtonWithImage extends StatelessWidget {
                     height: 25,
                     decoration: BoxDecoration(
                       image: hasButtonImage
-                          ? DecorationImage(
+                          ? const DecorationImage(
                         image: AssetImage('assets/googleImage.png'),
                         fit: BoxFit.fill,
                       )
@@ -48,13 +48,13 @@ class MyButtonWithImage extends StatelessWidget {
                       //color: Color(0xFFE76F51),
                     ),
                   ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Align(
                     alignment: Alignment.centerLeft,
                     child: Center(
                       child: Text(
                         buttonText,
-                        style: TextStyle(
+                        style: const TextStyle(
                           color: Colors.white,
                           fontSize: 14,
                           fontFamily: 'Mulish',

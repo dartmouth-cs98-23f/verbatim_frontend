@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
+<<<<<<< HEAD
 
 import 'package:verbatim_frontend/screens/landingPage.dart';
 import 'package:verbatim_frontend/screens/logIn.dart';
@@ -10,23 +11,52 @@ import 'Components/defineRoutes.dart';
 import 'Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/sidebar.dart';
 import 'package:clipboard/clipboard.dart';
+=======
+import 'package:verbatim_frontend/gameObject.dart';
+import 'package:verbatim_frontend/screens/landingPage.dart';
+import 'BackendService.dart';
+import 'Components/defineRoutes.dart';
+import 'Components/shared_prefs.dart';
+import 'package:firebase_core/firebase_core.dart';
+
+>>>>>>> main
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
-  WidgetsFlutterBinding
-      .ensureInitialized(); // Ensure WidgetsBinding is initialized
+  WidgetsFlutterBinding.ensureInitialized();
   await SharedPrefs().init();
 
   const String environment =
-      const String.fromEnvironment('FLUTTER_BACKEND_ENV', defaultValue: 'prod');
-  //print("env in main is: " + environment);
-  BackendService.loadProperties(environment);
 
+      String.fromEnvironment('FLUTTER_BACKEND_ENV', defaultValue: 'prod');
+  //print("env in main is: " + environment);
+
+  BackendService.loadProperties(environment);
+  try {
+    await Firebase.initializeApp(
+        //name: 'com.example.verbatim_frontend',
+        options: const FirebaseOptions(
+      apiKey: 'AIzaSyAtNTGytXuzaYGDiWyzjiQ5qzZqyH3dqYk',
+      appId: '1:89436108608:android:58705820c58e09aa7b6ca5',
+      messagingSenderId: '89436108608',
+      projectId: 'verbatim-81617',
+      storageBucket: "gs://verbatim-81617.appspot.com",
+    ));
+  } catch (e) {
+    print('\n\nError initializing Firebase: $e\n\n');
+  }
+
+<<<<<<< HEAD
   runApp(
     MyApp(),
   );
+=======
+  runApp(const MyApp());
+>>>>>>> main
 
+  ChangeNotifierProvider(
+      create: (context) => GameObject(), child: const MyApp());
   defineRoutes();
 }
 
@@ -36,6 +66,8 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //https://maketintsandshades.com/#E76F51 alternate shades are not yet added
+
+
     const MaterialColor paleColor = MaterialColor(
       0xFFF3EE,
       <int, Color>{
@@ -57,7 +89,7 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       theme: ThemeData(
         //primarySwatch: paleColor,
-        scaffoldBackgroundColor: Color.fromARGB(255, 255, 243, 238),
+        scaffoldBackgroundColor: const Color.fromARGB(255, 255, 243, 238),
         textTheme: GoogleFonts.poppinsTextTheme(),
         textSelectionTheme: const TextSelectionThemeData(
           cursorColor: Color(0xFFE76F51),
@@ -66,8 +98,15 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey,
       onGenerateRoute: Application.router.generator,
+<<<<<<< HEAD
       //    initialRoute: SharedPrefs().getCurrentPage() ?? '/landingPage',
       home: LogIn(), //LandingPage(),
+=======
+
+      initialRoute: SharedPrefs().getCurrentPage() ?? '/landingPage',
+      home: const LandingPage(),
+
+>>>>>>> main
     );
   }
 }

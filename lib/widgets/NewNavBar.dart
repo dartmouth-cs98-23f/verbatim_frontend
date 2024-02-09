@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 
 class NewNavBar extends StatelessWidget {
+  const NewNavBar({super.key});
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -10,7 +12,7 @@ class NewNavBar extends StatelessWidget {
           height: 60.45,
           padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
           clipBehavior: Clip.antiAlias,
-          decoration: BoxDecoration(),
+          decoration: const BoxDecoration(),
           child: Row(
             mainAxisSize: MainAxisSize.min,
             mainAxisAlignment: MainAxisAlignment.start,
@@ -18,7 +20,7 @@ class NewNavBar extends StatelessWidget {
             children: [
               Container(
                 clipBehavior: Clip.antiAlias,
-                decoration: BoxDecoration(),
+                decoration: const BoxDecoration(),
                 child: Row(
                   mainAxisSize: MainAxisSize.min,
                   mainAxisAlignment: MainAxisAlignment.start,
@@ -30,14 +32,11 @@ class NewNavBar extends StatelessWidget {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 4, vertical: 6),
                       clipBehavior: Clip.antiAlias,
-                      decoration: BoxDecoration(),
-                      child: Row(
+                      decoration: const BoxDecoration(),
+                      child: const Row(
                         mainAxisSize: MainAxisSize.min,
                         mainAxisAlignment: MainAxisAlignment.center,
                         crossAxisAlignment: CrossAxisAlignment.center,
-
-                        children: [],
-
                       ),
                     ),
                   ],
@@ -49,7 +48,7 @@ class NewNavBar extends StatelessWidget {
                 padding: const EdgeInsets.all(10),
                 clipBehavior: Clip.antiAlias,
                 decoration: ShapeDecoration(
-                  color: Color(0xFFFFF7EE),
+                  color: const Color(0xFFFFF7EE),
                   shape: RoundedRectangleBorder(
                     borderRadius: BorderRadius.circular(15),
                   ),
@@ -63,17 +62,13 @@ class NewNavBar extends StatelessWidget {
                       width: 16,
                       height: 16,
                       clipBehavior: Clip.antiAlias,
-                      decoration: BoxDecoration(),
 
-                      child: Stack(children: []),
-
-
-                      child: Stack(),
-
+                      decoration: const BoxDecoration(),
+                      child: const Stack(),
 
                     ),
                     const SizedBox(width: 10),
-                    SizedBox(
+                    const SizedBox(
                       width: 310,
                       height: 5,
                       child: Text(
@@ -95,12 +90,12 @@ class NewNavBar extends StatelessWidget {
                 width: 4,
                 height: 40.45,
                 clipBehavior: Clip.antiAlias,
-                decoration: BoxDecoration(),
+                decoration: const BoxDecoration(),
               ),
               Container(
                 width: 40,
                 height: 40.45,
-                decoration: ShapeDecoration(
+                decoration: const ShapeDecoration(
                   image: DecorationImage(
                     image: NetworkImage("https://via.placeholder.com/40x40"),
                     fit: BoxFit.fill,

@@ -3,44 +3,12 @@ import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
 import 'package:provider/provider.dart';
 import 'package:verbatim_frontend/BackendService.dart';
+import 'package:verbatim_frontend/Components/defineRoutes.dart';
 import 'dart:convert';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
-
-// try and get this to work?
-/*
-class FriendRequestsProvider extends ChangeNotifier {
-  Set<String> _friendRequestUsernames = <String>{};
-
-  Set<String> get friendRequestUsernames => _friendRequestUsernames;
-
-  void updateFriendRequests(Set<String> updatedFriendRequests) {
-    _friendRequestUsernames = updatedFriendRequests;
-    notifyListeners();
-  }
-}
-*/
-
-class User {
-  int id = 0;
-  String email = "";
-  String username = "";
-  String lastName = "";
-  String password = "";
-  dynamic profilePicture;
-  String? bio = "";
-  int numGlobalChallengesCompleted = 0;
-  int numCustomChallengesCompleted = 0;
-  int streak = 0;
-  bool hasCompletedDailyChallenge = false;
-
-  User({required this.username});
-
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
-      username: json['username'],
-    );
-  }
-}
+import 'package:verbatim_frontend/screens/addFriend.dart';
+import 'package:verbatim_frontend/screens/profile.dart';
+import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 
 class UserGroup {
   int id = 0;
@@ -74,7 +42,7 @@ class FriendAcceptOrDeclineRequest {
 }
 
 class SideBar extends StatefulWidget {
-  SideBar({
+  const SideBar({
     Key? key,
   }) : super(key: key);
 
@@ -83,12 +51,12 @@ class SideBar extends StatefulWidget {
 }
 
 class _SideBarState extends State<SideBar> {
-  String username = SharedPrefs().getUserName() ?? "";
+  String username = SharedPrefs().getUserName() as String;
 
-  final Color primary = Color.fromARGB(255, 231, 111, 81);
+  final Color primary = const Color.fromARGB(255, 231, 111, 81);
 
-  Set<String> friendRequestUsernames = <String>{};
-  List<String> usernamesList = [];
+  List<User> friendRequests = [];
+  List<User> friends = [];
   List<String> groupnamesList = [];
   List<UserGroup> userGroups = [];
 
@@ -117,7 +85,7 @@ class _SideBarState extends State<SideBar> {
 
 // getFriends - can I get the friend:user groupId here?
   Future<void> getFriends(String username) async {
-    final url = Uri.parse(BackendService.getBackendUrl() + 'getFriends');
+    final url = Uri.parse('${BackendService.getBackendUrl()}getFriends');
     final Map<String, String> headers = {
       'Content-Type': 'text/plain',
     };
@@ -126,15 +94,18 @@ class _SideBarState extends State<SideBar> {
 
     if (response.statusCode == 200) {
       final List<dynamic> data = json.decode(response.body);
-      List<User> friendsList = data.map((item) => User.fromJson(item)).toList();
-      usernamesList = friendsList.map((user) => user.username).toList();
+      friends = data.map((item) => User.fromJson(item)).toList();
+      friends.removeWhere((user) => user.username == username);
+      friends.forEach((user) {
+        user.isRequested = true;
+      });
     } else {
-      print('Failed to send responses. Status code: ${response.statusCode}');
+      print('Failed to get friends. Status code: ${response.statusCode}');
     }
   }
 
   Future<void> getFriendRequests(String username) async {
-    final url = Uri.parse(BackendService.getBackendUrl() + 'getFriendRequests');
+    final url = Uri.parse('${BackendService.getBackendUrl()}getFriendRequests');
     final Map<String, String> headers = {
       'Content-Type': 'text/plain',
     };
@@ -142,25 +113,19 @@ class _SideBarState extends State<SideBar> {
     final response = await http.post(url, headers: headers, body: username);
 
     if (response.statusCode == 200) {
-      List<Map<String, dynamic>> friendRequests =
-          List<Map<String, dynamic>>.from(json.decode(response.body));
-      if (friendRequests.isNotEmpty) {
-        print(friendRequests);
-
-        for (var request in friendRequests) {
-          String username = request['username'];
-          friendRequestUsernames.add(username);
-        }
-      }
+      final List<dynamic> data = json.decode(response.body);
+      friendRequests = data.map((item) => User.fromJson(item)).toList();
+      friendRequests.removeWhere((user) => user.username == username);
     } else {
-      print('Failed to send responses. Status code: ${response.statusCode}');
+      print(
+          'Failed to get friend requests. Status code: ${response.statusCode}');
     }
   }
 
   Future<void> handleFriendRequests(
       String username, String requester, bool accept) async {
     final url =
-        Uri.parse(BackendService.getBackendUrl() + 'handleFriendRequest');
+        Uri.parse('${BackendService.getBackendUrl()}handleFriendRequest');
     final Map<String, String> headers = {
       'Content-Type': 'application/json',
     };
@@ -183,6 +148,8 @@ class _SideBarState extends State<SideBar> {
 
   @override
   Widget build(BuildContext context) {
+    BuildContext context1 = context;
+
     username = SharedPrefs().getUserName() ?? "";
     // laod content first - get friends, requests and groups
     return FutureBuilder<void>(
@@ -193,7 +160,7 @@ class _SideBarState extends State<SideBar> {
         ]),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
-            return CircularProgressIndicator();
+            return const CircularProgressIndicator();
           } else if (snapshot.hasError) {
             return Text('Error: ${snapshot.error}');
           } else {
@@ -201,8 +168,8 @@ class _SideBarState extends State<SideBar> {
               child: ListView(
                 children: <Widget>[
                   Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 10, vertical: 20.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 20.0),
                     child: Container(
                         height: 64,
                         decoration: ShapeDecoration(
@@ -215,22 +182,31 @@ class _SideBarState extends State<SideBar> {
                           child: ListTile(
                             title: Text(
                               username,
-                              style:
-                                  TextStyle(color: Colors.white, fontSize: 20),
+                              style: const TextStyle(
+                                  color: Colors.white, fontSize: 20),
                             ),
-                            leading:
-                                Icon(Icons.mood, color: Colors.white, size: 32),
-                            trailing: Icon(Icons.settings,
+                            leading: FirebaseStorageImage(
+                              profileUrl:
+                                  SharedPrefs().getProfileUrl() as String,
+                            ),
+                            trailing: const Icon(Icons.settings,
                                 color: Colors.white, size: 26),
                             onTap: () {
-                              handleTap(context, 2);
+                              // handleTap(context, 2);
+                              try {
+                                Application.router
+                                    .navigateTo(context, "/profile");
+                              } catch (e) {
+                                print(
+                                    '\nIn sidebar, after clikcing on settings icon, Error navigating to Profile: $e\n');
+                              }
                             },
                           ),
                         )),
                   ),
                   Padding(
-                    padding:
-                        EdgeInsets.symmetric(horizontal: 10, vertical: 10.0),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 10, vertical: 10.0),
                     child: Container(
                       decoration: ShapeDecoration(
                         shape: RoundedRectangleBorder(
@@ -254,9 +230,9 @@ class _SideBarState extends State<SideBar> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 20.0),
+                  const SizedBox(height: 20.0),
                   ExpansionTile(
-                    title: Text('Friends',
+                    title: const Text('Friends',
                         style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
@@ -267,48 +243,62 @@ class _SideBarState extends State<SideBar> {
                       onTap: () {
                         handleTap(context, 1);
                       },
-                      child: Icon(Icons.add, color: Colors.black, size: 25),
+                      child:
+                          const Icon(Icons.add, color: Colors.black, size: 25),
                     ),
 
                     initiallyExpanded: true,
                     shape:
-                        Border(), // this will expand all of them - need to make a custom expansion tile at some point to fix this (i think)
+                        const Border(), // this will expand all of them - need to make a custom expansion tile at some point to fix this (i think)
 
                     children: <Widget>[
-                      SizedBox(height: 10.0),
+                      const SizedBox(height: 10.0),
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: 5.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
                         child: ListView.builder(
                           shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          itemCount: usernamesList.length,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: friends.length,
                           itemBuilder: (BuildContext context, int index) {
-                            String friend = usernamesList[index];
+                            User friend = friends[index];
 
 // if you click the friendname, go to the friendship page. Can i send friend groupId? load it here?
                             return ListTile(
-                              title: Text(
-                                friend,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
+                              title: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            Profile(user: friend)),
+                                  );
+                                },
+                                child: Text(
+                                  friend.username,
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
+                                  ),
                                 ),
                               ),
-                              leading: Icon(Icons.person, color: Colors.black),
+                              leading: FirebaseStorageImage(
+                                profileUrl: friend.profilePicture,
+                                user: friend,
+                              ),
                               onTap: () {
                                 Navigator.pushNamed(this.context,
                                     '/friendship?friendUsername=$friend');
-                              },
+                              }, // Keep this empty if onTap behavior is handled by GestureDetector
                             );
                           },
                         ),
                       ),
                     ],
                   ),
-                  SizedBox(height: 20.0),
+                  const SizedBox(height: 20.0),
                   ExpansionTile(
-                    title: Text(
+                    title: const Text(
                       'Groups',
                       style: TextStyle(
                           color: Colors.black,
@@ -321,13 +311,14 @@ class _SideBarState extends State<SideBar> {
                       onTap: () {
                         handleTap(context, 4);
                       },
-                      child: Icon(Icons.add, color: Colors.black, size: 25),
+                      child:
+                          const Icon(Icons.add, color: Colors.black, size: 25),
                     ),
                     initiallyExpanded: false,
 
                     shape: Border(),
                     children: <Widget>[
-                      SizedBox(height: 10.0),
+                      const SizedBox(height: 10.0),
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 5.0),
                         child: ListView.builder(
@@ -358,82 +349,95 @@ class _SideBarState extends State<SideBar> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 20.0),
+                  const SizedBox(height: 20.0),
                   ExpansionTile(
-                      title: Text(
-                        'Friend Requests',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18),
-                      ),
-                      trailing: friendRequestUsernames.isNotEmpty
-                          ? Icon(Icons.pending, color: Colors.orange, size: 25)
-                          : Icon(Icons.pending, color: Colors.black, size: 25),
-                      shape: Border(),
-                      children: <Widget>[
-                        SizedBox(height: 10.0),
-                        Container(
-                          padding: EdgeInsets.symmetric(horizontal: 5.0),
-                          child: ListView.builder(
-                            shrinkWrap: true,
-                            physics: NeverScrollableScrollPhysics(),
-                            itemCount: friendRequestUsernames.length,
-                            itemBuilder: (BuildContext context, int index) {
-                              List<String> requestsList =
-                                  friendRequestUsernames.toList();
+                    title: const Text(
+                      'Friend Requests',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18),
+                    ),
+                    trailing: friendRequests.isNotEmpty
+                        ? const Icon(Icons.pending,
+                            color: Colors.orange, size: 25)
+                        : const Icon(Icons.pending,
+                            color: Colors.black, size: 25),
+                    shape: const Border(),
+                    children: <Widget>[
+                      const SizedBox(height: 10.0),
+                      Container(
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          itemCount: friendRequests.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            // List<String> requestsList =
+                            //     friendRequestUsernames.toList();
+                            User requester = friendRequests[index];
 
-                              String requester = requestsList[index];
-
-                              return ListTile(
-                                title: Text(
-                                  requester,
-                                  style: TextStyle(
+                            return ListTile(
+                              title: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            Profile(user: requester)),
+                                  );
+                                },
+                                child: Text(
+                                  requester.username,
+                                  style: const TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
                                     fontSize: 15,
                                   ),
                                 ),
-                                leading:
-                                    Icon(Icons.person, color: Colors.black),
-                                trailing: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          friendRequestUsernames
-                                              .remove(requester);
-                                        });
-                                        handleFriendRequests(
-                                            username, requester, true);
-                                      },
-                                      child: Icon(Icons.check_box,
-                                          color: Colors.black),
-                                    ),
-                                    GestureDetector(
-                                      onTap: () {
-                                        setState(() {
-                                          friendRequestUsernames
-                                              .remove(requester);
-                                        });
-                                        handleFriendRequests(
-                                            username, requester, false);
-                                      },
-                                      child: Icon(Icons.cancel,
-                                          color: Colors.black),
-                                    ),
-                                  ],
-                                ),
-                                onTap: () {},
-                              );
-                            },
-                          ),
+                              ),
+                              leading: FirebaseStorageImage(
+                                profileUrl: requester.profilePicture,
+                                user: requester,
+                              ),
+                              trailing: Row(
+                                mainAxisSize: MainAxisSize.min,
+                                children: [
+                                  GestureDetector(
+                                    onTap: () {
+                                      handleFriendRequests(
+                                          username, requester.username, true);
+                                      setState(() {
+                                        friendRequests.remove(requester);
+                                      });
+                                    },
+                                    child: const Icon(Icons.check_box,
+                                        color: Colors.black),
+                                  ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      handleFriendRequests(
+                                          username, requester.username, false);
+                                      setState(() {
+                                        friendRequests.remove(requester);
+                                      });
+                                    },
+                                    child: const Icon(Icons.cancel,
+                                        color: Colors.black),
+                                  ),
+                                ],
+                              ),
+                              onTap:
+                                  () {}, // Keep this empty if onTap behavior is handled by GestureDetector
+                            );
+                          },
                         ),
-                      ]),
-                  SizedBox(height: 20.0),
+                      ),
+                    ],
+                  ),
+                  const SizedBox(height: 20.0),
                   ListTile(
-                    title: Text('More',
+                    title: const Text('More',
                         style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
@@ -442,41 +446,42 @@ class _SideBarState extends State<SideBar> {
                   ),
                   SizedBox(height: 10.0),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 5.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
                     child: Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 0.0, vertical: .1),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 0.0, vertical: .1),
                       child: ListTile(
-                        title: Text('Invite Friends',
+                        title: const Text('Invite Friends',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18)),
-                        leading: Icon(Icons.person_add, color: Colors.black),
+                        leading:
+                            const Icon(Icons.person_add, color: Colors.black),
                         onTap: () {},
                       ),
                     ),
                   ),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                   Container(
-                    padding: EdgeInsets.symmetric(horizontal: 5.0),
+                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
                     child: Container(
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 0.0, vertical: .1),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 0.0, vertical: .1),
                       child: ListTile(
-                        title: Text('Logout',
+                        title: const Text('Logout',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
                                 fontSize: 18)),
-                        leading: Icon(Icons.logout, color: Colors.black),
+                        leading: const Icon(Icons.logout, color: Colors.black),
                         onTap: () {
                           Navigator.pushNamed(context, '/logout');
                         },
                       ),
                     ),
                   ),
-                  SizedBox(height: 20),
+                  const SizedBox(height: 20),
                 ],
               ),
             );
@@ -494,12 +499,9 @@ void handleTap(BuildContext context, int index) {
     case 1: // "Group Name"
       Navigator.pushNamed(context, '/add_friend');
       break;
-    case 2: // "Settings"
+    case 2: // "Profile"
       Navigator.pushNamed(context, '/profile');
       break;
-    // case 3: // "Profile"
-    //   Navigator.pushNamed(context, '/profile');
-    //   break;
 
     case 3: // "Logout"
       Navigator.pushNamed(context, '/logout');
