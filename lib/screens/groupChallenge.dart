@@ -329,7 +329,7 @@ class _GroupChallengeState extends State<groupChallenge> {
                                 setState(() {
                                   userResponse = responseController.text;
                                   if (userResponse == "") {
-                                    print("U GOTTA SAY SOMETHING");
+                                    // print("U GOTTA SAY SOMETHING");
                                   } else {
                                     userResponses.add(userResponse);
                                     responseController.clear();
