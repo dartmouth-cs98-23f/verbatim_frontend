@@ -15,6 +15,33 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:google_fonts/google_fonts.dart';
 
+class Stats {
+  final dynamic streaks;
+  final dynamic customs;
+  final dynamic globals;
+  final dynamic friends;
+  final dynamic match;
+  final dynamic verbaMatchScore;
+  Stats({
+    required this.streaks,
+    required this.customs,
+    required this.globals,
+    required this.friends,
+    required this.match,
+    required this.verbaMatchScore,
+  });
+  factory Stats.fromJson(Map<String, dynamic> json) {
+    return Stats(
+      streaks: json['streak'],
+      customs: json['groupChalllengesCompleted'],
+      globals: json['globalChallengesCompleted'],
+      friends: json['numFriends'],
+      match: json['verbaMatchUser'],
+      verbaMatchScore: json['verbaMatchScore'],
+    );
+  }
+}
+
 class Profile extends StatefulWidget {
   final User? user; // Optional User object
 
@@ -26,16 +53,11 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   final String assetName = 'assets/img1.svg';
-  final String profile = 'assets/default.jpeg';
+  // final String profile = 'assets/default.jpeg';
   final String friendsIcon = 'assets/friends.svg';
   final String streakIcon = 'assets/streak.svg';
   final String globalChallengeIcon = 'assets/globalChallenges.svg';
   final String customIcon = 'assets/customChallenges.svg';
-
-  static int friends = -1;
-  static int globals = 0;
-  static int customs = 0;
-  static int streaks = 0;
 
   List<int> stats = [friends, globals, customs, streaks];
 
@@ -52,17 +74,65 @@ class _ProfileState extends State<Profile> {
   bool drawButton = false;
   String groupName = '';
 
-  Future<void> _getStats(String username) async {
-    final url = Uri.parse("${BackendService.getBackendUrl()}getUserStats");
-    final headers = <String, String>{'Content-Type': 'application/json'};
-    final getStats = await http.post(url, headers: headers, body: username);
+  static int friends = 0;
+  static int globals = 0;
+  static int customs = 0;
+  static int streaks = 0;
+  static double verbaMatchScore = 0;
+  static User match = User(
+    username: '',
+    bio: '',
+    id: 0,
+    email: '',
+    lastName: '',
+    firstName: '',
+    profilePicture: '',
+    numGlobalChallengesCompleted: 0,
+    numCustomChallengesCompleted: 0,
+    streak: 0,
+    hasCompletedDailyChallenge: false,
+  );
+  static String profile = 'assets/default.jpeg';
 
+  Future<void> _getStats(String username) async {
+    final url =
+        Uri.parse("${BackendService.getBackendUrl()}$username/getUserStats");
+    final headers = <String, String>{'Content-Type': 'application/json'};
+    final getStats = await http.get(url, headers: headers);
     if (getStats.statusCode == 200) {
-      final List<dynamic>? data = jsonDecode(getStats.body);
-      streaks = data![0];
-      customs = data[1];
-      globals = data[2];
-      friends = data[3];
+      final Map<String, dynamic> data = jsonDecode(getStats.body);
+      final Stats stats = Stats.fromJson(data);
+      friends = stats.friends;
+      globals = stats.globals;
+      customs = stats.customs;
+      streaks = stats.streaks;
+      verbaMatchScore = stats.verbaMatchScore;
+      final Map<String, dynamic> matchDeets = stats.match;
+      match = User(
+        username: matchDeets["username"],
+        bio: matchDeets['bio'],
+        id: matchDeets['id'],
+        email: matchDeets['email'],
+        lastName: matchDeets['lastName'],
+        firstName: matchDeets['firstName'],
+        profilePicture: matchDeets['profilePicture'],
+        numGlobalChallengesCompleted:
+            matchDeets['numGlobalChallengesCompleted'],
+        numCustomChallengesCompleted:
+            matchDeets['numCustomChallengesCompleted'],
+        streak: matchDeets['streak'],
+        hasCompletedDailyChallenge: matchDeets['hasCompletedDailyChallenge'],
+      );
+      if (match.bio == '') {
+      } else {
+        //TODO: match.getprofile
+      }
+      if (SharedPrefs().getBio() == '') {
+      } else {
+        //TODO: sharedprefs.getprofile
+        profile = profile;
+      }
+      // print("Itsss okkkk");
     } else {
       print('Sorry could not get user stats');
     }
@@ -588,8 +658,7 @@ class _ProfileState extends State<Profile> {
                                   ]),
                                   // Profile picture
                                   const SizedBox(height: 10),
-                                  Positioned(
-                                      child: Center(
+                                  Center(
                                     child: Text.rich(TextSpan(
                                       children: [
                                         TextSpan(
@@ -619,22 +688,31 @@ class _ProfileState extends State<Profile> {
                                             )),
                                       ],
                                     )),
-                                  )),
+                                  ),
 
                                   const SizedBox(height: 5),
 
-                                  const Positioned(
-                                    child: Center(
-                                      child: Text(
-                                        "86% similarity",
-                                        style: TextStyle(
+                                  Center(
+                                      child: Text.rich(TextSpan(
+                                    children: [
+                                      TextSpan(
+                                        text: verbaMatchScore.toString(),
+                                        style: const TextStyle(
                                           fontSize: 16,
                                           fontWeight: FontWeight.w500,
                                           color: Colors.black,
                                         ),
                                       ),
-                                    ),
-                                  ),
+                                      const TextSpan(
+                                        text: "% similarity",
+                                        style: TextStyle(
+                                          fontSize: 16,
+                                          fontWeight: FontWeight.w500,
+                                          color: Colors.black,
+                                        ),
+                                      )
+                                    ],
+                                  ))),
                                   const SizedBox(height: 5),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
