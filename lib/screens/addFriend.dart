@@ -477,8 +477,6 @@ class _AddFriendState extends State<addFriend> {
                                               ''; // Assigning an empty string if profilePicture is null
                                         }
 
-                                        print(
-                                            "\nUser's bio before routing to profile page is: ${currentUser.bio}\n");
                                         Navigator.push(
                                           context,
                                           MaterialPageRoute(

@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:verbatim_frontend/BackendService.dart';
+import 'package:verbatim_frontend/Components/defineRoutes.dart';
 import 'dart:convert';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/addFriend.dart';
+import 'package:verbatim_frontend/screens/profile.dart';
 import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 
 class FriendAcceptOrDeclineRequest {
@@ -104,6 +106,8 @@ class _SideBarState extends State<SideBar> {
 
   @override
   Widget build(BuildContext context) {
+    BuildContext context1 = context;
+
     username = SharedPrefs().getUserName() ?? "";
     return FutureBuilder<void>(
         future: Future.wait([
@@ -144,7 +148,14 @@ class _SideBarState extends State<SideBar> {
                             trailing: const Icon(Icons.settings,
                                 color: Colors.white, size: 26),
                             onTap: () {
-                              handleTap(context, 2);
+                              // handleTap(context, 2);
+                              try {
+                                Application.router
+                                    .navigateTo(context, "/profile");
+                              } catch (e) {
+                                print(
+                                    '\nIn sidebar, after clikcing on settings icon, Error navigating to Profile: $e\n');
+                              }
                             },
                           ),
                         )),
@@ -208,18 +219,30 @@ class _SideBarState extends State<SideBar> {
                             User friend = friends[index];
 
                             return ListTile(
-                              title: Text(
-                                friend.username,
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
+                              title: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            Profile(user: friend)),
+                                  );
+                                },
+                                child: Text(
+                                  friend.username,
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
+                                  ),
                                 ),
                               ),
                               leading: FirebaseStorageImage(
-                                  profileUrl: friend.profilePicture,
-                                  user: friend),
-                              onTap: () {},
+                                profileUrl: friend.profilePicture,
+                                user: friend,
+                              ),
+                              onTap:
+                                  () {}, // Keep this empty if onTap behavior is handled by GestureDetector
                             );
                           },
                         ),
@@ -299,17 +322,28 @@ class _SideBarState extends State<SideBar> {
                             User requester = friendRequests[index];
 
                             return ListTile(
-                              title: Text(
-                                requester.username,
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
+                              title: GestureDetector(
+                                onTap: () {
+                                  Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            Profile(user: requester)),
+                                  );
+                                },
+                                child: Text(
+                                  requester.username,
+                                  style: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 15,
+                                  ),
                                 ),
                               ),
                               leading: FirebaseStorageImage(
-                                  profileUrl: requester.profilePicture,
-                                  user: requester),
+                                profileUrl: requester.profilePicture,
+                                user: requester,
+                              ),
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
@@ -337,7 +371,8 @@ class _SideBarState extends State<SideBar> {
                                   ),
                                 ],
                               ),
-                              onTap: () {},
+                              onTap:
+                                  () {}, // Keep this empty if onTap behavior is handled by GestureDetector
                             );
                           },
                         ),
@@ -426,12 +461,9 @@ void handleTap(BuildContext context, int index) {
     case 1: // "Group Name"
       Navigator.pushNamed(context, '/add_friend');
       break;
-    case 2: // "Settings"
+    case 2: // "Profile"
       Navigator.pushNamed(context, '/profile');
       break;
-    // case 3: // "Profile"
-    //   Navigator.pushNamed(context, '/profile');
-    //   break;
 
     case 3: // "Logout"
       Navigator.pushNamed(context, '/logout');

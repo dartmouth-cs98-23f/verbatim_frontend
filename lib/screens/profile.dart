@@ -124,34 +124,26 @@ class _ProfileState extends State<Profile> {
     if (!friendRequestStates.containsKey(widget.user!.username)) {
       friendRequestStates[widget.user!.username] = widget.user!.isRequested;
     }
+// Initialize username from SharedPrefs if not provided through the widget
+    username = widget.user?.username ?? SharedPrefs().getUserName() ?? " ";
 
-    print("\nAfter calling getUsers.. here is the map: ${friendRequestStates}");
+    // Initialize bio, ensuring it's never null
+    bio = widget.user?.bio ?? SharedPrefs().getBio() ?? " ";
 
-    // If user object is provided, populate profile details from user object
-    if (widget.user != null) {
-      if (widget.user!.bio == null) {
-        widget.user!.bio = " ";
-      }
-      firstName = widget.user!.firstName.replaceFirst(
-          widget.user!.firstName[0], widget.user!.firstName[0].toUpperCase());
+    // Initialize profileUrl, ensuring a default is used if null
+    profileUrl = widget.user?.profilePicture ??
+        SharedPrefs().getProfileUrl() ??
+        'assets/profile_pic.png';
 
-      lastName = widget.user!.lastName;
-      initial = lastName.substring(0, 1).toUpperCase();
-      displayName = '$firstName $initial.';
-      username = widget.user!.username;
-      bio = widget.user!.bio as String ?? " ";
-      // Ensure profileUrl is assigned 'assets/profile_pic.png' if widget.user!.profilePicture is null
-      profileUrl = widget.user!.profilePicture ?? 'assets/profile_pic.png';
-    } else {
-      // If user object is null, fetch details from SharedPrefs
-      firstName = SharedPrefs().getFirstName() ?? "User";
-      lastName = SharedPrefs().getLastName() ?? "Name";
-      initial = lastName.substring(0, 1);
-      displayName = '$firstName $initial.';
-      username = SharedPrefs().getUserName() ?? " ";
-      bio = SharedPrefs().getBio() ?? " ";
-      profileUrl = SharedPrefs().getProfileUrl() ?? 'assets/profile_pic.png';
-    }
+    // Populate the initial values for other user details
+    firstName =
+        widget.user?.firstName ?? SharedPrefs().getFirstName() ?? "User";
+    lastName = widget.user?.lastName ?? SharedPrefs().getLastName() ?? "Name";
+    initial =
+        lastName.isNotEmpty ? lastName.substring(0, 1).toUpperCase() : "U";
+
+    // Format displayName using firstName and initial
+    displayName = '$firstName $initial.';
     _getStats(username).then((_) {
       setState(() {
         stats = [friends, streaks, globals, customs];
