@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/screens/customChallenge.dart';
+import 'package:verbatim_frontend/screens/friendship.dart';
 
 class CustomChallengeButton extends StatelessWidget {
   final bool drawButton;
@@ -22,8 +23,8 @@ class CustomChallengeButton extends StatelessWidget {
         // Navigate to CustomChallenge page
         Navigator.of(context).push(
           MaterialPageRoute(
-              builder: (context) => customChallenge(
-                    groupName: groupName,
+              builder: (context) => friendship(
+                    friendUsername: groupName,
                   )),
         );
       },
@@ -41,7 +42,7 @@ class CustomChallengeButton extends StatelessWidget {
         height: 50,
         alignment: Alignment.center,
         child: const Text(
-          'Start Custom Challenge',
+          'Go to our Challenges',
           textAlign: TextAlign.center,
           style: TextStyle(
             color: Colors.white,

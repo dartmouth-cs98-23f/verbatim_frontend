@@ -1,25 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
-<<<<<<< HEAD
-
-import 'package:verbatim_frontend/screens/landingPage.dart';
-import 'package:verbatim_frontend/screens/logIn.dart';
-import 'package:verbatim_frontend/screens/signUp.dart';
-import 'BackendService.dart';
-import 'Components/defineRoutes.dart';
-import 'Components/shared_prefs.dart';
-import 'package:verbatim_frontend/screens/sidebar.dart';
-import 'package:clipboard/clipboard.dart';
-=======
 import 'package:verbatim_frontend/gameObject.dart';
 import 'package:verbatim_frontend/screens/landingPage.dart';
+import 'package:verbatim_frontend/screens/logIn.dart';
 import 'BackendService.dart';
 import 'Components/defineRoutes.dart';
 import 'Components/shared_prefs.dart';
 import 'package:firebase_core/firebase_core.dart';
-
->>>>>>> main
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -28,7 +16,6 @@ Future<void> main() async {
   await SharedPrefs().init();
 
   const String environment =
-
       String.fromEnvironment('FLUTTER_BACKEND_ENV', defaultValue: 'prod');
   //print("env in main is: " + environment);
 
@@ -47,13 +34,7 @@ Future<void> main() async {
     print('\n\nError initializing Firebase: $e\n\n');
   }
 
-<<<<<<< HEAD
-  runApp(
-    MyApp(),
-  );
-=======
   runApp(const MyApp());
->>>>>>> main
 
   ChangeNotifierProvider(
       create: (context) => GameObject(), child: const MyApp());
@@ -66,7 +47,6 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     //https://maketintsandshades.com/#E76F51 alternate shades are not yet added
-
 
     const MaterialColor paleColor = MaterialColor(
       0xFFF3EE,
@@ -98,15 +78,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey,
       onGenerateRoute: Application.router.generator,
-<<<<<<< HEAD
-      //    initialRoute: SharedPrefs().getCurrentPage() ?? '/landingPage',
-      home: LogIn(), //LandingPage(),
-=======
-
-      initialRoute: SharedPrefs().getCurrentPage() ?? '/landingPage',
-      home: const LandingPage(),
-
->>>>>>> main
+      // initialRoute: SharedPrefs().getCurrentPage() ?? '/landingPage',
+      home: const LogIn(),
     );
   }
 }

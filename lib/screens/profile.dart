@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:verbatim_frontend/screens/User.dart';
 import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'package:verbatim_frontend/screens/sideBar.dart';
 import 'package:verbatim_frontend/widgets/customAppBar_Settings.dart';
@@ -195,7 +196,7 @@ class _ProfileState extends State<Profile> {
         friendRequestStates[widget.user!.username] = widget.user!.isRequested;
       }
       drawButton = friendRequestStates[widget.user!.username] as bool;
-      groupName = '${SharedPrefs().getUserName()}&${widget.user!.username}';
+      groupName = widget.user!.username;
     }
 
     // Initialize username from SharedPrefs if not provided through the widget

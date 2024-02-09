@@ -6,6 +6,7 @@ import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/Components/defineRoutes.dart';
 import 'dart:convert';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
+import 'package:verbatim_frontend/screens/User.dart';
 import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'package:verbatim_frontend/screens/profile.dart';
 import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
@@ -261,6 +262,7 @@ class _SideBarState extends State<SideBar> {
                           itemCount: friends.length,
                           itemBuilder: (BuildContext context, int index) {
                             User friend = friends[index];
+                            String friendUsername = friend.username;
 
 // if you click the friendname, go to the friendship page. Can i send friend groupId? load it here?
                             return ListTile(
@@ -288,7 +290,7 @@ class _SideBarState extends State<SideBar> {
                               ),
                               onTap: () {
                                 Navigator.pushNamed(this.context,
-                                    '/friendship?friendUsername=$friend');
+                                    '/friendship?friendUsername=$friendUsername');
                               }, // Keep this empty if onTap behavior is handled by GestureDetector
                             );
                           },

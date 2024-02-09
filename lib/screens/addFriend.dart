@@ -10,7 +10,7 @@ import 'dart:convert';
 import 'package:shared_preferences/shared_preferences.dart';
 
 // User class for when backend passes in users
-class User {
+class UserObj {
   int id = 0;
   String email = "";
   String username = "";
@@ -22,11 +22,12 @@ class User {
   int numCustomChallengesCompleted = 0;
   int streak = 0;
   bool hasCompletedDailyChallenge = false;
+  bool isRequested = false;
 
-  User({required this.username});
+  UserObj({required this.username});
 
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
+  factory UserObj.fromJson(Map<String, dynamic> json) {
+    return UserObj(
       username: json['username'],
     );
   }
@@ -46,7 +47,7 @@ class _AddFriendState extends State<addFriend> {
   final TextEditingController _searchController = TextEditingController();
   String _searchText = "";
   bool usersFetched = false; // only call users once per run
-  List<User> users = []; // all users
+  List<UserObj> users = []; // all users
   List<String> userUsernames = []; // all user usernames to display
   List<String> friendsUsernamesList =
       []; // friends (remove from user usernames)
@@ -132,7 +133,8 @@ class _AddFriendState extends State<addFriend> {
     if (response.statusCode == 200) {
       print('responses sent succesfully');
       final List<dynamic> data = json.decode(response.body);
-      List<User> friendsList = data.map((item) => User.fromJson(item)).toList();
+      List<UserObj> friendsList =
+          data.map((item) => UserObj.fromJson(item)).toList();
       friendsUsernamesList = friendsList.map((user) => user.username).toList();
     } else {
       print('Failed to send responses. Status code: ${response.statusCode}');
@@ -148,8 +150,8 @@ class _AddFriendState extends State<addFriend> {
     if (response.statusCode == 200) {
       print("response succesfull");
       final List<dynamic> data = json.decode(response.body);
-      final List<User> userList =
-          data.map((item) => User.fromJson(item)).toList();
+      final List<UserObj> userList =
+          data.map((item) => UserObj.fromJson(item)).toList();
 
       userUsernames = userList
           .where((user) => user.username != username)

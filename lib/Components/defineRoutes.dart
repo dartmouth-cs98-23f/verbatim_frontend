@@ -49,7 +49,6 @@ void defineRoutes() {
   );
 
   Application.router.define(
-  Application.router.define(
     '/landingPage',
     handler: landingPageHandler,
   );
@@ -302,7 +301,7 @@ Handler createGroupHandler = Handler(
     } else {
       // Update the current page in the shared prefs
       SharedPrefs().setCurrentPage('/create_group');
-      return const createGroup();
+      return createGroup();
     }
   },
 );
