@@ -1,9 +1,7 @@
 import 'dart:async';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
-import 'package:firebase_storage/firebase_storage.dart' as firebase_storage;
 import 'package:http/http.dart' as http;
-import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'package:verbatim_frontend/screens/profile.dart';
 
@@ -11,7 +9,7 @@ class FirebaseStorageImage extends StatelessWidget {
   final String profileUrl;
   final User? user;
 
-  FirebaseStorageImage({Key? key, required this.profileUrl, this.user})
+  const FirebaseStorageImage({Key? key, required this.profileUrl, this.user})
       : super(key: key);
 
   @override
@@ -46,7 +44,7 @@ class FirebaseStorageImage extends StatelessWidget {
                   image: MemoryImage(snapshot.data!),
                   fit: BoxFit.fill,
                 ),
-                shape: CircleBorder(),
+                shape: const CircleBorder(),
               ),
             ),
           );
@@ -66,7 +64,7 @@ class FirebaseStorageImage extends StatelessWidget {
             child: Container(
               width: 40,
               height: 40.45,
-              decoration: BoxDecoration(
+              decoration: const BoxDecoration(
                 shape: BoxShape.circle,
                 image: DecorationImage(
                   fit: BoxFit.cover,

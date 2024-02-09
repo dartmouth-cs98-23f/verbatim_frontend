@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'size.dart';
-import 'package:verbatim_frontend/widgets/my_textfield.dart';
+import 'package:verbatim_frontend/screens/sideBar.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
   CustomAppBar({
@@ -16,7 +16,10 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       scrolledUnderElevation: 0.0,
       backgroundColor: Colors.transparent,
-      toolbarHeight: 100,
+
+      toolbarHeight: 100.v,
+      // toolbarHeight: 150,
+
       elevation: 0,
       centerTitle: false,
       iconTheme: IconThemeData(color: Colors.white),

@@ -38,7 +38,7 @@ class _MyTextFieldSettingsState extends State<MyTextFieldSettings> {
       child: Container(
         decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10.0),
-          border: Border.all(color: Color(0xFFE76F51)),
+          border: Border.all(color: const Color(0xFFE76F51)),
           color: Colors.white,
         ),
         child: Padding(

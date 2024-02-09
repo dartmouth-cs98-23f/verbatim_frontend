@@ -11,15 +11,11 @@ import '../widgets/my_button_with_image.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-
 class SignUp extends StatefulWidget {
-
   //TODO: figure out how to not need the
   const SignUp({
     super.key,
   });
-
-
 
   @override
   State<SignUp> createState() => _SignUpState();
@@ -47,9 +43,7 @@ class _SignUpState extends State<SignUp> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
-
 //TODO: gets widget data
-
 
   // final GoogleSignIn _googleSignIn = GoogleSignIn(
   //     scopes: ['email'],
@@ -94,7 +88,7 @@ class _SignUpState extends State<SignUp> {
         SharedPrefs().setPassword(password);
         SharedPrefs().setUserName(username);
         SharedPrefs().setBio("");
-        SharedPrefs().setProfileUrl("");
+        SharedPrefs().setProfileUrl("assets/profile_pic.png");
 
         // Successful sign-up: Navigate to the 'OnBoardingPage1' page
         Navigator.pushNamed(context, '/onboarding_page1');
@@ -117,8 +111,8 @@ class _SignUpState extends State<SignUp> {
   void guestSignUp(BuildContext context, String firstName, String lastName,
       String username, String email, String password) async {
     final response = await http.post(
-      Uri.parse('${BackendService.getBackendUrl()}submitResponseAfterLoginOrRegister'),
-        
+      Uri.parse(
+          '${BackendService.getBackendUrl()}submitResponseAfterLoginOrRegister'),
       headers: <String, String>{
         'Content-Type': 'application/json',
       },
@@ -146,7 +140,8 @@ class _SignUpState extends State<SignUp> {
       SharedPrefs().setUserName(username);
 
       // Successful sign-up: Navigate to the 'OnBoardingPage1' page
-      Navigator.pushNamed(context, '/global_challenge');//push them to the stats page if we have one
+      Navigator.pushNamed(context,
+          '/global_challenge'); //push them to the stats page if we have one
     }
   }
 
@@ -263,16 +258,15 @@ class _SignUpState extends State<SignUp> {
 
       if (SharedPrefs().getResponse1() == '') {
         //if user hasnt played global challenge yer
-        
+
         signUp(context, firstName, lastName, username.toLowerCase(),
             email.toLowerCase(), password, confirmedPassword);
       } else {
-           //signUp(context, firstName, lastName, username.toLowerCase(),
-            //email.toLowerCase(), password, confirmedPassword);
+        //signUp(context, firstName, lastName, username.toLowerCase(),
+        //email.toLowerCase(), password, confirmedPassword);
         guestSignUp(context, firstName, lastName, username.toLowerCase(),
             email.toLowerCase(), password);
       }
-
     }
   }
 

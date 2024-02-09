@@ -9,16 +9,13 @@ class EditProfilePicturePopup extends StatefulWidget {
   final VoidCallback onRemoveCurrentPicture;
 
   const EditProfilePicturePopup({
-
-    super.key, 
-
+    super.key,
     required this.imagePath,
     required this.selectedImage,
     required this.onImageTap,
     required this.onChangeImageGallery,
     required this.onChangeImageCamera,
     required this.onRemoveCurrentPicture,
-
   });
 
   @override
@@ -42,8 +39,8 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              Padding(
-                padding: const EdgeInsets.only(left: 16.0),
+              const Padding(
+                padding: EdgeInsets.only(left: 16.0),
                 child: Align(
                   alignment: Alignment.topCenter,
                   child: Text(
@@ -60,7 +57,7 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
                 ),
               ),
               IconButton(
-                icon: Icon(Icons.close),
+                icon: const Icon(Icons.close),
                 onPressed: () {
                   Navigator.of(context).pop(); // Close the popup
                 },
@@ -74,17 +71,15 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
             child: GestureDetector(
               onTap: widget.onImageTap,
               child: Container(
-                // ... (your existing image container)
-              ),
+                  // ... (your existing image container)
+                  ),
             ),
           ),
           const SizedBox(height: 20),
           ListTile(
-            leading: Icon(
+            leading: const Icon(
               Icons.photo_camera_outlined,
-
-              color: Color.fromARGB(255, 72, 72, 72),
-
+              color: Color(0xFFDE674A),
             ),
             title: const Text(
               'Take a photo',
@@ -101,7 +96,7 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
           ),
           const SizedBox(height: 10),
           ListTile(
-            leading: Icon(
+            leading: const Icon(
               Icons.photo_outlined,
               color: Color(0xFFDE674A),
             ),
@@ -120,7 +115,7 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
           ),
           const SizedBox(height: 10),
           ListTile(
-            leading: Icon(
+            leading: const Icon(
               Icons.delete_outline,
               color: Color(0xFFDE674A),
             ),

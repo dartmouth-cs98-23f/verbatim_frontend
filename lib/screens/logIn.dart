@@ -99,20 +99,21 @@ class _LogInState extends State<LogIn> {
           SharedPrefs().setFirstName(responseData['firstName'] ?? '');
           SharedPrefs().setLastName(responseData['lastName'] ?? '');
           SharedPrefs().setBio(responseData['bio'] ?? '');
-          SharedPrefs().setProfileUrl(responseData['profilePicture'] ?? '');
+          SharedPrefs().setProfileUrl(
+              responseData['profilePicture'] ?? 'assets/profile_pic.png');
 
           Navigator.pushNamed(context, '/global_challenge');
         }
       } else {
         print('Error during log-in: ${response.statusCode.toString()}');
         Navigator.of(context).push(MaterialPageRoute(
-
-            builder: (context) => SignupErrorMessage(pageName: 'log in')));
+            builder: (context) =>
+                const SignupErrorMessage(pageName: 'log in')));
       }
     } catch (e) {
       print('Error during sign-up: $e');
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => SignupErrorMessage(pageName: 'log in'),
+        builder: (context) => const SignupErrorMessage(pageName: 'log in'),
       ));
     }
   }

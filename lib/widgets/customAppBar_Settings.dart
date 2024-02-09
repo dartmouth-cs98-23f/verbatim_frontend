@@ -2,13 +2,9 @@ import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
-import 'package:verbatim_frontend/screens/profile.dart';
-import 'package:verbatim_frontend/screens/settings.dart';
 import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 import 'size.dart';
-import 'package:verbatim_frontend/screens/sideBar.dart';
 
-import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 
 class CustomAppBarSettings extends StatelessWidget
@@ -16,7 +12,7 @@ class CustomAppBarSettings extends StatelessWidget
   final String title;
   final bool showBackButton;
 
-  CustomAppBarSettings({
+  const CustomAppBarSettings({super.key, 
     required this.title,
     this.showBackButton = false,
   });
@@ -30,15 +26,15 @@ class CustomAppBarSettings extends StatelessWidget
       elevation: 0,
       title: Column(
         children: [
-          SizedBox(height: 100),
-          NewNavBar(),
+          const SizedBox(height: 100),
+          const NewNavBar(),
           // SizedBox(height: 30), // Adjust the distance as needed
 
           TitleFrame(
             title: title,
             showBackArrow: showBackButton,
           ),
-          SizedBox(height: 30),
+          const SizedBox(height: 30),
         ],
       ),
       centerTitle: true,
@@ -53,6 +49,8 @@ class CustomAppBarSettings extends StatelessWidget
 }
 
 class NewNavBar extends StatelessWidget {
+  const NewNavBar({super.key});
+
   @override
   Widget build(BuildContext context) {
     final String profileUrl =
@@ -61,7 +59,7 @@ class NewNavBar extends StatelessWidget {
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
       clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(),
+      decoration: const BoxDecoration(),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.spaceBetween,
         crossAxisAlignment: CrossAxisAlignment.center,
@@ -80,7 +78,7 @@ class NewNavBar extends StatelessWidget {
           //   },
           // ),
           // SearchBarTextField(),
-          SizedBox(width: 80),
+          const SizedBox(width: 80),
           FirebaseStorageImage(
             profileUrl: SharedPrefs().getProfileUrl() as String,
           ),
@@ -110,7 +108,9 @@ class NewNavBar extends StatelessWidget {
 }
 
 class SearchBarTextField extends StatelessWidget {
-  TextEditingController _searchController = TextEditingController();
+  final TextEditingController _searchController = TextEditingController();
+
+  SearchBarTextField({super.key});
 
   void handleSearch(String value) {
     // Handle the search input changes
@@ -138,7 +138,7 @@ class SearchBarTextField extends StatelessWidget {
         padding: const EdgeInsets.all(10),
         clipBehavior: Clip.antiAlias,
         decoration: ShapeDecoration(
-          color: Color(0xFFFFF7EE),
+          color: const Color(0xFFFFF7EE),
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
           ),
@@ -149,18 +149,18 @@ class SearchBarTextField extends StatelessWidget {
             mainAxisAlignment: MainAxisAlignment.start,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              Icon(
+              const Icon(
                 Icons.search,
                 color: Colors.black,
                 size: 20,
               ),
-              SizedBox(width: 8), // Adjust horizontal spacing as needed
+              const SizedBox(width: 8), // Adjust horizontal spacing as needed
               Expanded(
                 child: TextField(
                   controller: _searchController,
                   onChanged: handleSearch,
                   onSubmitted: handleSubmit,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Colors.black,
                     fontSize: 12,
                     fontFamily: 'Poppins',
@@ -169,7 +169,7 @@ class SearchBarTextField extends StatelessWidget {
                     letterSpacing: 0.20,
                   ),
                   cursorColor: Colors.black,
-                  decoration: InputDecoration(
+                  decoration: const InputDecoration(
                     hintText: 'Search Users',
                     hintStyle: TextStyle(
                       color: Colors.black,
@@ -195,7 +195,7 @@ class TitleFrame extends StatelessWidget {
   final String title;
   final bool showBackArrow;
 
-  TitleFrame({required this.title, this.showBackArrow = false});
+  const TitleFrame({super.key, required this.title, this.showBackArrow = false});
 
   @override
   Widget build(BuildContext context) {
@@ -204,15 +204,15 @@ class TitleFrame extends StatelessWidget {
       height: 70,
       padding: const EdgeInsets.all(10),
       clipBehavior: Clip.antiAlias,
-      decoration: BoxDecoration(),
+      decoration: const BoxDecoration(),
       child: Row(
         mainAxisAlignment: MainAxisAlignment.start,
         children: [
           if (showBackArrow)
             Padding(
-              padding: EdgeInsets.only(bottom: 10),
+              padding: const EdgeInsets.only(bottom: 10),
               child: IconButton(
-                icon: Icon(Icons.arrow_back_ios_new, color: Color(0xFFFFF7EE)),
+                icon: const Icon(Icons.arrow_back_ios_new, color: Color(0xFFFFF7EE)),
                 onPressed: () {
                   // Handle back arrow press
                   Navigator.pop(context);
@@ -224,10 +224,10 @@ class TitleFrame extends StatelessWidget {
             mainAxisSize: MainAxisSize.min,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 10.0),
+              const SizedBox(height: 10.0),
               Text(
                 title,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Color(0xFFFFF7EE),
                   fontSize: 32,
                   fontFamily: 'Poppins',
@@ -236,7 +236,7 @@ class TitleFrame extends StatelessWidget {
                   letterSpacing: 0.10,
                 ),
               ),
-              SizedBox(height: 20.0),
+              const SizedBox(height: 20.0),
             ],
           ),
         ],
