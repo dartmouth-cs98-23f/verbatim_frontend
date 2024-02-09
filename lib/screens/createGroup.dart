@@ -45,6 +45,7 @@ class createGroup extends StatefulWidget {
 class _CreateGroupState extends State<createGroup> {
   String username = SharedPrefs().getUserName() ?? "";
   bool error = false;
+  bool error2 = false;
   bool isCreated = false; // in the beginning, the group isn't created
   TextEditingController responseController = TextEditingController();
   String userResponse = '';
@@ -60,7 +61,7 @@ class _CreateGroupState extends State<createGroup> {
   int? groupId = 0;
 
   // create group
-  Future create(String groupName, String createdByUsername,
+  Future<Map<int?, bool>> create(String groupName, String createdByUsername,
       List<String> usernamesToAdd) async {
     final url = Uri.parse(BackendService.getBackendUrl() + 'createGroup');
     final headers = <String, String>{'Content-Type': 'application/json'};
@@ -93,10 +94,12 @@ class _CreateGroupState extends State<createGroup> {
         String username = user['username'];
         String email = user['email'];
       }
+      return {groupId: true};
     } else {
-      print('Failed to send responses. Status code: ${response.statusCode}');
+      return {groupId: false};
+      print(
+          'Failed to send responses.ok/??? Status code: ${response.statusCode}');
     }
-    return groupId;
   }
 
 //Find my friends!
@@ -262,6 +265,27 @@ class _CreateGroupState extends State<createGroup> {
                         ),
                       ),
                     )),
+                Visibility(
+                    visible: error2,
+                    child: Center(
+                      child: SizedBox(
+                        child: RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text:
+                                    "Error creating duplicate group - do you already have a group with these users?",
+                                style: TextStyle(
+                                  fontSize: 15,
+                                  color: Colors.red,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              )
+                            ],
+                          ),
+                        ),
+                      ),
+                    )),
 
                 // constant background
                 Center(
@@ -326,10 +350,12 @@ class _CreateGroupState extends State<createGroup> {
 
                                                     setState(() {
                                                       toggleFriend(name);
+                                                      error2 = false;
                                                     });
                                                   } else {
                                                     setState(() {
                                                       toggleFriend(name);
+                                                      error2 = false;
                                                     });
                                                   }
                                                 },
@@ -457,7 +483,8 @@ class _CreateGroupState extends State<createGroup> {
                         } else {
                           // if we're in name group, go back to create group
                           setState(() {
-                            isCreated = false; // shift content
+                            isCreated = false;
+                            error2 = false; // shift content
                           });
                         }
                       },
@@ -488,23 +515,42 @@ class _CreateGroupState extends State<createGroup> {
                         if (!isCreated) {
                           if (addedUsernames.length <= 1) {
                             setState(() {
-                              error = true; // shift content
+                              error = true;
+                              error2 = false; // shift content
                             });
                           } else {
                             setState(() {
                               error = false;
-                              isCreated = true; // shift content
+                              isCreated = true;
+                              error2 = false; // shift content
                             });
                           }
 
                           // otherwise, take us to the group page
                         } else {
                           // talk to backend here
-                          int groupID = await create(
+                          Map<int?, bool> result = await create(
                               userResponse, username, addedUsernames);
-                          print('this is the groupid in create group $groupId');
-                          Navigator.pushNamed(this.context,
-                              '/myGroup?groupName=$userResponse&groupId=$groupID');
+                          print("this is the result of group creation $result");
+                          int? groupId = result.keys.first;
+                          bool? created = result[groupId];
+                          int groupID = groupId!;
+                          if (created == true) {
+                            print(
+                                'this is the groupid in create group $groupId');
+                            Navigator.pushNamed(this.context,
+                                '/myGroup?groupName=$userResponse&groupId=$groupID');
+                          } else {
+                            setState(() {
+                              error2 = true;
+                              isCreated = true;
+                              for (String x in addedUsernames) {
+                                toggleFriend(x);
+                              }
+
+                              addedUsernames = []; // shift content
+                            });
+                          }
                         }
                       },
                       style: ElevatedButton.styleFrom(

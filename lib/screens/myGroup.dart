@@ -821,7 +821,12 @@ class StatsContent extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    bool isEmpty = false;
     print("this is grouprating in groups stats content $groupRating");
+    if (verbaMatchStatsContent.isEmpty) {
+      isEmpty = true;
+      verbaMatchStatsContent = ["i", "amempty"];
+    }
     String verb1 = verbaMatchStatsContent[0];
     String verb2 = verbaMatchStatsContent[1];
 
@@ -842,7 +847,7 @@ class StatsContent extends StatelessWidget {
           ),
           SizedBox(height: 15.v),
           Visibility(
-            visible: verbaMatchStatsContent.length != 0,
+            visible: !isEmpty,
             child: Container(
               child: Center(
                 child: Text(
@@ -856,7 +861,7 @@ class StatsContent extends StatelessWidget {
             ),
           ),
           Visibility(
-              visible: verbaMatchStatsContent.length == 0,
+              visible: isEmpty,
               child: Container(
                 child: Center(
                   child: RichText(
@@ -898,7 +903,7 @@ class StatsContent extends StatelessWidget {
             ),
           ),
           Visibility(
-            visible: verbaMatchStatsContent.isEmpty,
+            visible: isEmpty,
             child: Container(
               child: Center(
                 child: Text(
@@ -912,7 +917,7 @@ class StatsContent extends StatelessWidget {
             ),
           ),
           Visibility(
-            visible: verbaMatchStatsContent.length != 0,
+            visible: !isEmpty,
             child: Container(
               child: RichText(
                 text: TextSpan(
@@ -939,7 +944,7 @@ class StatsContent extends StatelessWidget {
             ),
           ),
           Visibility(
-            visible: verbaMatchStatsContent.length != 0,
+            visible: !isEmpty,
             child: Container(
               child: Center(
                 child: Text(
@@ -953,11 +958,11 @@ class StatsContent extends StatelessWidget {
             ),
           ),
           Visibility(
-            visible: verbaMatchStatsContent.length != 0,
+            visible: !isEmpty,
             child: SizedBox(height: 10.v),
           ),
           Visibility(
-            visible: verbaMatchStatsContent.length != 0,
+            visible: !isEmpty,
             child: Center(
               child: Container(
                 width: 170,
@@ -979,11 +984,11 @@ class StatsContent extends StatelessWidget {
             ),
           ),
           Visibility(
-            visible: verbaMatchStatsContent.length != 0,
+            visible: !isEmpty,
             child: SizedBox(height: 15.v),
           ),
           Visibility(
-            visible: verbaMatchStatsContent.length != 0,
+            visible: !isEmpty,
             child: Container(
               child: Center(
                 child: Text(
