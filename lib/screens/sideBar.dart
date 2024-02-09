@@ -57,6 +57,9 @@ class _SideBarState extends State<SideBar> {
       final List<dynamic> data = json.decode(response.body);
       friends = data.map((item) => User.fromJson(item)).toList();
       friends.removeWhere((user) => user.username == username);
+      friends.forEach((user) {
+        user.isRequested = true;
+      });
     } else {
       print('Failed to get friends. Status code: ${response.statusCode}');
     }
