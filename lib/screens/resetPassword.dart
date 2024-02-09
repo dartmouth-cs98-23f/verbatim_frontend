@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/widgets/button_settings.dart';
 import 'package:verbatim_frontend/widgets/customAppBar_Settings.dart';
-import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:verbatim_frontend/widgets/custom_app_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:verbatim_frontend/widgets/showSuccessDialog.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
@@ -137,7 +135,7 @@ class _ResetPasswordState extends State<ResetPassword> {
                                 fit: BoxFit.fill,
                               ),
                             ),
-                            CustomAppBarSettings(
+                            const CustomAppBarSettings(
                               title: 'Reset Password',
                               showBackButton: true,
                             ),
@@ -146,8 +144,8 @@ class _ResetPasswordState extends State<ResetPassword> {
                       ),
                       // field form boxes
 
-                      SizedBox(height: 42),
-                      Padding(
+                      const SizedBox(height: 42),
+                      const Padding(
                         padding: EdgeInsets.only(left: 30.0),
                         child: Align(
                           alignment: Alignment.centerLeft,
@@ -171,8 +169,8 @@ class _ResetPasswordState extends State<ResetPassword> {
                         obscureText: true,
                       ),
 
-                      SizedBox(height: 42),
-                      Padding(
+                      const SizedBox(height: 42),
+                      const Padding(
                         padding: EdgeInsets.only(left: 30.0),
                         child: Align(
                           alignment: Alignment.centerLeft,
@@ -196,8 +194,8 @@ class _ResetPasswordState extends State<ResetPassword> {
                         obscureText: true,
                       ),
 
-                      SizedBox(height: 42),
-                      Padding(
+                      const SizedBox(height: 42),
+                      const Padding(
                         padding: EdgeInsets.only(left: 30.0),
                         child: Align(
                           alignment: Alignment.centerLeft,
@@ -224,9 +222,9 @@ class _ResetPasswordState extends State<ResetPassword> {
                         padding: const EdgeInsets.only(left: 30.0),
                         child: Column(
                           children: [
-                            SizedBox(height: 42),
+                            const SizedBox(height: 42),
                             Padding(
-                              padding: EdgeInsets.only(left: 1.5),
+                              padding: const EdgeInsets.only(left: 1.5),
                               child: Align(
                                 alignment: Alignment.bottomLeft,
                                 child: DeepOrangeButton(

@@ -3,11 +3,9 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:verbatim_frontend/gameObject.dart';
 import 'package:verbatim_frontend/screens/landingPage.dart';
-import 'package:verbatim_frontend/screens/logIn.dart';
 import 'BackendService.dart';
 import 'Components/defineRoutes.dart';
 import 'Components/shared_prefs.dart';
-import 'package:clipboard/clipboard.dart';
 import 'package:firebase_core/firebase_core.dart';
 
 
@@ -26,7 +24,7 @@ Future<void> main() async {
   try {
     await Firebase.initializeApp(
         //name: 'com.example.verbatim_frontend',
-        options: FirebaseOptions(
+        options: const FirebaseOptions(
       apiKey: 'AIzaSyAtNTGytXuzaYGDiWyzjiQ5qzZqyH3dqYk',
       appId: '1:89436108608:android:58705820c58e09aa7b6ca5',
       messagingSenderId: '89436108608',

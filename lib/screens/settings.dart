@@ -1,9 +1,5 @@
-import 'dart:io';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:firebase_storage/firebase_storage.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:flutter/foundation.dart';
-import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
@@ -12,8 +8,6 @@ import 'package:verbatim_frontend/Components/EditProfilePicturePopup.dart';
 import 'package:verbatim_frontend/widgets/MyTextFieldSettings.dart';
 import 'package:verbatim_frontend/widgets/button_settings.dart';
 import 'package:verbatim_frontend/widgets/customAppBar_Settings.dart';
-import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
-import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -56,7 +50,7 @@ void edits(
 
     //do sth to verify the response,
     if (response.statusCode == 200) {
-      print("\nprofile pic url: ${profilePic}");
+      print("\nprofile pic url: $profilePic");
       //get the account info to display as dummy text
       SharedPrefs().setFirstName(firstName);
       SharedPrefs().setLastName(lastName);
@@ -108,13 +102,11 @@ class _settingsState extends State<settings> {
   final String assetName = 'assets/img1.svg';
 
   final String imagePath = 'assets/profile_pic.png';
-  late String _currentProfileUrl = SharedPrefs.ProfileUrl != null
-      ? SharedPrefs.ProfileUrl
-      : 'assets/profile_pic.png';
+  late String _currentProfileUrl = SharedPrefs.ProfileUrl ?? 'assets/profile_pic.png';
 
   final ImagePicker picker = ImagePicker();
 
-  ImageProvider<Object> selectedImage = AssetImage('assets/profile_pic.png');
+  ImageProvider<Object> selectedImage = const AssetImage('assets/profile_pic.png');
 
   @override
   @override
@@ -126,15 +118,13 @@ class _settingsState extends State<settings> {
 
   Future<void> _loadProfileImage() async {
     String profileUrl = SharedPrefs().getProfileUrl() as String;
-    if (profileUrl != null) {
-      // Download the image bytes
-      Uint8List imageBytes = await downloadImage(profileUrl);
-      // Update the selectedImage with the loaded image bytes
-      setState(() {
-        selectedImage = MemoryImage(imageBytes);
-      });
+    // Download the image bytes
+    Uint8List imageBytes = await downloadImage(profileUrl);
+    // Update the selectedImage with the loaded image bytes
+    setState(() {
+      selectedImage = MemoryImage(imageBytes);
+    });
     }
-  }
 
   Future<Uint8List> downloadImage(String url) async {
     try {
@@ -169,8 +159,8 @@ class _settingsState extends State<settings> {
   }
 
   Future<void> _pickImage(ImageSource source) async {
-    final ImagePicker _picker = ImagePicker();
-    XFile? image = await _picker.pickImage(source: source);
+    final ImagePicker picker = ImagePicker();
+    XFile? image = await picker.pickImage(source: source);
 
     if (image != null) {
       var bytes = await image.readAsBytes();
@@ -189,7 +179,7 @@ class _settingsState extends State<settings> {
       _currentProfileUrl = newProfileUrl;
 
       setState(() {
-        selectedImage = MemoryImage(bytes!);
+        selectedImage = MemoryImage(bytes);
         SharedPrefs().setProfileUrl(newProfileUrl);
       });
 
@@ -198,7 +188,7 @@ class _settingsState extends State<settings> {
       edits(
         context,
         SharedPrefs().getFirstName() ??
-            '' + " " + (SharedPrefs().getLastName() ?? ''),
+            '' " " + (SharedPrefs().getLastName() ?? ''),
         SharedPrefs().getUserName() as String,
         SharedPrefs().getUserName() as String,
         SharedPrefs().getBio() as String,
@@ -242,7 +232,7 @@ class _settingsState extends State<settings> {
   }
 
   String generateUuid() {
-    final Uuid uuid = Uuid();
+    const Uuid uuid = Uuid();
     return uuid.v4(); // Generates a random UUID (v4)
   }
 
@@ -251,7 +241,7 @@ class _settingsState extends State<settings> {
     String newProfileUrl = 'assets/profile_pic.png';
 
     setState(() {
-      selectedImage = AssetImage('assets/profile_pic.png');
+      selectedImage = const AssetImage('assets/profile_pic.png');
       SharedPrefs().setProfileUrl(newProfileUrl);
 
       // Close the pop-up
@@ -308,7 +298,7 @@ class _settingsState extends State<settings> {
 
                             // app bar on top of background
 
-                            CustomAppBarSettings(
+                            const CustomAppBarSettings(
                               title: 'Account Settings',
                             ),
                           ],
@@ -334,7 +324,7 @@ class _settingsState extends State<settings> {
                             decoration: BoxDecoration(
                               shape: BoxShape.circle,
                               border: Border.all(
-                                color: Color(0xFFE76F51),
+                                color: const Color(0xFFE76F51),
                                 width: 2.0,
                               ),
                             ),
@@ -359,7 +349,7 @@ class _settingsState extends State<settings> {
                               onPressed: _showEditProfilePicturePopup,
                               tooltip: 'Change Image',
                               mini: true,
-                              backgroundColor: Color(0xFFE76F51),
+                              backgroundColor: const Color(0xFFE76F51),
                               shape: RoundedRectangleBorder(
                                 borderRadius: BorderRadius.circular(22.0),
                                 side: const BorderSide(
@@ -387,15 +377,15 @@ class _settingsState extends State<settings> {
                 Align(
                     alignment: Alignment.topLeft,
                     child: Padding(
-                      padding: EdgeInsets.only(left: 30.0),
+                      padding: const EdgeInsets.only(left: 30.0),
                       child: InkWell(
                         onTap: () {
                           // Navigate to the ResetPassword page
                           Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => ResetPassword(),
+                            builder: (context) => const ResetPassword(),
                           ));
                         },
-                        child: Text(
+                        child: const Text(
                           'Reset Password',
                           style: TextStyle(
                             color: Color(0xFF3C64B1),
@@ -431,15 +421,13 @@ class _settingsState extends State<settings> {
                 const SizedBox(height: 20),
                 MyTextFieldSettings(
                     controller: fullNameSettings,
-                    hintText: (SharedPrefs().getFirstName() ?? "") +
-                        " " +
-                        (SharedPrefs().getLastName() ?? ""),
+                    hintText: "${SharedPrefs().getFirstName() ?? ""} ${SharedPrefs().getLastName() ?? ""}",
                     obscureText: false),
 
                 //username
                 const SizedBox(height: 38),
-                Padding(
-                  padding: const EdgeInsets.only(left: 30.0),
+                const Padding(
+                  padding: EdgeInsets.only(left: 30.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -464,8 +452,8 @@ class _settingsState extends State<settings> {
                 //bio
 
                 const SizedBox(height: 38),
-                Padding(
-                  padding: const EdgeInsets.only(left: 30.0),
+                const Padding(
+                  padding: EdgeInsets.only(left: 30.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -491,8 +479,8 @@ class _settingsState extends State<settings> {
                 //bio
 
                 const SizedBox(height: 38),
-                Padding(
-                  padding: const EdgeInsets.only(left: 30.0),
+                const Padding(
+                  padding: EdgeInsets.only(left: 30.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
@@ -519,7 +507,7 @@ class _settingsState extends State<settings> {
                   children: [
                     const SizedBox(height: 28),
                     Padding(
-                      padding: EdgeInsets.only(
+                      padding: const EdgeInsets.only(
                           left: 27.0), // Adjust the left padding as needed
                       child: Align(
                         alignment: Alignment.topLeft,

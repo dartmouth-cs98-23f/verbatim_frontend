@@ -3,13 +3,10 @@ import 'package:flutter_svg/svg.dart';
 import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'package:verbatim_frontend/screens/sideBar.dart';
 import 'package:verbatim_frontend/widgets/customAppBar_Settings.dart';
-import 'package:verbatim_frontend/widgets/custom_app_bar.dart';
+import 'package:verbatim_frontend/widgets/custom_challenge_button.dart';
 import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
-import 'package:verbatim_frontend/widgets/friends_app_bar_test.dart';
 import 'package:verbatim_frontend/widgets/showSuccessDialog.dart';
-import 'package:verbatim_frontend/widgets/size.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
-import 'package:verbatim_frontend/widgets/stats.dart';
 import 'package:verbatim_frontend/widgets/stats_tile.dart';
 import 'package:verbatim_frontend/screens/settings.dart';
 import 'package:verbatim_frontend/BackendService.dart';
@@ -52,6 +49,8 @@ class _ProfileState extends State<Profile> {
   String bio = '';
   String profileUrl = 'assets/profile_pic.png';
   Map<String, bool> friendRequestStates = {};
+  bool drawButton = false;
+  String groupName = '';
 
   Future<void> _getStats(String username) async {
     final url = Uri.parse("${BackendService.getBackendUrl()}getUserStats");
@@ -71,7 +70,7 @@ class _ProfileState extends State<Profile> {
 
   Future<void> sendFriendRequest(
       String requestingUsername, String requestedUsername) async {
-    final url = Uri.parse(BackendService.getBackendUrl() + 'addFriend');
+    final url = Uri.parse('${BackendService.getBackendUrl()}addFriend');
     final headers = <String, String>{'Content-Type': 'application/json'};
 
     final response = await http.post(url,
@@ -83,8 +82,8 @@ class _ProfileState extends State<Profile> {
     if (response.statusCode == 200) {
       SuccessDialog.show(context, 'Your friend request has been sent!');
       setState(() {
-        friendRequestStates[requestedUsername] =
-            true; // Update request state for the user
+        friendRequestStates[requestedUsername] = true;
+        drawButton = true;
       });
     } else {
       print('Failed to send responses. Status code: ${response.statusCode}');
@@ -93,7 +92,7 @@ class _ProfileState extends State<Profile> {
 
   Future<void> getUsersIHaveRequested(String username) async {
     final url =
-        Uri.parse(BackendService.getBackendUrl() + 'getUsersIHaveRequested');
+        Uri.parse('${BackendService.getBackendUrl()}getUsersIHaveRequested');
     final Map<String, String> headers = {
       'Content-Type': 'text/plain',
     };
@@ -124,6 +123,10 @@ class _ProfileState extends State<Profile> {
     if (!friendRequestStates.containsKey(widget.user!.username)) {
       friendRequestStates[widget.user!.username] = widget.user!.isRequested;
     }
+    drawButton = friendRequestStates[widget.user!.username] as bool;
+
+    print("drawButton is $drawButton");
+
     // Initialize username from SharedPrefs if not provided through the widget
     username = widget.user?.username ?? SharedPrefs().getUserName() ?? " ";
 
@@ -141,6 +144,8 @@ class _ProfileState extends State<Profile> {
     lastName = widget.user?.lastName ?? SharedPrefs().getLastName() ?? "Name";
     initial =
         lastName.isNotEmpty ? lastName.substring(0, 1).toUpperCase() : "U";
+
+    groupName = '${SharedPrefs().getUserName()}&${widget.user!.username}';
 
     // Format displayName using firstName and initial
     displayName = '$firstName $initial.';
@@ -168,9 +173,9 @@ class _ProfileState extends State<Profile> {
           body: SingleChildScrollView(
             child: SafeArea(
               child: Container(
-                height: 932,
+                height: 960,
                 width: 430,
-                color: Color.fromRGBO(255, 243, 238, 1),
+                color: const Color.fromRGBO(255, 243, 238, 1),
                 child: Column(
                   children: [
                     SizedBox(
@@ -196,14 +201,15 @@ class _ProfileState extends State<Profile> {
                                 ),
 
                                 const SizedBox(width: 10),
-                                CustomAppBarSettings(title: '')
+                                const CustomAppBarSettings(title: '')
                               ],
                             ),
                           ),
                           Card(
                             elevation: 2,
                             color: Colors.white,
-                            shadowColor: Color(0xFFE76F51).withOpacity(0.2),
+                            shadowColor:
+                                const Color(0xFFE76F51).withOpacity(0.2),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0),
                             ),
@@ -216,7 +222,7 @@ class _ProfileState extends State<Profile> {
                                 children: [
                                   Row(
                                     children: [
-                                      Container(
+                                      SizedBox(
                                         width: 100,
                                         height: 101.12,
                                         child: ClipOval(
@@ -247,7 +253,7 @@ class _ProfileState extends State<Profile> {
                                                   Navigator.of(context)
                                                       .push(MaterialPageRoute(
                                                     builder: (context) =>
-                                                        settings(),
+                                                        const settings(),
                                                   ));
                                                 } else {
                                                   if (friendRequestStates[
@@ -260,7 +266,7 @@ class _ProfileState extends State<Profile> {
                                                         widget.user!.username);
                                                   } else {
                                                     print(
-                                                        "\n\n Map is ${friendRequestStates}");
+                                                        "\n\n Map is $friendRequestStates");
                                                     print(
                                                         "\n33 User's username is ${widget.user!.username}");
                                                     print(
@@ -272,13 +278,14 @@ class _ProfileState extends State<Profile> {
                                                 width: 200,
                                                 height: 25,
                                                 decoration: ShapeDecoration(
-                                                  color: Color(0xFFE76F51),
+                                                  color:
+                                                      const Color(0xFFE76F51),
                                                   shape: RoundedRectangleBorder(
                                                     borderRadius:
                                                         BorderRadius.circular(
                                                             15),
                                                   ),
-                                                  shadows: [
+                                                  shadows: const [
                                                     BoxShadow(
                                                       color: Color(0x3F000000),
                                                       blurRadius: 4,
@@ -301,7 +308,7 @@ class _ProfileState extends State<Profile> {
                                                             .push(
                                                                 MaterialPageRoute(
                                                           builder: (context) =>
-                                                              settings(),
+                                                              const settings(),
                                                         ));
                                                       } else {
                                                         if (friendRequestStates[
@@ -315,7 +322,7 @@ class _ProfileState extends State<Profile> {
                                                                   .username);
                                                         } else {
                                                           print(
-                                                              "\n\n Map is ${friendRequestStates}");
+                                                              "\n\n Map is $friendRequestStates");
                                                           print(
                                                               "\n33 User's username is ${widget.user!.username}");
 
@@ -343,7 +350,7 @@ class _ProfileState extends State<Profile> {
                                                           clipBehavior:
                                                               Clip.antiAlias,
                                                           decoration:
-                                                              BoxDecoration(),
+                                                              const BoxDecoration(),
                                                           child: Stack(
                                                             children: [
                                                               if (widget.user !=
@@ -352,7 +359,7 @@ class _ProfileState extends State<Profile> {
                                                                           .user!
                                                                           .username] ==
                                                                       true)
-                                                                Icon(
+                                                                const Icon(
                                                                   Icons
                                                                       .person_outlined,
                                                                   color: Colors
@@ -365,7 +372,7 @@ class _ProfileState extends State<Profile> {
                                                                           .user!
                                                                           .username] ==
                                                                       false)
-                                                                Icon(
+                                                                const Icon(
                                                                   Icons
                                                                       .person_add_alt_outlined,
                                                                   color: Colors
@@ -394,7 +401,7 @@ class _ProfileState extends State<Profile> {
                                                               style: GoogleFonts
                                                                   .poppins(
                                                                 textStyle:
-                                                                    TextStyle(
+                                                                    const TextStyle(
                                                                   color: Colors
                                                                       .white,
                                                                   fontSize: 12,
@@ -446,14 +453,14 @@ class _ProfileState extends State<Profile> {
                           Card(
                             elevation: 4,
                             color: Colors.white,
-                            shadowColor: Color(0xFFE76F51),
+                            shadowColor: const Color(0xFFE76F51),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0),
                             ),
                             child: Container(
                               width: 360,
                               height: 470,
-                              padding: EdgeInsets.all(25),
+                              padding: const EdgeInsets.all(25),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
@@ -632,7 +639,7 @@ class _ProfileState extends State<Profile> {
                                         widthFactor: .5,
                                         child: ClipOval(
                                           child: widget.user != null
-                                              ? Container(
+                                              ? SizedBox(
                                                   width: 100,
                                                   height: 100,
                                                   child: FirebaseStorageImage(
@@ -652,7 +659,7 @@ class _ProfileState extends State<Profile> {
                                         widthFactor: .5,
                                         child: ClipOval(
                                           child: widget.user != null
-                                              ? Container(
+                                              ? SizedBox(
                                                   width: 100,
                                                   height: 100,
                                                   child: FirebaseStorageImage(
@@ -673,6 +680,12 @@ class _ProfileState extends State<Profile> {
                               ),
                             ),
                           ),
+                          const SizedBox(height: 15.0),
+                          CustomChallengeButton(
+                            drawButton: drawButton,
+                            groupName: groupName,
+                          ),
+                          const SizedBox(height: 15.0),
                         ],
                       ),
                     ),
@@ -681,7 +694,7 @@ class _ProfileState extends State<Profile> {
               ),
             ),
           ),
-          drawer: SideBar(),
+          drawer: const SideBar(),
           drawerScrimColor: Colors.white,
         ),
       ),

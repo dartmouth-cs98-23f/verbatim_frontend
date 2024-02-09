@@ -63,8 +63,8 @@ class NewNavBar extends StatelessWidget {
                       height: 16,
                       clipBehavior: Clip.antiAlias,
 
-                      decoration: BoxDecoration(),
-                      child: Stack(),
+                      decoration: const BoxDecoration(),
+                      child: const Stack(),
 
                     ),
                     const SizedBox(width: 10),

@@ -35,7 +35,7 @@ class SuccessDialog {
           ),
           content: Text(
             message,
-            style: TextStyle(
+            style: const TextStyle(
               color: Colors.black,
               fontFamily: 'Poppins',
             ),

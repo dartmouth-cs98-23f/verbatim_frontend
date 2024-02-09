@@ -107,12 +107,12 @@ class _LogInState extends State<LogIn> {
       } else {
         print('Error during log-in: ${response.statusCode.toString()}');
         Navigator.of(context).push(MaterialPageRoute(
-            builder: (context) => SignupErrorMessage(pageName: 'log in')));
+            builder: (context) => const SignupErrorMessage(pageName: 'log in')));
       }
     } catch (e) {
       print('Error during sign-up: $e');
       Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => SignupErrorMessage(pageName: 'log in'),
+        builder: (context) => const SignupErrorMessage(pageName: 'log in'),
       ));
     }
   }
