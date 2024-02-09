@@ -93,7 +93,7 @@ class _GroupChallengeState extends State<groupChallenge> {
                             ),
 
                             // app bar on top of background
-                            const CustomAppBar(),
+                            CustomAppBar(),
 
                             // 'Global Challenge #'
                             Positioned(

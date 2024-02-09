@@ -16,7 +16,6 @@ class EditProfilePicturePopup extends StatefulWidget {
     required this.onChangeImageGallery,
     required this.onChangeImageCamera,
     required this.onRemoveCurrentPicture,
-    // ... (your existing parameters)
   });
 
   @override
@@ -35,6 +34,8 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
         mainAxisSize: MainAxisSize.min,
         children: [
           const SizedBox(height: 5),
+
+
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
