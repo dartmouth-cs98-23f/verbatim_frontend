@@ -17,6 +17,7 @@ import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:verbatim_frontend/widgets/showSuccessDialog.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
 import 'dart:async';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
@@ -64,7 +65,7 @@ void edits(
       SharedPrefs().setUserName(newUsername);
       SharedPrefs().setProfileUrl(profilePic);
 
-      _showSuccessDialog(context);
+      SuccessDialog.show(context, 'Your changes have been recorded!');
     }
   } catch (error) {
     print('Sorry cannot edit account settings:$error');
@@ -87,64 +88,6 @@ String getVal(String? fieldval, String currentval) {
   String finalVal;
   fieldval!.isEmpty ? finalVal = currentval : finalVal = fieldval;
   return finalVal;
-}
-
-void _showSuccessDialog(BuildContext context) {
-  showDialog(
-    context: context,
-    builder: (BuildContext context) {
-      return AlertDialog(
-        shape: RoundedRectangleBorder(
-          borderRadius: BorderRadius.circular(10.0), // Set the corner radius
-        ),
-        backgroundColor: const Color.fromARGB(
-            255, 255, 243, 238), // Set the background color
-        title: RichText(
-          text: const TextSpan(
-            children: [
-              TextSpan(
-                text: 'Verba',
-                style: TextStyle(
-                    color: Colors.orange,
-                    fontSize: 24,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.bold),
-              ),
-              TextSpan(
-                text: '-tastic!',
-                style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 24,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.bold),
-              ),
-            ],
-          ),
-        ),
-        content: const Text(
-          'Your changes have been recorded!',
-          style: TextStyle(
-            color: Colors.black,
-            fontFamily: 'Poppins',
-          ), // Set text color
-        ),
-        actions: [
-          TextButton(
-            onPressed: () {
-              Navigator.of(context).pop(); // Close the dialog
-            },
-            child: const Text(
-              'OK',
-              style: TextStyle(
-                color: Colors.blue,
-                fontFamily: 'Poppins',
-              ), // Set button text color
-            ),
-          ),
-        ],
-      );
-    },
-  );
 }
 
 class settings extends StatefulWidget {

@@ -6,6 +6,7 @@ import 'package:verbatim_frontend/widgets/customAppBar_Settings.dart';
 import 'package:verbatim_frontend/widgets/custom_app_bar.dart';
 import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 import 'package:verbatim_frontend/widgets/friends_app_bar_test.dart';
+import 'package:verbatim_frontend/widgets/showSuccessDialog.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/widgets/stats.dart';
@@ -70,8 +71,6 @@ class _ProfileState extends State<Profile> {
 
   Future<void> sendFriendRequest(
       String requestingUsername, String requestedUsername) async {
-    print(
-        "\n\nRequester: ${requestingUsername} while the requested: ${requestedUsername}\n");
     final url = Uri.parse(BackendService.getBackendUrl() + 'addFriend');
     final headers = <String, String>{'Content-Type': 'application/json'};
 
@@ -82,14 +81,11 @@ class _ProfileState extends State<Profile> {
           "requestedUsername": requestedUsername
         }));
     if (response.statusCode == 200) {
-      _showSuccessDialog();
+      SuccessDialog.show(context, 'Your friend request has been sent!');
       setState(() {
         friendRequestStates[requestedUsername] =
             true; // Update request state for the user
       });
-
-      print(
-          '\nresponses sent successfully: $requestingUsername and $requestedUsername\n');
     } else {
       print('Failed to send responses. Status code: ${response.statusCode}');
     }
@@ -117,64 +113,6 @@ class _ProfileState extends State<Profile> {
       print(
           '\nIn addFriends getUsersIHaveRequested: Failed to send responses. Status code: ${response.statusCode}\n');
     }
-  }
-
-  void _showSuccessDialog() {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0), // Set the corner radius
-          ),
-          backgroundColor: const Color.fromARGB(
-              255, 255, 243, 238), // Set the background color
-          title: RichText(
-            text: const TextSpan(
-              children: [
-                TextSpan(
-                  text: 'Verba',
-                  style: TextStyle(
-                      color: Colors.orange,
-                      fontSize: 24,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.bold),
-                ),
-                TextSpan(
-                  text: '-tastic!',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 24,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-          ),
-          content: const Text(
-            'Your friend request has been sent!',
-            style: TextStyle(
-              color: Colors.black,
-              fontFamily: 'Poppins',
-            ), // Set text color
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: const Text(
-                'OK',
-                style: TextStyle(
-                  color: Colors.blue,
-                  fontFamily: 'Poppins',
-                ), // Set button text color
-              ),
-            ),
-          ],
-        );
-      },
-    );
   }
 
   final String field = "Friend";
