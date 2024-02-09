@@ -513,6 +513,8 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                                   onPressed: () {
                                                     leaveGroup(
                                                         groupID, username);
+                                                    Navigator.pushNamed(context,
+                                                        '/global_challenge');
                                                   },
                                                   style:
                                                       ElevatedButton.styleFrom(
