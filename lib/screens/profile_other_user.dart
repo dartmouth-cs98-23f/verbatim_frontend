@@ -15,16 +15,17 @@ import 'dart:async';
 import 'dart:convert';
 import 'package:google_fonts/google_fonts.dart';
 
-class Profile extends StatefulWidget {
+// ignore: camel_case_types
+class Profile_OtherUser extends StatefulWidget {
   final User? user; // Optional User object
 
-  const Profile({Key? key, this.user}) : super(key: key);
+  const Profile_OtherUser({Key? key, this.user}) : super(key: key);
 
   @override
-  State<Profile> createState() => _ProfileState();
+  State<Profile_OtherUser> createState() => _Profile_OtherUserState();
 }
 
-class _ProfileState extends State<Profile> {
+class _Profile_OtherUserState extends State<Profile_OtherUser> {
   final String assetName = 'assets/img1.svg';
   final String profile = 'assets/default.jpeg';
   final String friendsIcon = 'assets/friends.svg';
@@ -120,13 +121,12 @@ class _ProfileState extends State<Profile> {
     super.initState();
     getUsersIHaveRequested(SharedPrefs().getUserName() as String);
 
-    if (widget.user != null) {
-      if (!friendRequestStates.containsKey(widget.user!.username)) {
-        friendRequestStates[widget.user!.username] = widget.user!.isRequested;
-      }
-      drawButton = friendRequestStates[widget.user!.username] as bool;
-      groupName = '${SharedPrefs().getUserName()}&${widget.user!.username}';
+    if (!friendRequestStates.containsKey(widget.user!.username)) {
+      friendRequestStates[widget.user!.username] = widget.user!.isRequested;
     }
+    drawButton = friendRequestStates[widget.user!.username] as bool;
+
+    print("drawButton is $drawButton");
 
     // Initialize username from SharedPrefs if not provided through the widget
     username = widget.user?.username ?? SharedPrefs().getUserName() ?? " ";
@@ -145,6 +145,8 @@ class _ProfileState extends State<Profile> {
     lastName = widget.user?.lastName ?? SharedPrefs().getLastName() ?? "Name";
     initial =
         lastName.isNotEmpty ? lastName.substring(0, 1).toUpperCase() : "U";
+
+    groupName = '${SharedPrefs().getUserName()}&${widget.user!.username}';
 
     // Format displayName using firstName and initial
     displayName = '$firstName $initial.';
@@ -246,12 +248,17 @@ class _ProfileState extends State<Profile> {
                                           SafeArea(
                                             child: GestureDetector(
                                               onTap: () async {
+                                                final currentUserUsername =
+                                                    widget.user!.username;
                                                 if (widget.user == null) {
-                                                  Navigator.pushNamed(
-                                                      context, '/settings');
+                                                  Navigator.of(context)
+                                                      .push(MaterialPageRoute(
+                                                    builder: (context) =>
+                                                        const settings(),
+                                                  ));
                                                 } else {
-                                                  if (friendRequestStates[widget
-                                                          .user!.username] ==
+                                                  if (friendRequestStates[
+                                                          currentUserUsername] ==
                                                       false) {
                                                     await sendFriendRequest(
                                                         SharedPrefs()
@@ -294,15 +301,19 @@ class _ProfileState extends State<Profile> {
                                                       .transparent, // Make it transparent to prevent background color overlay
                                                   child: InkWell(
                                                     onTap: () {
+                                                      final currentUserUsername =
+                                                          widget.user!.username;
                                                       if (widget.user == null) {
                                                         // Navigate to settings
-                                                        Navigator.pushNamed(
-                                                            context,
-                                                            '/settings');
+                                                        Navigator.of(context)
+                                                            .push(
+                                                                MaterialPageRoute(
+                                                          builder: (context) =>
+                                                              const settings(),
+                                                        ));
                                                       } else {
                                                         if (friendRequestStates[
-                                                                widget.user!
-                                                                    .username] ==
+                                                                currentUserUsername] ==
                                                             false) {
                                                           sendFriendRequest(
                                                               SharedPrefs()
@@ -343,7 +354,6 @@ class _ProfileState extends State<Profile> {
                                                               const BoxDecoration(),
                                                           child: Stack(
                                                             children: [
-                                                              // Display person_outlined icon when there is a user and friend request is accepted
                                                               if (widget.user !=
                                                                       null &&
                                                                   friendRequestStates[widget
@@ -357,8 +367,6 @@ class _ProfileState extends State<Profile> {
                                                                       .white,
                                                                   size: 20,
                                                                 ),
-
-                                                              // Display person_add_alt_outlined icon when there is a user and friend request is not sent/accepted
                                                               if (widget.user !=
                                                                       null &&
                                                                   friendRequestStates[widget
@@ -368,17 +376,6 @@ class _ProfileState extends State<Profile> {
                                                                 const Icon(
                                                                   Icons
                                                                       .person_add_alt_outlined,
-                                                                  color: Colors
-                                                                      .white,
-                                                                  size: 20,
-                                                                ),
-
-                                                              // Display create_outlined icon when there is no user object (i.e., widget.user is null)
-                                                              if (widget.user ==
-                                                                  null)
-                                                                const Icon(
-                                                                  Icons
-                                                                      .create_outlined,
                                                                   color: Colors
                                                                       .white,
                                                                   size: 20,
