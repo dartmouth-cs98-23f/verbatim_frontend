@@ -8,6 +8,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:verbatim_frontend/widgets/custom_app_bar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:verbatim_frontend/widgets/showSuccessDialog.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 
@@ -51,7 +52,6 @@ class _ResetPasswordState extends State<ResetPassword> {
 
   void reset(
       BuildContext context, String newPassword, String oldPassword) async {
-
     try {
       final response = await http.post(
         //need a reset password endpoint
@@ -69,69 +69,11 @@ class _ResetPasswordState extends State<ResetPassword> {
       if (response.statusCode == 200) {
         // get the account info to display as dummy text
         SharedPrefs().setPassword(newPassword);
-        _showSuccessDialog(context);
+        SuccessDialog.show(context, 'Your password has been updated!');
       }
     } catch (error) {
       print('\nSorry, cannot edit account settings: $error');
     }
-  }
-
-  void _showSuccessDialog(BuildContext context) {
-    showDialog(
-      context: context,
-      builder: (BuildContext context) {
-        return AlertDialog(
-          shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0), // Set the corner radius
-          ),
-          backgroundColor: const Color.fromARGB(
-              255, 255, 243, 238), // Set the background color
-          title: RichText(
-            text: const TextSpan(
-              children: [
-                TextSpan(
-                  text: 'Verba',
-                  style: TextStyle(
-                      color: Colors.orange,
-                      fontSize: 24,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.bold),
-                ),
-                TextSpan(
-                  text: '-tastic!',
-                  style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 24,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.bold),
-                ),
-              ],
-            ),
-          ),
-          content: const Text(
-            'Your password has been updated!',
-            style: TextStyle(
-              color: Colors.black,
-              fontFamily: 'Poppins',
-            ), // Set text color
-          ),
-          actions: [
-            TextButton(
-              onPressed: () {
-                Navigator.of(context).pop(); // Close the dialog
-              },
-              child: const Text(
-                'OK',
-                style: TextStyle(
-                  color: Colors.blue,
-                  fontFamily: 'Poppins',
-                ), // Set button text color
-              ),
-            ),
-          ],
-        );
-      },
-    );
   }
 
   bool isValid(
@@ -195,21 +137,17 @@ class _ResetPasswordState extends State<ResetPassword> {
                                 fit: BoxFit.fill,
                               ),
                             ),
-
                             CustomAppBarSettings(
                               title: 'Reset Password',
                               showBackButton: true,
-
                             ),
                           ],
                         ),
                       ),
                       // field form boxes
 
-
                       SizedBox(height: 42),
                       Padding(
-
                         padding: EdgeInsets.only(left: 30.0),
                         child: Align(
                           alignment: Alignment.centerLeft,
@@ -233,10 +171,8 @@ class _ResetPasswordState extends State<ResetPassword> {
                         obscureText: true,
                       ),
 
-
                       SizedBox(height: 42),
                       Padding(
-
                         padding: EdgeInsets.only(left: 30.0),
                         child: Align(
                           alignment: Alignment.centerLeft,
@@ -262,7 +198,6 @@ class _ResetPasswordState extends State<ResetPassword> {
 
                       SizedBox(height: 42),
                       Padding(
-
                         padding: EdgeInsets.only(left: 30.0),
                         child: Align(
                           alignment: Alignment.centerLeft,
@@ -289,7 +224,6 @@ class _ResetPasswordState extends State<ResetPassword> {
                         padding: const EdgeInsets.only(left: 30.0),
                         child: Column(
                           children: [
-
                             SizedBox(height: 42),
                             Padding(
                               padding: EdgeInsets.only(left: 1.5),
@@ -307,7 +241,6 @@ class _ResetPasswordState extends State<ResetPassword> {
                                 ),
                               ),
                             )
-
                           ],
                         ),
                       ),
