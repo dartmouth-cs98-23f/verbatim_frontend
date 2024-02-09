@@ -3,11 +3,11 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 import 'package:verbatim_frontend/gameObject.dart';
 import 'package:verbatim_frontend/screens/landingPage.dart';
+import 'package:verbatim_frontend/screens/logIn.dart';
 import 'BackendService.dart';
 import 'Components/defineRoutes.dart';
 import 'Components/shared_prefs.dart';
 import 'package:firebase_core/firebase_core.dart';
-
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -16,7 +16,6 @@ Future<void> main() async {
   await SharedPrefs().init();
 
   const String environment =
-
       String.fromEnvironment('FLUTTER_BACKEND_ENV', defaultValue: 'prod');
   //print("env in main is: " + environment);
 
@@ -49,7 +48,6 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     //https://maketintsandshades.com/#E76F51 alternate shades are not yet added
 
-
     const MaterialColor paleColor = MaterialColor(
       0xFFF3EE,
       <int, Color>{
@@ -80,10 +78,8 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey,
       onGenerateRoute: Application.router.generator,
-
-      initialRoute: SharedPrefs().getCurrentPage() ?? '/landingPage',
-      home: const LandingPage(),
-
+      // initialRoute: SharedPrefs().getCurrentPage() ?? '/landingPage',
+      home: const LogIn(),
     );
   }
 }

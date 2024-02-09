@@ -88,35 +88,40 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/googleImage.png
-    - assets/onboardingPage2Image.png
-    - assets/onboardingPage3Image.png
-    - assets/onboardingPage4Image.png
-    - assets/Logo.png
-    - assets/img1.svg
-    - assets/bird.png
-    - assets/Ellipse 41.png
-    - assets/Ellipse 42.png
-    - assets/Ellipse 43.png
-    - assets/Ellipse 44.png
-    - assets/Ellipse 45.png
-    - assets/Ellipse 46.png
-    - assets/Ellipse 47.png
-    - assets/profile2.jpeg
-    - assets/profile_pic.png
-    - assets/editIcon.svg
 
-    - assets/friends.svg
-    - assets/globalChallenges.svg
-    - assets/default.jpeg
-    - assets/streak.svg
-    - assets/Vector 4.png
-    - assets/customChallenges.svg
-    - assets/IconLiving.svg
-    - assets/send.svg
-    - assets/copy.svg
+     - assets/googleImage.png
+     - assets/onboardingPage2Image.png
+     - assets/onboardingPage3Image.png
+     - assets/onboardingPage4Image.png
+     - assets/Logo.png
+     - assets/img1.svg
+     - assets/bird.png
+     - assets/Ellipse 41.png
+     - assets/Ellipse 42.png
+     - assets/Ellipse 43.png
+     - assets/Ellipse 44.png
+     - assets/Ellipse 45.png
+     - assets/Ellipse 46.png
+     - assets/Ellipse 47.png
+     - assets/profile2.jpeg
+     - assets/profile_pic.png
+     - assets/editIcon.svg
+     - assets/play.svg
 
-    - assets/config.properties
+
+     - assets/friends.svg
+     - assets/globalChallenges.svg
+     - assets/default.jpeg
+     - assets/streak.svg
+     - assets/Vector 4.png
+     - assets/customChallenges.svg
+     - assets/IconLiving.svg
+     - assets/send.svg
+     - assets/copy.svg
+     - assets/playtoggle.svg
+     - assets/statstoggle.svg
+
+     - assets/config.properties
 
   #     - images/a_dot_ham.jpeg
 

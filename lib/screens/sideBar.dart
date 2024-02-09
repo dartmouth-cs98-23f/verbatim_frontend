@@ -1,12 +1,26 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/Components/defineRoutes.dart';
 import 'dart:convert';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
+import 'package:verbatim_frontend/screens/User.dart';
 import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'package:verbatim_frontend/screens/profile.dart';
 import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
+
+class UserGroup {
+  int id = 0;
+  String groupName = "";
+
+  UserGroup({required this.groupName, required this.id});
+
+  factory UserGroup.fromJson(Map<String, dynamic> json) {
+    return UserGroup(groupName: json['name'], id: json['id']);
+  }
+}
 
 class FriendAcceptOrDeclineRequest {
   String requestingUsername;
@@ -44,7 +58,33 @@ class _SideBarState extends State<SideBar> {
 
   List<User> friendRequests = [];
   List<User> friends = [];
+  List<String> groupnamesList = [];
+  List<UserGroup> userGroups = [];
 
+  //get groups
+  Future<void> getMyGroups(String username) async {
+    final url = Uri.parse(
+        BackendService.getBackendUrl() + 'user/' + '$username/' + 'groups');
+
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final Map<String, dynamic> data = json.decode(response.body);
+
+      List<dynamic> groups = data['groups'];
+
+      for (Map<String, dynamic> group in groups) {
+        int id = group["id"];
+        String name = group["name"];
+        userGroups.add(UserGroup(id: id, groupName: name));
+        groupnamesList.add(name);
+      }
+    } else {
+      print('Failed to send responses. Status code: ${response.statusCode}');
+    }
+  }
+
+// getFriends - can I get the friend:user groupId here?
   Future<void> getFriends(String username) async {
     final url = Uri.parse('${BackendService.getBackendUrl()}getFriends');
     final Map<String, String> headers = {
@@ -112,10 +152,12 @@ class _SideBarState extends State<SideBar> {
     BuildContext context1 = context;
 
     username = SharedPrefs().getUserName() ?? "";
+    // laod content first - get friends, requests and groups
     return FutureBuilder<void>(
         future: Future.wait([
           getFriends(username),
           getFriendRequests(username),
+          getMyGroups(username),
         ]),
         builder: (context, snapshot) {
           if (snapshot.connectionState == ConnectionState.waiting) {
@@ -220,7 +262,9 @@ class _SideBarState extends State<SideBar> {
                           itemCount: friends.length,
                           itemBuilder: (BuildContext context, int index) {
                             User friend = friends[index];
+                            String friendUsername = friend.username;
 
+// if you click the friendname, go to the friendship page. Can i send friend groupId? load it here?
                             return ListTile(
                               title: GestureDetector(
                                 onTap: () {
@@ -244,8 +288,10 @@ class _SideBarState extends State<SideBar> {
                                 profileUrl: friend.profilePicture,
                                 user: friend,
                               ),
-                              onTap:
-                                  () {}, // Keep this empty if onTap behavior is handled by GestureDetector
+                              onTap: () {
+                                Navigator.pushNamed(this.context,
+                                    '/friendship?friendUsername=$friendUsername');
+                              }, // Keep this empty if onTap behavior is handled by GestureDetector
                             );
                           },
                         ),
@@ -270,28 +316,37 @@ class _SideBarState extends State<SideBar> {
                       child:
                           const Icon(Icons.add, color: Colors.black, size: 25),
                     ),
-                    initiallyExpanded: true,
-                    //  initiallyExpanded: true,
-                    shape: const Border(),
+                    initiallyExpanded: false,
+
+                    shape: Border(),
                     children: <Widget>[
                       const SizedBox(height: 10.0),
                       Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                        child: Container(
-                          padding: const EdgeInsets.symmetric(
-                              horizontal: 0.0, vertical: .1),
-                          child: ListTile(
-                            title: const Text('Group 1',
+                        padding: EdgeInsets.symmetric(horizontal: 5.0),
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: groupnamesList.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            String groupname = groupnamesList[index];
+                            int? groupId = userGroups[index].id;
+// go to group with this Id
+                            return ListTile(
+                              title: Text(
+                                groupname,
                                 style: TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15)),
-                            leading:
-                                const Icon(Icons.people, color: Colors.black),
-                            onTap: () {
-                              handleTap(context, 5);
-                            },
-                          ),
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                ),
+                              ),
+                              leading: Icon(Icons.people, color: Colors.black),
+                              onTap: () {
+                                Navigator.pushNamed(this.context,
+                                    '/myGroup?groupName=$groupname&groupId=$groupId');
+                              },
+                            );
+                          },
                         ),
                       ),
                     ],
@@ -391,25 +446,7 @@ class _SideBarState extends State<SideBar> {
                             fontSize: 18)),
                     onTap: () {},
                   ),
-                  const SizedBox(height: 10.0),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 0.0, vertical: .1),
-                      child: ListTile(
-                        title: const Text('Custom Challenge',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18)),
-                        leading:
-                            const Icon(Icons.play_arrow, color: Colors.black),
-                        onTap: () {},
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10.0),
+                  SizedBox(height: 10.0),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 5.0),
                     child: Container(
@@ -474,15 +511,6 @@ void handleTap(BuildContext context, int index) {
 
     case 4: // "Create Group"
       Navigator.pushNamed(context, '/create_group');
-      break;
-
-    case 5: // "My Group"
-      String userResponse = 'kool kids';
-      List<String> addedUsernames = ['frances'];
-      Navigator.pushNamed(
-        context,
-        '/my_group/${Uri.encodeComponent(userResponse)}/${Uri.encodeComponent(addedUsernames.join(','))}',
-      );
       break;
   }
 }

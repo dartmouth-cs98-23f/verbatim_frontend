@@ -1,4 +1,5 @@
 // User class for when backend passes in users
+
 class User {
   int id = 0;
   String email = "";

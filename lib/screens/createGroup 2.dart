@@ -44,8 +44,6 @@ class createGroup extends StatefulWidget {
 
 class _CreateGroupState extends State<createGroup> {
   String username = SharedPrefs().getUserName() ?? "";
-  bool error = false;
-  bool error2 = false;
   bool isCreated = false; // in the beginning, the group isn't created
   TextEditingController responseController = TextEditingController();
   String userResponse = '';
@@ -58,10 +56,9 @@ class _CreateGroupState extends State<createGroup> {
   List<String> addedUsernames = []; //usernames added to the group
 
   bool friendsFetched = false;
-  int? groupId = 0;
 
   // create group
-  Future<Map<int?, bool>> create(String groupName, String createdByUsername,
+  Future<void> create(String groupName, String createdByUsername,
       List<String> usernamesToAdd) async {
     final url = Uri.parse(BackendService.getBackendUrl() + 'createGroup');
     final headers = <String, String>{'Content-Type': 'application/json'};
@@ -75,17 +72,13 @@ class _CreateGroupState extends State<createGroup> {
         await http.post(url, headers: headers, body: requestPayload);
 
     if (response.statusCode == 200) {
-      print('responses from CREATE GROUP sent succesfully');
+      print('responses sent succesfully');
       final Map<String, dynamic> data = json.decode(response.body);
 
-      print('this is create group data $data');
-      groupId = data['groupId'];
-
+      int groupId = data['groupId'];
       String groupName = data['groupName'];
-
       List<dynamic> users = data['users'];
 
-      print('this is create group data $data');
       print('Group ID: $groupId');
       print('Group Name: $groupName');
 
@@ -93,12 +86,16 @@ class _CreateGroupState extends State<createGroup> {
         int userId = user['id'];
         String username = user['username'];
         String email = user['email'];
+
+        print('User ID: $userId');
+        print('Username: $username');
+        print('Email: $email');
+        print('---');
       }
-      return {groupId: true};
+
+      print(data);
     } else {
-      return {groupId: false};
-      print(
-          'Failed to send responses.ok/??? Status code: ${response.statusCode}');
+      print('Failed to send responses. Status code: ${response.statusCode}');
     }
   }
 
@@ -184,12 +181,12 @@ class _CreateGroupState extends State<createGroup> {
                   width: double.maxFinite,
                   child: Column(children: [
                     SizedBox(
-                        height: 220,
+                        height: 240.v,
                         width: double.maxFinite,
                         child: Stack(alignment: Alignment.topCenter, children: [
                           // orange background
                           Container(
-                            height: 220,
+                            height: 220.v,
                             width: double.maxFinite,
                             margin: EdgeInsets.zero,
                             padding: EdgeInsets.zero,
@@ -240,60 +237,18 @@ class _CreateGroupState extends State<createGroup> {
                                     )),
                               ),
                             ),
-                          ),
+                          )
                         ]))
                   ]),
                 ),
-                Visibility(
-                    visible: error,
-                    child: Center(
-                      child: SizedBox(
-                        child: RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text:
-                                    "Add at least two friends to make a group",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    )),
-                Visibility(
-                    visible: error2,
-                    child: Center(
-                      child: SizedBox(
-                        child: RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text:
-                                    "Error creating duplicate group - do you already have a group with these users?",
-                                style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    )),
 
                 // constant background
                 Center(
                   child: Container(
                       clipBehavior: Clip.hardEdge,
                       margin: EdgeInsets.only(top: 10),
-                      width: 300,
-                      height: 350,
+                      width: 300.h,
+                      height: 430.v,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
                         boxShadow: [
@@ -350,12 +305,10 @@ class _CreateGroupState extends State<createGroup> {
 
                                                     setState(() {
                                                       toggleFriend(name);
-                                                      error2 = false;
                                                     });
                                                   } else {
                                                     setState(() {
                                                       toggleFriend(name);
-                                                      error2 = false;
                                                     });
                                                   }
                                                 },
@@ -465,6 +418,12 @@ class _CreateGroupState extends State<createGroup> {
                                 ),
                               ),
                               SizedBox(height: 30.0),
+                              Text(
+                                'Added Usernames: $addedUsernames ',
+                                style: TextStyle(
+                                  fontSize: 16,
+                                ),
+                              ),
                             ]),
                         ],
                       )),
@@ -483,18 +442,15 @@ class _CreateGroupState extends State<createGroup> {
                         } else {
                           // if we're in name group, go back to create group
                           setState(() {
-                            isCreated = false;
-                            error2 = false; // shift content
+                            isCreated = false; // shift content
                           });
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 255, 243, 238),
+                        backgroundColor: Colors.white,
                         padding: EdgeInsets.all(16.0),
-                        elevation: 0.0,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0),
-                          //why doesnt this work  side: BorderSide(width: 20.0),
                         ),
                         minimumSize: const Size(100, 50),
                         side: BorderSide(color: Color(0xFFE76F51)),
@@ -510,47 +466,18 @@ class _CreateGroupState extends State<createGroup> {
                     ),
                     SizedBox(width: 16.0),
                     ElevatedButton(
-                      onPressed: () async {
+                      onPressed: () {
                         // if group isn't created, create it
                         if (!isCreated) {
-                          if (addedUsernames.length <= 1) {
-                            setState(() {
-                              error = true;
-                              error2 = false; // shift content
-                            });
-                          } else {
-                            setState(() {
-                              error = false;
-                              isCreated = true;
-                              error2 = false; // shift content
-                            });
-                          }
-
+                          setState(() {
+                            isCreated = true; // shift content
+                          });
                           // otherwise, take us to the group page
                         } else {
-                          // talk to backend here
-                          Map<int?, bool> result = await create(
-                              userResponse, username, addedUsernames);
-                          print("this is the result of group creation $result");
-                          int? groupId = result.keys.first;
-                          bool? created = result[groupId];
-                          int groupID = groupId!;
-                          if (created == true) {
-                            print(
-                                'this is the groupid in create group $groupId');
-                            Navigator.pushNamed(this.context,
-                                '/myGroup?groupName=$userResponse&groupId=$groupID');
-                          } else {
-                            setState(() {
-                              error2 = true;
-                              isCreated = true;
-                              for (String x in addedUsernames) {
-                                toggleFriend(x);
-                              }
-
-                              addedUsernames = []; // shift content
-                            });
-                          }
+                          create(userResponse, username, addedUsernames);
+                          handleTap(context, 1,
+                              userResponse: userResponse,
+                              addedUsernames: addedUsernames);
                         }
                       },
                       style: ElevatedButton.styleFrom(

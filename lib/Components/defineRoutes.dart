@@ -2,6 +2,7 @@ import 'package:fluro/fluro.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'package:verbatim_frontend/screens/createGroup.dart';
+import 'package:verbatim_frontend/screens/friendship.dart';
 import 'package:verbatim_frontend/screens/myGroup.dart';
 import 'package:verbatim_frontend/screens/forgotPassword.dart';
 import 'package:verbatim_frontend/screens/logout.dart';
@@ -98,7 +99,12 @@ void defineRoutes() {
   );
 
   Application.router.define(
-    '/my_group/:param1/:param2',
+    '/friendship',
+    handler: friendshipHandler,
+  );
+
+  Application.router.define(
+    '/myGroup',
     handler: myGroupHandler,
   );
 }
@@ -110,14 +116,23 @@ var myGroupHandler = Handler(
         SharedPrefs().getPassword() == '') {
       return const LogIn();
     } else {
+      SharedPrefs().setCurrentPage('/myGroup');
+      String assetName = params["groupName"]![0];
+
+      int? groupId = int.tryParse(params["groupId"]![0]);
+
+      return myGroup(groupName: assetName, groupId: groupId);
+
+      /*
       var groupName = Uri.decodeComponent(params['param1']?[0] ?? '');
       var addedUsernamesString =
           Uri.decodeComponent(params['param2']?[0] ?? '');
       var addedUsernames = addedUsernamesString.split(',');
 
       if (groupName.isNotEmpty && addedUsernames.isNotEmpty) {
-        //  String myGroupUrl = '/my_group/$groupName/${addedUsernames.join(',')}';
+        String myGroupUrl = '/my_group/$groupName/${addedUsernames.join(',')}';
         // SharedPrefs().setCurrentPage(myGroupUrl);
+        SharedPrefs().setCurrentPage('/my_group');
 
         return myGroup(
           groupName: groupName,
@@ -126,6 +141,7 @@ var myGroupHandler = Handler(
       } else {
         return const globalChallenge();
       }
+      */
     }
   },
 );
@@ -134,11 +150,26 @@ var landingPageHandler = Handler(handlerFunc: (context, parameters) {
   if (SharedPrefs().getEmail() == '' ||
       SharedPrefs().getUserName() == '' ||
       SharedPrefs().getPassword() == '') {
-    return const LandingPage();
+    return LandingPage();
   } else {
     // Update the current page in the shared prefs
     SharedPrefs().setCurrentPage('/landingPage');
-    return const LandingPage();
+    return LandingPage();
+  }
+});
+
+var friendshipHandler = Handler(handlerFunc: (context, parameters) {
+  if (SharedPrefs().getEmail() == '' ||
+      SharedPrefs().getUserName() == '' ||
+      SharedPrefs().getPassword() == '') {
+    return LandingPage();
+  } else {
+    // Update the current page in the shared prefs
+    SharedPrefs().setCurrentPage('/friendship');
+    String assetName = 'Frances';
+
+    assetName = parameters["friendUsername"]![0];
+    return friendship(friendUsername: assetName);
   }
 });
 
@@ -146,11 +177,11 @@ var settingsHandler = Handler(handlerFunc: (context, parameters) {
   if (SharedPrefs().getEmail() == '' ||
       SharedPrefs().getUserName() == '' ||
       SharedPrefs().getPassword() == '') {
-    return const LogIn();
+    return LogIn();
   } else {
     // Update the current page in the shared prefs
     SharedPrefs().setCurrentPage('/settings');
-    return const settings();
+    return settings();
   }
 });
 
@@ -163,8 +194,7 @@ Handler onBoardingPage1Handler = Handler(
     } else {
       // Update the current page in the shared prefs
       SharedPrefs().setCurrentPage('/onboarding_page1');
-
-      return const OnBoardingPage1();
+      return OnBoardingPage1();
     }
   },
 );
@@ -245,7 +275,7 @@ Handler logInHandler = Handler(
 Handler globalChallengeHandler = Handler(handlerFunc: (context, parameters) {
   // Update the current page in the shared prefs
   SharedPrefs().setCurrentPage('/global_challenge');
-  return const globalChallenge();
+  return globalChallenge();
 });
 
 Handler addFriendHandler = Handler(
@@ -271,7 +301,7 @@ Handler createGroupHandler = Handler(
     } else {
       // Update the current page in the shared prefs
       SharedPrefs().setCurrentPage('/create_group');
-      return const createGroup();
+      return createGroup();
     }
   },
 );

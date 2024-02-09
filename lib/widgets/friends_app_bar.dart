@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'size.dart';
 
 class FriendsAppBar extends StatelessWidget implements PreferredSizeWidget {
-  const FriendsAppBar({
+  FriendsAppBar({
     Key? key,
     this.height,
   }) : super(
@@ -15,36 +15,28 @@ class FriendsAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: Colors.transparent,
       toolbarHeight: 100,
+      scrolledUnderElevation: 0.0,
+      iconTheme: IconThemeData(color: Colors.white),
       elevation: 0,
       title: Container(
         height: 50,
         width: 160,
-        alignment: const Alignment(-2.0, 0),
+        alignment: Alignment(-2.0, 0),
         decoration: BoxDecoration(
           color: Colors.transparent,
           borderRadius: BorderRadius.circular(10),
         ),
-        child: const Row(
-          children: [
-            Center(
-              child: Text(
-                'Add Friends',
-                style: TextStyle(
-                  fontSize: 24,
-                  color: Colors.white,
-                  fontWeight: FontWeight.w900,
-                ),
-              ),
+        child: Center(
+          child: Text(
+            'Add Friends',
+            style: TextStyle(
+              fontSize: 24,
+              color: Colors.white,
+              fontWeight: FontWeight.w900,
             ),
-          ],
+          ),
         ),
       ),
-      actions: <Widget>[
-        IconButton(
-          icon: const Icon(Icons.person),
-          onPressed: () {},
-        ),
-      ],
       centerTitle: false,
     );
   }

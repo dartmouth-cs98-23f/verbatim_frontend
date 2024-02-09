@@ -7,12 +7,16 @@ class Friend {
   final String answer1;
   final String answer2;
   final String answer3;
+  final String answer4; // + 2
+  final String answer5;
 
   Friend({
     required this.name,
     required this.answer1,
     required this.answer2,
     required this.answer3,
+    required this.answer4, // +2
+    required this.answer5,
   });
 }
 
@@ -21,6 +25,8 @@ class Stats extends StatelessWidget {
   final Map<String, dynamic> statsQ1;
   final Map<String, dynamic> statsQ2;
   final Map<String, dynamic> statsQ3;
+  final Map<String, dynamic> statsQ4; // +2
+  final Map<String, dynamic> statsQ5;
   final int totalResponses;
   final List<String> questions;
   final List<String> responses;
@@ -31,6 +37,8 @@ class Stats extends StatelessWidget {
     required this.statsQ1,
     required this.statsQ2,
     required this.statsQ3,
+    required this.statsQ4, //+2
+    required this.statsQ5,
     required this.questions,
     required this.responses,
   });
@@ -41,11 +49,15 @@ class Stats extends StatelessWidget {
       final answer1 = stats['statsQ1']['friendResponses'][friendName];
       final answer2 = stats['statsQ2']['friendResponses'][friendName];
       final answer3 = stats['statsQ3']['friendResponses'][friendName];
+      final answer4 = stats['statsQ4']['friendResponses'][friendName]; // +2
+      final answer5 = stats['statsQ5']['friendResponses'][friendName];
       friends.add(Friend(
           name: friendName,
           answer1: answer1,
           answer2: answer2,
-          answer3: answer3));
+          answer3: answer3,
+          answer4: answer4, // +2!
+          answer5: answer5));
     }
     return friends;
   }
@@ -55,7 +67,9 @@ class Stats extends StatelessWidget {
     Map<String, dynamic> stats = {
       "statsQ1": statsQ1,
       "statsQ2": statsQ2,
-      "statsQ3": statsQ3
+      "statsQ3": statsQ3,
+      "statsQ4": statsQ4, //+2!
+      "statsQ5": statsQ5
     };
     List<Friend> friends = convertStatsToFriends(stats);
 
@@ -81,6 +95,21 @@ class Stats extends StatelessWidget {
     if (statsQ3["thirdMostPopular"] == null) {
       statsQ3["thirdMostPopular"] = ' ';
     }
+    // +2!
+    if (statsQ4["secondMostPopular"] == null) {
+      statsQ4["secondMostPopular"] = ' ';
+    }
+
+    if (statsQ4["thirdMostPopular"] == null) {
+      statsQ4["thirdMostPopular"] = ' ';
+    }
+    if (statsQ5["secondMostPopular"] == null) {
+      statsQ5["secondMostPopular"] = ' ';
+    }
+
+    if (statsQ5["thirdMostPopular"] == null) {
+      statsQ5["thirdMostPopular"] = ' ';
+    }
 
     // calculations for pie chart
     double numTopResponses1 = statsQ1["numResponsesFirst"] +
@@ -100,6 +129,19 @@ class Stats extends StatelessWidget {
         statsQ3["numResponsesThird"];
 
     double numOther3 = totalResponses - numTopResponses3;
+
+    //+2!
+    double numTopResponses4 = statsQ4["numResponsesFirst"] +
+        statsQ4["numResponsesSecond"] +
+        statsQ4["numResponsesThird"];
+
+    double numOther4 = totalResponses - numTopResponses3;
+
+    double numTopResponses5 = statsQ5["numResponsesFirst"] +
+        statsQ5["numResponsesSecond"] +
+        statsQ5["numResponsesThird"];
+
+    double numOther5 = totalResponses - numTopResponses3;
 
     const MaterialColor paleColor = MaterialColor(
       0xFFF3EE,
@@ -122,6 +164,9 @@ class Stats extends StatelessWidget {
     String yourAnswer1 = responses[0];
     String yourAnswer2 = responses[1];
     String yourAnswer3 = responses[2];
+    //+2!
+    String yourAnswer4 = responses[3];
+    String yourAnswer5 = responses[4];
 
     return MaterialApp(
       debugShowCheckedModeBanner: false,
@@ -831,6 +876,451 @@ class Stats extends StatelessWidget {
                                     ).toList(),
                                   ),
                           ),
+                        ]),
+                      ));
+                      //+2!
+                    } else if (index == 3) {
+                      tabContent = SingleChildScrollView(
+                          child: Container(
+                        child: Column(children: [
+                          const SizedBox(height: 10),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Text(
+                              questions[3],
+                              style: const TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: 300.h,
+                            height: 350.v,
+                            child: PieChart(
+                              PieChartData(
+                                centerSpaceRadius: 0,
+                                sections: [
+                                  PieChartSectionData(
+                                      value: statsQ4["numResponsesFirst"],
+                                      color: Colors.red,
+                                      radius: 80,
+                                      title: ''),
+                                  PieChartSectionData(
+                                      value: statsQ4["numResponsesSecond"],
+                                      color: Colors.green,
+                                      radius: 80,
+                                      title: ''),
+                                  PieChartSectionData(
+                                      value: statsQ4["numResponsesThird"],
+                                      color: Colors.blue,
+                                      radius: 80,
+                                      title: ''),
+                                  PieChartSectionData(
+                                      value: numOther2,
+                                      color: Colors.yellow,
+                                      radius: 80,
+                                      title: ''),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Container(
+                              width: 300.h,
+                              child: Center(
+                                child: Legend(
+                                  data: [
+                                    LegendData(
+                                        title: statsQ4["firstMostPopular"],
+                                        color: Colors.red),
+                                    LegendData(
+                                        title: statsQ4["secondMostPopular"],
+                                        color: Colors.green),
+                                    LegendData(
+                                        title: statsQ4["thirdMostPopular"],
+                                        color: Colors.blue),
+                                    LegendData(
+                                        title: 'Other', color: Colors.yellow),
+                                  ],
+                                ),
+                              )),
+                          SizedBox(height: 15.v),
+                          Container(
+                            padding: EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "You Said: '$yourAnswer4'",
+                                  style: TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                              width: 200,
+                              child: Center(
+                                child: Text(
+                                  "Friends' Answers",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              )),
+                          SizedBox(height: 10),
+                          Container(
+                              width: 300.h,
+                              height: 250,
+                              child: friends.isEmpty
+                                  ? Padding(
+                                      padding: EdgeInsets.only(top: 20.0),
+                                      child: Text(
+                                        "None of your friends have played today. Add friends to see their answers!",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.orange,
+                                        ),
+                                      ))
+                                  : Column(
+                                      children: friends.asMap().entries.map(
+                                        (entry) {
+                                          final friend = entry.value;
+                                          final friendName = friend.name;
+                                          final friendAnswer4 = friend.answer4;
+
+                                          if (entry.key.isEven) {
+                                            final nextIndex = entry.key + 1;
+                                            final hasNextFriend =
+                                                nextIndex < friends.length;
+
+                                            final nextFriendName = hasNextFriend
+                                                ? friends[nextIndex].name
+                                                : '';
+                                            final nextAnswer = hasNextFriend
+                                                ? friends[nextIndex].answer4
+                                                : '';
+
+                                            return Center(
+                                              child: Row(
+                                                children: [
+                                                  Expanded(
+                                                      child: ListTile(
+                                                    title: Center(
+                                                      child: Row(children: [
+                                                        Icon(Icons
+                                                            .account_circle),
+                                                        Flexible(
+                                                          child: RichText(
+                                                            text: TextSpan(
+                                                              style: DefaultTextStyle
+                                                                      .of(context)
+                                                                  .style,
+                                                              children: <TextSpan>[
+                                                                TextSpan(
+                                                                  text:
+                                                                      '$friendName: ',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                  ),
+                                                                ),
+                                                                TextSpan(
+                                                                  text:
+                                                                      friendAnswer4,
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .normal,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        )
+                                                      ]),
+                                                    ),
+                                                  )),
+                                                  if (hasNextFriend)
+                                                    Expanded(
+                                                      child: ListTile(
+                                                        title: Center(
+                                                          child: Row(children: [
+                                                            Icon(Icons
+                                                                .account_circle),
+                                                            Flexible(
+                                                              child: RichText(
+                                                                text: TextSpan(
+                                                                  style: DefaultTextStyle.of(
+                                                                          context)
+                                                                      .style,
+                                                                  children: <TextSpan>[
+                                                                    TextSpan(
+                                                                      text:
+                                                                          '$nextFriendName: ',
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight.bold,
+                                                                      ),
+                                                                    ),
+                                                                    TextSpan(
+                                                                      text:
+                                                                          nextAnswer,
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight.normal,
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            )
+                                                          ]),
+                                                        ),
+                                                      ),
+                                                    )
+                                                ],
+                                              ),
+                                            );
+                                          } else {
+                                            return SizedBox();
+                                          }
+                                        },
+                                      ).toList(),
+                                    )),
+                        ]),
+                      ));
+                    } else if (index == 4) {
+                      tabContent = SingleChildScrollView(
+                          child: Container(
+                        child: Column(children: [
+                          const SizedBox(height: 10),
+                          Padding(
+                            padding:
+                                const EdgeInsets.symmetric(horizontal: 16.0),
+                            child: Text(
+                              questions[4],
+                              style: const TextStyle(
+                                fontSize: 16.0,
+                                fontWeight: FontWeight.bold,
+                              ),
+                            ),
+                          ),
+                          Container(
+                            width: 300.h,
+                            height: 350.v,
+                            child: PieChart(
+                              PieChartData(
+                                centerSpaceRadius: 0,
+                                sections: [
+                                  PieChartSectionData(
+                                      value: statsQ5["numResponsesFirst"],
+                                      color: Colors.red,
+                                      radius: 80,
+                                      title: ''),
+                                  PieChartSectionData(
+                                      value: statsQ5["numResponsesSecond"],
+                                      color: Colors.green,
+                                      radius: 80,
+                                      title: ''),
+                                  PieChartSectionData(
+                                      value: statsQ5["numResponsesThird"],
+                                      color: Colors.blue,
+                                      radius: 80,
+                                      title: ''),
+                                  PieChartSectionData(
+                                      value: numOther2,
+                                      color: Colors.yellow,
+                                      radius: 80,
+                                      title: ''),
+                                ],
+                              ),
+                            ),
+                          ),
+                          Container(
+                              width: 300.h,
+                              child: Center(
+                                child: Legend(
+                                  data: [
+                                    LegendData(
+                                        title: statsQ5["firstMostPopular"],
+                                        color: Colors.red),
+                                    LegendData(
+                                        title: statsQ5["secondMostPopular"],
+                                        color: Colors.green),
+                                    LegendData(
+                                        title: statsQ5["thirdMostPopular"],
+                                        color: Colors.blue),
+                                    LegendData(
+                                        title: 'Other', color: Colors.yellow),
+                                  ],
+                                ),
+                              )),
+                          SizedBox(height: 15.v),
+                          Container(
+                            padding: EdgeInsets.all(16.0),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.start,
+                              children: [
+                                Text(
+                                  "You Said: '$yourAnswer5'",
+                                  style: TextStyle(
+                                    fontSize: 16.0,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                          Container(
+                              width: 200,
+                              child: Center(
+                                child: Text(
+                                  "Friends' Answers",
+                                  style: TextStyle(
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.bold,
+                                  ),
+                                ),
+                              )),
+                          SizedBox(height: 10),
+                          Container(
+                              width: 300.h,
+                              height: 250,
+                              child: friends.isEmpty
+                                  ? Padding(
+                                      padding: EdgeInsets.only(top: 20.0),
+                                      child: Text(
+                                        "None of your friends have played today. Add friends to see their answers!",
+                                        textAlign: TextAlign.center,
+                                        style: TextStyle(
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.orange,
+                                        ),
+                                      ))
+                                  : Column(
+                                      children: friends.asMap().entries.map(
+                                        (entry) {
+                                          final friend = entry.value;
+                                          final friendName = friend.name;
+                                          final friendAnswer5 = friend.answer5;
+
+                                          if (entry.key.isEven) {
+                                            final nextIndex = entry.key + 1;
+                                            final hasNextFriend =
+                                                nextIndex < friends.length;
+
+                                            final nextFriendName = hasNextFriend
+                                                ? friends[nextIndex].name
+                                                : '';
+                                            final nextAnswer = hasNextFriend
+                                                ? friends[nextIndex].answer5
+                                                : '';
+
+                                            return Center(
+                                              child: Row(
+                                                children: [
+                                                  Expanded(
+                                                      child: ListTile(
+                                                    title: Center(
+                                                      child: Row(children: [
+                                                        Icon(Icons
+                                                            .account_circle),
+                                                        Flexible(
+                                                          child: RichText(
+                                                            text: TextSpan(
+                                                              style: DefaultTextStyle
+                                                                      .of(context)
+                                                                  .style,
+                                                              children: <TextSpan>[
+                                                                TextSpan(
+                                                                  text:
+                                                                      '$friendName: ',
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                  ),
+                                                                ),
+                                                                TextSpan(
+                                                                  text:
+                                                                      friendAnswer5,
+                                                                  style:
+                                                                      TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .normal,
+                                                                  ),
+                                                                ),
+                                                              ],
+                                                            ),
+                                                          ),
+                                                        )
+                                                      ]),
+                                                    ),
+                                                  )),
+                                                  if (hasNextFriend)
+                                                    Expanded(
+                                                      child: ListTile(
+                                                        title: Center(
+                                                          child: Row(children: [
+                                                            Icon(Icons
+                                                                .account_circle),
+                                                            Flexible(
+                                                              child: RichText(
+                                                                text: TextSpan(
+                                                                  style: DefaultTextStyle.of(
+                                                                          context)
+                                                                      .style,
+                                                                  children: <TextSpan>[
+                                                                    TextSpan(
+                                                                      text:
+                                                                          '$nextFriendName: ',
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight.bold,
+                                                                      ),
+                                                                    ),
+                                                                    TextSpan(
+                                                                      text:
+                                                                          nextAnswer,
+                                                                      style:
+                                                                          TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight.normal,
+                                                                      ),
+                                                                    ),
+                                                                  ],
+                                                                ),
+                                                              ),
+                                                            )
+                                                          ]),
+                                                        ),
+                                                      ),
+                                                    )
+                                                ],
+                                              ),
+                                            );
+                                          } else {
+                                            return SizedBox();
+                                          }
+                                        },
+                                      ).toList(),
+                                    )),
                         ]),
                       ));
                     }

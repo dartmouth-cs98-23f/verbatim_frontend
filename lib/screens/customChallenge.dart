@@ -1,16 +1,48 @@
 import 'package:flutter/material.dart';
+import 'package:verbatim_frontend/BackendService.dart';
+import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'sideBar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:verbatim_frontend/widgets/create_group_app_bar.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:verbatim_frontend/widgets/custom_app_bar.dart';
+import 'package:fl_chart/fl_chart.dart';
+import 'dart:math';
 import 'package:verbatim_frontend/screens/myGroup.dart';
+import 'package:verbatim_frontend/screens/friendship.dart';
+
+Future<void> createCustomChallenge(
+    String username, List<String> prompts, int groupId) async {
+  final url =
+      Uri.parse(BackendService.getBackendUrl() + 'createCustomChallenge');
+  final headers = <String, String>{'Content-Type': 'application/json'};
+
+  final response = await http.post(url,
+      headers: headers,
+      body: json.encode({
+        'createdByUsername': username,
+        'questions': prompts,
+        'groupId': groupId
+      }));
+  if (response.statusCode == 200) {
+  } else {
+    print(
+        'failed to create standard challenge. Status code: ${response.statusCode}');
+  }
+}
 
 class customChallenge extends StatefulWidget {
   final String groupName;
+  final int? groupId;
+  final bool friendship;
 
-  const customChallenge({
+  customChallenge({
     Key? key,
     required this.groupName,
+    required this.groupId,
+    required this.friendship,
   }) : super(key: key);
 
   @override
@@ -19,24 +51,31 @@ class customChallenge extends StatefulWidget {
 
 class _CustomChallengeState extends State<customChallenge>
     with SingleTickerProviderStateMixin {
+  // track whether each rectangle is exanded or not
   List<bool> expandedStates = [false, false, false];
+
+  // list of prompts the user will input
   List<String> prompts = [
-    "Replace with your challenge question",
-    "Replace with your challenge question",
-    "Replace with your challenge question",
+    "Enter your challenge question",
+    "Enter your challenge question",
+    "Enter your challenge question",
   ];
+
+// r they ready for the bird?!?!?!
+  List<bool> bird = [false, false, false];
+
+  //whether each is in 'editing' mode
   List<bool> editingStates = [false, false, false];
 
-  @override
   Widget build(BuildContext context) {
-    const String assetName = 'assets/img1.svg';
+    final String assetName = 'assets/img1.svg';
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: const Color.fromARGB(255, 255, 243, 238),
+        backgroundColor: Color.fromARGB(255, 255, 243, 238),
         body: SingleChildScrollView(
           child: Container(
-            color: const Color.fromARGB(255, 255, 243, 238),
+            color: Color.fromARGB(255, 255, 243, 238),
             child: Column(children: [
               SizedBox(
                 width: double.maxFinite,
@@ -60,7 +99,7 @@ class _CustomChallengeState extends State<customChallenge>
                           Container(
                               margin: EdgeInsets.only(top: 100.v),
                               child: Column(children: [
-                                const Text(
+                                Text(
                                   'Custom Challenge',
                                   style: TextStyle(
                                     fontSize: 27,
@@ -74,18 +113,18 @@ class _CustomChallengeState extends State<customChallenge>
                     // List of 5 rectangles
                     for (int i = 0; i < prompts.length; i++)
                       _buildEditableRectangle(i),
-                    const SizedBox(height: 20),
+                    SizedBox(height: 20),
                     //add prompt button
                     GestureDetector(
                       onTap: () {
                         setState(() {
                           expandedStates.add(false);
-                          prompts.add("Replace with your challenge question");
+                          prompts.add("Enter your challenge question");
                           editingStates.add(false);
+                          bird.add(false);
                         });
-                        print('Add Prompt button pressed');
                       },
-                      child: const Row(
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           SizedBox(width: 10),
@@ -110,7 +149,7 @@ class _CustomChallengeState extends State<customChallenge>
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
-                        backgroundColor: const Color(0xFFE76F51),
+                        backgroundColor: Color(0xFFE76F51),
                         enableFeedback: true,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -119,15 +158,41 @@ class _CustomChallengeState extends State<customChallenge>
                       ),
                       // add 'create challenge'
                       onPressed: () {
-                        Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                            builder: (context) =>
-                                myGroup(groupName: widget.groupName),
-                          ),
-                        );
+                        if (widget.friendship) {
+                          int groupID = widget.groupId!;
+                          String name = widget.groupName;
+                          String username = SharedPrefs().getUserName() ?? "";
+                          Navigator.pop(context);
+                          createCustomChallenge(username, prompts, groupID)
+                              .then((_) {
+                            Navigator.pushReplacement(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => friendship(
+                                  friendUsername: name,
+                                ),
+                              ),
+                            );
+                          });
+                        } else {
+                          int groupID = widget.groupId!;
+                          String username = SharedPrefs().getUserName() ?? "";
+                          Navigator.pop(context);
+                          createCustomChallenge(username, prompts, groupID)
+                              .then((_) {
+                            //send custom challenge to the backend
+                            Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                builder: (context) => myGroup(
+                                    groupName: widget.groupName,
+                                    groupId: widget.groupId),
+                              ),
+                            );
+                          });
+                        }
                       }, //send prompts to backend
-                      child: const Text(
+                      child: Text(
                         'Send Challenge!',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -141,63 +206,83 @@ class _CustomChallengeState extends State<customChallenge>
             ]),
           ),
         ),
-        drawer: const SideBar(),
+        drawer: SideBar(),
         // fix the positioning here
       ),
     );
   }
 
   Widget _buildEditableRectangle(int index) {
+    // the text to be edited is the prompt clicked on
     TextEditingController editingController = TextEditingController(
-      text: prompts[index],
+      text: (prompts[index] == 'Enter your challenge question')
+          ? null
+          : prompts[index],
     );
 
+    FocusNode focusNode = FocusNode();
     return GestureDetector(
       onTap: () {
         setState(() {
           expandedStates[index] = !expandedStates[index];
+          editingStates[index] = !editingStates[index];
+          focusNode.requestFocus();
         });
       },
       child: AnimatedContainer(
-        duration: const Duration(milliseconds: 300),
+        duration: Duration(milliseconds: 300),
         height: expandedStates[index] ? 100 : 50,
         width: double.infinity,
-        margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-        padding: const EdgeInsets.all(8),
+        margin: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+        padding: EdgeInsets.all(8),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
-              color: const Color(0xFF9E503C).withOpacity(1),
+              color: Color(0xFF9E503C).withOpacity(1),
               blurRadius: 5,
-              offset: const Offset(2, 3),
+              offset: Offset(2, 3),
             )
           ],
         ),
         child: Stack(
           children: [
+            // if we are editing the rectangle
             if (editingStates[index])
+              // make the circle avatar orange
+
               Center(
                 child: Row(children: [
-                  const CircleAvatar(
-                    backgroundColor: Color(0xFFE76F51),
-                    radius: 10,
-                  ),
-                  const SizedBox(width: 10),
+                  if (!bird[index])
+                    CircleAvatar(
+                      backgroundColor: Color(0xFFE76F51),
+                      radius: 10,
+                    ),
+                  if (bird[index])
+                    CircleAvatar(
+                      backgroundColor: Colors.white,
+                      child: Image.asset('assets/bird.png'),
+                      radius: 12,
+                    ),
+                  SizedBox(width: 10),
                   Expanded(
                     child: TextField(
+                      focusNode: focusNode,
+                      autofocus: true,
+                      //maxLength: 100,
                       controller: editingController,
-                      decoration: const InputDecoration(
+                      decoration: InputDecoration(
+                        hintText: "Enter your challenge question...",
                         border: InputBorder.none,
                       ),
                       onChanged: (editedText) {
                         prompts[index] = editedText;
-                        editingStates[index] = false;
                       },
-                      style: const TextStyle(
+                      style: TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
+                        overflow: TextOverflow.ellipsis,
                       ),
                     ),
                   )
@@ -207,22 +292,32 @@ class _CustomChallengeState extends State<customChallenge>
               Center(
                 child: Row(
                   children: [
-                    CircleAvatar(
-                        foregroundColor: const Color(0xFFE76F51),
-                        backgroundColor: const Color(0xFFE76F51),
-                        radius: 10,
-                        child: CircleAvatar(
-                          backgroundColor: expandedStates[index]
-                              ? const Color(0xFFE76F51)
-                              : Colors.white,
-                          radius: 9,
-                        )),
-                    const SizedBox(width: 10),
-                    Text(
-                      prompts[index],
-                      style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
+                    if (!bird[index])
+                      CircleAvatar(
+                          foregroundColor: Color(0xFFE76F51),
+                          backgroundColor: Color(0xFFE76F51),
+                          child: CircleAvatar(
+                            backgroundColor: expandedStates[index]
+                                ? Color(0xFFE76F51)
+                                : Colors.white,
+                            radius: 9,
+                          ),
+                          radius: 10),
+                    if (bird[index])
+                      CircleAvatar(
+                        backgroundColor: Colors.white,
+                        child: Image.asset('assets/bird.png'),
+                        radius: 12,
+                      ),
+                    SizedBox(width: 10),
+                    Flexible(
+                      child: Text(
+                        prompts[index],
+                        style: TextStyle(
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          overflow: TextOverflow.ellipsis,
+                        ),
                       ),
                     ),
                   ],
@@ -236,13 +331,13 @@ class _CustomChallengeState extends State<customChallenge>
                   children: [
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        foregroundColor: const Color(0xFFE76F51),
+                        foregroundColor: Color(0xFFE76F51),
                         backgroundColor: Colors.white,
                         enableFeedback: true,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        side: const BorderSide(
+                        side: BorderSide(
                           color: Color(0xFFE76F51),
                           width: 4,
                         ),
@@ -253,17 +348,18 @@ class _CustomChallengeState extends State<customChallenge>
                           prompts.removeAt(index);
                           expandedStates.removeAt(index);
                           editingStates.removeAt(index);
+                          bird.removeAt(index);
                         });
                       },
-                      child: const Text('Delete',
+                      child: Text('Delete',
                           style: TextStyle(fontWeight: FontWeight.bold)),
                     ),
-                    const SizedBox(width: 10),
+                    SizedBox(width: 10),
                     if (!editingStates[index])
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
-                          backgroundColor: const Color(0xFFE76F51),
+                          backgroundColor: Color(0xFFE76F51),
                           enableFeedback: true,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -276,14 +372,14 @@ class _CustomChallengeState extends State<customChallenge>
                             prompts[index] = editingController.text;
                           });
                         },
-                        child: const Text('Edit',
+                        child: Text('Edit',
                             style: TextStyle(fontWeight: FontWeight.bold)),
                       ),
                     if (editingStates[index])
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
-                          backgroundColor: const Color(0xFFE76F51),
+                          backgroundColor: Color(0xFFE76F51),
                           enableFeedback: true,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -295,12 +391,13 @@ class _CustomChallengeState extends State<customChallenge>
                             editingStates[index] = false;
                             prompts[index] = editingController.text;
                             expandedStates[index] = false;
+                            bird[index] = true;
                           });
                         },
-                        child: const Text('Save',
+                        child: Text('Save',
                             style: TextStyle(fontWeight: FontWeight.bold)),
                       ),
-                    const SizedBox(width: 5),
+                    SizedBox(width: 5),
                   ],
                 ),
               ),

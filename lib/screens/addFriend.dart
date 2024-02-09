@@ -1,22 +1,21 @@
-import 'dart:convert';
-
 import 'package:flutter/material.dart';
-import 'package:flutter_svg/flutter_svg.dart';
-import 'package:http/http.dart' as http;
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
-import 'package:verbatim_frontend/screens/profile.dart';
-import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
-import 'package:verbatim_frontend/widgets/friends_app_bar_test.dart';
+import 'sideBar.dart';
+import 'package:flutter_svg/flutter_svg.dart';
+import 'package:verbatim_frontend/widgets/friends_app_bar.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
+import 'package:shared_preferences/shared_preferences.dart';
 
-// Update User class
-class User {
+// User class for when backend passes in users
+class UserObj {
   int id = 0;
   String email = "";
   String username = "";
   String lastName = "";
-  String firstName = "";
+  String password = "";
   dynamic profilePicture;
   String? bio = "";
   int numGlobalChallengesCompleted = 0;
@@ -25,39 +24,17 @@ class User {
   bool hasCompletedDailyChallenge = false;
   bool isRequested = false;
 
-  User({
-    required this.id,
-    required this.email,
-    required this.username,
-    required this.lastName,
-    required this.firstName,
-    required this.profilePicture,
-    required this.bio,
-    required this.numGlobalChallengesCompleted,
-    required this.numCustomChallengesCompleted,
-    required this.streak,
-    required this.hasCompletedDailyChallenge,
-  });
+  UserObj({required this.username});
 
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
-      id: json['id'],
-      email: json['email'],
+  factory UserObj.fromJson(Map<String, dynamic> json) {
+    return UserObj(
       username: json['username'],
-      lastName: json['lastName'],
-      firstName: json['firstName'],
-      profilePicture: json['profilePicture'] ?? "assets/profile_pic.png",
-      bio: json['bio'] ?? " ",
-      numGlobalChallengesCompleted: json['numGlobalChallengesCompleted'],
-      numCustomChallengesCompleted: json['numCustomChallengesCompleted'],
-      streak: json['streak'],
-      hasCompletedDailyChallenge: json['hasCompletedDailyChallenge'],
     );
   }
 }
 
 class addFriend extends StatefulWidget {
-  const addFriend({
+  addFriend({
     Key? key,
   }) : super(key: key);
 
@@ -70,7 +47,7 @@ class _AddFriendState extends State<addFriend> {
   final TextEditingController _searchController = TextEditingController();
   String _searchText = "";
   bool usersFetched = false; // only call users once per run
-  List<User> users = []; // all users
+  List<UserObj> users = []; // all users
   List<String> userUsernames = []; // all user usernames to display
   List<String> friendsUsernamesList =
       []; // friends (remove from user usernames)
@@ -78,16 +55,14 @@ class _AddFriendState extends State<addFriend> {
       []; // people who have requested current user (remove form user usernames)
   List<String> myRequestedUsers_backend =
       []; // GET THESE FROM THE BACKEND, THEN ADD THEM TO THE PROVIDER
-  List<User> searchResults = []; // User objects corresponding to search results
-  List<User> friendsList = []; // User objects corresponding to friends
 
-  // suggested - need to add the logic here - not yet implemented
-  final List<String> _suggestedNames = [];
+// suggested - need to add the logic here - not yet implemented
+  List<String> _suggestedNames = [];
 
-  // get friend requests to build list of requesting users, to remove
-  // from displayed users (to avoid crash on requesting again)
+// get friend requests to build list of requesting users, to remove
+// from displayed users (to avoid crash on requesting again)
   Future<void> getFriendRequests(String username) async {
-    final url = Uri.parse('${BackendService.getBackendUrl()}getFriendRequests');
+    final url = Uri.parse(BackendService.getBackendUrl() + 'getFriendRequests');
     final Map<String, String> headers = {
       'Content-Type': 'text/plain',
     };
@@ -95,7 +70,7 @@ class _AddFriendState extends State<addFriend> {
     final response = await http.post(url, headers: headers, body: username);
 
     if (response.statusCode == 200) {
-      print('\ngetfriendrequests responses sent succesfully\n');
+      print('getfriendrequests responses sent succesfully');
 
       List<Map<String, dynamic>> friendRequests =
           List<Map<String, dynamic>>.from(json.decode(response.body));
@@ -106,21 +81,22 @@ class _AddFriendState extends State<addFriend> {
         }
       }
     } else {
-      print(
-          '\nFailed to send responses. Status code: ${response.statusCode}\n');
+      print('Failed to send responses. Status code: ${response.statusCode}');
     }
   }
 
   void toggleFriend(String friendName) {
-    if (!myRequestedUsers_backend.contains(friendName)) {
+    if (myRequestedUsers_backend.contains(friendName)) {
+      //do nothing
+    } else {
       myRequestedUsers_backend.add(friendName);
     }
   }
 
-  // get the friend requests that i have sent
+// get the friend requests that i have sent
   Future<void> getUsersIHaveRequested(String username) async {
     final url =
-        Uri.parse('${BackendService.getBackendUrl()}getUsersIHaveRequested');
+        Uri.parse(BackendService.getBackendUrl() + 'getUsersIHaveRequested');
     final Map<String, String> headers = {
       'Content-Type': 'text/plain',
     };
@@ -128,25 +104,26 @@ class _AddFriendState extends State<addFriend> {
     final response = await http.post(url, headers: headers, body: username);
 
     if (response.statusCode == 200) {
+      print(
+          'myRequestedUsers_backend responses sent succesfully $myRequestedUsers_backend');
+
       List<Map<String, dynamic>> myfriendRequests =
           List<Map<String, dynamic>>.from(json.decode(response.body));
       if (myfriendRequests.isNotEmpty) {
         for (var request in myfriendRequests) {
           String username = request['username'];
-          if (!myRequestedUsers_backend.contains(username)) {
-            myRequestedUsers_backend.add(username);
-          }
+          myRequestedUsers_backend.add(username);
         }
       }
     } else {
-      print(
-          '\nIn addFriends getUsersIHaveRequested: Failed to send responses. Status code: ${response.statusCode}\n');
+      print('Failed to send responses. Status code: ${response.statusCode}');
     }
   }
 
   // get friends to remove from displayed users
+
   Future<void> getFriends(String username) async {
-    final url = Uri.parse('${BackendService.getBackendUrl()}getFriends');
+    final url = Uri.parse(BackendService.getBackendUrl() + 'getFriends');
     final Map<String, String> headers = {
       'Content-Type': 'text/plain',
     };
@@ -156,33 +133,29 @@ class _AddFriendState extends State<addFriend> {
     if (response.statusCode == 200) {
       print('responses sent succesfully');
       final List<dynamic> data = json.decode(response.body);
-      List<User> friendsList = data.map((item) => User.fromJson(item)).toList();
+      List<UserObj> friendsList =
+          data.map((item) => UserObj.fromJson(item)).toList();
       friendsUsernamesList = friendsList.map((user) => user.username).toList();
     } else {
       print('Failed to send responses. Status code: ${response.statusCode}');
     }
   }
 
-  // get all users to display
+// get all users to display
+
   Future<void> getUsers() async {
-    final url = Uri.parse('${BackendService.getBackendUrl()}users');
+    final url = Uri.parse(BackendService.getBackendUrl() + 'users');
 
     final response = await http.get(url);
-
     if (response.statusCode == 200) {
       print("response succesfull");
       final List<dynamic> data = json.decode(response.body);
-      final List<User> userList =
-          data.map((item) => User.fromJson(item)).toList();
+      final List<UserObj> userList =
+          data.map((item) => UserObj.fromJson(item)).toList();
 
       userUsernames = userList
-          .where((user) => user.username != SharedPrefs().getUserName())
+          .where((user) => user.username != username)
           .map((user) => user.username)
-          .toList();
-
-      searchResults = userList
-          .where((user) => user.username != SharedPrefs().getUserName())
-          .map((user) => user)
           .toList();
 
       setState(() {
@@ -196,7 +169,6 @@ class _AddFriendState extends State<addFriend> {
   @override
   void initState() {
     super.initState();
-    getUsersIHaveRequested(username);
 
     _searchController.addListener(() {
       setState(() {
@@ -204,40 +176,16 @@ class _AddFriendState extends State<addFriend> {
       });
     });
     if (!usersFetched) {
-      final String currentUserUsername = SharedPrefs().getUserName() as String;
-
       // wait to load
       Future.wait([
-        getFriends(currentUserUsername),
+        getFriends(username),
         getUsers(),
-        getFriendRequests(currentUserUsername),
-        getUsersIHaveRequested(currentUserUsername),
+        getFriendRequests(username),
+        getUsersIHaveRequested(username),
       ]).then((_) {
         userUsernames
             .removeWhere((item) => friendsUsernamesList.contains(item));
         userUsernames.removeWhere((item) => requestingUsers.contains(item));
-
-        // Remove current user's name from userUsernames and requestingUsers lists
-        userUsernames.removeWhere((item) => item == currentUserUsername);
-        requestingUsers.removeWhere((item) => item == currentUserUsername);
-
-        // Filter searchResults list to remove users with the current user's name
-        searchResults
-            .removeWhere((user) => user.username == currentUserUsername);
-
-        // Filter users based on search text and friends, ensuring current user's name is not included
-        searchResults = users
-            .where((user) =>
-                user.username
-                    .toLowerCase()
-                    .contains(_searchText.toLowerCase()) &&
-                user.username != currentUserUsername)
-            .toList();
-        friendsList = users
-            .where((user) =>
-                friendsUsernamesList.contains(user.username) &&
-                user.username != currentUserUsername)
-            .toList();
 
         usersFetched = true;
 
@@ -246,7 +194,7 @@ class _AddFriendState extends State<addFriend> {
     }
   }
 
-  // check for changes
+// check for changes
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -262,10 +210,6 @@ class _AddFriendState extends State<addFriend> {
             .removeWhere((item) => friendsUsernamesList.contains(item));
         userUsernames.removeWhere((item) => requestingUsers.contains(item));
 
-        searchResults.removeWhere((user) =>
-            friendsUsernamesList.contains(user.username) ||
-            requestingUsers.contains(user.username));
-
         usersFetched = true;
 
         setState(() {});
@@ -280,20 +224,17 @@ class _AddFriendState extends State<addFriend> {
     super.dispose();
   }
 
-  // search feature control (adjust if necessary)
-  List<User> _searchResults() {
-    List<User> filteredSearchResults = searchResults
-        .where((item) =>
-            item.username.toLowerCase().contains(_searchText.toLowerCase()) &&
-            item.username != SharedPrefs().getUserName())
+// search feature control (adjust if necessary)
+  List<String> _searchResults() {
+    return userUsernames
+        .where((item) => item.toLowerCase().contains(_searchText.toLowerCase()))
         .toList();
-    return filteredSearchResults;
   }
 
-  // send friendrequest to backend
+// send friendrequest to backend
   Future<void> sendFriendRequest(
       String requestingUsername, String requestedUsername) async {
-    final url = Uri.parse('${BackendService.getBackendUrl()}addFriend');
+    final url = Uri.parse(BackendService.getBackendUrl() + 'addFriend');
     final headers = <String, String>{'Content-Type': 'application/json'};
 
     final response = await http.post(url,
@@ -309,19 +250,18 @@ class _AddFriendState extends State<addFriend> {
     }
   }
 
-  @override
   Widget build(BuildContext context) {
     String username = SharedPrefs().getUserName() ?? "";
 
-    const String assetName = 'assets/img1.svg';
+    final String assetName = 'assets/img1.svg';
 
     return SafeArea(
         child: Scaffold(
       resizeToAvoidBottomInset: true,
-      backgroundColor: const Color.fromARGB(255, 255, 243, 238),
+      backgroundColor: Color.fromARGB(255, 255, 243, 238),
       body: SingleChildScrollView(
         child: Container(
-            color: const Color.fromARGB(255, 255, 243, 238),
+            color: Color.fromARGB(255, 255, 243, 238),
             child: Column(
               children: [
                 SizedBox(
@@ -329,15 +269,13 @@ class _AddFriendState extends State<addFriend> {
                   child: Column(
                     children: [
                       SizedBox(
-                        height: 240.v,
+                        height: 240,
                         width: double.maxFinite,
                         child: Stack(alignment: Alignment.topCenter, children: [
                           // orange background
                           Container(
-                            // height: 220.v,
-                            // width: double.maxFinite,
-                            height: 261,
-                            width: 430,
+                            height: 220,
+                            width: double.maxFinite,
                             margin: EdgeInsets.zero,
                             padding: EdgeInsets.zero,
                             child: SvgPicture.asset(
@@ -345,21 +283,16 @@ class _AddFriendState extends State<addFriend> {
                               fit: BoxFit.fill,
                             ),
                           ),
-                          const SizedBox(
-                            height: 20,
-                          ),
                           // app bar for add friend page
-                          const FriendsAppBarTest(
-                            title: 'Add Friends',
-                          ),
+                          FriendsAppBar(),
 
                           Padding(
-                            padding: const EdgeInsets.only(top: 5.0),
+                            padding: EdgeInsets.only(top: 20.0),
                             child: Align(
                               alignment: Alignment.center,
                               child: Container(
-                                  width: 357,
-                                  height: 50,
+                                  width: 350,
+                                  height: 30,
                                   decoration: BoxDecoration(
                                     color: Colors.white,
                                     borderRadius: BorderRadius.circular(20),
@@ -369,14 +302,14 @@ class _AddFriendState extends State<addFriend> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      const SizedBox(width: 8),
-                                      const Icon(Icons.search, color: Colors.black),
-                                      const SizedBox(width: 8),
+                                      SizedBox(width: 8),
+                                      Icon(Icons.search, color: Colors.black),
+                                      SizedBox(width: 8),
                                       Expanded(
                                         child: TextField(
                                           controller: _searchController,
-                                          decoration: const InputDecoration(
-                                            hintStyle: TextStyle(
+                                          decoration: InputDecoration(
+                                            hintStyle: const TextStyle(
                                                 fontSize: 14.0,
                                                 color: Color.fromARGB(
                                                     255, 6, 5, 5)),
@@ -391,28 +324,39 @@ class _AddFriendState extends State<addFriend> {
                           ),
 
                           // search results
-                        ]),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 6.0),
-                        child: SizedBox(
-                          height: 22,
-                          width: 190,
-                          child: Text(
-                            _searchText.isEmpty
-                                ? 'People you may know'
-                                : 'Search Results',
-                            textAlign: TextAlign.left,
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.w600,
-                              height: 0.09,
-                              letterSpacing: 0.10,
+                          Align(
+                            alignment: Alignment.bottomCenter,
+                            child: Container(
+                              width: 200,
+                              margin: EdgeInsets.only(left: 32.0),
+                              child: RichText(
+                                text: TextSpan(
+                                  children: [
+                                    if (_searchText.isNotEmpty)
+                                      TextSpan(
+                                        text: "Search Results:",
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      )
+                                    else
+                                      // to display "suggested friends" once logic is implemented
+                                      TextSpan(
+                                        text: "People you may know:",
+                                        style: TextStyle(
+                                          fontSize: 15,
+                                          color: Colors.black,
+                                          fontWeight: FontWeight.bold,
+                                        ),
+                                      ),
+                                  ],
+                                ),
+                                textAlign: TextAlign.left,
+                              ),
                             ),
-                          ),
-                        ),
+                          )
+                        ]),
                       ),
                     ],
                   ),
@@ -422,11 +366,9 @@ class _AddFriendState extends State<addFriend> {
                 Center(
                   child: Container(
                     clipBehavior: Clip.hardEdge,
-                    margin: const EdgeInsets.only(top: 10),
-                    // width: 300.h,
-                    // height: 500.v,
-                    width: 360,
-                    height: 508,
+                    margin: EdgeInsets.only(top: 10),
+                    width: 300,
+                    height: 400,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(30),
                       boxShadow: [
@@ -434,7 +376,7 @@ class _AddFriendState extends State<addFriend> {
                           color: const Color.fromARGB(255, 117, 19, 12)
                               .withOpacity(0.5),
                           blurRadius: 5,
-                          offset: const Offset(3, 7),
+                          offset: Offset(3, 7),
                         ),
                       ],
                       color: Colors.white,
@@ -445,58 +387,34 @@ class _AddFriendState extends State<addFriend> {
                         ? ListView.builder(
                             itemCount: _searchResults().length,
                             itemBuilder: (context, index) {
-                              final currentUser = _searchResults()[index];
-
-                              String name = currentUser.username ?? '';
-                              String profileUrl = currentUser.profilePicture ??
-                                  'assets/profile_pic.png';
-
+                              final name = _searchResults()[index];
+                              final isRequested =
+                                  myRequestedUsers_backend.contains(name);
                               return ListTile(
                                 title: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    FirebaseStorageImage(
-                                      profileUrl: profileUrl,
-                                      user: currentUser,
-                                    ),
-                                    const SizedBox(width: 8),
-                                    GestureDetector(
-                                      onTap: () {
-                                        currentUser.bio ??= '';
-                                        currentUser.profilePicture ??= '';
-
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => Profile(
-                                                    user: currentUser,
-                                                  )),
-                                        );
-                                      },
-                                      child: Text(
-                                        name,
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors
-                                              .black, // Optional: Change text color to blue for clickable effect
-                                        ),
-                                      ),
+                                    Icon(Icons.mood),
+                                    SizedBox(width: 8),
+                                    Text(
+                                      name,
+                                      style: TextStyle(
+                                          fontWeight: FontWeight.bold),
                                     ),
                                   ],
                                 ),
 
                                 // icon displayed is dependent on whether you have requested this user.
                                 trailing: IconButton(
-                                  icon: currentUser.isRequested
-                                      ? const Icon(Icons.pending)
-                                      : const Icon(Icons.person_add_alt),
+                                  icon: isRequested
+                                      ? Icon(Icons.pending)
+                                      : Icon(Icons.person_add_alt),
                                   onPressed: () {
-                                    if (!currentUser.isRequested) {
+                                    if (!isRequested) {
                                       // prevent user from sending friend requests twice!
                                       sendFriendRequest(username, name);
 
                                       setState(() {
-                                        currentUser.isRequested = true;
                                         toggleFriend(name);
                                       });
                                     }
@@ -508,61 +426,37 @@ class _AddFriendState extends State<addFriend> {
                         : ListView.builder(
                             itemCount: userUsernames.length,
                             itemBuilder: (context, index) {
-                              // final name = userUsernames[index];
-                              final currentUser = searchResults[index];
-                              final name = currentUser.username;
-
-                              currentUser.isRequested =
+                              final name = userUsernames[index];
+                              final isRequested =
                                   myRequestedUsers_backend.contains(name);
-                              String profileUrl = currentUser.profilePicture ??
-                                  'assets/profile_pic.png';
 
                               return ListTile(
-                                title: Row(
-                                  children: [
-                                    FirebaseStorageImage(
-                                      profileUrl: profileUrl,
-                                      user: currentUser,
-                                    ),
-                                    const SizedBox(width: 8),
-                                    GestureDetector(
-                                      onTap: () {
-                                        print(
-                                            "\nOn line 528 in add_friend, the profile url is ${currentUser.profilePicture}");
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => Profile(
-                                                    user: currentUser,
-                                                  )),
-                                        );
-                                      },
-                                      child: Text(
+                                  title: Row(
+                                    children: [
+                                      Icon(Icons.mood),
+                                      SizedBox(width: 8),
+                                      Text(
                                         name,
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors
-                                              .black, // Optional: Change text color to blue for clickable effect
-                                        ),
+                                        style: TextStyle(
+                                            fontWeight: FontWeight.bold),
                                       ),
-                                    ),
-                                  ],
-                                ),
-                                trailing: IconButton(
-                                  icon: currentUser.isRequested
-                                      ? const Icon(Icons.pending)
-                                      : const Icon(Icons.person_add_alt),
-                                  onPressed: () {
-                                    if (!currentUser.isRequested) {
-                                      sendFriendRequest(username, name);
-                                      setState(() {
-                                        toggleFriend(name);
-                                        // keeps the icon from changing if you navigate away from the page
-                                      });
-                                    }
-                                  },
-                                ),
-                              );
+                                    ],
+                                  ),
+                                  trailing: IconButton(
+                                    icon: isRequested
+                                        ? Icon(Icons.pending)
+                                        : Icon(Icons.person_add_alt),
+                                    onPressed: () {
+                                      if (!isRequested) {
+                                        sendFriendRequest(username, name);
+                                        setState(() {
+                                          toggleFriend(name);
+                                          myRequestedUsers_backend.add(
+                                              name); // keeps the icon from changing if you navigate away from the page
+                                        });
+                                      }
+                                    },
+                                  ));
                             },
                           ),
                   ),
@@ -570,6 +464,7 @@ class _AddFriendState extends State<addFriend> {
               ],
             )),
       ),
+      drawer: SideBar(),
     ));
   }
 }
