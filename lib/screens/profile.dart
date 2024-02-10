@@ -273,7 +273,7 @@ class _ProfileState extends State<Profile> {
 
                                 const SizedBox(width: 10),
                                 const centerAppBar(
-                                  title: 'Your profile',
+                                  title: 'Public Profile',
                                 ),
                                 //const CustomAppBarSettings(title: '')
                               ],
@@ -287,7 +287,7 @@ class _ProfileState extends State<Profile> {
                             ),
                             child: Container(
                               width: 330,
-                              height: 170,
+                              height: 200,
                               padding: const EdgeInsets.only(top: 25, left: 25),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -504,21 +504,62 @@ class _ProfileState extends State<Profile> {
                                       )
                                     ],
                                   ),
+                                  const SizedBox(height: 5),
 
-                                  const SizedBox(height: 20),
-
+                                  // bio
                                   // Bio
-
-                                  Text(
-                                    bio ?? "Bio goes here",
-                                    softWrap: true,
-                                    style: GoogleFonts.poppins(
-                                      textStyle: const TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10.0),
+                                      child: LayoutBuilder(
+                                        builder: (context, constraints) {
+                                          return SingleChildScrollView(
+                                            scrollDirection: Axis.vertical,
+                                            child: ConstrainedBox(
+                                              constraints: BoxConstraints(
+                                                  minHeight:
+                                                      constraints.maxHeight),
+                                              child: Text(
+                                                bio ?? "Bio goes here",
+                                                softWrap: true,
+                                                style: GoogleFonts.poppins(
+                                                  textStyle: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 16,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
                                       ),
                                     ),
                                   ),
+
+                                  /*
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10.0),
+                                      child: SingleChildScrollView(
+                                        scrollDirection: Axis.vertical,
+                                        child: Text(
+                                          bio ?? "Bio goes here",
+                                          softWrap: true,
+                                          //   overflow: TextOverflow.ellipsis,
+                                          maxLines: 3,
+                                          style: GoogleFonts.poppins(
+                                            textStyle: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 15,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  */
                                 ],
                               ),
                             ),
