@@ -200,6 +200,7 @@ class _CustomChallengeState extends State<customChallenge>
                         ),
                       ),
                     ),
+                    SizedBox(height: 25),
                   ],
                 ),
               ),
