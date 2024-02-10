@@ -826,7 +826,6 @@ class _ProfileState extends State<Profile> {
             ),
           ),
           drawer: const SideBar(),
-          drawerScrimColor: Colors.white,
         ),
       ),
     );

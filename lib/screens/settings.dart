@@ -5,6 +5,7 @@ import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/Components/EditProfilePicturePopup.dart';
+import 'package:verbatim_frontend/screens/sideBar.dart';
 import 'package:verbatim_frontend/widgets/MyTextFieldSettings.dart';
 import 'package:verbatim_frontend/widgets/button_settings.dart';
 import 'package:verbatim_frontend/widgets/customAppBar_Settings.dart';
@@ -16,6 +17,7 @@ import 'package:verbatim_frontend/widgets/size.dart';
 import 'dart:async';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/resetPassword.dart';
+import 'package:verbatim_frontend/widgets/center_custom_app_bar.dart';
 
 void edits(
   BuildContext context,
@@ -102,11 +104,13 @@ class _settingsState extends State<settings> {
   final String assetName = 'assets/img1.svg';
 
   final String imagePath = 'assets/profile_pic.png';
-  late String _currentProfileUrl = SharedPrefs.ProfileUrl ?? 'assets/profile_pic.png';
+  late String _currentProfileUrl =
+      SharedPrefs.ProfileUrl ?? 'assets/profile_pic.png';
 
   final ImagePicker picker = ImagePicker();
 
-  ImageProvider<Object> selectedImage = const AssetImage('assets/profile_pic.png');
+  ImageProvider<Object> selectedImage =
+      const AssetImage('assets/profile_pic.png');
 
   @override
   @override
@@ -124,7 +128,7 @@ class _settingsState extends State<settings> {
     setState(() {
       selectedImage = MemoryImage(imageBytes);
     });
-    }
+  }
 
   Future<Uint8List> downloadImage(String url) async {
     try {
@@ -279,14 +283,14 @@ class _settingsState extends State<settings> {
                   child: Column(
                     children: [
                       SizedBox(
-                        height: 250.v,
+                        height: 200,
                         width: double.maxFinite,
                         child: Stack(
-                          alignment: Alignment.bottomLeft,
+                          alignment: Alignment.topCenter,
                           children: [
                             // orange background
                             Container(
-                              height: 250.v,
+                              height: 200,
                               width: double.maxFinite,
                               margin: EdgeInsets.zero,
                               padding: EdgeInsets.zero,
@@ -298,7 +302,7 @@ class _settingsState extends State<settings> {
 
                             // app bar on top of background
 
-                            const CustomAppBarSettings(
+                            const centerAppBar(
                               title: 'Account Settings',
                             ),
                           ],
@@ -308,7 +312,6 @@ class _settingsState extends State<settings> {
                   ),
                 ),
 
-                // const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.only(
                       left: 50.0), // Adjust the left padding as needed
@@ -421,7 +424,8 @@ class _settingsState extends State<settings> {
                 const SizedBox(height: 20),
                 MyTextFieldSettings(
                     controller: fullNameSettings,
-                    hintText: "${SharedPrefs().getFirstName() ?? ""} ${SharedPrefs().getLastName() ?? ""}",
+                    hintText:
+                        "${SharedPrefs().getFirstName() ?? ""} ${SharedPrefs().getLastName() ?? ""}",
                     obscureText: false),
 
                 //username
@@ -531,12 +535,14 @@ class _settingsState extends State<settings> {
                           },
                         ),
                       ),
-                    )
+                    ),
+                    const SizedBox(height: 28),
                   ],
                 ))
               ],
             )),
       )),
+      drawer: SideBar(),
     ));
   }
 }
