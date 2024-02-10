@@ -15,6 +15,7 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:verbatim_frontend/widgets/create_group_app_bar.dart';
 
 class Stats {
   final dynamic streaks;
@@ -232,7 +233,7 @@ class _ProfileState extends State<Profile> {
       child: Theme(
         data: ThemeData(
           // Set the color of the drawer icon
-          primaryColor: Colors.white, // Change to your desired color
+          primaryColor: Colors.white,
 
           // Remove the shadow when hovering over the drawer
           highlightColor: Colors.transparent,
@@ -243,9 +244,7 @@ class _ProfileState extends State<Profile> {
           body: SingleChildScrollView(
             child: SafeArea(
               child: Container(
-                height: 960,
-                width: 430,
-                color: const Color.fromRGBO(255, 243, 238, 1),
+                color: Color.fromARGB(255, 255, 243, 238),
                 child: Column(
                   children: [
                     SizedBox(
@@ -254,14 +253,14 @@ class _ProfileState extends State<Profile> {
                         children: [
                           SizedBox(
                             height: 160,
-                            width: 430,
+                            width: double.maxFinite,
                             child: Stack(
                               alignment: Alignment.bottomLeft,
                               children: [
                                 // Orange background
                                 Container(
                                   height: 160,
-                                  width: 430,
+                                  width: double.maxFinite,
                                   margin: EdgeInsets.zero,
                                   padding: EdgeInsets.zero,
                                   child: SvgPicture.asset(
@@ -271,21 +270,20 @@ class _ProfileState extends State<Profile> {
                                 ),
 
                                 const SizedBox(width: 10),
-                                const CustomAppBarSettings(title: '')
+                                groupAppBar(title: 'Your Profile'),
+                                //const CustomAppBarSettings(title: '')
                               ],
                             ),
                           ),
                           Card(
-                            elevation: 2,
+                            elevation: 4,
                             color: Colors.white,
-                            shadowColor:
-                                const Color(0xFFE76F51).withOpacity(0.2),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0),
                             ),
                             child: Container(
-                              width: 360,
-                              height: 190,
+                              width: 330,
+                              height: 170,
                               padding: const EdgeInsets.only(top: 25, left: 25),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -309,7 +307,7 @@ class _ProfileState extends State<Profile> {
                                             style: GoogleFonts.poppins(
                                                 textStyle: const TextStyle(
                                                     fontWeight: FontWeight.bold,
-                                                    fontSize: 32)),
+                                                    fontSize: 30)),
                                           ),
                                           const SizedBox(
                                             height: 10,
@@ -340,7 +338,7 @@ class _ProfileState extends State<Profile> {
                                                 }
                                               },
                                               child: Container(
-                                                width: 200,
+                                                width: 150,
                                                 height: 25,
                                                 decoration: ShapeDecoration(
                                                   color:
@@ -533,17 +531,12 @@ class _ProfileState extends State<Profile> {
                               borderRadius: BorderRadius.circular(30.0),
                             ),
                             child: Container(
-                              width: 360,
+                              width: 330,
                               height: 470,
                               padding: const EdgeInsets.all(25),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const SizedBox(
-                                    height: 10,
-                                    width: 15,
-                                  ),
-
                                   Text(
                                     "User Stats",
                                     style: GoogleFonts.poppins(
@@ -658,7 +651,7 @@ class _ProfileState extends State<Profile> {
                                     )),
                                   ]),
                                   // Profile picture
-                                  const SizedBox(height: 10),
+                                  const SizedBox(height: 20),
                                   Center(
                                     child: Text.rich(TextSpan(
                                       children: [
@@ -719,7 +712,7 @@ class _ProfileState extends State<Profile> {
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Align(
-                                        widthFactor: .5,
+                                        widthFactor: .65,
                                         child: ClipOval(
                                           child: widget.user != null
                                               ? SizedBox(
@@ -731,15 +724,44 @@ class _ProfileState extends State<Profile> {
                                                         as String,
                                                   ),
                                                 )
-                                              : Container(
-                                                  width: 100,
-                                                  height: 100,
-                                                  color: Colors.blue,
+                                              : Stack(
+                                                  children: [
+                                                    Align(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      child: Container(
+                                                        width: 100,
+                                                        height: 100,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              231,
+                                                              111,
+                                                              81),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Align(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      child: Icon(
+                                                          Icons.help_outline,
+                                                          size: 100,
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              250,
+                                                              192,
+                                                              94)),
+                                                    ),
+                                                  ],
                                                 ),
                                         ),
                                       ),
                                       Align(
-                                        widthFactor: .5,
+                                        widthFactor: .65,
                                         child: ClipOval(
                                           child: widget.user != null
                                               ? SizedBox(
@@ -750,10 +772,36 @@ class _ProfileState extends State<Profile> {
                                                         .user!.profilePicture,
                                                   ),
                                                 )
-                                              : Container(
-                                                  width: 100,
-                                                  height: 100,
-                                                  color: Colors.red,
+                                              : Stack(
+                                                  children: [
+                                                    Align(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      child: Container(
+                                                        width: 100,
+                                                        height: 100,
+                                                        decoration:
+                                                            BoxDecoration(
+                                                          shape:
+                                                              BoxShape.circle,
+                                                          color: Color.fromARGB(
+                                                              255,
+                                                              231,
+                                                              111,
+                                                              81),
+                                                        ),
+                                                      ),
+                                                    ),
+                                                    Align(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      child: Icon(
+                                                        Icons.help_outline,
+                                                        size: 100,
+                                                        color: Colors.white,
+                                                      ),
+                                                    ),
+                                                  ],
                                                 ),
                                         ),
                                       ),
