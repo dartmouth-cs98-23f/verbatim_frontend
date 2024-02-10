@@ -437,34 +437,7 @@ class _SideBarState extends State<SideBar> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 20.0),
-                  ListTile(
-                    title: const Text('More',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 18)),
-                    onTap: () {},
-                  ),
                   SizedBox(height: 10.0),
-                  Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 0.0, vertical: .1),
-                      child: ListTile(
-                        title: const Text('Invite Friends',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontSize: 18)),
-                        leading:
-                            const Icon(Icons.person_add, color: Colors.black),
-                        onTap: () {},
-                      ),
-                    ),
-                  ),
-                  const SizedBox(height: 10.0),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 5.0),
                     child: Container(
