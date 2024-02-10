@@ -338,7 +338,7 @@ class _ProfileState extends State<Profile> {
                                                 }
                                               },
                                               child: Container(
-                                                width: 150,
+                                                width: 180,
                                                 height: 25,
                                                 decoration: ShapeDecoration(
                                                   color:
