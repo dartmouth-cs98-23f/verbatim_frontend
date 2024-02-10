@@ -608,7 +608,7 @@ Widget _verbaMatch(
       alignment: Alignment.topCenter,
       child: Container(
           width: 600,
-          height: 185,
+          height: 200,
           // color: Colors.yellow,
           child: Row(
             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -708,8 +708,8 @@ Widget _verbaMatch(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Container(
-                          height: 200.v,
-                          width: 200.v,
+                          height: 200,
+                          width: 200,
                           alignment: Alignment.center,
                           child: DonutChart(
                               groupSimilarity: verbaMatchSimilarity,
@@ -722,8 +722,8 @@ Widget _verbaMatch(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Container(
-                          height: 200.v,
-                          width: 200.v,
+                          height: 200,
+                          width: 200,
                           alignment: Alignment.center,
                           child: DonutChart(
                               groupSimilarity: verbaMatchSimilarity,
@@ -761,13 +761,12 @@ class _DonutChartState extends State<DonutChart> {
     return Scaffold(
         backgroundColor: Colors.transparent,
         body: Container(
-          height: 200.v,
-          width: 200.v,
+          height: 190,
+          width: 190,
           child: Column(
             children: [
-              SizedBox(height: 15.v),
               SizedBox(
-                height: 125.v,
+                height: 125,
                 child: Stack(
                   alignment: Alignment.center,
                   children: [
@@ -800,20 +799,11 @@ class _DonutChartState extends State<DonutChart> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Container(
-                                height: 80.v,
-                                width: 80.h,
+                                height: 80,
+                                width: 80,
                                 decoration: BoxDecoration(
                                   color: Color.fromARGB(255, 255, 243, 238),
                                   shape: BoxShape.circle,
-                                  /*
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Color.fromARGB(132, 155, 131, 121),
-                                    blurRadius: 10.0,
-                                    spreadRadius: 10.0,
-                                    offset: const Offset(3, 3)),
-                              ],
-                              */
                                 ),
                                 child: Align(
                                   alignment: Alignment.center,
@@ -848,20 +838,11 @@ class _DonutChartState extends State<DonutChart> {
                             mainAxisAlignment: MainAxisAlignment.center,
                             children: [
                               Container(
-                                height: 80.v,
-                                width: 80.h,
+                                height: 80,
+                                width: 80,
                                 decoration: BoxDecoration(
                                   color: Color.fromARGB(255, 255, 243, 238),
                                   shape: BoxShape.circle,
-                                  /*
-                              boxShadow: [
-                                BoxShadow(
-                                    color: Color.fromARGB(132, 155, 131, 121),
-                                    blurRadius: 10.0,
-                                    spreadRadius: 10.0,
-                                    offset: const Offset(3, 3)),
-                              ],
-                              */
                                 ),
                                 child: Align(
                                   alignment: Alignment.center,
