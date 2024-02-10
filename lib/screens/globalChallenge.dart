@@ -470,8 +470,8 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                               ),
                                             ),
                                             Container(
-                                                height: 40,
-                                                width: 150,
+                                                height: 43,
+                                                width: 145,
                                                 child: Container(
                                                   child: PlayTab(
                                                     onTabSelectionChanged: (bool
