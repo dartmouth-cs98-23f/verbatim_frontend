@@ -552,7 +552,7 @@ class _settingsState extends State<settings> {
               ],
             )),
       )),
-      drawer: SideBar(),
+      //drawer: SideBar(),
     ));
   }
 }
