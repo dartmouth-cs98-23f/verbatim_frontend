@@ -9,6 +9,7 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:verbatim_frontend/widgets/showSuccessDialog.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
+import 'package:verbatim_frontend/widgets/center_custom_app_bar.dart';
 
 void reset(BuildContext context, String newPassword, String oldPassword) async {
   try {
@@ -120,13 +121,13 @@ class _ResetPasswordState extends State<ResetPassword> {
                   child: Column(
                     children: [
                       SizedBox(
-                        height: 260.v,
+                        height: 200,
                         width: double.maxFinite,
                         child: Stack(
                           alignment: Alignment.topCenter,
                           children: [
                             Container(
-                              height: 220.v,
+                              height: 200,
                               width: double.maxFinite,
                               margin: EdgeInsets.zero,
                               padding: EdgeInsets.zero,
@@ -135,9 +136,8 @@ class _ResetPasswordState extends State<ResetPassword> {
                                 fit: BoxFit.fill,
                               ),
                             ),
-                            const CustomAppBarSettings(
+                            const centerAppBar(
                               title: 'Reset Password',
-                              showBackButton: true,
                             ),
                           ],
                         ),

@@ -378,29 +378,39 @@ class _settingsState extends State<settings> {
                 //Reset password
                 const SizedBox(height: 30),
                 Align(
-                    alignment: Alignment.topLeft,
-                    child: Padding(
-                      padding: const EdgeInsets.only(left: 30.0),
-                      child: InkWell(
-                        onTap: () {
-                          // Navigate to the ResetPassword page
-                          Navigator.of(context).push(MaterialPageRoute(
-                            builder: (context) => const ResetPassword(),
-                          ));
-                        },
-                        child: const Text(
-                          'Reset Password',
-                          style: TextStyle(
-                            color: Color(0xFF3C64B1),
-                            fontWeight: FontWeight.w400,
-                            fontFamily: 'Poppins',
-                            fontSize: 16, // Adjust font size as needed
-                            height: 0.06,
-                            letterSpacing: 0.30,
+                  alignment: Alignment.topLeft,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 30.0),
+                    child: MouseRegion(
+                        onHover: (_) {},
+                        child: Material(
+                          color: Colors.transparent,
+                          child: InkWell(
+                            onTap: () {
+                              // Navigate to the ResetPassword page
+                              Navigator.of(context).push(MaterialPageRoute(
+                                builder: (context) => const ResetPassword(),
+                              ));
+                            },
+                            borderRadius: BorderRadius.circular(8),
+                            child: Padding(
+                              padding: const EdgeInsets.all(8.0),
+                              child: const Text(
+                                'Reset Password',
+                                style: TextStyle(
+                                  color: Color(0xFF3C64B1),
+                                  fontWeight: FontWeight.w400,
+                                  fontFamily: 'Poppins',
+                                  fontSize: 16, // Adjust font size as needed
+                                  height: 0.06,
+                                  letterSpacing: 0.30,
+                                ),
+                              ),
+                            ),
                           ),
-                        ),
-                      ),
-                    )),
+                        )),
+                  ),
+                ),
 
                 const SizedBox(height: 38),
                 const Padding(
