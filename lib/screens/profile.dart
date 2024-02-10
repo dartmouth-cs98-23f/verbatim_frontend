@@ -11,6 +11,8 @@ import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/widgets/stats_tile.dart';
 import 'package:verbatim_frontend/screens/settings.dart';
 import 'package:verbatim_frontend/BackendService.dart';
+import 'package:verbatim_frontend/widgets/center_custom_app_bar.dart';
+
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
@@ -270,7 +272,9 @@ class _ProfileState extends State<Profile> {
                                 ),
 
                                 const SizedBox(width: 10),
-                                groupAppBar(title: 'Your Profile'),
+                                const centerAppBar(
+                                  title: 'Your profile',
+                                ),
                                 //const CustomAppBarSettings(title: '')
                               ],
                             ),
