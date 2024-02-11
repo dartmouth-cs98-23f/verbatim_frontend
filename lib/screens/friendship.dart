@@ -1039,7 +1039,7 @@ class _DonutChartState extends State<DonutChart> {
   @override
   Widget build(BuildContext context) {
     Color calculateColor(double similarity) {
-      int score = (similarity / 2).toInt();
+      int score = similarity ~/ 2;
 
       return Color.fromARGB(255, 250, 192 + score, 94 + score);
     }

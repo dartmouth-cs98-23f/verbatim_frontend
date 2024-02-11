@@ -9,7 +9,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:verbatim_frontend/widgets/custom_app_bar.dart';
 import 'package:fl_chart/fl_chart.dart';
-import 'dart:math';
 import 'package:verbatim_frontend/screens/myGroup.dart';
 import 'package:verbatim_frontend/screens/friendship.dart';
 

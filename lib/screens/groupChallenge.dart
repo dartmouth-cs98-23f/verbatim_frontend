@@ -13,7 +13,6 @@ import 'dart:convert';
 import 'package:verbatim_frontend/Components/defineRoutes.dart';
 import 'package:verbatim_frontend/screens/myGroup.dart';
 import 'package:verbatim_frontend/widgets/custom_app_bar.dart';
-import 'dart:math';
 
 // submit challenge
 
@@ -54,7 +53,7 @@ class _GroupChallengeState extends State<groupChallenge> {
 
 //fix image getting but jsut use this for now
   Future<void> preloadImages(BuildContext context) async {
-    for (int i = 0; i < min(groupUsers!.length + 1, 6); i++) {
+    for (int i = 0; i < min(groupUsers.length + 1, 6); i++) {
       final key = 'assets/Ellipse ${41 + i}.png';
       final image = AssetImage(key);
       await precacheImage(image, context);
@@ -193,22 +192,20 @@ class _GroupChallengeState extends State<groupChallenge> {
     Map<String, Map<String, dynamic>> answersMap = {};
 
     // get responses from groupAnswersStats
-    if (groupAnswersStats != null) {
-      for (var answer in groupAnswersStats) {
-        var question = answer['question'];
-        var responses = answer['responses'];
+    for (var answer in groupAnswersStats) {
+      var question = answer['question'];
+      var responses = answer['responses'];
 
-        // Create a Map for the current question if not already created
-        answersMap.putIfAbsent(question, () => {});
+      // Create a Map for the current question if not already created
+      answersMap.putIfAbsent(question, () => {});
 
-        // Iterate over responses and add them to the Map
-        for (var user in responses.keys) {
-          var response = responses[user];
-          answersMap[question]![user] = response;
-        }
+      // Iterate over responses and add them to the Map
+      for (var user in responses.keys) {
+        var response = responses[user];
+        answersMap[question]![user] = response;
       }
     }
-
+  
     final double verbaMatchSimilarity2 = widget.verbaMatchSimilarity ?? 0.0;
     final List<dynamic> verbaMatchUsers2 = widget.verbaMatchUsers ?? [];
     final int? totalResponses2 = widget.totalResponses;

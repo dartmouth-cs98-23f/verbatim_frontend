@@ -219,7 +219,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
   List<String> groupUsers = ['frances', '2', '2', '3', '33', '44'];
 
   Future<void> preloadImages(BuildContext context) async {
-    for (int i = 0; i < min(groupUsers!.length + 1, 6); i++) {
+    for (int i = 0; i < min(groupUsers.length + 1, 6); i++) {
       final key = 'assets/Ellipse ${41 + i}.png';
       final image = AssetImage(key);
       await precacheImage(image, context);
@@ -488,7 +488,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                     child: Stack(
                                       children: [
                                         for (int i = 0;
-                                            i < min(groupUsers!.length + 1, 6);
+                                            i < min(groupUsers.length + 1, 6);
                                             i++)
                                           Positioned(
                                             top: 0,
@@ -1090,7 +1090,7 @@ class _DonutChartState extends State<DonutChart> {
   @override
   Widget build(BuildContext context) {
     Color calculateColor(double similarity) {
-      int score = (similarity / 2).toInt();
+      int score = similarity ~/ 2;
 
       return Color.fromARGB(255, 250, 192 + score, 94 + score);
     }

@@ -1,0 +1,7 @@
+{
+  "apiKey": "your_api_key",
+  "appId": "your_app_id",
+  "messagingSenderId": "your_messaging_sender_id",
+  "projectId": "your_project_id",
+  "storageBucket": "your_storage_bucket"
+}
