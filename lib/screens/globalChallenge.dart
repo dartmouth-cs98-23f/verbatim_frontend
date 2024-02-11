@@ -138,6 +138,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
     if (fetchQuestions.statusCode == 200) {
       print("Success getting qs with no username");
       final Map<String, dynamic>? data = json.decode(fetchQuestions.body);
+      print("this is data in fetch questsions $data");
 
       question1 = data!['q1'];
 
@@ -166,6 +167,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
 
     if (fetchQuestions.statusCode == 200) {
       final Map<String, dynamic>? data = json.decode(fetchQuestions.body);
+      print("this is questions data in regular $data");
 
       question1 = data!['q1'];
 
@@ -248,21 +250,21 @@ class _GlobalChallengeState extends State<globalChallenge> {
     if (username == '') {
       _fecthNoSignInData().then((_) {
         setState(() {
-          questions = [question1, question2, question3];
+          questions = [question1, question2, question3, question4, question5];
         });
       });
     } else {
       _fetchData(username).then((_) {
         setState(() {
-          questions = [question1, question2, question3];
+          questions = [question1, question2, question3, question4, question5];
         });
       });
     }
   }
 
   void setGuestUserResponses() {
-    SharedPrefs()
-        .updateGameValues(responses123[0], responses123[1], responses123[2]);
+    SharedPrefs().updateGameValues(responses123[0], responses123[1],
+        responses123[2], responses123[3], responses123[4]);
   }
 
   Future<void> sendUserResponses(

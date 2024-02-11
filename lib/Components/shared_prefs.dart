@@ -12,6 +12,8 @@ class SharedPrefs {
   static const String responseQ1 = '';
   static const String responseQ2 = '';
   static const String responseQ3 = '';
+  static const String responseQ4 = '';
+  static const String responseQ5 = '';
   static const String referer = '';
 
   static SharedPreferences? _sharedPrefs;
@@ -64,10 +66,13 @@ class SharedPrefs {
     _sharedPrefs!.setString("email", email);
   }
 
-  void updateGameValues(String response1, String response2, String response3) {
+  void updateGameValues(String response1, String response2, String response3,
+      String response4, String response5) {
     _sharedPrefs!.setString("response1", response1);
     _sharedPrefs!.setString("response2", response2);
     _sharedPrefs!.setString("response3", response3);
+    _sharedPrefs!.setString("response4", response4);
+    _sharedPrefs!.setString("response5", response5);
   }
 
   void updateReferer(String referer) {
@@ -98,6 +103,14 @@ class SharedPrefs {
 
   String getResponse3() {
     return "${_sharedPrefs!.getString("response3")}";
+  }
+
+  String getResponse4() {
+    return "${_sharedPrefs!.getString("response4")}";
+  }
+
+  String getResponse5() {
+    return "${_sharedPrefs!.getString("response5")}";
   }
 
   void setPassword(String password) {

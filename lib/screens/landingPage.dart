@@ -20,7 +20,7 @@ class _LandingPageState extends State<LandingPage> {
     SharedPrefs().setFirstName('');
     SharedPrefs().setLastName('');
     SharedPrefs().setBio('');
-    SharedPrefs().updateGameValues('', '', '');
+    SharedPrefs().updateGameValues('', '', '', "", '');
     SharedPrefs().updateReferer('');
     SharedPrefs().setCurrentPage('/global_challenge');
   }
