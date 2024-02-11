@@ -262,6 +262,9 @@ class _LogInState extends State<LogIn> {
                           );
                         },
                       ),
+
+                      //taking this out for now
+                      /*
                       const SizedBox(height: 20),
                       MyButtonWithImage(
                         buttonText: 'Sign in with Google',
@@ -270,6 +273,7 @@ class _LogInState extends State<LogIn> {
                           // signInWithGoogle();
                         },
                       ),
+                      */
                       const SizedBox(height: 10),
                       Center(
                         child: RichText(

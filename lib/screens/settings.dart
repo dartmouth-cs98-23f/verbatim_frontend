@@ -164,7 +164,7 @@ class _settingsState extends State<settings> {
 
   Future<void> _pickImage(ImageSource source) async {
     final ImagePicker picker = ImagePicker();
-    XFile? image = await picker.pickImage(source: source);
+    XFile? image = await picker.pickImage(source: source, imageQuality: 70);
 
     if (image != null) {
       var bytes = await image.readAsBytes();

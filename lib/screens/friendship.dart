@@ -733,14 +733,14 @@ class _FriendshipState extends State<friendship>
                                                       fontSize: 18,
                                                       fontWeight:
                                                           FontWeight.bold,
-                                                      color: Color(0xFFE76F51),
+                                                      color: Colors.black,
                                                     ),
                                                   ),
                                                   SizedBox(width: 5),
                                                   Icon(
                                                     Icons.add,
                                                     size: 20,
-                                                    color: Color(0xFFE76F51),
+                                                    color: Colors.black,
                                                   ),
                                                 ],
                                               ),
