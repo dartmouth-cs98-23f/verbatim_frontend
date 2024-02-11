@@ -266,33 +266,39 @@ class _SideBarState extends State<SideBar> {
 
 // if you click the friendname, go to the friendship page. Can i send friend groupId? load it here?
                             return ListTile(
-                              title: GestureDetector(
-                                onTap: () {
-                                  Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            Profile(user: friend)),
-                                  );
-                                },
-                                child: Text(
-                                  friend.username,
-                                  style: const TextStyle(
-                                    color: Colors.black,
-                                    fontWeight: FontWeight.bold,
-                                    fontSize: 15,
+                                title: GestureDetector(
+                                  onTap: () {
+                                    Navigator.pushNamed(this.context,
+                                        '/friendship?friendUsername=$friendUsername');
+                                  },
+                                  child: Text(
+                                    friend.username,
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15,
+                                    ),
                                   ),
                                 ),
-                              ),
-                              leading: FirebaseStorageImage(
-                                profileUrl: friend.profilePicture,
-                                user: friend,
-                              ),
-                              onTap: () {
-                                Navigator.pushNamed(this.context,
-                                    '/friendship?friendUsername=$friendUsername');
-                              }, // Keep this empty if onTap behavior is handled by GestureDetector
-                            );
+                                leading: Container(
+                                    decoration: BoxDecoration(
+                                      boxShadow: [],
+                                    ),
+                                    child: InkWell(
+                                      onTap: () {
+                                        Navigator.push(
+                                          context,
+                                          MaterialPageRoute(
+                                            builder: (context) =>
+                                                Profile(user: friend),
+                                          ),
+                                        );
+                                      },
+                                      child: FirebaseStorageImage(
+                                        profileUrl: friend.profilePicture,
+                                        user: friend,
+                                      ),
+                                    )));
                           },
                         ),
                       ),

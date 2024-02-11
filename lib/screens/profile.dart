@@ -738,7 +738,7 @@ class _ProfileState extends State<Profile> {
                                         text: verbaMatchScore.toString(),
                                         style: const TextStyle(
                                           fontSize: 16,
-                                          fontWeight: FontWeight.w500,
+                                          fontWeight: FontWeight.w700,
                                           color: Colors.black,
                                         ),
                                       ),
@@ -746,7 +746,7 @@ class _ProfileState extends State<Profile> {
                                         text: "% similarity",
                                         style: TextStyle(
                                           fontSize: 16,
-                                          fontWeight: FontWeight.w500,
+                                          fontWeight: FontWeight.w700,
                                           color: Colors.black,
                                         ),
                                       )
