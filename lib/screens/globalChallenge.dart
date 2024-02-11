@@ -214,7 +214,10 @@ class _GlobalChallengeState extends State<globalChallenge> {
         statsQ4 = data['statsQ4'];
         statsQ5 = data['statsQ5'];
         totalResponses = data['totalResponses'];
-        responded = true;
+        setState(() {
+          responded = true;
+        });
+
         // new two for +2!
         responses123 = [
           responseQ1,
@@ -297,6 +300,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
 
 //make sure we can send responses to stats on the first go
     responses123 = modifiedResponses;
+    print("these are responses 123 $responses123");
     //final CounterModel _counter = CounterModel();
 
     //     builder:(context)=>

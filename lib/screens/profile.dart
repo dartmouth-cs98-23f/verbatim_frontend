@@ -839,11 +839,15 @@ class _ProfileState extends State<Profile> {
                                                 : SizedBox(
                                                     width: 100,
                                                     height: 100,
+                                                  )), /*SizedBox(
+                                                    width: 100,
+                                                    height: 100,
                                                     child: FirebaseStorageImage(
                                                       profileUrl:
                                                           match.profilePicture,
                                                     ),
                                                   )),
+                                                  */
                                       ),
                                     ],
                                   ),
