@@ -40,6 +40,10 @@ class _FriendshipState extends State<friendship>
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(
+                20.0), // maybe this will fix weird looking border?
+          ),
           contentPadding: EdgeInsets.zero,
           insetPadding: EdgeInsets.symmetric(horizontal: 16.0),
           content: Container(
