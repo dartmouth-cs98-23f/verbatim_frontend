@@ -58,6 +58,7 @@ class _ProfileState extends State<Profile> {
   final String streakIcon = 'assets/streak.svg';
   final String globalChallengeIcon = 'assets/globalChallenges.svg';
   final String customIcon = 'assets/customChallenges.svg';
+  User? match;
 
   List<int> stats = [friends, globals, customs, streaks];
 
@@ -80,19 +81,19 @@ class _ProfileState extends State<Profile> {
   static int customs = 0;
   static int streaks = 0;
   static double verbaMatchScore = 0;
-  static User match = User(
-    username: '',
-    bio: '',
-    id: 0,
-    email: '',
-    lastName: '',
-    firstName: '',
-    profilePicture: '',
-    numGlobalChallengesCompleted: 0,
-    numCustomChallengesCompleted: 0,
-    streak: 0,
-    hasCompletedDailyChallenge: false,
-  );
+  // User match = User(
+  //   username: '',
+  //   bio: '',
+  //   id: 0,
+  //   email: '',
+  //   lastName: '',
+  //   firstName: '',
+  //   profilePicture: '',
+  //   numGlobalChallengesCompleted: 0,
+  //   numCustomChallengesCompleted: 0,
+  //   streak: 0,
+  //   hasCompletedDailyChallenge: false,
+  // );
   static String profile = 'assets/default.jpeg';
 
   Future<void> _getStats(String username) async {
@@ -100,14 +101,17 @@ class _ProfileState extends State<Profile> {
         Uri.parse("${BackendService.getBackendUrl()}$username/getUserStats");
     final headers = <String, String>{'Content-Type': 'application/json'};
     final getStats = await http.get(url, headers: headers);
+
     if (getStats.statusCode == 200) {
       final Map<String, dynamic> data = jsonDecode(getStats.body);
       final Stats stats = Stats.fromJson(data);
+
       friends = stats.friends;
       globals = stats.globals;
       customs = stats.customs;
       streaks = stats.streaks;
       verbaMatchScore = stats.verbaMatchScore;
+
       final Map<String, dynamic> matchDeets = stats.match;
 
       // Remove the current user's details from matchDeets
@@ -115,7 +119,7 @@ class _ProfileState extends State<Profile> {
           key == 'username' && value == SharedPrefs().getUserName() as String);
 
       // Set match to null if matchDeets still contains elements
-      match = (matchDeets.isEmpty
+      User? newMatch = matchDeets.isEmpty
           ? null
           : User(
               username: matchDeets["username"],
@@ -132,30 +136,21 @@ class _ProfileState extends State<Profile> {
               streak: matchDeets['streak'],
               hasCompletedDailyChallenge:
                   matchDeets['hasCompletedDailyChallenge'],
-            ))!;
+            );
 
-      toBeDisplayedUser = widget.user ?? match;
+      setState(() {
+        match = newMatch;
+      });
 
+      // Print statements for debugging (can be removed in production)
       print("\nVerba match score: ${verbaMatchScore}\n");
-
-      print("\ntoBeDisplayedUser is : ${toBeDisplayedUser}\n");
-
       print("\nMatch user: ${match}\n");
       print("\nMatchDeets : ${matchDeets}\n");
       print("\nStats.match is : ${stats.match}\n");
-
-      if (match.bio == '') {
-      } else {
-        //TODO: match.getprofile
-      }
-      if (SharedPrefs().getBio() == '') {
-      } else {
-        //TODO: sharedprefs.getprofile
-        profile = profile;
-      }
-      // print("Itsss okkkk");
     } else {
-      print('Sorry could not get user stats');
+      print(
+          'Error: Could not fetch user stats. Status code: ${getStats.statusCode}');
+      // Handle other status codes appropriately
     }
   }
 
@@ -756,26 +751,29 @@ class _ProfileState extends State<Profile> {
                                       Align(
                                         widthFactor: .5,
                                         child: ClipOval(
-                                          child: SizedBox(
-                                            width: 100,
-                                            height: 100,
-                                            child: toBeDisplayedUser != null
-                                                ? FirebaseStorageImage(
-                                                    profileUrl:
-                                                        toBeDisplayedUser!
-                                                            .profilePicture,
-                                                    user: toBeDisplayedUser,
-                                                  )
-                                                : Container(
-                                                    decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
-                                                    ),
-                                                    child: Image.asset(
-                                                      'assets/profile_pic.png',
-                                                      fit: BoxFit.cover,
-                                                    ),
+                                          child: widget.user != null
+                                              ? SizedBox(
+                                                  width: 100,
+                                                  height: 100,
+                                                  child: FirebaseStorageImage(
+                                                    profileUrl: widget
+                                                        .user!.profilePicture,
                                                   ),
-                                          ),
+                                                )
+                                              : SizedBox(
+                                                  width: 100,
+                                                  height: 100,
+                                                  child: match != null
+                                                      ? FirebaseStorageImage(
+                                                          profileUrl: match!
+                                                              .profilePicture,
+                                                          user: match,
+                                                        )
+                                                      : Image.asset(
+                                                          'assets/profile_pic.png',
+                                                          fit: BoxFit.cover,
+                                                        ),
+                                                ),
                                         ),
                                       ),
                                     ],
