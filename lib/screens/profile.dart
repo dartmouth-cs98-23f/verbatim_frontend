@@ -489,7 +489,7 @@ class _ProfileState extends State<Profile> {
                                                                     const TextStyle(
                                                                   color: Colors
                                                                       .white,
-                                                                  fontSize: 12,
+                                                                  fontSize: 11,
                                                                   fontWeight:
                                                                       FontWeight
                                                                           .w600,
