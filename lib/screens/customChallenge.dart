@@ -55,10 +55,12 @@ class _CustomChallengeState extends State<customChallenge>
   List<bool> expandedStates = [false, false, false];
 
   // list of prompts the user will input
+  // whatever the prompts hinttext is make sure that the hinttext string stats the same!
+  String hintText = "Enter your challenge question...";
   List<String> prompts = [
-    "Enter your challenge question",
-    "Enter your challenge question",
-    "Enter your challenge question",
+    "Enter your challenge question...",
+    "Enter your challenge question...",
+    "Enter your challenge question...",
   ];
 
 // r they ready for the bird?!?!?!
@@ -119,7 +121,7 @@ class _CustomChallengeState extends State<customChallenge>
                       onTap: () {
                         setState(() {
                           expandedStates.add(false);
-                          prompts.add("Enter your challenge question");
+                          prompts.add("Enter your challenge question...");
                           editingStates.add(false);
                           bird.add(false);
                         });
@@ -216,7 +218,7 @@ class _CustomChallengeState extends State<customChallenge>
   Widget _buildEditableRectangle(int index) {
     // the text to be edited is the prompt clicked on
     TextEditingController editingController = TextEditingController(
-      text: (prompts[index] == 'Enter your challenge question')
+      text: (prompts[index] == 'Enter your challenge question...')
           ? null
           : prompts[index],
     );
@@ -314,11 +316,18 @@ class _CustomChallengeState extends State<customChallenge>
                     Flexible(
                       child: Text(
                         prompts[index],
-                        style: TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          overflow: TextOverflow.ellipsis,
-                        ),
+                        style: prompts[index] == hintText
+                            ? TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey[600],
+                                overflow: TextOverflow.ellipsis,
+                              )
+                            : TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                overflow: TextOverflow.ellipsis,
+                              ),
                       ),
                     ),
                   ],
