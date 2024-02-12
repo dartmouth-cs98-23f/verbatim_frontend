@@ -79,7 +79,7 @@ class MyApp extends StatelessWidget {
       navigatorKey: navigatorKey,
       onGenerateRoute: Application.router.generator,
       //    initialRoute: SharedPrefs().getCurrentPage() ?? '/landingPage',
-      home: const LogIn(),
+      home: const LandingPage(),
     );
   }
 }
