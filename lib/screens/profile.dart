@@ -229,7 +229,7 @@ class _ProfileState extends State<Profile> {
         lastName.isNotEmpty ? lastName.substring(0, 1).toUpperCase() : "U";
 
     // Format displayName using firstName and initial
-    displayName = '$firstName $initial.';
+    displayName = lastName.isNotEmpty ? '$firstName $initial.' : '$firstName';
     _getStats(username).then((_) {
       setState(() {
         stats = [friends, streaks, globals, customs];
