@@ -235,7 +235,7 @@ class _CustomChallengeState extends State<customChallenge>
         height: expandedStates[index] ? 100 : 50,
         width: double.infinity,
         margin: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-        padding: EdgeInsets.all(8),
+        padding: EdgeInsets.symmetric(horizontal: 8),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
@@ -326,7 +326,7 @@ class _CustomChallengeState extends State<customChallenge>
               ),
             if (expandedStates[index])
               Positioned(
-                bottom: 0,
+                bottom: 3,
                 right: 0,
                 child: Row(
                   children: [
@@ -340,9 +340,9 @@ class _CustomChallengeState extends State<customChallenge>
                         ),
                         side: BorderSide(
                           color: Color(0xFFE76F51),
-                          width: 4,
+                          width: 3,
                         ),
-                        minimumSize: const Size(75, 35),
+                        minimumSize: const Size(50, 20),
                       ),
                       onPressed: () {
                         setState(() {
@@ -365,7 +365,7 @@ class _CustomChallengeState extends State<customChallenge>
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          minimumSize: const Size(75, 35),
+                          minimumSize: const Size(50, 20),
                         ),
                         onPressed: () {
                           setState(() {
@@ -385,7 +385,7 @@ class _CustomChallengeState extends State<customChallenge>
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          minimumSize: const Size(75, 35),
+                          minimumSize: const Size(50, 20),
                         ),
                         onPressed: () {
                           setState(() {
