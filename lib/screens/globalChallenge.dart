@@ -389,7 +389,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
     String formattedTimeUntilMidnight =
         DateFormat.Hms().format(DateTime(0).add(timeUntilMidnight));
 
-    final String assetName = 'assets/img1.svg';
+    const String assetName = 'assets/img1.svg';
     List<String> tabLables = [
       categoryQ1,
       categoryQ2,
@@ -436,15 +436,15 @@ class _GlobalChallengeState extends State<globalChallenge> {
                             ),
 
                             // app bar on top of background
-                            CustomAppBar(),
+                            const CustomAppBar(),
 
                             // 'Global Challenge #'
                             Center(
                               child: Container(
-                                padding: EdgeInsets.only(top: 20),
+                                padding: const EdgeInsets.only(top: 20),
                                 child: Text(
                                   'Global Challenge #$idString',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 27,
                                     color: Colors.white,
                                     fontWeight: FontWeight.w900,
@@ -454,7 +454,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                             ),
                             Center(
                                 child: Container(
-                                    padding: EdgeInsets.only(top: 170),
+                                    padding: const EdgeInsets.only(top: 170),
                                     child: SizedBox(
                                         height: 40,
                                         width: double.maxFinite,
@@ -474,7 +474,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                                           color: Colors.black,
                                                           fontSize: 15),
                                                     ),
-                                                    TextSpan(
+                                                    const TextSpan(
                                                         text:
                                                             " users have played today",
                                                         style: TextStyle(
@@ -485,7 +485,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                                 ),
                                               ),
                                             ),
-                                            Container(
+                                            SizedBox(
                                                 height: 43,
                                                 width: 145,
                                                 child: Container(

@@ -5,7 +5,6 @@ import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'package:verbatim_frontend/screens/signupErrorMessage.dart';
 import '../Components/shared_prefs.dart';
-import '../widgets/my_button_with_image.dart';
 import '../widgets/my_button_no_image.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';

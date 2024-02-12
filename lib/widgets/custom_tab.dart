@@ -4,7 +4,7 @@ import 'package:flutter_svg/svg.dart';
 class PlayTab extends StatefulWidget {
   final void Function(bool) onTabSelectionChanged;
 
-  PlayTab({Key? key, required this.onTabSelectionChanged}) : super(key: key);
+  const PlayTab({Key? key, required this.onTabSelectionChanged}) : super(key: key);
 
   @override
   _PlayTabState createState() => _PlayTabState();
@@ -30,8 +30,8 @@ class _PlayTabState extends State<PlayTab> {
 
   @override
   Widget build(BuildContext context) {
-    final String play = 'assets/playtoggle.svg';
-    final String stats = 'assets/statstoggle.svg';
+    const String play = 'assets/playtoggle.svg';
+    const String stats = 'assets/statstoggle.svg';
     Widget content = SvgPicture.asset(play, fit: BoxFit.fill);
     Widget content2 = SvgPicture.asset(stats, fit: BoxFit.fill);
 
@@ -49,7 +49,7 @@ class _PlayTabState extends State<PlayTab> {
                 color: Colors.black.withOpacity(.25),
                 blurRadius: 5,
                 spreadRadius: -5,
-                offset: Offset(0, 1),
+                offset: const Offset(0, 1),
               ),
             ],
           ),
@@ -62,14 +62,14 @@ class _PlayTabState extends State<PlayTab> {
   }
 
   Widget _buildTabContent1(bool firsttab) {
-    final String play = 'assets/playtoggle.svg';
+    const String play = 'assets/playtoggle.svg';
     Widget content = SvgPicture.asset(play, fit: BoxFit.cover);
 
     return Visibility(
       visible: firsttab,
       child: Align(
         alignment: Alignment.centerRight,
-        child: Container(
+        child: SizedBox(
           height: 60,
           width: 200,
           child: ClipOval(
@@ -81,13 +81,13 @@ class _PlayTabState extends State<PlayTab> {
   }
 
   Widget _buildTabContent2(bool secondtab) {
-    final String stats = 'assets/statstoggle.svg';
+    const String stats = 'assets/statstoggle.svg';
     Widget content = SvgPicture.asset(stats, fit: BoxFit.cover);
 
     return Visibility(
       visible: secondtab,
       child: Center(
-        child: Container(
+        child: SizedBox(
           height: 0,
           width: 0,
           child: ClipOval(child: content),
@@ -97,7 +97,7 @@ class _PlayTabState extends State<PlayTab> {
   }
 
   Widget _buildTabContent(IconData icon, String text, double width) {
-    final String stats = 'assets/statstoggle.svg';
+    const String stats = 'assets/statstoggle.svg';
     Widget content = SvgPicture.asset(stats, fit: BoxFit.cover);
 
     return Center(
@@ -117,7 +117,7 @@ class _PlayTabState extends State<PlayTab> {
               ),
               Text(
                 text,
-                style: TextStyle(
+                style: const TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 14,
                   color: Colors.black,

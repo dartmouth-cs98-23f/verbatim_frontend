@@ -1,7 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/Components/defineRoutes.dart';
 import 'dart:convert';
@@ -63,8 +61,8 @@ class _SideBarState extends State<SideBar> {
 
   //get groups
   Future<void> getMyGroups(String username) async {
-    final url = Uri.parse(
-        BackendService.getBackendUrl() + 'user/' + '$username/' + 'groups');
+    final url =
+        Uri.parse('${BackendService.getBackendUrl()}user/$username/groups');
 
     final response = await http.get(url);
 
@@ -97,9 +95,9 @@ class _SideBarState extends State<SideBar> {
       final List<dynamic> data = json.decode(response.body);
       friends = data.map((item) => User.fromJson(item)).toList();
       friends.removeWhere((user) => user.username == username);
-      friends.forEach((user) {
+      for (var user in friends) {
         user.isRequested = true;
-      });
+      }
     } else {
       print('Failed to get friends. Status code: ${response.statusCode}');
     }
@@ -281,7 +279,7 @@ class _SideBarState extends State<SideBar> {
                                   ),
                                 ),
                                 leading: Container(
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                       boxShadow: [],
                                     ),
                                     child: InkWell(
@@ -324,14 +322,14 @@ class _SideBarState extends State<SideBar> {
                     ),
                     initiallyExpanded: false,
 
-                    shape: Border(),
+                    shape: const Border(),
                     children: <Widget>[
                       const SizedBox(height: 10.0),
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: 5.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
                         child: ListView.builder(
                           shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemCount: groupnamesList.length,
                           itemBuilder: (BuildContext context, int index) {
                             String groupname = groupnamesList[index];
@@ -340,13 +338,14 @@ class _SideBarState extends State<SideBar> {
                             return ListTile(
                               title: Text(
                                 groupname,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 15,
                                 ),
                               ),
-                              leading: Icon(Icons.people, color: Colors.black),
+                              leading:
+                                  const Icon(Icons.people, color: Colors.black),
                               onTap: () {
                                 Navigator.pushNamed(this.context,
                                     '/myGroup?groupName=$groupname&groupId=$groupId');
@@ -443,7 +442,7 @@ class _SideBarState extends State<SideBar> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 5.0),
                     child: Container(

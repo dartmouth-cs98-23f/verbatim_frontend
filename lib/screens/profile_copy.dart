@@ -1,15 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-import 'package:verbatim_frontend/screens/addFriend.dart';
+import 'package:verbatim_frontend/screens/User.dart';
 import 'package:verbatim_frontend/screens/sideBar.dart';
-import 'package:verbatim_frontend/widgets/customAppBar_Settings.dart';
 import 'package:verbatim_frontend/widgets/custom_challenge_button.dart';
 import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 import 'package:verbatim_frontend/widgets/showSuccessDialog.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/widgets/stats_tile.dart';
-import 'package:verbatim_frontend/screens/settings.dart';
 import 'package:verbatim_frontend/BackendService.dart';
+import 'package:verbatim_frontend/widgets/center_custom_app_bar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
@@ -73,7 +72,6 @@ class _ProfileState extends State<Profile> {
   Map<String, bool> friendRequestStates = {};
   bool drawButton = false;
   String groupName = '';
-  User? toBeDisplayedUser = null;
 
   static int friends = 0;
   static int globals = 0;
@@ -102,47 +100,35 @@ class _ProfileState extends State<Profile> {
     final getStats = await http.get(url, headers: headers);
     if (getStats.statusCode == 200) {
       final Map<String, dynamic> data = jsonDecode(getStats.body);
+      print("this is stats data $data");
       final Stats stats = Stats.fromJson(data);
+      print("this is stats $stats");
       friends = stats.friends;
       globals = stats.globals;
       customs = stats.customs;
       streaks = stats.streaks;
       verbaMatchScore = stats.verbaMatchScore;
-      final Map<String, dynamic> matchDeets = stats.match;
 
-      // Remove the current user's details from matchDeets
-      matchDeets.removeWhere((key, value) =>
-          key == 'username' && value == SharedPrefs().getUserName() as String);
-
-      // Set match to null if matchDeets still contains elements
-      match = (matchDeets.isEmpty
-          ? null
-          : User(
-              username: matchDeets["username"],
-              bio: matchDeets['bio'],
-              id: matchDeets['id'],
-              email: matchDeets['email'],
-              lastName: matchDeets['lastName'],
-              firstName: matchDeets['firstName'],
-              profilePicture: matchDeets['profilePicture'],
-              numGlobalChallengesCompleted:
-                  matchDeets['numGlobalChallengesCompleted'],
-              numCustomChallengesCompleted:
-                  matchDeets['numCustomChallengesCompleted'],
-              streak: matchDeets['streak'],
-              hasCompletedDailyChallenge:
-                  matchDeets['hasCompletedDailyChallenge'],
-            ))!;
-
-      toBeDisplayedUser = widget.user ?? match;
-
-      print("\nVerba match score: ${verbaMatchScore}\n");
-
-      print("\ntoBeDisplayedUser is : ${toBeDisplayedUser}\n");
-
-      print("\nMatch user: ${match}\n");
-      print("\nMatchDeets : ${matchDeets}\n");
-      print("\nStats.match is : ${stats.match}\n");
+      if (stats.match != null) {
+        final Map<String, dynamic> matchDeets = stats.match;
+        match = User(
+          username: matchDeets["username"],
+          bio: matchDeets['bio'],
+          id: matchDeets['id'],
+          email: matchDeets['email'],
+          lastName: matchDeets['lastName'],
+          firstName: matchDeets['firstName'],
+          profilePicture: matchDeets['profilePicture'],
+          numGlobalChallengesCompleted:
+              matchDeets['numGlobalChallengesCompleted'],
+          numCustomChallengesCompleted:
+              matchDeets['numCustomChallengesCompleted'],
+          streak: matchDeets['streak'],
+          hasCompletedDailyChallenge: matchDeets['hasCompletedDailyChallenge'],
+        );
+      } else {
+        print("stats.match is null");
+      }
 
       if (match.bio == '') {
       } else {
@@ -216,7 +202,7 @@ class _ProfileState extends State<Profile> {
         friendRequestStates[widget.user!.username] = widget.user!.isRequested;
       }
       drawButton = friendRequestStates[widget.user!.username] as bool;
-      groupName = '${SharedPrefs().getUserName()}&${widget.user!.username}';
+      groupName = widget.user!.username;
     }
 
     // Initialize username from SharedPrefs if not provided through the widget
@@ -234,10 +220,11 @@ class _ProfileState extends State<Profile> {
     firstName =
         widget.user?.firstName ?? SharedPrefs().getFirstName() ?? "User";
     lastName = widget.user?.lastName ?? SharedPrefs().getLastName() ?? "Name";
-    initial = lastName.isNotEmpty ? lastName.substring(0, 1).toUpperCase() : "";
+    initial =
+        lastName.isNotEmpty ? lastName.substring(0, 1).toUpperCase() : "U";
 
     // Format displayName using firstName and initial
-    displayName = lastName.isNotEmpty ? '$firstName $initial.' : '$firstName';
+    displayName = lastName.isNotEmpty ? '$firstName $initial.' : firstName;
     _getStats(username).then((_) {
       setState(() {
         stats = [friends, streaks, globals, customs];
@@ -251,7 +238,7 @@ class _ProfileState extends State<Profile> {
       child: Theme(
         data: ThemeData(
           // Set the color of the drawer icon
-          primaryColor: Colors.white, // Change to your desired color
+          primaryColor: Colors.white,
 
           // Remove the shadow when hovering over the drawer
           highlightColor: Colors.transparent,
@@ -262,9 +249,7 @@ class _ProfileState extends State<Profile> {
           body: SingleChildScrollView(
             child: SafeArea(
               child: Container(
-                height: 960,
-                width: 430,
-                color: const Color.fromRGBO(255, 243, 238, 1),
+                color: const Color.fromARGB(255, 255, 243, 238),
                 child: Column(
                   children: [
                     SizedBox(
@@ -273,14 +258,14 @@ class _ProfileState extends State<Profile> {
                         children: [
                           SizedBox(
                             height: 160,
-                            width: 430,
+                            width: double.maxFinite,
                             child: Stack(
                               alignment: Alignment.bottomLeft,
                               children: [
                                 // Orange background
                                 Container(
                                   height: 160,
-                                  width: 430,
+                                  width: double.maxFinite,
                                   margin: EdgeInsets.zero,
                                   padding: EdgeInsets.zero,
                                   child: SvgPicture.asset(
@@ -290,21 +275,22 @@ class _ProfileState extends State<Profile> {
                                 ),
 
                                 const SizedBox(width: 10),
-                                const CustomAppBarSettings(title: '')
+                                const centerAppBar(
+                                  title: 'Public Profile',
+                                ),
+                                //const CustomAppBarSettings(title: '')
                               ],
                             ),
                           ),
                           Card(
-                            elevation: 2,
+                            elevation: 4,
                             color: Colors.white,
-                            shadowColor:
-                                const Color(0xFFE76F51).withOpacity(0.2),
                             shape: RoundedRectangleBorder(
                               borderRadius: BorderRadius.circular(30.0),
                             ),
                             child: Container(
-                              width: 360,
-                              height: 190,
+                              width: 330,
+                              height: 200,
                               padding: const EdgeInsets.only(top: 25, left: 25),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -328,7 +314,7 @@ class _ProfileState extends State<Profile> {
                                             style: GoogleFonts.poppins(
                                                 textStyle: const TextStyle(
                                                     fontWeight: FontWeight.bold,
-                                                    fontSize: 32)),
+                                                    fontSize: 30)),
                                           ),
                                           const SizedBox(
                                             height: 10,
@@ -359,7 +345,7 @@ class _ProfileState extends State<Profile> {
                                                 }
                                               },
                                               child: Container(
-                                                width: 200,
+                                                width: 180,
                                                 height: 25,
                                                 decoration: ShapeDecoration(
                                                   color:
@@ -521,21 +507,62 @@ class _ProfileState extends State<Profile> {
                                       )
                                     ],
                                   ),
+                                  const SizedBox(height: 5),
 
-                                  const SizedBox(height: 20),
-
+                                  // bio
                                   // Bio
-
-                                  Text(
-                                    bio ?? "Bio goes here",
-                                    softWrap: true,
-                                    style: GoogleFonts.poppins(
-                                      textStyle: const TextStyle(
-                                        color: Colors.black,
-                                        fontSize: 16,
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10.0),
+                                      child: LayoutBuilder(
+                                        builder: (context, constraints) {
+                                          return SingleChildScrollView(
+                                            scrollDirection: Axis.vertical,
+                                            child: ConstrainedBox(
+                                              constraints: BoxConstraints(
+                                                  minHeight:
+                                                      constraints.maxHeight),
+                                              child: Text(
+                                                bio ?? "Bio goes here",
+                                                softWrap: true,
+                                                style: GoogleFonts.poppins(
+                                                  textStyle: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 16,
+                                                  ),
+                                                ),
+                                              ),
+                                            ),
+                                          );
+                                        },
                                       ),
                                     ),
                                   ),
+
+                                  /*
+                                  Expanded(
+                                    child: Padding(
+                                      padding: const EdgeInsets.symmetric(
+                                          horizontal: 10.0),
+                                      child: SingleChildScrollView(
+                                        scrollDirection: Axis.vertical,
+                                        child: Text(
+                                          bio ?? "Bio goes here",
+                                          softWrap: true,
+                                          //   overflow: TextOverflow.ellipsis,
+                                          maxLines: 3,
+                                          style: GoogleFonts.poppins(
+                                            textStyle: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 15,
+                                            ),
+                                          ),
+                                        ),
+                                      ),
+                                    ),
+                                  ),
+                                  */
                                 ],
                               ),
                             ),
@@ -552,17 +579,12 @@ class _ProfileState extends State<Profile> {
                               borderRadius: BorderRadius.circular(30.0),
                             ),
                             child: Container(
-                              width: 360,
+                              width: 330,
                               height: 470,
                               padding: const EdgeInsets.all(25),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
                                 children: [
-                                  const SizedBox(
-                                    height: 10,
-                                    width: 15,
-                                  ),
-
                                   Text(
                                     "User Stats",
                                     style: GoogleFonts.poppins(
@@ -677,7 +699,7 @@ class _ProfileState extends State<Profile> {
                                     )),
                                   ]),
                                   // Profile picture
-                                  const SizedBox(height: 10),
+                                  const SizedBox(height: 20),
                                   Center(
                                     child: Text.rich(TextSpan(
                                       children: [
@@ -719,7 +741,7 @@ class _ProfileState extends State<Profile> {
                                         text: verbaMatchScore.toString(),
                                         style: const TextStyle(
                                           fontSize: 16,
-                                          fontWeight: FontWeight.w500,
+                                          fontWeight: FontWeight.w700,
                                           color: Colors.black,
                                         ),
                                       ),
@@ -727,56 +749,106 @@ class _ProfileState extends State<Profile> {
                                         text: "% similarity",
                                         style: TextStyle(
                                           fontSize: 16,
-                                          fontWeight: FontWeight.w500,
+                                          fontWeight: FontWeight.w700,
                                           color: Colors.black,
                                         ),
                                       )
                                     ],
                                   ))),
+
                                   const SizedBox(height: 5),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Align(
-                                        widthFactor: .5,
+                                        widthFactor: .65,
+                                        //looking at our own profile
                                         child: ClipOval(
-                                          child: SizedBox(
-                                            width: 100,
-                                            height: 100,
-                                            child: FirebaseStorageImage(
-                                              profileUrl: SharedPrefs()
-                                                  .getProfileUrl() as String,
-                                            ),
-                                          ),
-                                        ),
-                                      ),
-                                      SizedBox(
-                                          width:
-                                              20), // Add spacing between the profile pictures
-                                      Align(
-                                        widthFactor: .5,
-                                        child: ClipOval(
-                                          child: SizedBox(
-                                            width: 100,
-                                            height: 100,
-                                            child: toBeDisplayedUser != null
-                                                ? FirebaseStorageImage(
-                                                    profileUrl:
-                                                        toBeDisplayedUser!
-                                                            .profilePicture,
-                                                    user: toBeDisplayedUser,
+                                            child: widget.user != null
+                                                ? SizedBox(
+                                                    width: 100,
+                                                    height: 100,
+                                                    child: FirebaseStorageImage(
+                                                      profileUrl: SharedPrefs()
+                                                              .getProfileUrl()
+                                                          as String,
+                                                    ),
                                                   )
-                                                : Container(
-                                                    decoration: BoxDecoration(
-                                                      shape: BoxShape.circle,
+                                                : SizedBox(
+                                                    width: 100,
+                                                    height: 100,
+                                                    child: FirebaseStorageImage(
+                                                      profileUrl: SharedPrefs()
+                                                              .getProfileUrl()
+                                                          as String,
                                                     ),
-                                                    child: Image.asset(
-                                                      'assets/profile_pic.png',
-                                                      fit: BoxFit.cover,
+                                                  )
+
+                                            // : Stack(
+                                            //     children: [
+                                            //       Align(
+                                            //         alignment:
+                                            //             Alignment.center,
+                                            //         child: Container(
+                                            //           width: 100,
+                                            //           height: 100,
+                                            //           decoration:
+                                            //               BoxDecoration(
+                                            //             shape:
+                                            //                 BoxShape.circle,
+                                            //             color: Color.fromARGB(
+                                            //                 255,
+                                            //                 231,
+                                            //                 111,
+                                            //                 81),
+                                            //           ),
+                                            //         ),
+                                            //       ),
+                                            //       Align(
+                                            //         alignment:
+                                            //             Alignment.center,
+                                            //         child: Icon(
+                                            //             Icons.help_outline,
+                                            //             size: 100,
+                                            //             color: Color.fromARGB(
+                                            //                 255,
+                                            //                 250,
+                                            //                 192,
+                                            //                 94)),
+                                            //       ),
+                                            //     ],
+                                            //   ),
+                                            ),
+                                      ),
+                                      Align(
+                                        widthFactor: 1.3,
+                                        child: ClipRect(
+                                            child: widget.user != null
+                                                ? SizedBox(
+                                                    width: 100,
+                                                    height: 100,
+                                                    child: Center(
+                                                        child: Text(
+                                                            match.username)))
+                                                /*
+                                                    child: FirebaseStorageImage(
+                                                      profileUrl:
+                                                          match.profilePicture,
                                                     ),
-                                                  ),
-                                          ),
-                                        ),
+                                                  )*/
+                                                : SizedBox(
+                                                    width: 100,
+                                                    height: 100,
+                                                    child: Text(match
+                                                        .username))), /*SizedBox(
+                                                    width: 100,
+                                                    height: 100,
+                                                    child: FirebaseStorageImage(
+                                                      profileUrl:
+                                                          match.profilePicture,
+                                                    ),
+                                                  )),
+                                                  */
                                       ),
                                     ],
                                   ),
@@ -799,7 +871,6 @@ class _ProfileState extends State<Profile> {
             ),
           ),
           drawer: const SideBar(),
-          drawerScrimColor: Colors.white,
         ),
       ),
     );

@@ -1,9 +1,8 @@
 import 'package:flutter/material.dart';
 import 'size.dart';
-import 'package:verbatim_frontend/widgets/my_textfield.dart';
 
 class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
-  CustomAppBar({
+  const CustomAppBar({
     Key? key,
     this.height,
   }) : super(
@@ -19,7 +18,7 @@ class CustomAppBar extends StatelessWidget implements PreferredSizeWidget {
       toolbarHeight: 100,
       elevation: 0,
       centerTitle: false,
-      iconTheme: IconThemeData(color: Colors.white),
+      iconTheme: const IconThemeData(color: Colors.white),
     );
   }
 
