@@ -788,6 +788,7 @@ class _ProfileState extends State<Profile> {
                                                           as String,
                                                     ),
                                                   )
+
                                             // : Stack(
                                             //     children: [
                                             //       Align(
@@ -825,21 +826,26 @@ class _ProfileState extends State<Profile> {
                                             ),
                                       ),
                                       Align(
-                                        widthFactor: .65,
-                                        child: ClipOval(
+                                        widthFactor: 1.3,
+                                        child: ClipRect(
                                             child: widget.user != null
                                                 ? SizedBox(
                                                     width: 100,
                                                     height: 100,
+                                                    child: Center(
+                                                        child: Text(
+                                                            match.username)))
+                                                /*
                                                     child: FirebaseStorageImage(
                                                       profileUrl:
                                                           match.profilePicture,
                                                     ),
-                                                  )
+                                                  )*/
                                                 : SizedBox(
                                                     width: 100,
                                                     height: 100,
-                                                  )), /*SizedBox(
+                                                    child: Text(match
+                                                        .username))), /*SizedBox(
                                                     width: 100,
                                                     height: 100,
                                                     child: FirebaseStorageImage(
