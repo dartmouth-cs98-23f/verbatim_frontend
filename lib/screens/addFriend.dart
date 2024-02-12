@@ -7,6 +7,7 @@ import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/profile.dart';
 import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
+import 'package:verbatim_frontend/widgets/friends_app_bar.dart';
 import 'package:verbatim_frontend/widgets/friends_app_bar_test.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
 
@@ -334,10 +335,8 @@ class _AddFriendState extends State<addFriend> {
                         child: Stack(alignment: Alignment.topCenter, children: [
                           // orange background
                           Container(
-                            // height: 220.v,
-                            // width: double.maxFinite,
-                            height: 261,
-                            width: 430,
+                            height: 220,
+                            width: double.maxFinite,
                             margin: EdgeInsets.zero,
                             padding: EdgeInsets.zero,
                             child: SvgPicture.asset(
@@ -349,12 +348,10 @@ class _AddFriendState extends State<addFriend> {
                             height: 20,
                           ),
                           // app bar for add friend page
-                          const FriendsAppBarTest(
-                            title: 'Add Friends',
-                          ),
+                          FriendsAppBar(),
 
                           Padding(
-                            padding: const EdgeInsets.only(top: 5.0),
+                            padding: EdgeInsets.only(top: 20.0),
                             child: Align(
                               alignment: Alignment.center,
                               child: Container(
@@ -369,15 +366,14 @@ class _AddFriendState extends State<addFriend> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      const SizedBox(width: 8),
-                                      const Icon(Icons.search,
-                                          color: Colors.black),
-                                      const SizedBox(width: 8),
+                                      SizedBox(width: 8),
+                                      Icon(Icons.search, color: Colors.black),
+                                      SizedBox(width: 8),
                                       Expanded(
                                         child: TextField(
                                           controller: _searchController,
-                                          decoration: const InputDecoration(
-                                            hintStyle: TextStyle(
+                                          decoration: InputDecoration(
+                                            hintStyle: const TextStyle(
                                                 fontSize: 14.0,
                                                 color: Color.fromARGB(
                                                     255, 6, 5, 5)),
@@ -398,7 +394,6 @@ class _AddFriendState extends State<addFriend> {
                         padding: const EdgeInsets.only(left: 6.0),
                         child: SizedBox(
                           height: 22,
-                          width: 190,
                           child: Text(
                             _searchText.isEmpty
                                 ? 'People you may know'
@@ -424,9 +419,7 @@ class _AddFriendState extends State<addFriend> {
                   child: Container(
                     clipBehavior: Clip.hardEdge,
                     margin: const EdgeInsets.only(top: 10),
-                    // width: 300.h,
-                    // height: 500.v,
-                    width: 360,
+                    width: 335,
                     height: 508,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(30),

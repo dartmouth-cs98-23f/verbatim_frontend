@@ -39,8 +39,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
   List<String> groupMembers = [];
 
   Future<void> getGroupStats(int groupId) async {
-    final url =
-        Uri.parse('${BackendService.getBackendUrl()}group/$groupId');
+    final url = Uri.parse('${BackendService.getBackendUrl()}group/$groupId');
 
     final response = await http.get(url);
 
@@ -86,8 +85,8 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
   Map<int, List<String>> getChallengeMappedChallenges = {};
 
   Future<void> getActiveChallenges(int groupId) async {
-    final url = Uri.parse(
-        '${BackendService.getBackendUrl()}group/$groupId/challenges');
+    final url =
+        Uri.parse('${BackendService.getBackendUrl()}group/$groupId/challenges');
 
     final response = await http.get(url);
     if (response.statusCode == 200) {
@@ -104,7 +103,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
             .toList();
 
         mappedChallenges = getMappedChallenges(activeChallenges);
-        challengeStats = { for (var id in activeChallengeIds) id : {} };
+        challengeStats = {for (var id in activeChallengeIds) id: {}};
       } else {}
     } else {
       print("active challenges not obtained succesfuly");
@@ -138,7 +137,8 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
       String user,
       Map<int, List<String>> mappedChallenges,
       Map<int, Map<String, dynamic>> challengeStats) async {
-    final url = Uri.parse('${BackendService.getBackendUrl()}$challengeId/$user/getChallengeQs');
+    final url = Uri.parse(
+        '${BackendService.getBackendUrl()}$challengeId/$user/getChallengeQs');
 
     final response = await http.get(url);
     if (response.statusCode == 200) {
@@ -511,13 +511,15 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                                   },
                                                   style:
                                                       ElevatedButton.styleFrom(
-                                                    backgroundColor: Colors.white,
-                                                    padding:
-                                                        const EdgeInsets.symmetric(
-                                                            horizontal: 8,
-                                                            vertical: 4),
+                                                    backgroundColor:
+                                                        Colors.white,
+                                                    padding: const EdgeInsets
+                                                        .symmetric(
+                                                        horizontal: 8,
+                                                        vertical: 4),
                                                   ),
-                                                  child: const Text("Leave Group",
+                                                  child: const Text(
+                                                      "Leave Group",
                                                       style: TextStyle(
                                                         fontSize: 12,
                                                         fontWeight:
@@ -718,10 +720,12 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                                   }
                                                 },
                                                 child: Container(
-                                                  margin: const EdgeInsets.symmetric(
+                                                  margin: const EdgeInsets
+                                                      .symmetric(
                                                     vertical: 10,
                                                   ),
-                                                  padding: const EdgeInsets.all(10),
+                                                  padding:
+                                                      const EdgeInsets.all(10),
                                                   decoration: BoxDecoration(
                                                     color: const Color.fromARGB(
                                                         255, 231, 111, 81),
@@ -809,7 +813,8 @@ class StatsContent extends StatelessWidget {
   List<String> verbaMatchStatsContent;
   double groupRating;
 
-  StatsContent({super.key, 
+  StatsContent({
+    super.key,
     required this.verbaMatchStatsContent,
     required this.groupRating,
   });
