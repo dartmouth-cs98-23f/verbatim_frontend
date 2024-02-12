@@ -945,6 +945,7 @@ class StatsContent extends StatelessWidget {
               ),
             ),
           ),
+          /*
           Visibility(
             visible: !isEmpty,
             child: Container(
@@ -959,6 +960,7 @@ class StatsContent extends StatelessWidget {
               ),
             ),
           ),
+          */
           Visibility(
             visible: !isEmpty,
             child: SizedBox(height: 10.v),

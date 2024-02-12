@@ -105,28 +105,36 @@ class _ProfileState extends State<Profile> {
     final getStats = await http.get(url, headers: headers);
     if (getStats.statusCode == 200) {
       final Map<String, dynamic> data = jsonDecode(getStats.body);
+      print("this is stats data $data");
       final Stats stats = Stats.fromJson(data);
+      print("this is stats $stats");
       friends = stats.friends;
       globals = stats.globals;
       customs = stats.customs;
       streaks = stats.streaks;
       verbaMatchScore = stats.verbaMatchScore;
-      final Map<String, dynamic> matchDeets = stats.match;
-      match = User(
-        username: matchDeets["username"],
-        bio: matchDeets['bio'],
-        id: matchDeets['id'],
-        email: matchDeets['email'],
-        lastName: matchDeets['lastName'],
-        firstName: matchDeets['firstName'],
-        profilePicture: matchDeets['profilePicture'],
-        numGlobalChallengesCompleted:
-            matchDeets['numGlobalChallengesCompleted'],
-        numCustomChallengesCompleted:
-            matchDeets['numCustomChallengesCompleted'],
-        streak: matchDeets['streak'],
-        hasCompletedDailyChallenge: matchDeets['hasCompletedDailyChallenge'],
-      );
+
+      if (stats.match != null) {
+        final Map<String, dynamic> matchDeets = stats.match;
+        match = User(
+          username: matchDeets["username"],
+          bio: matchDeets['bio'],
+          id: matchDeets['id'],
+          email: matchDeets['email'],
+          lastName: matchDeets['lastName'],
+          firstName: matchDeets['firstName'],
+          profilePicture: matchDeets['profilePicture'],
+          numGlobalChallengesCompleted:
+              matchDeets['numGlobalChallengesCompleted'],
+          numCustomChallengesCompleted:
+              matchDeets['numCustomChallengesCompleted'],
+          streak: matchDeets['streak'],
+          hasCompletedDailyChallenge: matchDeets['hasCompletedDailyChallenge'],
+        );
+      } else {
+        print("stats.match is null");
+      }
+
       if (match.bio == '') {
       } else {
         //TODO: match.getprofile
@@ -221,7 +229,7 @@ class _ProfileState extends State<Profile> {
         lastName.isNotEmpty ? lastName.substring(0, 1).toUpperCase() : "U";
 
     // Format displayName using firstName and initial
-    displayName = '$firstName $initial.';
+    displayName = lastName.isNotEmpty ? '$firstName $initial.' : '$firstName';
     _getStats(username).then((_) {
       setState(() {
         stats = [friends, streaks, globals, customs];
@@ -752,103 +760,100 @@ class _ProfileState extends State<Profile> {
                                       )
                                     ],
                                   ))),
+
                                   const SizedBox(height: 5),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
                                       Align(
                                         widthFactor: .65,
+                                        //looking at our own profile
                                         child: ClipOval(
-                                          child: widget.user != null
-                                              ? SizedBox(
-                                                  width: 100,
-                                                  height: 100,
-                                                  child: FirebaseStorageImage(
-                                                    profileUrl: SharedPrefs()
-                                                            .getProfileUrl()
-                                                        as String,
-                                                  ),
-                                                )
-                                              : Stack(
-                                                  children: [
-                                                    Align(
-                                                      alignment:
-                                                          Alignment.center,
-                                                      child: Container(
-                                                        width: 100,
-                                                        height: 100,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          shape:
-                                                              BoxShape.circle,
-                                                          color: Color.fromARGB(
-                                                              255,
-                                                              231,
-                                                              111,
-                                                              81),
-                                                        ),
-                                                      ),
+                                            child: widget.user != null
+                                                ? SizedBox(
+                                                    width: 100,
+                                                    height: 100,
+                                                    child: FirebaseStorageImage(
+                                                      profileUrl: SharedPrefs()
+                                                              .getProfileUrl()
+                                                          as String,
                                                     ),
-                                                    Align(
-                                                      alignment:
-                                                          Alignment.center,
-                                                      child: Icon(
-                                                          Icons.help_outline,
-                                                          size: 100,
-                                                          color: Color.fromARGB(
-                                                              255,
-                                                              250,
-                                                              192,
-                                                              94)),
+                                                  )
+                                                : SizedBox(
+                                                    width: 100,
+                                                    height: 100,
+                                                    child: FirebaseStorageImage(
+                                                      profileUrl: SharedPrefs()
+                                                              .getProfileUrl()
+                                                          as String,
                                                     ),
-                                                  ],
-                                                ),
-                                        ),
+                                                  )
+
+                                            // : Stack(
+                                            //     children: [
+                                            //       Align(
+                                            //         alignment:
+                                            //             Alignment.center,
+                                            //         child: Container(
+                                            //           width: 100,
+                                            //           height: 100,
+                                            //           decoration:
+                                            //               BoxDecoration(
+                                            //             shape:
+                                            //                 BoxShape.circle,
+                                            //             color: Color.fromARGB(
+                                            //                 255,
+                                            //                 231,
+                                            //                 111,
+                                            //                 81),
+                                            //           ),
+                                            //         ),
+                                            //       ),
+                                            //       Align(
+                                            //         alignment:
+                                            //             Alignment.center,
+                                            //         child: Icon(
+                                            //             Icons.help_outline,
+                                            //             size: 100,
+                                            //             color: Color.fromARGB(
+                                            //                 255,
+                                            //                 250,
+                                            //                 192,
+                                            //                 94)),
+                                            //       ),
+                                            //     ],
+                                            //   ),
+                                            ),
                                       ),
                                       Align(
-                                        widthFactor: .65,
-                                        child: ClipOval(
-                                          child: widget.user != null
-                                              ? SizedBox(
-                                                  width: 100,
-                                                  height: 100,
-                                                  child: FirebaseStorageImage(
-                                                    profileUrl: widget
-                                                        .user!.profilePicture,
-                                                  ),
-                                                )
-                                              : Stack(
-                                                  children: [
-                                                    Align(
-                                                      alignment:
-                                                          Alignment.center,
-                                                      child: Container(
-                                                        width: 100,
-                                                        height: 100,
-                                                        decoration:
-                                                            BoxDecoration(
-                                                          shape:
-                                                              BoxShape.circle,
-                                                          color: Color.fromARGB(
-                                                              255,
-                                                              231,
-                                                              111,
-                                                              81),
-                                                        ),
-                                                      ),
+                                        widthFactor: 1.3,
+                                        child: ClipRect(
+                                            child: widget.user != null
+                                                ? SizedBox(
+                                                    width: 100,
+                                                    height: 100,
+                                                    child: Center(
+                                                        child: Text(
+                                                            match.username)))
+                                                /*
+                                                    child: FirebaseStorageImage(
+                                                      profileUrl:
+                                                          match.profilePicture,
                                                     ),
-                                                    Align(
-                                                      alignment:
-                                                          Alignment.center,
-                                                      child: Icon(
-                                                        Icons.help_outline,
-                                                        size: 100,
-                                                        color: Colors.white,
-                                                      ),
+                                                  )*/
+                                                : SizedBox(
+                                                    width: 100,
+                                                    height: 100,
+                                                    child: Text(match
+                                                        .username))), /*SizedBox(
+                                                    width: 100,
+                                                    height: 100,
+                                                    child: FirebaseStorageImage(
+                                                      profileUrl:
+                                                          match.profilePicture,
                                                     ),
-                                                  ],
-                                                ),
-                                        ),
+                                                  )),
+                                                  */
                                       ),
                                     ],
                                   ),

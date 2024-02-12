@@ -35,7 +35,6 @@ class _GlobalChallengeState extends State<globalChallenge> {
   String question1 = "";
   String question2 = "";
   String question3 = "";
-
   //new two for +2!!!
   String question4 = "";
   String question5 = "";
@@ -46,7 +45,9 @@ class _GlobalChallengeState extends State<globalChallenge> {
   //New two for +2!!!
   String categoryQ4 = "";
   String categoryQ5 = "";
+
   int id = 0;
+
   // Get Stats variables
   int totalResponses = 0;
   int numVerbatimQ1 = 0;
@@ -56,6 +57,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
   int numVerbatimQ4 = 0;
   int numVerbatimQ5 = 0;
   int numExactVerbatim = 0;
+
   // keep user responses to send to stats
   String responseQ1 = "";
   String responseQ2 = "";
@@ -63,6 +65,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
   // new two for +2!
   String responseQ4 = "";
   String responseQ5 = "";
+
   //response 123 should take em all
   List<String> responses123 = [];
 
@@ -129,6 +132,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
   double progressValue = 0.0;
 
   Future<void> _fecthNoSignInData() async {
+    print("in no sign in");
     final url =
         Uri.parse("${BackendService.getBackendUrl()}globalChallengeNoSignIn");
     final headers = <String, String>{'Content-Type': 'application/json'};
@@ -138,18 +142,23 @@ class _GlobalChallengeState extends State<globalChallenge> {
     if (fetchQuestions.statusCode == 200) {
       print("Success getting qs with no username");
       final Map<String, dynamic>? data = json.decode(fetchQuestions.body);
+      print("this is data in fetch questsions $data");
 
       question1 = data!['q1'];
 
       question2 = data['q2'];
 
       question3 = data['q3'];
+      question4 = data['q4'];
+      question5 = data['q5'];
 
       id = data['globalChallengeId'];
 
       categoryQ1 = data['categoryQ1'];
       categoryQ2 = data['categoryQ2'];
       categoryQ3 = data['categoryQ3'];
+      categoryQ4 = data['categoryQ4'];
+      categoryQ5 = data['categoryQ5'];
     }
   }
 
@@ -162,13 +171,13 @@ class _GlobalChallengeState extends State<globalChallenge> {
 
     if (fetchQuestions.statusCode == 200) {
       final Map<String, dynamic>? data = json.decode(fetchQuestions.body);
+      print("this is questions data in _fetchData $data");
 
       question1 = data!['q1'];
 
       question2 = data['q2'];
 
       question3 = data['q3'];
-
       //newtwo for +2!
       question4 = data['q4'];
       question5 = data['q5'];
@@ -186,6 +195,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
       // if null, user has not yet submitted global response - if not null we NEED this for page refresh to still work
 
       if (data["responseQ1"] != null) {
+        print("data in responseQ1 is not null");
         // get responses
 
         responseQ1 = data['responseQ1'];
@@ -203,12 +213,15 @@ class _GlobalChallengeState extends State<globalChallenge> {
         numVerbatimQ5 = data['numVerbatimQ5'];
         statsQ1 = data['statsQ1'];
         statsQ2 = data['statsQ2'];
+
         statsQ3 = data['statsQ3'];
         // new two for +2!
         statsQ4 = data['statsQ4'];
         statsQ5 = data['statsQ5'];
         totalResponses = data['totalResponses'];
+
         responded = true;
+
         // new two for +2!
         responses123 = [
           responseQ1,
@@ -234,31 +247,32 @@ class _GlobalChallengeState extends State<globalChallenge> {
         }
       }
     } else {
-      print("failed");
+      print("data in ressponse q1 is null");
     }
   }
 
   @override
   void initState() {
     super.initState();
+
     if (username == '') {
       _fecthNoSignInData().then((_) {
         setState(() {
-          questions = [question1, question2, question3];
+          questions = [question1, question2, question3, question4, question5];
         });
       });
     } else {
       _fetchData(username).then((_) {
         setState(() {
-          questions = [question1, question2, question3];
+          questions = [question1, question2, question3, question4, question5];
         });
       });
     }
   }
 
   void setGuestUserResponses() {
-    SharedPrefs()
-        .updateGameValues(responses123[0], responses123[1], responses123[2]);
+    SharedPrefs().updateGameValues(responses123[0], responses123[1],
+        responses123[2], responses123[3], responses123[4]);
   }
 
   Future<void> sendUserResponses(
@@ -291,6 +305,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
 
 //make sure we can send responses to stats on the first go
     responses123 = modifiedResponses;
+    print("these are responses 123 $responses123");
     //final CounterModel _counter = CounterModel();
 
     //     builder:(context)=>
@@ -313,6 +328,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
       print('Responses sent successfully');
 
       final Map<String, dynamic> stats = json.decode(response.body);
+      print("after sending user responses these are returned stats $stats");
 
       numVerbatimQ1 = stats['numVerbatimQ1'];
       numVerbatimQ2 = stats['numVerbatimQ2'];
@@ -361,7 +377,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
   Widget build(BuildContext context) {
     String idString = id.toString();
 
-    //TODO: check that this shit here works
+    //TODO: check that this here works
 
     username = SharedPrefs().getUserName() ?? "";
     DateTime now = DateTime.now();
@@ -492,8 +508,8 @@ class _GlobalChallengeState extends State<globalChallenge> {
                         clipBehavior: Clip.hardEdge,
                         margin: EdgeInsets.only(top: 10.v),
                         //    padding: EdgeInsets.symmetric(horizontal: 10),
-                        width: 300,
-                        height: 400,
+                        width: 350,
+                        height: 500,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
                           boxShadow: [
@@ -667,8 +683,8 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                       responded == true) {
                                     return Column(children: [
                                       SizedBox(
-                                          width: 300.h,
-                                          height: 500.v,
+                                          width: 350,
+                                          height: 500,
                                           child: Stats(
                                               totalResponses: totalResponses,
                                               tabLabels: tabLables,

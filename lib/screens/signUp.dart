@@ -120,6 +120,8 @@ class _SignUpState extends State<SignUp> {
         'responseQ1': SharedPrefs().getResponse1(),
         'responseQ2': SharedPrefs().getResponse2(),
         'responseQ3': SharedPrefs().getResponse3(),
+        'responseQ4': SharedPrefs().getResponse4(),
+        'responseQ5': SharedPrefs().getResponse5(),
         'isLogin': false,
         'emailOrUsername': email,
         'password': password,
