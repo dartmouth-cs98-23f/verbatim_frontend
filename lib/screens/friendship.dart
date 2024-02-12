@@ -797,6 +797,7 @@ class StatsContent extends StatelessWidget {
             ),
           ),
           SizedBox(height: 15.v),
+          /*
           Visibility(
             visible: verbaMatchGroup.length != 0,
             child: Container(
@@ -951,7 +952,7 @@ class StatsContent extends StatelessWidget {
                 ),
               ),
             ),
-          ),
+          ),*/
           SizedBox(height: 50.v)
         ],
       ),
