@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:intl/intl.dart';
 import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'package:verbatim_frontend/screens/sideBar.dart';
+import 'package:verbatim_frontend/widgets/center_custom_app_bar.dart';
 import 'package:verbatim_frontend/widgets/customAppBar_Settings.dart';
 import 'package:verbatim_frontend/widgets/custom_challenge_button.dart';
 import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
@@ -81,19 +83,7 @@ class _ProfileState extends State<Profile> {
   static int customs = 0;
   static int streaks = 0;
   static double verbaMatchScore = 0;
-  // User match = User(
-  //   username: '',
-  //   bio: '',
-  //   id: 0,
-  //   email: '',
-  //   lastName: '',
-  //   firstName: '',
-  //   profilePicture: '',
-  //   numGlobalChallengesCompleted: 0,
-  //   numCustomChallengesCompleted: 0,
-  //   streak: 0,
-  //   hasCompletedDailyChallenge: false,
-  // );
+
   static String profile = 'assets/default.jpeg';
 
   Future<void> _getStats(String username) async {
@@ -111,6 +101,10 @@ class _ProfileState extends State<Profile> {
       customs = stats.customs;
       streaks = stats.streaks;
       verbaMatchScore = stats.verbaMatchScore;
+
+      if (verbaMatchScore == -1) {
+        verbaMatchScore = 0;
+      }
 
       final Map<String, dynamic> matchDeets = stats.match;
 
@@ -257,8 +251,6 @@ class _ProfileState extends State<Profile> {
           body: SingleChildScrollView(
             child: SafeArea(
               child: Container(
-                height: 960,
-                width: 430,
                 color: const Color.fromRGBO(255, 243, 238, 1),
                 child: Column(
                   children: [
@@ -268,14 +260,14 @@ class _ProfileState extends State<Profile> {
                         children: [
                           SizedBox(
                             height: 160,
-                            width: 430,
+                            width: double.maxFinite,
                             child: Stack(
                               alignment: Alignment.bottomLeft,
                               children: [
                                 // Orange background
                                 Container(
                                   height: 160,
-                                  width: 430,
+                                  width: double.maxFinite,
                                   margin: EdgeInsets.zero,
                                   padding: EdgeInsets.zero,
                                   child: SvgPicture.asset(
@@ -285,7 +277,9 @@ class _ProfileState extends State<Profile> {
                                 ),
 
                                 const SizedBox(width: 10),
-                                const CustomAppBarSettings(title: '')
+                                const centerAppBar(
+                                  title: 'Public Profile',
+                                ),
                               ],
                             ),
                           ),
@@ -481,12 +475,12 @@ class _ProfileState extends State<Profile> {
                                                               widget.user ==
                                                                       null
                                                                   ? "Edit Profile"
-                                                                  : ((friendRequestStates[widget
+                                                                  : friendRequestStates[widget
                                                                               .user!
                                                                               .username] ==
-                                                                          true)
-                                                                      ? "Friends Since 10/27/23" // "Friends Since ${DateTime(2023, 12, 31).toString().substring(0, 10)}
-                                                                      : "Add Friend"),
+                                                                          true
+                                                                      ? "Friends Since ${DateFormat('MM/dd/yy').format(DateTime.now())}"
+                                                                      : "Add Friend",
                                                               style: GoogleFonts
                                                                   .poppins(
                                                                 textStyle:
@@ -677,13 +671,21 @@ class _ProfileState extends State<Profile> {
                                     child: Text.rich(TextSpan(
                                       children: [
                                         TextSpan(
-                                            text: 'Highest',
-                                            style: GoogleFonts.poppins(
-                                              textStyle: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold),
-                                            )),
+                                          text: widget.user == null
+                                              ? 'Highest '
+                                              : (friendRequestStates[widget
+                                                          .user!.username] ==
+                                                      true
+                                                  ? 'Your '
+                                                  : 'Highest '),
+                                          style: GoogleFonts.poppins(
+                                            textStyle: const TextStyle(
+                                              color: Colors.black,
+                                              fontSize: 20,
+                                              fontWeight: FontWeight.bold,
+                                            ),
+                                          ),
+                                        ),
                                         TextSpan(
                                             text: 'Verba',
                                             style: GoogleFonts.poppins(
@@ -705,29 +707,36 @@ class _ProfileState extends State<Profile> {
                                     )),
                                   ),
 
-                                  const SizedBox(height: 5),
+                                  const SizedBox(height: 10),
 
-                                  Center(
-                                      child: Text.rich(TextSpan(
-                                    children: [
-                                      TextSpan(
-                                        text: verbaMatchScore.toString(),
-                                        style: const TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.black,
-                                        ),
-                                      ),
-                                      const TextSpan(
-                                        text: "% similarity",
-                                        style: TextStyle(
-                                          fontSize: 16,
-                                          fontWeight: FontWeight.w500,
-                                          color: Colors.black,
-                                        ),
-                                      )
-                                    ],
-                                  ))),
+                                  (match != null || widget.user != null)
+                                      ? Center(
+                                          child: Text.rich(TextSpan(
+                                            children: [
+                                              TextSpan(
+                                                text: (verbaMatchScore != -1
+                                                        ? verbaMatchScore
+                                                        : 0)
+                                                    .toString(),
+                                                style: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black,
+                                                ),
+                                              ),
+                                              const TextSpan(
+                                                text: "% similarity",
+                                                style: TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black,
+                                                ),
+                                              )
+                                            ],
+                                          )),
+                                        )
+                                      : Container(),
+
                                   const SizedBox(height: 5),
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
@@ -747,7 +756,7 @@ class _ProfileState extends State<Profile> {
                                       ),
                                       SizedBox(
                                           width:
-                                              20), // Add spacing between the profile pictures
+                                              25), // Add spacing between the profile pictures
                                       Align(
                                         widthFactor: .5,
                                         child: ClipOval(
@@ -758,22 +767,30 @@ class _ProfileState extends State<Profile> {
                                                   child: FirebaseStorageImage(
                                                     profileUrl: widget
                                                         .user!.profilePicture,
+                                                    user: widget.user,
                                                   ),
                                                 )
-                                              : SizedBox(
-                                                  width: 100,
-                                                  height: 100,
-                                                  child: match != null
-                                                      ? FirebaseStorageImage(
-                                                          profileUrl: match!
-                                                              .profilePicture,
-                                                          user: match,
-                                                        )
-                                                      : Image.asset(
-                                                          'assets/profile_pic.png',
-                                                          fit: BoxFit.cover,
-                                                        ),
-                                                ),
+                                              : match != null
+                                                  ? SizedBox(
+                                                      width: 100,
+                                                      height: 100,
+                                                      child:
+                                                          FirebaseStorageImage(
+                                                        profileUrl: match!
+                                                            .profilePicture,
+                                                        user: match,
+                                                      ),
+                                                    )
+                                                  : Align(
+                                                      alignment:
+                                                          Alignment.center,
+                                                      child: Icon(
+                                                        Icons.help_outline,
+                                                        size: 100,
+                                                        color:
+                                                            Color(0xFFE76F51),
+                                                      ),
+                                                    ),
                                         ),
                                       ),
                                     ],
