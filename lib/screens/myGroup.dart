@@ -230,8 +230,13 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
       BuildContext context, String groupName, int? groupId) async {
     return showDialog<void>(
       context: context,
+      // barrierColor: Color(0x00ffffff), / maybe this will fix weird looking border?
       builder: (BuildContext context) {
         return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(
+                20.0), // maybe this will fix weird looking border?
+          ),
           contentPadding: EdgeInsets.zero,
           content: Container(
             width: 200,
@@ -317,8 +322,6 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
   Widget _buildOptionButton(BuildContext context, title, String description,
       IconData iconData, String groupName, int? groupId) {
     return Container(
-        constraints: BoxConstraints(
-            minWidth: 80.0, maxWidth: 150.0, minHeight: 80.0, maxHeight: 150.0),
         width: 130,
         height: 130,
         padding: EdgeInsets.all(5),
