@@ -3,8 +3,10 @@ import 'dart:async';
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
+import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'package:verbatim_frontend/screens/customChallenge.dart';
 import 'package:verbatim_frontend/screens/groupChallenge.dart';
+import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 import 'sideBar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
@@ -37,6 +39,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
   double groupRating = 0;
   List<String> verbaMatchGroup = [];
   List<String> groupMembers = [];
+  dynamic groupMemberObjects = [];
 
   Future<void> getGroupStats(int groupId) async {
     final url = Uri.parse('${BackendService.getBackendUrl()}group/$groupId');
@@ -45,6 +48,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
 
     if (response.statusCode == 200) {
       final dynamic jsonData = json.decode(response.body);
+
       print("this is groupstats json code $jsonData");
       double rating = jsonData["groupRating"];
       print("this is the rating in mygroup $rating");
@@ -58,8 +62,38 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
       verbaMatchGroup = usernames;
 
       groupMembers = List<String>.from(jsonData["groupMembers"]);
+
+      print("\nThese are the members of group: ${groupMembers}\n");
+
+      await getGroupMemberObjects(groupMembers);
+
+      print(
+          "\nThis is the 1st member obj of group: ${groupMemberObjects[0]}\n");
     } else {
       print('failed to get group stats. Status code: ${response.statusCode}');
+    }
+  }
+
+  // get all users to display
+  Future<void> getGroupMemberObjects(List<String> groupMembersList) async {
+    final url = Uri.parse('${BackendService.getBackendUrl()}users');
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+
+      final List<User> userList =
+          data.map((item) => User.fromJson(item)).toList();
+
+      print("\nReturned users are ${userList.length}\n");
+
+      // Filter users based on groupMembersList and modify groupMemberObjects
+      groupMemberObjects = userList
+          .where((user) => groupMembersList.contains(user.username))
+          .toList();
+    } else {
+      print("Failure: ${response.statusCode}");
+      // Handle failure if needed
     }
   }
 
@@ -481,14 +515,18 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                     child: Stack(
                                       children: [
                                         for (int i = 0;
-                                            i < min(groupUsers.length + 1, 6);
+                                            i <
+                                                min(groupMemberObjects.length,
+                                                    6);
                                             i++)
                                           Positioned(
                                             top: 0,
                                             left: 118.0 + (i * 20),
-                                            child: Image.asset(
-                                              'assets/Ellipse ${41 + i}.png',
-                                              height: 30,
+                                            child: FirebaseStorageImage(
+                                              profileUrl: groupMemberObjects[i]
+                                                      .profilePicture ??
+                                                  '', // Handle null profile picture
+                                              user: groupMemberObjects[i],
                                             ),
                                           ),
                                       ],
