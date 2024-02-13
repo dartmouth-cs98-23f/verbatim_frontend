@@ -10,6 +10,7 @@ import 'package:verbatim_frontend/screens/User.dart';
 import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'package:verbatim_frontend/screens/profile.dart';
 import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class UserGroup {
   int id = 0;
@@ -60,6 +61,16 @@ class _SideBarState extends State<SideBar> {
   List<User> friends = [];
   List<String> groupnamesList = [];
   List<UserGroup> userGroups = [];
+  final formUri = Uri.parse(
+      'https://docs.google.com/forms/d/e/1FAIpQLSdcfcWUuU19auQXU0Jj_s--x4t_lVPVvOWqURWgP49z1HWZaA/viewform');
+
+  Future<void> _launchURL(Uri url) async {
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
 
   //get groups
   Future<void> getMyGroups(String username) async {
@@ -462,7 +473,53 @@ class _SideBarState extends State<SideBar> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 20),
+                  const SizedBox(height: 30),
+                  Container(
+                      child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 5,
+                    ),
+                    child: Center(
+                        child: ListTile(
+                      title: const Text('Made with love, by the Verbatim team.',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontStyle: FontStyle.italic,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 15)),
+                    )),
+                  )),
+                  Container(
+                      child: Container(
+                    padding: const EdgeInsets.symmetric(
+                      horizontal: 5,
+                    ),
+                    child: Center(
+                        child: ListTile(
+                      title: Icon(
+                        Icons.favorite,
+                        color: Colors.red, // Set the color to red
+                      ),
+                    )),
+                  )),
+                  Container(
+                      child: Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 5),
+                    child: Center(
+                        child: ListTile(
+                      title: const Text('Questions? Feedback? Click Here!',
+                          textAlign: TextAlign.center,
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontStyle: FontStyle.italic,
+                              fontWeight: FontWeight.w700,
+                              fontSize: 15)),
+                      onTap: () {
+                        _launchURL(formUri);
+                      },
+                    )),
+                  )),
                 ],
               ),
             );
