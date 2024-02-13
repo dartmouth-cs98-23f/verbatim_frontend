@@ -218,8 +218,8 @@ class _CreateGroupState extends State<createGroup> {
                               child: Align(
                                 alignment: Alignment.center,
                                 child: Container(
-                                    width: 350,
-                                    height: 30,
+                                    width: 357,
+                                    height: 50,
                                     decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(20),

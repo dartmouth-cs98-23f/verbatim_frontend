@@ -221,7 +221,14 @@ class _ProfileState extends State<Profile> {
 
     // Populate the initial values for other user details
     firstName =
-        widget.user?.firstName ?? SharedPrefs().getFirstName() ?? "User";
+        (widget.user?.firstName ?? SharedPrefs().getFirstName() ?? "User")
+            .replaceFirstMapped(
+      RegExp(r'^\w'),
+      (match) => match
+          .group(0)!
+          .toUpperCase(), // Ensures the first letter of first name is capitalized.
+    );
+
     lastName = widget.user?.lastName ?? SharedPrefs().getLastName() ?? "Name";
     initial = lastName.isNotEmpty ? lastName.substring(0, 1).toUpperCase() : "";
 
@@ -814,7 +821,6 @@ class _ProfileState extends State<Profile> {
             ),
           ),
           drawer: const SideBar(),
-          drawerScrimColor: Colors.white,
         ),
       ),
     );

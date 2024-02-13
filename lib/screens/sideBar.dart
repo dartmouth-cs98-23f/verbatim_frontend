@@ -52,6 +52,20 @@ class SideBar extends StatefulWidget {
 class _SideBarState extends State<SideBar> {
   String username = SharedPrefs().getUserName() as String;
 
+  final String firstName =
+      (SharedPrefs().getUserName() as String).replaceFirstMapped(
+    RegExp(r'^\w'),
+    (match) => match
+        .group(0)!
+        .toUpperCase(), // Ensures the first letter of first name is capitalized.
+  );
+
+  String lastNameInitial = (SharedPrefs().getLastName() ?? "Name").isNotEmpty
+      ? (SharedPrefs().getLastName() ?? "Name").substring(0, 1).toUpperCase()
+      : "";
+
+  // String displayName = (SharedPrefs().getLastName() ?? "Name").isNotEmpty ? '$firstName $lastNameInitial.' : '$firstName';
+
   final Color primary = const Color.fromARGB(255, 231, 111, 81);
 
   List<User> friendRequests = [];
@@ -180,7 +194,9 @@ class _SideBarState extends State<SideBar> {
                         child: Center(
                           child: ListTile(
                             title: Text(
-                              username,
+                              (SharedPrefs().getLastName() ?? "Name").isNotEmpty
+                                  ? '$firstName $lastNameInitial.'
+                                  : '$firstName',
                               style: const TextStyle(
                                   color: Colors.white, fontSize: 20),
                             ),

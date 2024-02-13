@@ -6,6 +6,7 @@ import 'package:http/http.dart' as http;
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/profile.dart';
+import 'package:verbatim_frontend/screens/sideBar.dart';
 import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 import 'package:verbatim_frontend/widgets/friends_app_bar.dart';
 import 'package:verbatim_frontend/widgets/friends_app_bar_test.dart';
@@ -317,253 +318,259 @@ class _AddFriendState extends State<addFriend> {
     const String assetName = 'assets/img1.svg';
 
     return SafeArea(
-        child: Scaffold(
-      resizeToAvoidBottomInset: true,
-      backgroundColor: const Color.fromARGB(255, 255, 243, 238),
-      body: SingleChildScrollView(
-        child: Container(
-            color: const Color.fromARGB(255, 255, 243, 238),
-            child: Column(
-              children: [
-                SizedBox(
-                  width: double.maxFinite,
-                  child: Column(
-                    children: [
-                      SizedBox(
-                        height: 240.v,
-                        width: double.maxFinite,
-                        child: Stack(alignment: Alignment.topCenter, children: [
-                          // orange background
-                          Container(
-                            height: 220,
-                            width: double.maxFinite,
-                            margin: EdgeInsets.zero,
-                            padding: EdgeInsets.zero,
-                            child: SvgPicture.asset(
-                              assetName,
-                              fit: BoxFit.fill,
+      child: Scaffold(
+        resizeToAvoidBottomInset: true,
+        backgroundColor: const Color.fromARGB(255, 255, 243, 238),
+        body: SingleChildScrollView(
+          child: Container(
+              color: const Color.fromARGB(255, 255, 243, 238),
+              child: Column(
+                children: [
+                  SizedBox(
+                    width: double.maxFinite,
+                    child: Column(
+                      children: [
+                        SizedBox(
+                          height: 240.v,
+                          width: double.maxFinite,
+                          child:
+                              Stack(alignment: Alignment.topCenter, children: [
+                            // orange background
+                            Container(
+                              height: 220,
+                              width: double.maxFinite,
+                              margin: EdgeInsets.zero,
+                              padding: EdgeInsets.zero,
+                              child: SvgPicture.asset(
+                                assetName,
+                                fit: BoxFit.fill,
+                              ),
                             ),
-                          ),
-                          const SizedBox(
-                            height: 20,
-                          ),
-                          // app bar for add friend page
-                          FriendsAppBar(),
+                            const SizedBox(
+                              height: 20,
+                            ),
+                            // app bar for add friend page
+                            FriendsAppBar(),
 
-                          Padding(
-                            padding: EdgeInsets.only(top: 20.0),
-                            child: Align(
-                              alignment: Alignment.center,
-                              child: Container(
-                                  width: 357,
-                                  height: 50,
-                                  decoration: BoxDecoration(
-                                    color: Colors.white,
-                                    borderRadius: BorderRadius.circular(20),
-                                  ),
+                            Padding(
+                              padding: EdgeInsets.only(top: 20.0),
+                              child: Align(
+                                alignment: Alignment.center,
+                                child: Container(
+                                    width: 357,
+                                    height: 50,
+                                    decoration: BoxDecoration(
+                                      color: Colors.white,
+                                      borderRadius: BorderRadius.circular(20),
+                                    ),
 
-                                  // search bar
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      SizedBox(width: 8),
-                                      Icon(Icons.search, color: Colors.black),
-                                      SizedBox(width: 8),
-                                      Expanded(
-                                        child: TextField(
-                                          controller: _searchController,
-                                          decoration: InputDecoration(
-                                            hintStyle: const TextStyle(
-                                                fontSize: 14.0,
-                                                color: Color.fromARGB(
-                                                    255, 6, 5, 5)),
-                                            border: InputBorder.none,
+                                    // search bar
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        SizedBox(width: 8),
+                                        Icon(Icons.search, color: Colors.black),
+                                        SizedBox(width: 8),
+                                        Expanded(
+                                          child: TextField(
+                                            controller: _searchController,
+                                            decoration: InputDecoration(
+                                              hintStyle: const TextStyle(
+                                                  fontSize: 14.0,
+                                                  color: Color.fromARGB(
+                                                      255, 6, 5, 5)),
+                                              border: InputBorder.none,
+                                            ),
+                                            textAlign: TextAlign.left,
                                           ),
-                                          textAlign: TextAlign.left,
-                                        ),
-                                      )
-                                    ],
-                                  )),
+                                        )
+                                      ],
+                                    )),
+                              ),
                             ),
-                          ),
 
-                          // search results
-                        ]),
-                      ),
-                      Padding(
-                        padding: const EdgeInsets.only(left: 6.0),
-                        child: SizedBox(
-                          height: 22,
-                          child: Text(
-                            _searchText.isEmpty
-                                ? 'People you may know'
-                                : 'Search Results',
-                            textAlign: TextAlign.left,
-                            style: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 16,
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.w600,
-                              height: 0.09,
-                              letterSpacing: 0.10,
-                            ),
-                          ),
+                            // search results
+                          ]),
                         ),
-                      ),
-                    ],
-                  ),
-                ),
-
-                // box in which search results will appear
-                Center(
-                  child: Container(
-                    clipBehavior: Clip.hardEdge,
-                    margin: const EdgeInsets.only(top: 10),
-                    width: 335,
-                    height: 508,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(30),
-                      boxShadow: [
-                        BoxShadow(
-                          color: const Color.fromARGB(255, 117, 19, 12)
-                              .withOpacity(0.5),
-                          blurRadius: 5,
-                          offset: const Offset(3, 7),
+                        Padding(
+                          padding: const EdgeInsets.only(left: 6.0),
+                          child: SizedBox(
+                            height: 22,
+                            child: Text(
+                              _searchText.isEmpty
+                                  ? 'People you may know'
+                                  : 'Search Results',
+                              textAlign: TextAlign.left,
+                              style: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 16,
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.w600,
+                                height: 0.09,
+                                letterSpacing: 0.10,
+                              ),
+                            ),
+                          ),
                         ),
                       ],
-                      color: Colors.white,
                     ),
-
-                    // when user searches, display relevant items
-                    child: _searchText.isNotEmpty
-                        ? ListView.builder(
-                            itemCount: _searchResults().length,
-                            itemBuilder: (context, index) {
-                              final currentUser = _searchResults()[index];
-
-                              String name = currentUser.username ?? '';
-                              String profileUrl = currentUser.profilePicture ??
-                                  'assets/profile_pic.png';
-
-                              return ListTile(
-                                title: Row(
-                                  mainAxisSize: MainAxisSize.min,
-                                  children: [
-                                    FirebaseStorageImage(
-                                      profileUrl: profileUrl,
-                                      user: currentUser,
-                                    ),
-                                    const SizedBox(width: 8),
-                                    GestureDetector(
-                                      onTap: () {
-                                        currentUser.bio ??= '';
-                                        currentUser.profilePicture ??= '';
-
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => Profile(
-                                                    user: currentUser,
-                                                  )),
-                                        );
-                                      },
-                                      child: Text(
-                                        name,
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors
-                                              .black, // Optional: Change text color to blue for clickable effect
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-
-                                // icon displayed is dependent on whether you have requested this user.
-                                trailing: IconButton(
-                                  icon: currentUser.isRequested
-                                      ? const Icon(Icons.pending)
-                                      : const Icon(Icons.person_add_alt),
-                                  onPressed: () {
-                                    if (!currentUser.isRequested) {
-                                      // prevent user from sending friend requests twice!
-                                      sendFriendRequest(username, name);
-
-                                      setState(() {
-                                        currentUser.isRequested = true;
-                                        toggleFriend(name);
-                                      });
-                                    }
-                                  },
-                                ),
-                              );
-                            },
-                          )
-                        : ListView.builder(
-                            itemCount: userUsernames.length,
-                            itemBuilder: (context, index) {
-                              // final name = userUsernames[index];
-                              final currentUser = searchResults[index];
-                              final name = currentUser.username;
-
-                              currentUser.isRequested =
-                                  myRequestedUsers_backend.contains(name);
-                              String profileUrl = currentUser.profilePicture ??
-                                  'assets/profile_pic.png';
-
-                              return ListTile(
-                                title: Row(
-                                  children: [
-                                    FirebaseStorageImage(
-                                      profileUrl: profileUrl,
-                                      user: currentUser,
-                                    ),
-                                    const SizedBox(width: 8),
-                                    GestureDetector(
-                                      onTap: () {
-                                        print(
-                                            "\nOn line 528 in add_friend, the profile url is ${currentUser.profilePicture}");
-                                        Navigator.push(
-                                          context,
-                                          MaterialPageRoute(
-                                              builder: (context) => Profile(
-                                                    user: currentUser,
-                                                  )),
-                                        );
-                                      },
-                                      child: Text(
-                                        name,
-                                        style: const TextStyle(
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors
-                                              .black, // Optional: Change text color to blue for clickable effect
-                                        ),
-                                      ),
-                                    ),
-                                  ],
-                                ),
-                                trailing: IconButton(
-                                  icon: currentUser.isRequested
-                                      ? const Icon(Icons.pending)
-                                      : const Icon(Icons.person_add_alt),
-                                  onPressed: () {
-                                    if (!currentUser.isRequested) {
-                                      sendFriendRequest(username, name);
-                                      setState(() {
-                                        toggleFriend(name);
-                                        // keeps the icon from changing if you navigate away from the page
-                                      });
-                                    }
-                                  },
-                                ),
-                              );
-                            },
-                          ),
                   ),
-                ),
-              ],
-            )),
+
+                  // box in which search results will appear
+                  Center(
+                    child: Container(
+                      clipBehavior: Clip.hardEdge,
+                      margin: const EdgeInsets.only(top: 10),
+                      width: 335,
+                      height: 508,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(30),
+                        boxShadow: [
+                          BoxShadow(
+                            color: const Color.fromARGB(255, 117, 19, 12)
+                                .withOpacity(0.5),
+                            blurRadius: 5,
+                            offset: const Offset(3, 7),
+                          ),
+                        ],
+                        color: Colors.white,
+                      ),
+
+                      // when user searches, display relevant items
+                      child: _searchText.isNotEmpty
+                          ? ListView.builder(
+                              itemCount: _searchResults().length,
+                              itemBuilder: (context, index) {
+                                final currentUser = _searchResults()[index];
+
+                                String name = currentUser.username ?? '';
+                                String profileUrl =
+                                    currentUser.profilePicture ??
+                                        'assets/profile_pic.png';
+
+                                return ListTile(
+                                  title: Row(
+                                    mainAxisSize: MainAxisSize.min,
+                                    children: [
+                                      FirebaseStorageImage(
+                                        profileUrl: profileUrl,
+                                        user: currentUser,
+                                      ),
+                                      const SizedBox(width: 8),
+                                      GestureDetector(
+                                        onTap: () {
+                                          currentUser.bio ??= '';
+                                          currentUser.profilePicture ??= '';
+
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => Profile(
+                                                      user: currentUser,
+                                                    )),
+                                          );
+                                        },
+                                        child: Text(
+                                          name,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors
+                                                .black, // Optional: Change text color to blue for clickable effect
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+
+                                  // icon displayed is dependent on whether you have requested this user.
+                                  trailing: IconButton(
+                                    icon: currentUser.isRequested
+                                        ? const Icon(Icons.pending)
+                                        : const Icon(Icons.person_add_alt),
+                                    onPressed: () {
+                                      if (!currentUser.isRequested) {
+                                        // prevent user from sending friend requests twice!
+                                        sendFriendRequest(username, name);
+
+                                        setState(() {
+                                          currentUser.isRequested = true;
+                                          toggleFriend(name);
+                                        });
+                                      }
+                                    },
+                                  ),
+                                );
+                              },
+                            )
+                          : ListView.builder(
+                              itemCount: userUsernames.length,
+                              itemBuilder: (context, index) {
+                                // final name = userUsernames[index];
+                                final currentUser = searchResults[index];
+                                final name = currentUser.username;
+
+                                currentUser.isRequested =
+                                    myRequestedUsers_backend.contains(name);
+                                String profileUrl =
+                                    currentUser.profilePicture ??
+                                        'assets/profile_pic.png';
+
+                                return ListTile(
+                                  title: Row(
+                                    children: [
+                                      FirebaseStorageImage(
+                                        profileUrl: profileUrl,
+                                        user: currentUser,
+                                      ),
+                                      const SizedBox(width: 8),
+                                      GestureDetector(
+                                        onTap: () {
+                                          print(
+                                              "\nOn line 528 in add_friend, the profile url is ${currentUser.profilePicture}");
+                                          Navigator.push(
+                                            context,
+                                            MaterialPageRoute(
+                                                builder: (context) => Profile(
+                                                      user: currentUser,
+                                                    )),
+                                          );
+                                        },
+                                        child: Text(
+                                          name,
+                                          style: const TextStyle(
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors
+                                                .black, // Optional: Change text color to blue for clickable effect
+                                          ),
+                                        ),
+                                      ),
+                                    ],
+                                  ),
+                                  trailing: IconButton(
+                                    icon: currentUser.isRequested
+                                        ? const Icon(Icons.pending)
+                                        : const Icon(Icons.person_add_alt),
+                                    onPressed: () {
+                                      if (!currentUser.isRequested) {
+                                        sendFriendRequest(username, name);
+                                        setState(() {
+                                          toggleFriend(name);
+                                          // keeps the icon from changing if you navigate away from the page
+                                        });
+                                      }
+                                    },
+                                  ),
+                                );
+                              },
+                            ),
+                    ),
+                  ),
+                ],
+              )),
+        ),
+        drawer: const SideBar(),
       ),
-    ));
+    );
   }
 }
