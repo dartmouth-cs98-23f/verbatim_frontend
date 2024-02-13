@@ -9,30 +9,6 @@ import 'package:verbatim_frontend/widgets/showSuccessDialog.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/widgets/center_custom_app_bar.dart';
 
-void reset(BuildContext context, String newPassword, String oldPassword) async {
-  try {
-    final response = await http.post(
-      //need a reset password endpoint
-      Uri.parse('${BackendService.getBackendUrl()}resetPassword'),
-      headers: <String, String>{
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode({
-        'username': SharedPrefs().getUserName(),
-        'oldPassword': oldPassword,
-        'newPassword': newPassword,
-      }),
-    );
-    // do something to verify the response,
-    if (response.statusCode == 200) {
-      // get the account info to display as dummy text
-      SharedPrefs().setPassword(newPassword);
-    }
-  } catch (error) {
-    print('Sorry, cannot edit account settings: $error');
-  }
-}
-
 class ResetPassword extends StatefulWidget {
   const ResetPassword({super.key});
 
@@ -64,9 +40,12 @@ class _ResetPasswordState extends State<ResetPassword> {
       );
       // do something to verify the response,
       if (response.statusCode == 200) {
+        print("\nHere after completing the new password.\n");
         // get the account info to display as dummy text
         SharedPrefs().setPassword(newPassword);
         SuccessDialog.show(context, 'Your password has been updated!');
+      } else {
+        print("\nPas de succes!\n");
       }
     } catch (error) {
       print('\nSorry, cannot edit account settings: $error');

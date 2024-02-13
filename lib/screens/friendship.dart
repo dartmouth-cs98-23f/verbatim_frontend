@@ -219,14 +219,13 @@ class _FriendshipState extends State<friendship>
 
 // ask backend for stats between the two friends
   Future<void> getFriendStats(String user, String friend) async {
-    final url =
-        Uri.parse('${BackendService.getBackendUrl()}$user/$friend');
+    final url = Uri.parse('${BackendService.getBackendUrl()}$user/$friend');
 
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
       final dynamic jsonData = json.decode(response.body);
-      print("this is the jsonData from getFriendStats $jsonData");
+      print("\nthis is the jsonData from getFriendStats $jsonData\n");
 
       double rating = jsonData["groupRating"];
       groupRating = rating;
@@ -253,8 +252,8 @@ class _FriendshipState extends State<friendship>
 
 // asks backend for active challenges between these friends
   Future<void> getActiveChallenges(String user, String friend) async {
-    final url = Uri.parse(
-        '${BackendService.getBackendUrl()}$user/$friend/challenges');
+    final url =
+        Uri.parse('${BackendService.getBackendUrl()}$user/$friend/challenges');
     final response = await http.get(url);
     if (response.statusCode == 200) {
       final dynamic jsonData = json.decode(response.body);
@@ -271,7 +270,7 @@ class _FriendshipState extends State<friendship>
             .toList();
 
         mappedChallenges = getMappedChallenges(activeChallenges);
-        challengeStats = { for (var id in activeChallengeIds) id : {} };
+        challengeStats = {for (var id in activeChallengeIds) id: {}};
       } else {}
     } else {
       print("active challenges not obtained succesfuly");
@@ -303,7 +302,8 @@ class _FriendshipState extends State<friendship>
   int totalResponses = 0;
 
   Future<void> getUserHasCompleted(int challengeId, String user) async {
-    final url = Uri.parse('${BackendService.getBackendUrl()}$challengeId/$user/userHasCompleted');
+    final url = Uri.parse(
+        '${BackendService.getBackendUrl()}$challengeId/$user/userHasCompleted');
 
     final response = await http.get(url);
 
@@ -319,7 +319,8 @@ class _FriendshipState extends State<friendship>
       String user,
       Map<int, List<String>> mappedChallenges,
       Map<int, Map<String, dynamic>> challengeStats) async {
-    final url = Uri.parse('${BackendService.getBackendUrl()}$challengeId/$user/getChallengeQs');
+    final url = Uri.parse(
+        '${BackendService.getBackendUrl()}$challengeId/$user/getChallengeQs');
 
     // await getUserHasCompleted(challengeId, user);
 
@@ -666,14 +667,16 @@ class _FriendshipState extends State<friendship>
                                                       }
                                                     },
                                                     child: Container(
-                                                      margin:
-                                                          const EdgeInsets.symmetric(
+                                                      margin: const EdgeInsets
+                                                          .symmetric(
                                                         vertical: 10,
                                                       ),
                                                       padding:
-                                                          const EdgeInsets.all(10),
+                                                          const EdgeInsets.all(
+                                                              10),
                                                       decoration: BoxDecoration(
-                                                        color: const Color.fromARGB(
+                                                        color: const Color
+                                                            .fromARGB(
                                                             255, 231, 111, 81),
                                                         borderRadius:
                                                             BorderRadius
@@ -686,7 +689,8 @@ class _FriendshipState extends State<friendship>
                                                         children: [
                                                           Text(
                                                             title,
-                                                            style: const TextStyle(
+                                                            style:
+                                                                const TextStyle(
                                                               color:
                                                                   Colors.white,
                                                               fontSize: 14,
@@ -764,7 +768,8 @@ class StatsContent extends StatelessWidget {
   List<String> verbaMatchGroup;
   double groupRating;
 
-  StatsContent({super.key, 
+  StatsContent({
+    super.key,
     required this.verbaMatchGroup,
     required this.groupRating,
   });
