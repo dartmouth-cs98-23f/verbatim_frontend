@@ -68,7 +68,7 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       theme: ThemeData(
-        primarySwatch: paleColor,
+        // primarySwatch: paleColor,
         scaffoldBackgroundColor: const Color.fromARGB(255, 255, 243, 238),
         textTheme: GoogleFonts.poppinsTextTheme(),
         textSelectionTheme: const TextSelectionThemeData(
