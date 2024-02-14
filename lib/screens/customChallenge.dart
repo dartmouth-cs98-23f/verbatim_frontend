@@ -3,20 +3,17 @@ import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'sideBar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:verbatim_frontend/widgets/create_group_app_bar.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:verbatim_frontend/widgets/custom_app_bar.dart';
-import 'package:fl_chart/fl_chart.dart';
-import 'dart:math';
 import 'package:verbatim_frontend/screens/myGroup.dart';
 import 'package:verbatim_frontend/screens/friendship.dart';
 
 Future<void> createCustomChallenge(
     String username, List<String> prompts, int groupId) async {
   final url =
-      Uri.parse(BackendService.getBackendUrl() + 'createCustomChallenge');
+      Uri.parse('${BackendService.getBackendUrl()}createCustomChallenge');
   final headers = <String, String>{'Content-Type': 'application/json'};
 
   final response = await http.post(url,
@@ -38,7 +35,7 @@ class customChallenge extends StatefulWidget {
   final int? groupId;
   final bool friendship;
 
-  customChallenge({
+  const customChallenge({
     Key? key,
     required this.groupName,
     required this.groupId,
@@ -69,15 +66,16 @@ class _CustomChallengeState extends State<customChallenge>
   //whether each is in 'editing' mode
   List<bool> editingStates = [false, false, false];
 
+  @override
   Widget build(BuildContext context) {
-    final String assetName = 'assets/img1.svg';
+    const String assetName = 'assets/img1.svg';
 
     return SafeArea(
       child: Scaffold(
-        backgroundColor: Color.fromARGB(255, 255, 243, 238),
+        backgroundColor: const Color.fromARGB(255, 255, 243, 238),
         body: SingleChildScrollView(
           child: Container(
-            color: Color.fromARGB(255, 255, 243, 238),
+            color: const Color.fromARGB(255, 255, 243, 238),
             child: Column(children: [
               SizedBox(
                 width: double.maxFinite,
@@ -97,11 +95,11 @@ class _CustomChallengeState extends State<customChallenge>
                               fit: BoxFit.fill,
                             ),
                           ),
-                          CustomAppBar(),
+                          const CustomAppBar(),
                           Container(
                               margin: EdgeInsets.only(top: 100.v),
                               child: Column(children: [
-                                Text(
+                                const Text(
                                   'Custom Challenge',
                                   style: TextStyle(
                                     fontSize: 27,
@@ -115,7 +113,7 @@ class _CustomChallengeState extends State<customChallenge>
                     // List of 5 rectangles
                     for (int i = 0; i < prompts.length; i++)
                       _buildEditableRectangle(i),
-                    SizedBox(height: 20),
+                    const SizedBox(height: 20),
                     //add prompt button
                     GestureDetector(
                       onTap: () {
@@ -126,7 +124,7 @@ class _CustomChallengeState extends State<customChallenge>
                           bird.add(false);
                         });
                       },
-                      child: Row(
+                      child: const Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           SizedBox(width: 10),
@@ -151,7 +149,7 @@ class _CustomChallengeState extends State<customChallenge>
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
                         foregroundColor: Colors.white,
-                        backgroundColor: Color(0xFFE76F51),
+                        backgroundColor: const Color(0xFFE76F51),
                         enableFeedback: true,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
@@ -194,7 +192,7 @@ class _CustomChallengeState extends State<customChallenge>
                           });
                         }
                       }, //send prompts to backend
-                      child: Text(
+                      child: const Text(
                         'Send Challenge!',
                         style: TextStyle(
                           fontWeight: FontWeight.bold,
@@ -202,14 +200,14 @@ class _CustomChallengeState extends State<customChallenge>
                         ),
                       ),
                     ),
-                    SizedBox(height: 25),
+                    const SizedBox(height: 25),
                   ],
                 ),
               ),
             ]),
           ),
         ),
-        drawer: SideBar(),
+        drawer: const SideBar(),
         // fix the positioning here
       ),
     );
@@ -233,19 +231,19 @@ class _CustomChallengeState extends State<customChallenge>
         });
       },
       child: AnimatedContainer(
-        duration: Duration(milliseconds: 300),
+        duration: const Duration(milliseconds: 300),
         height: expandedStates[index] ? 100 : 50,
         width: double.infinity,
-        margin: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-        padding: EdgeInsets.symmetric(horizontal: 8),
+        margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 8),
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
           boxShadow: [
             BoxShadow(
-              color: Color(0xFF9E503C).withOpacity(1),
+              color: const Color(0xFF9E503C).withOpacity(1),
               blurRadius: 5,
-              offset: Offset(2, 3),
+              offset: const Offset(2, 3),
             )
           ],
         ),
@@ -258,31 +256,31 @@ class _CustomChallengeState extends State<customChallenge>
               Center(
                 child: Row(children: [
                   if (!bird[index])
-                    CircleAvatar(
+                    const CircleAvatar(
                       backgroundColor: Color(0xFFE76F51),
                       radius: 10,
                     ),
                   if (bird[index])
                     CircleAvatar(
                       backgroundColor: Colors.white,
-                      child: Image.asset('assets/bird.png'),
                       radius: 12,
+                      child: Image.asset('assets/bird.png'),
                     ),
-                  SizedBox(width: 10),
+                  const SizedBox(width: 10),
                   Expanded(
                     child: TextField(
                       focusNode: focusNode,
                       autofocus: true,
                       //maxLength: 100,
                       controller: editingController,
-                      decoration: InputDecoration(
+                      decoration: const InputDecoration(
                         hintText: "Enter your challenge question...",
                         border: InputBorder.none,
                       ),
                       onChanged: (editedText) {
                         prompts[index] = editedText;
                       },
-                      style: TextStyle(
+                      style: const TextStyle(
                         fontSize: 16,
                         fontWeight: FontWeight.bold,
                         overflow: TextOverflow.ellipsis,
@@ -297,22 +295,22 @@ class _CustomChallengeState extends State<customChallenge>
                   children: [
                     if (!bird[index])
                       CircleAvatar(
-                          foregroundColor: Color(0xFFE76F51),
-                          backgroundColor: Color(0xFFE76F51),
+                          foregroundColor: const Color(0xFFE76F51),
+                          backgroundColor: const Color(0xFFE76F51),
+                          radius: 10,
                           child: CircleAvatar(
                             backgroundColor: expandedStates[index]
-                                ? Color(0xFFE76F51)
+                                ? const Color(0xFFE76F51)
                                 : Colors.white,
                             radius: 9,
-                          ),
-                          radius: 10),
+                          )),
                     if (bird[index])
                       CircleAvatar(
                         backgroundColor: Colors.white,
-                        child: Image.asset('assets/bird.png'),
                         radius: 12,
+                        child: Image.asset('assets/bird.png'),
                       ),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                     Flexible(
                       child: Text(
                         prompts[index],
@@ -323,7 +321,7 @@ class _CustomChallengeState extends State<customChallenge>
                                 color: Colors.grey[600],
                                 overflow: TextOverflow.ellipsis,
                               )
-                            : TextStyle(
+                            : const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                                 overflow: TextOverflow.ellipsis,
@@ -341,13 +339,13 @@ class _CustomChallengeState extends State<customChallenge>
                   children: [
                     ElevatedButton(
                       style: ElevatedButton.styleFrom(
-                        foregroundColor: Color(0xFFE76F51),
+                        foregroundColor: const Color(0xFFE76F51),
                         backgroundColor: Colors.white,
                         enableFeedback: true,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10),
                         ),
-                        side: BorderSide(
+                        side: const BorderSide(
                           color: Color(0xFFE76F51),
                           width: 3,
                         ),
@@ -361,15 +359,15 @@ class _CustomChallengeState extends State<customChallenge>
                           bird.removeAt(index);
                         });
                       },
-                      child: Text('Delete',
+                      child: const Text('Delete',
                           style: TextStyle(fontWeight: FontWeight.bold)),
                     ),
-                    SizedBox(width: 10),
+                    const SizedBox(width: 10),
                     if (!editingStates[index])
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
-                          backgroundColor: Color(0xFFE76F51),
+                          backgroundColor: const Color(0xFFE76F51),
                           enableFeedback: true,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -382,14 +380,14 @@ class _CustomChallengeState extends State<customChallenge>
                             prompts[index] = editingController.text;
                           });
                         },
-                        child: Text('Edit',
+                        child: const Text('Edit',
                             style: TextStyle(fontWeight: FontWeight.bold)),
                       ),
                     if (editingStates[index])
                       ElevatedButton(
                         style: ElevatedButton.styleFrom(
                           foregroundColor: Colors.white,
-                          backgroundColor: Color(0xFFE76F51),
+                          backgroundColor: const Color(0xFFE76F51),
                           enableFeedback: true,
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
@@ -404,10 +402,10 @@ class _CustomChallengeState extends State<customChallenge>
                             bird[index] = true;
                           });
                         },
-                        child: Text('Save',
+                        child: const Text('Save',
                             style: TextStyle(fontWeight: FontWeight.bold)),
                       ),
-                    SizedBox(width: 5),
+                    const SizedBox(width: 5),
                   ],
                 ),
               ),

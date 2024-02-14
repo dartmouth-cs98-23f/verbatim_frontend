@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:verbatim_frontend/screens/customChallenge.dart';
 import 'package:verbatim_frontend/screens/friendship.dart';
 
 class CustomChallengeButton extends StatelessWidget {

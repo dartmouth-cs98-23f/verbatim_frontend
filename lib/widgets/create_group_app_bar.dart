@@ -18,13 +18,13 @@ class groupAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: Colors.transparent,
       toolbarHeight: 100,
-      iconTheme: IconThemeData(color: Colors.white),
+      iconTheme: const IconThemeData(color: Colors.white),
       elevation: 0,
       scrolledUnderElevation: 0.0,
       title: Container(
         height: 50,
         width: 180,
-        alignment: Alignment(-2.0, 0),
+        alignment: const Alignment(-2.0, 0),
         decoration: BoxDecoration(
           color: Colors.transparent,
           borderRadius: BorderRadius.circular(10),

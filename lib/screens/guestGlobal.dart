@@ -8,10 +8,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
 import 'package:verbatim_frontend/widgets/custom_tab.dart';
 import 'dart:async';
-import 'package:verbatim_frontend/widgets/stats.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:intl/intl.dart';
-import 'verbatastic.dart';
 import 'globalSubmitGuest.dart';
 
 class guestGlobal extends StatefulWidget {
@@ -61,7 +59,7 @@ class _GuestGlobalState extends State<guestGlobal> {
 
     if (fetchQuestions.statusCode == 200) {
     
-      print("what is she?" + fetchQuestions.body.toString());
+      print("what is she?${fetchQuestions.body}");
       final Map<String, dynamic>? data = json.decode(fetchQuestions.body);
    
       id = data!['globalChallengeId'];
@@ -152,7 +150,7 @@ class _GuestGlobalState extends State<guestGlobal> {
     String formattedTimeUntilMidnight =
         DateFormat.Hms().format(DateTime(0).add(timeUntilMidnight));
 
-    final String assetName = 'assets/img1.svg';
+    const String assetName = 'assets/img1.svg';
     List<String> tabLables = [
       categoryQ1,
       categoryQ2,
@@ -199,15 +197,15 @@ class _GuestGlobalState extends State<guestGlobal> {
                             ),
 
                             // app bar on top of background
-                            CustomAppBar(),
+                            const CustomAppBar(),
 
                             // 'Global Challenge #'
                             Center(
                               child: Container(
-                                padding: EdgeInsets.only(top: 20),
+                                padding: const EdgeInsets.only(top: 20),
                                 child: Text(
                                   'Global Challenge #$idString',
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 27,
                                     color: Colors.white,
                                     fontWeight: FontWeight.w900,
@@ -217,7 +215,7 @@ class _GuestGlobalState extends State<guestGlobal> {
                             ),
                             Center(
                                 child: Container(
-                                    padding: EdgeInsets.only(top: 170),
+                                    padding: const EdgeInsets.only(top: 170),
                                     child: SizedBox(
                                         height: 40,
                                         width: double.maxFinite,
@@ -227,12 +225,12 @@ class _GuestGlobalState extends State<guestGlobal> {
                                           children: [
                                             SizedBox(
                                               child: RichText(
-                                                text: TextSpan(
+                                                text: const TextSpan(
                                                   //TODO:
                                                   children: [
                                                     TextSpan(
                                                       text: 'TBD',
-                                                      style: const TextStyle(
+                                                      style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           color: Colors.black,
@@ -249,7 +247,7 @@ class _GuestGlobalState extends State<guestGlobal> {
                                                 ),
                                               ),
                                             ),
-                                            Container(
+                                            SizedBox(
                                                 height: 50,
                                                 width: 150,
                                                 child: Container(

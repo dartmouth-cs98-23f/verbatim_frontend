@@ -1,15 +1,12 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:verbatim_frontend/screens/User.dart';
-import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'package:verbatim_frontend/screens/sideBar.dart';
-import 'package:verbatim_frontend/widgets/customAppBar_Settings.dart';
 import 'package:verbatim_frontend/widgets/custom_challenge_button.dart';
 import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 import 'package:verbatim_frontend/widgets/showSuccessDialog.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/widgets/stats_tile.dart';
-import 'package:verbatim_frontend/screens/settings.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/widgets/center_custom_app_bar.dart';
 
@@ -17,7 +14,6 @@ import 'package:http/http.dart' as http;
 import 'dart:async';
 import 'dart:convert';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:verbatim_frontend/widgets/create_group_app_bar.dart';
 
 class Stats {
   final dynamic streaks;
@@ -229,7 +225,7 @@ class _ProfileState extends State<Profile> {
         lastName.isNotEmpty ? lastName.substring(0, 1).toUpperCase() : "U";
 
     // Format displayName using firstName and initial
-    displayName = lastName.isNotEmpty ? '$firstName $initial.' : '$firstName';
+    displayName = lastName.isNotEmpty ? '$firstName $initial.' : firstName;
     _getStats(username).then((_) {
       setState(() {
         stats = [friends, streaks, globals, customs];
@@ -254,7 +250,7 @@ class _ProfileState extends State<Profile> {
           body: SingleChildScrollView(
             child: SafeArea(
               child: Container(
-                color: Color.fromARGB(255, 255, 243, 238),
+                color: const Color.fromARGB(255, 255, 243, 238),
                 child: Column(
                   children: [
                     SizedBox(

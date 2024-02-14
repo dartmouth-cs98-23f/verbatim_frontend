@@ -25,7 +25,7 @@ class _LandingPageState extends State<LandingPage> {
   }
 
   void onTap() {
-    String routeName = ModalRoute.of(this.context)?.settings.name ?? '';
+    String routeName = ModalRoute.of(context)?.settings.name ?? '';
     Uri uri = Uri.parse(routeName);
 
 
@@ -35,7 +35,7 @@ class _LandingPageState extends State<LandingPage> {
     Navigator.pushNamed(context, '/guest_global');
         //Navigator.pushNamed(context, '/guest_global?referer=$referer');
 
-    print("Username in this shady ass place:" + SharedPrefs().getCurrentPage()!);
+    print("Username in this shady ass place:${SharedPrefs().getCurrentPage()!}");
 
   }
 

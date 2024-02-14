@@ -1,4 +1,3 @@
-import 'dart:js';
 
 import 'package:fluro/fluro.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
@@ -165,11 +164,11 @@ var landingPageHandler = Handler(handlerFunc: (context, parameters) {
   if (SharedPrefs().getEmail() == '' ||
       SharedPrefs().getUserName() == '' ||
       SharedPrefs().getPassword() == '') {
-    return LandingPage();
+    return const LandingPage();
   } else {
     // Update the current page in the shared prefs
     SharedPrefs().setCurrentPage('/landingPage');
-    return LandingPage();
+    return const LandingPage();
   }
 });
 
@@ -177,7 +176,7 @@ var friendshipHandler = Handler(handlerFunc: (context, parameters) {
   if (SharedPrefs().getEmail() == '' ||
       SharedPrefs().getUserName() == '' ||
       SharedPrefs().getPassword() == '') {
-    return LandingPage();
+    return const LandingPage();
   } else {
     // Update the current page in the shared prefs
     SharedPrefs().setCurrentPage('/friendship');
@@ -192,11 +191,11 @@ var settingsHandler = Handler(handlerFunc: (context, parameters) {
   if (SharedPrefs().getEmail() == '' ||
       SharedPrefs().getUserName() == '' ||
       SharedPrefs().getPassword() == '') {
-    return LogIn();
+    return const LogIn();
   } else {
     // Update the current page in the shared prefs
     SharedPrefs().setCurrentPage('/settings');
-    return settings();
+    return const settings();
   }
 });
 
@@ -212,7 +211,7 @@ var guestGlobalHandler = Handler(handlerFunc: (context, parameters){
       // Update the current page in the shared prefs
         print("Whattt anomaly");
       SharedPrefs().setCurrentPage('/globalChallenge');
-      return globalChallenge();
+      return const globalChallenge();
 }
 });
 
@@ -235,7 +234,7 @@ Handler onBoardingPage1Handler = Handler(
     } else {
       // Update the current page in the shared prefs
       SharedPrefs().setCurrentPage('/onboarding_page1');
-      return OnBoardingPage1();
+      return const OnBoardingPage1();
     }
   },
 );
@@ -316,7 +315,7 @@ Handler logInHandler = Handler(
 Handler globalChallengeHandler = Handler(handlerFunc: (context, parameters) {
   // Update the current page in the shared prefs
   SharedPrefs().setCurrentPage('/global_challenge');
-  return globalChallenge();
+  return const globalChallenge();
 });
 
 Handler addFriendHandler = Handler(
@@ -328,7 +327,7 @@ Handler addFriendHandler = Handler(
     } else {
       // Update the current page in the shared prefs
       SharedPrefs().setCurrentPage('/add_friend');
-      return addFriend();
+      return const addFriend();
     }
   },
 );
@@ -342,7 +341,7 @@ Handler createGroupHandler = Handler(
     } else {
       // Update the current page in the shared prefs
       SharedPrefs().setCurrentPage('/create_group');
-      return createGroup();
+      return const createGroup();
     }
   },
 );

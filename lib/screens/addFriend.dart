@@ -4,10 +4,8 @@ import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'sideBar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:verbatim_frontend/widgets/friends_app_bar.dart';
-import 'package:verbatim_frontend/widgets/size.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:shared_preferences/shared_preferences.dart';
 
 // User class for when backend passes in users
 class UserObj {
@@ -34,7 +32,7 @@ class UserObj {
 }
 
 class addFriend extends StatefulWidget {
-  addFriend({
+  const addFriend({
     Key? key,
   }) : super(key: key);
 
@@ -57,12 +55,12 @@ class _AddFriendState extends State<addFriend> {
       []; // GET THESE FROM THE BACKEND, THEN ADD THEM TO THE PROVIDER
 
 // suggested - need to add the logic here - not yet implemented
-  List<String> _suggestedNames = [];
+  final List<String> _suggestedNames = [];
 
 // get friend requests to build list of requesting users, to remove
 // from displayed users (to avoid crash on requesting again)
   Future<void> getFriendRequests(String username) async {
-    final url = Uri.parse(BackendService.getBackendUrl() + 'getFriendRequests');
+    final url = Uri.parse('${BackendService.getBackendUrl()}getFriendRequests');
     final Map<String, String> headers = {
       'Content-Type': 'text/plain',
     };
@@ -96,7 +94,7 @@ class _AddFriendState extends State<addFriend> {
 // get the friend requests that i have sent
   Future<void> getUsersIHaveRequested(String username) async {
     final url =
-        Uri.parse(BackendService.getBackendUrl() + 'getUsersIHaveRequested');
+        Uri.parse('${BackendService.getBackendUrl()}getUsersIHaveRequested');
     final Map<String, String> headers = {
       'Content-Type': 'text/plain',
     };
@@ -123,7 +121,7 @@ class _AddFriendState extends State<addFriend> {
   // get friends to remove from displayed users
 
   Future<void> getFriends(String username) async {
-    final url = Uri.parse(BackendService.getBackendUrl() + 'getFriends');
+    final url = Uri.parse('${BackendService.getBackendUrl()}getFriends');
     final Map<String, String> headers = {
       'Content-Type': 'text/plain',
     };
@@ -144,7 +142,7 @@ class _AddFriendState extends State<addFriend> {
 // get all users to display
 
   Future<void> getUsers() async {
-    final url = Uri.parse(BackendService.getBackendUrl() + 'users');
+    final url = Uri.parse('${BackendService.getBackendUrl()}users');
 
     final response = await http.get(url);
     if (response.statusCode == 200) {
@@ -234,7 +232,7 @@ class _AddFriendState extends State<addFriend> {
 // send friendrequest to backend
   Future<void> sendFriendRequest(
       String requestingUsername, String requestedUsername) async {
-    final url = Uri.parse(BackendService.getBackendUrl() + 'addFriend');
+    final url = Uri.parse('${BackendService.getBackendUrl()}addFriend');
     final headers = <String, String>{'Content-Type': 'application/json'};
 
     final response = await http.post(url,
@@ -250,18 +248,19 @@ class _AddFriendState extends State<addFriend> {
     }
   }
 
+  @override
   Widget build(BuildContext context) {
     String username = SharedPrefs().getUserName() ?? "";
 
-    final String assetName = 'assets/img1.svg';
+    const String assetName = 'assets/img1.svg';
 
     return SafeArea(
         child: Scaffold(
       resizeToAvoidBottomInset: true,
-      backgroundColor: Color.fromARGB(255, 255, 243, 238),
+      backgroundColor: const Color.fromARGB(255, 255, 243, 238),
       body: SingleChildScrollView(
         child: Container(
-            color: Color.fromARGB(255, 255, 243, 238),
+            color: const Color.fromARGB(255, 255, 243, 238),
             child: Column(
               children: [
                 SizedBox(
@@ -284,10 +283,10 @@ class _AddFriendState extends State<addFriend> {
                             ),
                           ),
                           // app bar for add friend page
-                          FriendsAppBar(),
+                          const FriendsAppBar(),
 
                           Padding(
-                            padding: EdgeInsets.only(top: 20.0),
+                            padding: const EdgeInsets.only(top: 20.0),
                             child: Align(
                               alignment: Alignment.center,
                               child: Container(
@@ -302,14 +301,14 @@ class _AddFriendState extends State<addFriend> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      SizedBox(width: 8),
-                                      Icon(Icons.search, color: Colors.black),
-                                      SizedBox(width: 8),
+                                      const SizedBox(width: 8),
+                                      const Icon(Icons.search, color: Colors.black),
+                                      const SizedBox(width: 8),
                                       Expanded(
                                         child: TextField(
                                           controller: _searchController,
-                                          decoration: InputDecoration(
-                                            hintStyle: const TextStyle(
+                                          decoration: const InputDecoration(
+                                            hintStyle: TextStyle(
                                                 fontSize: 14.0,
                                                 color: Color.fromARGB(
                                                     255, 6, 5, 5)),
@@ -328,12 +327,12 @@ class _AddFriendState extends State<addFriend> {
                             alignment: Alignment.bottomCenter,
                             child: Container(
                               width: 200,
-                              margin: EdgeInsets.only(left: 32.0),
+                              margin: const EdgeInsets.only(left: 32.0),
                               child: RichText(
                                 text: TextSpan(
                                   children: [
                                     if (_searchText.isNotEmpty)
-                                      TextSpan(
+                                      const TextSpan(
                                         text: "Search Results:",
                                         style: TextStyle(
                                           fontSize: 15,
@@ -342,7 +341,7 @@ class _AddFriendState extends State<addFriend> {
                                       )
                                     else
                                       // to display "suggested friends" once logic is implemented
-                                      TextSpan(
+                                      const TextSpan(
                                         text: "People you may know:",
                                         style: TextStyle(
                                           fontSize: 15,
@@ -366,7 +365,7 @@ class _AddFriendState extends State<addFriend> {
                 Center(
                   child: Container(
                     clipBehavior: Clip.hardEdge,
-                    margin: EdgeInsets.only(top: 10),
+                    margin: const EdgeInsets.only(top: 10),
                     width: 300,
                     height: 400,
                     decoration: BoxDecoration(
@@ -376,7 +375,7 @@ class _AddFriendState extends State<addFriend> {
                           color: const Color.fromARGB(255, 117, 19, 12)
                               .withOpacity(0.5),
                           blurRadius: 5,
-                          offset: Offset(3, 7),
+                          offset: const Offset(3, 7),
                         ),
                       ],
                       color: Colors.white,
@@ -394,11 +393,11 @@ class _AddFriendState extends State<addFriend> {
                                 title: Row(
                                   mainAxisSize: MainAxisSize.min,
                                   children: [
-                                    Icon(Icons.mood),
-                                    SizedBox(width: 8),
+                                    const Icon(Icons.mood),
+                                    const SizedBox(width: 8),
                                     Text(
                                       name,
-                                      style: TextStyle(
+                                      style: const TextStyle(
                                           fontWeight: FontWeight.bold),
                                     ),
                                   ],
@@ -407,8 +406,8 @@ class _AddFriendState extends State<addFriend> {
                                 // icon displayed is dependent on whether you have requested this user.
                                 trailing: IconButton(
                                   icon: isRequested
-                                      ? Icon(Icons.pending)
-                                      : Icon(Icons.person_add_alt),
+                                      ? const Icon(Icons.pending)
+                                      : const Icon(Icons.person_add_alt),
                                   onPressed: () {
                                     if (!isRequested) {
                                       // prevent user from sending friend requests twice!
@@ -433,19 +432,19 @@ class _AddFriendState extends State<addFriend> {
                               return ListTile(
                                   title: Row(
                                     children: [
-                                      Icon(Icons.mood),
-                                      SizedBox(width: 8),
+                                      const Icon(Icons.mood),
+                                      const SizedBox(width: 8),
                                       Text(
                                         name,
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             fontWeight: FontWeight.bold),
                                       ),
                                     ],
                                   ),
                                   trailing: IconButton(
                                     icon: isRequested
-                                        ? Icon(Icons.pending)
-                                        : Icon(Icons.person_add_alt),
+                                        ? const Icon(Icons.pending)
+                                        : const Icon(Icons.person_add_alt),
                                     onPressed: () {
                                       if (!isRequested) {
                                         sendFriendRequest(username, name);
@@ -464,7 +463,7 @@ class _AddFriendState extends State<addFriend> {
               ],
             )),
       ),
-      drawer: SideBar(),
+      drawer: const SideBar(),
     ));
   }
 }
