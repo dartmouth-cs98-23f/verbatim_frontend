@@ -34,13 +34,11 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
         mainAxisSize: MainAxisSize.min,
         children: [
           const SizedBox(height: 5),
-
-
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               const Padding(
-                padding: EdgeInsets.only(left: 16.0),
+                padding: EdgeInsets.only(left: 12.0),
                 child: Align(
                   alignment: Alignment.topCenter,
                   child: Text(
@@ -76,62 +74,69 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
             ),
           ),
           const SizedBox(height: 20),
-          ListTile(
-            leading: const Icon(
-              Icons.photo_camera_outlined,
-              color: Color(0xFFDE674A),
-            ),
-            title: const Text(
-              'Take a photo',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 16,
-                fontFamily: 'Poppins',
-                fontWeight: FontWeight.w600,
-                height: 0.09,
-                letterSpacing: 0.10,
-              ),
-            ),
-            onTap: widget.onChangeImageCamera,
-          ),
+          Container(
+              padding: EdgeInsets.all(0),
+              child: Center(
+                child: ListTile(
+                  leading: const Icon(
+                    Icons.photo_camera_outlined,
+                    color: Color(0xFFDE674A),
+                  ),
+                  title: Text(
+                    'Take a photo',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w600,
+                      //   height: 0.09,
+                      //  letterSpacing: 0.10,
+                    ),
+                  ),
+                  onTap: widget.onChangeImageCamera,
+                ),
+              )),
           const SizedBox(height: 10),
-          ListTile(
-            leading: const Icon(
-              Icons.photo_outlined,
-              color: Color(0xFFDE674A),
-            ),
-            title: const Text(
-              'Choose from gallery',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 16,
-                fontFamily: 'Poppins',
-                fontWeight: FontWeight.w600,
-                height: 0.09,
-                letterSpacing: 0.10,
-              ),
-            ),
-            onTap: widget.onChangeImageGallery,
-          ),
+          Container(
+              padding: EdgeInsets.all(0),
+              child: Center(
+                child: ListTile(
+                  title: const Text(
+                    'Choose from gallery',
+                    style: TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontFamily: 'Poppins',
+                      fontWeight: FontWeight.w600,
+                    ),
+                  ),
+                  leading: const Icon(
+                    Icons.photo_outlined,
+                    color: Color(0xFFDE674A),
+                  ),
+                  onTap: widget.onChangeImageGallery,
+                ),
+              )),
           const SizedBox(height: 10),
-          ListTile(
-            leading: const Icon(
-              Icons.delete_outline,
-              color: Color(0xFFDE674A),
-            ),
-            title: const Text(
-              'Remove current picture',
-              style: TextStyle(
-                color: Colors.black,
-                fontSize: 16,
-                fontFamily: 'Poppins',
-                fontWeight: FontWeight.w600,
-                height: 0.09,
-                letterSpacing: 0.10,
+          Container(
+              child: Center(
+            child: ListTile(
+              leading: const Icon(
+                Icons.delete_outline,
+                color: Color(0xFFDE674A),
               ),
+              title: const Text(
+                'Remove current picture',
+                style: TextStyle(
+                  color: Colors.black,
+                  fontSize: 16,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+              onTap: widget.onRemoveCurrentPicture,
             ),
-            onTap: widget.onRemoveCurrentPicture,
-          ),
+          )),
         ],
       ),
     );
