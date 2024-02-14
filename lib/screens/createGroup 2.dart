@@ -311,9 +311,8 @@ class _CreateGroupState extends State<createGroup> {
                                               trailing: IconButton(
                                                 icon:
                                                     isAdded // if they're added then show this
-                                                        ? const Icon(
-                                                            Icons.pending)
-                                                        : const Icon(Icons
+                                                        ? Icon(Icons.pending)
+                                                        : Icon(Icons
                                                             .person_add_alt),
                                                 onPressed: () {
                                                   if (!isAdded) {
@@ -370,12 +369,8 @@ class _CreateGroupState extends State<createGroup> {
                                                   return ListTile(
                                                     title: Row(
                                                       children: [
-                                                        FirebaseStorageImage(
-                                                            profileUrl: currentUser
-                                                                .profilePicture,
-                                                            user: currentUser),
-                                                        const SizedBox(
-                                                            width: 8),
+                                                        Icon(Icons.mood),
+                                                        SizedBox(width: 8),
                                                         Text(
                                                           name,
                                                           style: const TextStyle(
@@ -413,9 +408,10 @@ class _CreateGroupState extends State<createGroup> {
                           else
                             // if it is created then you are making your group!
                             Column(children: [
-                              const SizedBox(height: 30),
-                              const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                              SizedBox(height: 30),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0),
                                 child: Text(
                                   'Word! Give your group a name!',
                                   style: TextStyle(
@@ -426,8 +422,7 @@ class _CreateGroupState extends State<createGroup> {
                               ),
                               const SizedBox(height: 30.0),
                               Container(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 20.0),
+                                padding: EdgeInsets.symmetric(horizontal: 20.0),
                                 child: TextField(
                                   controller: responseController,
                                   onChanged: (value) {

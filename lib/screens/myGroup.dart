@@ -44,7 +44,12 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
   dynamic groupMemberObjects = [];
 
   Future<void> getGroupStats(int groupId) async {
+<<<<<<< HEAD
     final url = Uri.parse('${BackendService.getBackendUrl()}group/$groupId');
+=======
+    final url =
+        Uri.parse('${BackendService.getBackendUrl()}group/$groupId');
+>>>>>>> main
 
     final response = await http.get(url);
 
@@ -124,8 +129,13 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
   Map<int, List<String>> getChallengeMappedChallenges = {};
 
   Future<void> getActiveChallenges(int groupId) async {
+<<<<<<< HEAD
     final url =
         Uri.parse('${BackendService.getBackendUrl()}group/$groupId/challenges');
+=======
+    final url = Uri.parse(
+        '${BackendService.getBackendUrl()}group/$groupId/challenges');
+>>>>>>> main
 
     final response = await http.get(url);
     if (response.statusCode == 200) {
@@ -142,7 +152,11 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
             .toList();
 
         mappedChallenges = getMappedChallenges(activeChallenges);
+<<<<<<< HEAD
         challengeStats = {for (var id in activeChallengeIds) id: {}};
+=======
+        challengeStats = { for (var id in activeChallengeIds) id : {} };
+>>>>>>> main
       } else {}
     } else {
       print("active challenges not obtained succesfuly");
@@ -176,8 +190,12 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
       String user,
       Map<int, List<String>> mappedChallenges,
       Map<int, Map<String, dynamic>> challengeStats) async {
+<<<<<<< HEAD
     final url = Uri.parse(
         '${BackendService.getBackendUrl()}$challengeId/$user/getChallengeQs');
+=======
+    final url = Uri.parse('${BackendService.getBackendUrl()}$challengeId/$user/getChallengeQs');
+>>>>>>> main
 
     final response = await http.get(url);
     if (response.statusCode == 200) {
@@ -261,8 +279,13 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
       BuildContext context, String groupName, int? groupId) async {
     return showDialog<void>(
       context: context,
+      // barrierColor: Color(0x00ffffff), / maybe this will fix weird looking border?
       builder: (BuildContext context) {
         return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(
+                20.0), // maybe this will fix weird looking border?
+          ),
           contentPadding: EdgeInsets.zero,
           content: Container(
             width: 200,
@@ -348,8 +371,11 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
   Widget _buildOptionButton(BuildContext context, title, String description,
       IconData iconData, String groupName, int? groupId) {
     return Container(
+<<<<<<< HEAD
         constraints: const BoxConstraints(
             minWidth: 80.0, maxWidth: 150.0, minHeight: 80.0, maxHeight: 150.0),
+=======
+>>>>>>> main
         width: 130,
         height: 130,
         padding: const EdgeInsets.all(5),
@@ -449,6 +475,11 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
     _loadChallenges();
   }
 
+  Future<void> _refresh() async {
+    await Future.delayed(const Duration(seconds: 2));
+    setState(() {});
+  }
+
   Future<void> _loadChallenges() async {
     await getGroupStats(widget.groupId ?? 0);
     await getActiveChallenges(widget.groupId ?? 0);
@@ -520,9 +551,13 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                     child: Stack(
                                       children: [
                                         for (int i = 0;
+<<<<<<< HEAD
                                             i <
                                                 min(groupMemberObjects.length,
                                                     6);
+=======
+                                            i < min(groupUsers.length + 1, 6);
+>>>>>>> main
                                             i++)
                                           Positioned(
                                             top: 0,
@@ -554,6 +589,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                                   },
                                                   style:
                                                       ElevatedButton.styleFrom(
+<<<<<<< HEAD
                                                     backgroundColor:
                                                         Colors.white,
                                                     padding: const EdgeInsets
@@ -563,6 +599,15 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                                   ),
                                                   child: const Text(
                                                       "Leave Group",
+=======
+                                                    backgroundColor: Colors.white,
+                                                    padding:
+                                                        const EdgeInsets.symmetric(
+                                                            horizontal: 8,
+                                                            vertical: 4),
+                                                  ),
+                                                  child: const Text("Leave Group",
+>>>>>>> main
                                                       style: TextStyle(
                                                         fontSize: 12,
                                                         fontWeight:
@@ -763,12 +808,19 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                                   }
                                                 },
                                                 child: Container(
+<<<<<<< HEAD
                                                   margin: const EdgeInsets
                                                       .symmetric(
                                                     vertical: 10,
                                                   ),
                                                   padding:
                                                       const EdgeInsets.all(10),
+=======
+                                                  margin: const EdgeInsets.symmetric(
+                                                    vertical: 10,
+                                                  ),
+                                                  padding: const EdgeInsets.all(10),
+>>>>>>> main
                                                   decoration: BoxDecoration(
                                                     color: const Color.fromARGB(
                                                         255, 231, 111, 81),
@@ -852,3 +904,406 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
     ));
   }
 }
+<<<<<<< HEAD
+=======
+
+class StatsContent extends StatelessWidget {
+  List<String> verbaMatchStatsContent;
+  double groupRating;
+
+  StatsContent({super.key, 
+    required this.verbaMatchStatsContent,
+    required this.groupRating,
+  });
+
+  @override
+  Widget build(BuildContext context) {
+    bool isEmpty = false;
+    String verb1 = "";
+    String verb2 = "";
+    print("this is grouprating in groups stats content $groupRating");
+    if (verbaMatchStatsContent.isEmpty) {
+      isEmpty = true;
+    } else {
+      verb1 = verbaMatchStatsContent[0];
+      verb2 = verbaMatchStatsContent[1];
+    }
+
+    print(
+        "this is verbamatch in groups stats content $String verb1 = verbaMatchStatsContent[0];");
+    return SingleChildScrollView(
+      child: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(
+            // color: Colors.white,
+            height: 200,
+            child: Padding(
+              padding: const EdgeInsets.all(16.0),
+              child: DonutChart(
+                  groupSimilarity: groupRating, title: 'Group Power Score'),
+            ),
+          ),
+          SizedBox(height: 15.v),
+          Visibility(
+            visible: !isEmpty,
+            child: Container(
+              child: const Center(
+                child: Text(
+                  'Most Similar: ',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Visibility(
+              visible: isEmpty,
+              child: Container(
+                child: Center(
+                  child: RichText(
+                    text: const TextSpan(
+                      children: [
+                        TextSpan(
+                          text: 'No ',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextSpan(
+                          text: 'Verba-',
+                          style: TextStyle(
+                            color: Colors.orange,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                        TextSpan(
+                          text: 'Matches...',
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 24,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              )),
+          Visibility(
+            visible: verbaMatchStatsContent.isEmpty,
+            child: const SizedBox(
+              height: 20,
+            ),
+          ),
+          Visibility(
+            visible: isEmpty,
+            child: Container(
+              child: const Center(
+                child: Text(
+                  'Play more challenges to match!',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          Visibility(
+            visible: !isEmpty,
+            child: Container(
+              child: RichText(
+                text: const TextSpan(
+                  children: [
+                    TextSpan(
+                      text: 'Verba',
+                      style: TextStyle(
+                        color: Colors.orange,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                    TextSpan(
+                      text: 'Match!',
+                      style: TextStyle(
+                        color: Colors.black,
+                        fontSize: 24,
+                        fontWeight: FontWeight.bold,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          /*
+          Visibility(
+            visible: !isEmpty,
+            child: Container(
+              child: Center(
+                child: Text(
+                  'hardcoded% Similarity',
+                  style: TextStyle(
+                    fontSize: 18,
+                    fontWeight: FontWeight.bold,
+                  ),
+                ),
+              ),
+            ),
+          ),
+          */
+          Visibility(
+            visible: !isEmpty,
+            child: SizedBox(height: 10.v),
+          ),
+          Visibility(
+            visible: !isEmpty,
+            child: Center(
+              child: SizedBox(
+                width: 170,
+                height: 60,
+                child: Stack(
+                  children: [
+                    for (int i = 0; i < 2; i++)
+                      Positioned(
+                        top: 0,
+                        left: 35.0 + (i * 50),
+                        child: Image.asset(
+                          'assets/Ellipse ${41 + i}.png',
+                          height: 60,
+                        ),
+                      ),
+                  ],
+                ),
+              ),
+            ),
+          ),
+          Visibility(
+            visible: !isEmpty,
+            child: SizedBox(height: 15.v),
+          ),
+          Visibility(
+            visible: !isEmpty,
+            child: Container(
+              child: Center(
+                  child: verb1 != "" && verb2 != ""
+                      ? Text(
+                          '$verb1 and $verb2',
+                          style: const TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      : const SizedBox(
+                          height: 4,
+                        )),
+            ),
+          ),
+          SizedBox(height: 50.v)
+        ],
+      ),
+    );
+  }
+}
+
+class DonutChart extends StatefulWidget {
+  final double groupSimilarity;
+  final String title;
+
+  const DonutChart({
+    Key? key,
+    required this.groupSimilarity,
+    required this.title,
+  }) : super(key: key);
+
+  @override
+  State<DonutChart> createState() => _DonutChartState();
+}
+
+class _DonutChartState extends State<DonutChart> {
+  Future<void> _showPopup(BuildContext context) async {
+    return showDialog<void>(
+      context: context,
+      builder: (BuildContext context) {
+        return AlertDialog(
+          contentPadding: EdgeInsets.zero,
+          content: Container(
+              width: 160,
+              height: 145,
+              clipBehavior: Clip.antiAlias,
+              decoration: BoxDecoration(
+                color: Colors.white,
+                borderRadius: BorderRadius.circular(20),
+                boxShadow: [
+                  BoxShadow(
+                    color: const Color(0xFF9E503C).withOpacity(0.5),
+                    blurRadius: 4,
+                    offset: const Offset(2, 3),
+                  )
+                ],
+              ),
+              child: Column(
+                mainAxisSize: MainAxisSize.min,
+                mainAxisAlignment: MainAxisAlignment.center,
+                crossAxisAlignment: CrossAxisAlignment.center,
+                children: [
+                  const SizedBox(height: 5),
+                  Padding(
+                    padding: const EdgeInsets.all(6),
+                    child: RichText(
+                      textAlign: TextAlign.center,
+                      text: const TextSpan(
+                        children: [
+                          TextSpan(
+                            text: 'Your score increases when you:\n\n',
+                            style: TextStyle(
+                              color: Colors.black,
+                              fontSize: 19,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                          // if groupname is a certain length, make it a new line
+                          TextSpan(
+                            text:
+                                'Verbatim, Build Streaks, and Play Challenges!',
+                            style: TextStyle(
+                              color: Colors.orange,
+                              fontSize: 21,
+                              fontWeight: FontWeight.w900,
+                            ),
+                          ),
+                        ],
+                      ),
+                    ),
+                  )
+                ],
+              )),
+        );
+      },
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    Color calculateColor(double similarity) {
+      int score = similarity ~/ 2;
+
+      return Color.fromARGB(255, 250, 192 + score, 94 + score);
+    }
+
+    double sim = widget.groupSimilarity;
+    int simint = sim as int;
+    double outof100 = (widget.groupSimilarity / 100);
+
+    return Scaffold(
+      backgroundColor: Colors.transparent,
+      body: Column(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          Row(mainAxisAlignment: MainAxisAlignment.center, children: [
+            Text(
+              widget.title,
+              style: const TextStyle(
+                fontSize: 18,
+                fontWeight: FontWeight.bold,
+              ),
+            ),
+            const SizedBox(width: 8),
+            InkWell(
+              onTap: () => _showPopup(context),
+              child: const Icon(
+                Icons.help_outline,
+                color: Color(0xFFE76F51),
+              ),
+            )
+          ]),
+          SizedBox(height: 17.v),
+          SizedBox(
+            height: 125,
+            child: Stack(
+              children: [
+                PieChart(
+                  //set the values of offset
+
+                  PieChartData(
+                    startDegreeOffset: 250,
+                    sectionsSpace: 0,
+                    centerSpaceRadius: 50,
+                    sections: [
+                      PieChartSectionData(
+                        value: outof100,
+                        color: const Color.fromARGB(255, 231, 111, 81),
+                        radius: 25,
+                        showTitle: false,
+                      ),
+                      PieChartSectionData(
+                        value: 100 - outof100,
+                        color: calculateColor(18.0),
+
+                        //   color: calculateColor(widget.groupSimilarity),
+                        radius: 16,
+                        showTitle: false,
+                      ),
+                    ],
+                  ),
+                ),
+                // text inside chart
+                Positioned.fill(
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Container(
+                        height: 80,
+                        width: 80,
+                        decoration: const BoxDecoration(
+                          color: Colors.white,
+                          shape: BoxShape.circle,
+                          boxShadow: [
+                            BoxShadow(
+                                color: Color.fromARGB(255, 255, 243, 238),
+                                blurRadius: 10.0,
+                                spreadRadius: 10.0,
+                                offset: Offset(3, 3)),
+                          ],
+                        ),
+                        child: Align(
+                          alignment: Alignment.center,
+                          child: Column(
+                            mainAxisSize: MainAxisSize.min,
+                            children: [
+                              Text(
+                                simint.toStringAsFixed(2),
+                                style: const TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                              const Text(
+                                "Rating",
+                                style: TextStyle(
+                                  fontSize: 10,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ],
+                          ),
+                        ),
+                      )
+                    ],
+                  ),
+                )
+              ],
+            ),
+          )
+        ],
+      ),
+    );
+  }
+}
+>>>>>>> main

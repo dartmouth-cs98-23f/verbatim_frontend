@@ -1,16 +1,20 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+<<<<<<< HEAD
 import 'package:intl/intl.dart';
 import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'package:verbatim_frontend/screens/sideBar.dart';
 import 'package:verbatim_frontend/widgets/center_custom_app_bar.dart';
 import 'package:verbatim_frontend/widgets/customAppBar_Settings.dart';
+=======
+import 'package:verbatim_frontend/screens/User.dart';
+import 'package:verbatim_frontend/screens/sideBar.dart';
+>>>>>>> main
 import 'package:verbatim_frontend/widgets/custom_challenge_button.dart';
 import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 import 'package:verbatim_frontend/widgets/showSuccessDialog.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/widgets/stats_tile.dart';
-import 'package:verbatim_frontend/screens/settings.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:http/http.dart' as http;
 import 'dart:async';
@@ -83,7 +87,23 @@ class _ProfileState extends State<Profile> {
   static int customs = 0;
   static int streaks = 0;
   static double verbaMatchScore = 0;
+<<<<<<< HEAD
 
+=======
+  static User match = User(
+    username: '',
+    bio: '',
+    id: 0,
+    email: '',
+    lastName: '',
+    firstName: '',
+    profilePicture:'assets/profile_pic.png',
+    numGlobalChallengesCompleted: 0,
+    numCustomChallengesCompleted: 0,
+    streak: 0,
+    hasCompletedDailyChallenge: false,
+  );
+>>>>>>> main
   static String profile = 'assets/default.jpeg';
 
   Future<void> _getStats(String username) async {
@@ -106,6 +126,7 @@ class _ProfileState extends State<Profile> {
         verbaMatchScore = 0;
       }
 
+<<<<<<< HEAD
       final Map<String, dynamic> matchDeets = stats.match;
 
       // Remove the current user's details from matchDeets
@@ -141,6 +162,18 @@ class _ProfileState extends State<Profile> {
       print("\nMatch user: ${match}\n");
       print("\nMatchDeets : ${matchDeets}\n");
       print("\nStats.match is : ${stats.match}\n");
+=======
+      if (match.profilePicture == '') {
+        match.profilePicture = profile;
+      } 
+      if (SharedPrefs().getProfileUrl() == '') {
+        SharedPrefs().setProfileUrl(profile);
+      } else {
+        //TODO: sharedprefs.getprofile
+        profile = SharedPrefs().getProfileUrl()!;
+      }
+      // print("Itsss okkkk");
+>>>>>>> main
     } else {
       print(
           'Error: Could not fetch user stats. Status code: ${getStats.statusCode}');
@@ -233,7 +266,7 @@ class _ProfileState extends State<Profile> {
     initial = lastName.isNotEmpty ? lastName.substring(0, 1).toUpperCase() : "";
 
     // Format displayName using firstName and initial
-    displayName = lastName.isNotEmpty ? '$firstName $initial.' : '$firstName';
+    displayName = lastName.isNotEmpty ? '$firstName $initial.' : firstName;
     _getStats(username).then((_) {
       setState(() {
         stats = [friends, streaks, globals, customs];
@@ -258,7 +291,11 @@ class _ProfileState extends State<Profile> {
           body: SingleChildScrollView(
             child: SafeArea(
               child: Container(
+<<<<<<< HEAD
                 color: const Color.fromRGBO(255, 243, 238, 1),
+=======
+                color: const Color.fromARGB(255, 255, 243, 238),
+>>>>>>> main
                 child: Column(
                   children: [
                     SizedBox(
@@ -490,19 +527,22 @@ class _ProfileState extends State<Profile> {
                                                                       : "Add Friend",
                                                               style: GoogleFonts
                                                                   .poppins(
-                                                                textStyle:
-                                                                    const TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize: 12,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  height: 0.12,
-                                                                  letterSpacing:
-                                                                      0.20,
-                                                                ),
-                                                              ),
+                                                                      textStyle: widget.user ==
+                                                                              null
+                                                                          ? const TextStyle(
+                                                                              color: Colors.white,
+                                                                              fontSize: 12,
+                                                                              fontWeight: FontWeight.w600,
+                                                                              height: 0.12,
+                                                                              letterSpacing: 0.20,
+                                                                            )
+                                                                          : const TextStyle(
+                                                                              color: Colors.white,
+                                                                              fontSize: 10,
+                                                                              fontWeight: FontWeight.w600,
+                                                                              height: 0.12,
+                                                                              letterSpacing: 0.20,
+                                                                            )),
                                                             ),
                                                           ),
                                                         )

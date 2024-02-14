@@ -67,7 +67,7 @@ class MyApp extends StatelessWidget {
 
     return MaterialApp(
       theme: ThemeData(
-        //primarySwatch: paleColor,
+        // primarySwatch: paleColor,
         scaffoldBackgroundColor: const Color.fromARGB(255, 255, 243, 238),
         textTheme: GoogleFonts.poppinsTextTheme(),
         textSelectionTheme: const TextSelectionThemeData(
@@ -77,7 +77,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey,
       onGenerateRoute: Application.router.generator,
-      //    initialRoute: SharedPrefs().getCurrentPage() ?? '/landingPage',
+        //initialRoute: SharedPrefs().getCurrentPage() ?? '/landingPage',
       home: const LandingPage(),
     );
   }

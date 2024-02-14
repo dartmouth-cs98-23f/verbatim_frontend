@@ -9,8 +9,10 @@ import 'package:verbatim_frontend/screens/profile.dart';
 import 'package:verbatim_frontend/screens/sideBar.dart';
 import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 import 'package:verbatim_frontend/widgets/friends_app_bar.dart';
+import 'package:http/http.dart' as http;
+import 'dart:convert';
 import 'package:verbatim_frontend/widgets/friends_app_bar_test.dart';
-import 'package:verbatim_frontend/widgets/size.dart';
+import 'package:verbatim_frontend/widgets/size.dart'; 
 
 // Update User class
 class User {
@@ -83,8 +85,8 @@ class _AddFriendState extends State<addFriend> {
   List<User> searchResults = []; // User objects corresponding to search results
   List<User> friendsList = []; // User objects corresponding to friends
 
-  // suggested - need to add the logic here - not yet implemented
-  final List<String> _suggestedNames = [];
+// suggested - need to add the logic here - not yet implemented
+  List<String> _suggestedNames = []; 
 
   // get friend requests to build list of requesting users, to remove
   // from displayed users (to avoid crash on requesting again)
@@ -315,7 +317,7 @@ class _AddFriendState extends State<addFriend> {
   Widget build(BuildContext context) {
     String username = SharedPrefs().getUserName() ?? "";
 
-    const String assetName = 'assets/img1.svg';
+    const String assetName = 'assets/img1.svg'; 
 
     return SafeArea(
       child: Scaffold(
@@ -364,31 +366,30 @@ class _AddFriendState extends State<addFriend> {
                                       borderRadius: BorderRadius.circular(20),
                                     ),
 
-                                    // search bar
-                                    child: Row(
-                                      mainAxisAlignment:
-                                          MainAxisAlignment.center,
-                                      children: [
-                                        SizedBox(width: 8),
-                                        Icon(Icons.search, color: Colors.black),
-                                        SizedBox(width: 8),
-                                        Expanded(
-                                          child: TextField(
-                                            controller: _searchController,
-                                            decoration: InputDecoration(
-                                              hintStyle: const TextStyle(
-                                                  fontSize: 14.0,
-                                                  color: Color.fromARGB(
-                                                      255, 6, 5, 5)),
-                                              border: InputBorder.none,
-                                            ),
-                                            textAlign: TextAlign.left,
+                                  // search bar
+                                  child: Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      SizedBox(width: 8),
+                                      Icon(Icons.search, color: Colors.black),
+                                      SizedBox(width: 8), 
+                                      Expanded(
+                                        child: TextField(
+                                          controller: _searchController,
+                                          decoration: InputDecoration(
+                                            hintStyle: const TextStyle(
+                                                fontSize: 14.0,
+                                                color: Color.fromARGB(
+                                                    255, 6, 5, 5)),
+                                            border: InputBorder.none,
                                           ),
-                                        )
-                                      ],
-                                    )),
-                              ),
+                                          textAlign: TextAlign.left,
+                                        ),
+                                      )
+                                    ],
+                                  )),
                             ),
+                          ),
 
                             // search results
                           ]),

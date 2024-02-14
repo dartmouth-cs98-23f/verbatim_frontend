@@ -52,10 +52,12 @@ class _CustomChallengeState extends State<customChallenge>
   List<bool> expandedStates = [false, false, false];
 
   // list of prompts the user will input
+  // whatever the prompts hinttext is make sure that the hinttext string stats the same!
+  String hintText = "Enter your challenge question...";
   List<String> prompts = [
-    "Enter your challenge question",
-    "Enter your challenge question",
-    "Enter your challenge question",
+    "Enter your challenge question...",
+    "Enter your challenge question...",
+    "Enter your challenge question...",
   ];
 
 // r they ready for the bird?!?!?!
@@ -117,7 +119,7 @@ class _CustomChallengeState extends State<customChallenge>
                       onTap: () {
                         setState(() {
                           expandedStates.add(false);
-                          prompts.add("Enter your challenge question");
+                          prompts.add("Enter your challenge question...");
                           editingStates.add(false);
                           bird.add(false);
                         });
@@ -214,7 +216,7 @@ class _CustomChallengeState extends State<customChallenge>
   Widget _buildEditableRectangle(int index) {
     // the text to be edited is the prompt clicked on
     TextEditingController editingController = TextEditingController(
-      text: (prompts[index] == 'Enter your challenge question')
+      text: (prompts[index] == 'Enter your challenge question...')
           ? null
           : prompts[index],
     );
@@ -233,7 +235,11 @@ class _CustomChallengeState extends State<customChallenge>
         height: expandedStates[index] ? 100 : 50,
         width: double.infinity,
         margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+<<<<<<< HEAD
         padding: const EdgeInsets.all(8),
+=======
+        padding: const EdgeInsets.symmetric(horizontal: 8),
+>>>>>>> main
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
@@ -312,11 +318,26 @@ class _CustomChallengeState extends State<customChallenge>
                     Flexible(
                       child: Text(
                         prompts[index],
+<<<<<<< HEAD
                         style: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                           overflow: TextOverflow.ellipsis,
                         ),
+=======
+                        style: prompts[index] == hintText
+                            ? TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                color: Colors.grey[600],
+                                overflow: TextOverflow.ellipsis,
+                              )
+                            : const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+>>>>>>> main
                       ),
                     ),
                   ],
@@ -324,7 +345,7 @@ class _CustomChallengeState extends State<customChallenge>
               ),
             if (expandedStates[index])
               Positioned(
-                bottom: 0,
+                bottom: 3,
                 right: 0,
                 child: Row(
                   children: [
@@ -338,9 +359,9 @@ class _CustomChallengeState extends State<customChallenge>
                         ),
                         side: const BorderSide(
                           color: Color(0xFFE76F51),
-                          width: 4,
+                          width: 3,
                         ),
-                        minimumSize: const Size(75, 35),
+                        minimumSize: const Size(50, 20),
                       ),
                       onPressed: () {
                         setState(() {
@@ -363,7 +384,7 @@ class _CustomChallengeState extends State<customChallenge>
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          minimumSize: const Size(75, 35),
+                          minimumSize: const Size(50, 20),
                         ),
                         onPressed: () {
                           setState(() {
@@ -383,7 +404,7 @@ class _CustomChallengeState extends State<customChallenge>
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(10),
                           ),
-                          minimumSize: const Size(75, 35),
+                          minimumSize: const Size(50, 20),
                         ),
                         onPressed: () {
                           setState(() {

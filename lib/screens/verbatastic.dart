@@ -26,12 +26,9 @@ class Verbatastic extends StatelessWidget {
   });
 
   void copyInvite() {
-    //TODO
-    //'https://example.com?referrer=$referrerToken';
-    String username = SharedPrefs().getUserName() ?? "";
-    //Navigator.pushNamed(context, '/details', arguments: {'referer': 'friend123'});
+    //TODO: 
 
-    //String tempLink = http://localhost:3000/#/landingPage?referer=$username;
+    String username = SharedPrefs().getUserName() ?? "";
     String inviteLink = 'http://localhost:3000/#/landingPage?referer=$username';
     Clipboard.setData(ClipboardData(text: inviteLink));
   }

@@ -45,6 +45,9 @@ class _LogInState extends State<LogIn> {
         'responseQ1': SharedPrefs().getResponse1(),
         'responseQ2': SharedPrefs().getResponse2(),
         'responseQ3': SharedPrefs().getResponse3(),
+        'responseQ4': SharedPrefs().getResponse4(),
+        'responseQ5': SharedPrefs().getResponse5(),
+      
         'isLogin': true,
         'emailOrUsername': usernameOrEmail,
         'password': password,
@@ -169,7 +172,8 @@ class _LogInState extends State<LogIn> {
       logIn(context, email, password);
     } else if (SharedPrefs().getResponse1() != '') {
       //logIn(context, email, password);
-      logInGuest(context, email, password);
+      logIn(context, email, password);
+      // logInGuest(context, email, password);
     }
   }
 

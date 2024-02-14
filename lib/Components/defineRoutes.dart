@@ -1,8 +1,12 @@
+
 import 'package:fluro/fluro.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'package:verbatim_frontend/screens/createGroup.dart';
 import 'package:verbatim_frontend/screens/friendship.dart';
+import 'package:verbatim_frontend/screens/guestGlobal.dart';
+import 'package:verbatim_frontend/screens/guestSignUp.dart';
+import 'package:verbatim_frontend/screens/landingPage.dart';
 import 'package:verbatim_frontend/screens/myGroup.dart';
 import 'package:verbatim_frontend/screens/forgotPassword.dart';
 import 'package:verbatim_frontend/screens/logout.dart';
@@ -16,7 +20,7 @@ import '../screens/onboardingPage4.dart';
 import '../screens/signUp.dart';
 import '../screens/signupErrorMessage.dart';
 import '../screens/settings.dart';
-import '../screens/landingPage.dart';
+
 
 class Application {
   static FluroRouter router = FluroRouter.appRouter;
@@ -107,6 +111,16 @@ void defineRoutes() {
     '/myGroup',
     handler: myGroupHandler,
   );
+
+  Application.router.define(
+    '/guest_global',
+    handler: guestGlobalHandler,
+  );
+
+  Application.router.define(
+    '/guest_signup',
+    handler: guestSignUpHandler,
+  );
 }
 
 var myGroupHandler = Handler(
@@ -184,6 +198,32 @@ var settingsHandler = Handler(handlerFunc: (context, parameters) {
     return const settings();
   }
 });
+
+//TODO: 
+var guestGlobalHandler = Handler(handlerFunc: (context, parameters){
+  print("Just cleaning up mu house");
+  if (SharedPrefs().getEmail() == '' ||
+        SharedPrefs().getUserName() == '' ||
+        SharedPrefs().getPassword() == '') {
+          print("Ok lets see");
+      return const guestGlobal();
+  } else {
+      // Update the current page in the shared prefs
+        print("Whattt anomaly");
+      SharedPrefs().setCurrentPage('/globalChallenge');
+      return const globalChallenge();
+}
+});
+
+
+//TODO: 
+var guestSignUpHandler = Handler(handlerFunc: (context, parameters){
+    SharedPrefs().setCurrentPage('/guest_signup');
+
+    return const GuestSignUp();
+});
+
+
 
 Handler onBoardingPage1Handler = Handler(
   handlerFunc: (context, parameters) {

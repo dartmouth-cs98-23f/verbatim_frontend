@@ -40,6 +40,10 @@ class _FriendshipState extends State<friendship>
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(
+                20.0), // maybe this will fix weird looking border?
+          ),
           contentPadding: EdgeInsets.zero,
           insetPadding: const EdgeInsets.symmetric(horizontal: 16.0),
           content: Container(
@@ -219,7 +223,12 @@ class _FriendshipState extends State<friendship>
 
 // ask backend for stats between the two friends
   Future<void> getFriendStats(String user, String friend) async {
+<<<<<<< HEAD
     final url = Uri.parse('${BackendService.getBackendUrl()}$user/$friend');
+=======
+    final url =
+        Uri.parse('${BackendService.getBackendUrl()}$user/$friend');
+>>>>>>> main
 
     final response = await http.get(url);
 
@@ -252,8 +261,13 @@ class _FriendshipState extends State<friendship>
 
 // asks backend for active challenges between these friends
   Future<void> getActiveChallenges(String user, String friend) async {
+<<<<<<< HEAD
     final url =
         Uri.parse('${BackendService.getBackendUrl()}$user/$friend/challenges');
+=======
+    final url = Uri.parse(
+        '${BackendService.getBackendUrl()}$user/$friend/challenges');
+>>>>>>> main
     final response = await http.get(url);
     if (response.statusCode == 200) {
       final dynamic jsonData = json.decode(response.body);
@@ -270,7 +284,11 @@ class _FriendshipState extends State<friendship>
             .toList();
 
         mappedChallenges = getMappedChallenges(activeChallenges);
+<<<<<<< HEAD
         challengeStats = {for (var id in activeChallengeIds) id: {}};
+=======
+        challengeStats = { for (var id in activeChallengeIds) id : {} };
+>>>>>>> main
       } else {}
     } else {
       print("active challenges not obtained succesfuly");
@@ -302,8 +320,12 @@ class _FriendshipState extends State<friendship>
   int totalResponses = 0;
 
   Future<void> getUserHasCompleted(int challengeId, String user) async {
+<<<<<<< HEAD
     final url = Uri.parse(
         '${BackendService.getBackendUrl()}$challengeId/$user/userHasCompleted');
+=======
+    final url = Uri.parse('${BackendService.getBackendUrl()}$challengeId/$user/userHasCompleted');
+>>>>>>> main
 
     final response = await http.get(url);
 
@@ -319,8 +341,12 @@ class _FriendshipState extends State<friendship>
       String user,
       Map<int, List<String>> mappedChallenges,
       Map<int, Map<String, dynamic>> challengeStats) async {
+<<<<<<< HEAD
     final url = Uri.parse(
         '${BackendService.getBackendUrl()}$challengeId/$user/getChallengeQs');
+=======
+    final url = Uri.parse('${BackendService.getBackendUrl()}$challengeId/$user/getChallengeQs');
+>>>>>>> main
 
     // await getUserHasCompleted(challengeId, user);
 
@@ -667,6 +693,7 @@ class _FriendshipState extends State<friendship>
                                                       }
                                                     },
                                                     child: Container(
+<<<<<<< HEAD
                                                       margin: const EdgeInsets
                                                           .symmetric(
                                                         vertical: 10,
@@ -677,6 +704,16 @@ class _FriendshipState extends State<friendship>
                                                       decoration: BoxDecoration(
                                                         color: const Color
                                                             .fromARGB(
+=======
+                                                      margin:
+                                                          const EdgeInsets.symmetric(
+                                                        vertical: 10,
+                                                      ),
+                                                      padding:
+                                                          const EdgeInsets.all(10),
+                                                      decoration: BoxDecoration(
+                                                        color: const Color.fromARGB(
+>>>>>>> main
                                                             255, 231, 111, 81),
                                                         borderRadius:
                                                             BorderRadius
@@ -689,8 +726,12 @@ class _FriendshipState extends State<friendship>
                                                         children: [
                                                           Text(
                                                             title,
+<<<<<<< HEAD
                                                             style:
                                                                 const TextStyle(
+=======
+                                                            style: const TextStyle(
+>>>>>>> main
                                                               color:
                                                                   Colors.white,
                                                               fontSize: 14,
@@ -768,8 +809,12 @@ class StatsContent extends StatelessWidget {
   List<String> verbaMatchGroup;
   double groupRating;
 
+<<<<<<< HEAD
   StatsContent({
     super.key,
+=======
+  StatsContent({super.key, 
+>>>>>>> main
     required this.verbaMatchGroup,
     required this.groupRating,
   });
@@ -1041,6 +1086,10 @@ class _DonutChartState extends State<DonutChart> {
       return Color.fromARGB(255, 250, 192 + score, 94 + score);
     }
 
+    double sim = widget.groupSimilarity;
+
+    double outof100 = (widget.groupSimilarity / 100);
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Column(
@@ -1077,13 +1126,17 @@ class _DonutChartState extends State<DonutChart> {
                     centerSpaceRadius: 50,
                     sections: [
                       PieChartSectionData(
+<<<<<<< HEAD
                         value: widget.groupSimilarity,
+=======
+                        value: outof100,
+>>>>>>> main
                         color: const Color(0xFFE76F51),
                         radius: 25,
                         showTitle: false,
                       ),
                       PieChartSectionData(
-                        value: 100 - widget.groupSimilarity,
+                        value: 100 - outof100,
                         color: calculateColor(widget.groupSimilarity),
                         radius: 16,
                         showTitle: false,
