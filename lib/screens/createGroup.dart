@@ -341,7 +341,7 @@ class _CreateGroupState extends State<createGroup> {
                                               trailing: IconButton(
                                                 icon:
                                                     isAdded // if they're added then show this
-                                                        ? Icon(Icons.pending)
+                                                        ? Icon(Icons.check)
                                                         : Icon(Icons
                                                             .person_add_alt),
                                                 onPressed: () {
@@ -413,7 +413,7 @@ class _CreateGroupState extends State<createGroup> {
                                                       icon:
                                                           isAdded // if they're added then show this
                                                               ? Icon(
-                                                                  Icons.pending)
+                                                                  Icons.check)
                                                               : Icon(Icons
                                                                   .person_add_alt),
                                                       onPressed: () {

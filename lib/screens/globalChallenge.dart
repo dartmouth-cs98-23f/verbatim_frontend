@@ -152,7 +152,8 @@ class _GlobalChallengeState extends State<globalChallenge> {
       question4 = data['q4'];
       question5 = data['q5'];
 
-      id = data['globalChallengeId'];
+// change this to
+      id = data['globalChallengeDisplayNum'];
 
       categoryQ1 = data['categoryQ1'];
       categoryQ2 = data['categoryQ2'];
@@ -171,7 +172,6 @@ class _GlobalChallengeState extends State<globalChallenge> {
 
     if (fetchQuestions.statusCode == 200) {
       final Map<String, dynamic>? data = json.decode(fetchQuestions.body);
-      print("this is questions data in _fetchData $data");
 
       question1 = data!['q1'];
 
@@ -181,8 +181,8 @@ class _GlobalChallengeState extends State<globalChallenge> {
       //newtwo for +2!
       question4 = data['q4'];
       question5 = data['q5'];
-
-      id = data['globalChallengeId'];
+// display the display num!
+      id = data['globalChallengeDisplayNum'];
 
       categoryQ1 = data['categoryQ1'];
       categoryQ2 = data['categoryQ2'];
@@ -199,7 +199,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
         // get responses
 
         responseQ1 = data['responseQ1'];
-        id = data['globalChallengeId'];
+        id = data['globalChallengeDisplayNum'];
         responseQ2 = data['responseQ2'];
         responseQ3 = data['responseQ3'];
         // new two for +2

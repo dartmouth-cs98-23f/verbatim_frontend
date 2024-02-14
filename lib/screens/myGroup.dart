@@ -421,6 +421,11 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
     _loadChallenges();
   }
 
+  Future<void> _refresh() async {
+    await Future.delayed(Duration(seconds: 2));
+    setState(() {});
+  }
+
   Future<void> _loadChallenges() async {
     await getGroupStats(widget.groupId ?? 0);
     await getActiveChallenges(widget.groupId ?? 0);
@@ -849,7 +854,7 @@ class StatsContent extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.all(16.0),
               child: DonutChart(
-                  groupSimilarity: 120.0, title: 'Group Power Score'),
+                  groupSimilarity: groupRating, title: 'Group Power Score'),
             ),
           ),
           SizedBox(height: 15.v),
@@ -1107,6 +1112,7 @@ class _DonutChartState extends State<DonutChart> {
 
     double sim = widget.groupSimilarity;
     int simint = sim as int;
+    double outof100 = (widget.groupSimilarity / 100);
 
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -1144,13 +1150,13 @@ class _DonutChartState extends State<DonutChart> {
                     centerSpaceRadius: 50,
                     sections: [
                       PieChartSectionData(
-                        value: widget.groupSimilarity,
-                        color: Color(0xFFE76F51),
+                        value: outof100,
+                        color: Color.fromARGB(255, 231, 111, 81),
                         radius: 25,
                         showTitle: false,
                       ),
                       PieChartSectionData(
-                        value: 100 - widget.groupSimilarity,
+                        value: 100 - outof100,
                         color: calculateColor(18.0),
 
                         //   color: calculateColor(widget.groupSimilarity),
