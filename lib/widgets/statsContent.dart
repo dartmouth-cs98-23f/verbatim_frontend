@@ -1,24 +1,28 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'package:verbatim_frontend/widgets/donutChart.dart';
+import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
 
 class StatsContent extends StatelessWidget {
   final List<String> verbaMatchStatsContent;
   final double groupRating;
+  final List<User> verbaMatchStatsUsers;
 
   StatsContent({
     Key? key,
     required this.verbaMatchStatsContent,
     required this.groupRating,
+    required this.verbaMatchStatsUsers,
   }) : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     bool isEmpty = verbaMatchStatsContent.isEmpty;
-    String verb1 = isEmpty ? '' : verbaMatchStatsContent[0];
-    String verb2 = isEmpty ? '' : verbaMatchStatsContent[1];
+    String verb1 = isEmpty ? '' : verbaMatchStatsUsers[0].username;
+    String verb2 = isEmpty ? '' : verbaMatchStatsUsers[1].username;
 
     return SingleChildScrollView(
       child: Column(
@@ -138,21 +142,23 @@ class StatsContent extends StatelessWidget {
             child: SizedBox(height: 10.v),
           ),
           Visibility(
-            visible: verbaMatchStatsContent.isNotEmpty,
+            visible: verbaMatchStatsUsers.isNotEmpty,
             child: SizedBox(
-              width: 170,
-              height: 60,
+              width: 200,
+              height: 122,
               child: Stack(
                 children: [
-                  for (int i = 0;
-                      i < min(verbaMatchStatsContent.length, 2);
-                      i++)
+                  for (int i = 0; i < min(verbaMatchStatsUsers.length, 2); i++)
                     Positioned(
                       top: 0,
                       left: 35.0 + (i * 50),
-                      child: Image.asset(
-                        'assets/Ellipse ${41 + i}.png',
-                        height: 60,
+                      child: Container(
+                        width: 100,
+                        height: 100,
+                        child: FirebaseStorageImage(
+                          profileUrl: verbaMatchStatsUsers[i].profilePicture,
+                          user: verbaMatchStatsUsers[i],
+                        ),
                       ),
                     ),
                 ],
@@ -165,7 +171,7 @@ class StatsContent extends StatelessWidget {
           ),
           Visibility(
             visible: !isEmpty,
-            child: verbaMatchStatsContent.isNotEmpty
+            child: verbaMatchStatsUsers.isNotEmpty
                 ? Container(
                     child: Center(
                       child: Text(
@@ -177,7 +183,7 @@ class StatsContent extends StatelessWidget {
                       ),
                     ),
                   )
-                : SizedBox(), // Empty SizedBox to render nothing if verbaMatchStatsContent is empty
+                : SizedBox(), // Empty SizedBox to render nothing if verbaMatchStatsUsers is empty
           ),
           SizedBox(height: 50.v)
         ],

@@ -39,6 +39,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
 //group stats variables
   double groupRating = 0;
   List<String> verbaMatchGroup = [];
+  List<User> verbaMatchStatsUsers = [];
   List<String> groupMembers = [];
   dynamic groupMemberObjects = [];
 
@@ -62,14 +63,12 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
       }
       verbaMatchGroup = usernames;
 
+      // For testing purposes;
+      verbaMatchGroup = ['ian', 'ange'];
+
       groupMembers = List<String>.from(jsonData["groupMembers"]);
 
-      print("\nThese are the members of group: ${groupMembers}\n");
-
       await getGroupMemberObjects(groupMembers);
-
-      print(
-          "\nThis is the 1st member obj of group: ${groupMemberObjects[0]}\n");
     } else {
       print('failed to get group stats. Status code: ${response.statusCode}');
     }
@@ -91,6 +90,11 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
       // Filter users based on groupMembersList and modify groupMemberObjects
       groupMemberObjects = userList
           .where((user) => groupMembersList.contains(user.username))
+          .toList();
+
+      // Users who are verba matches
+      verbaMatchStatsUsers = userList
+          .where((user) => verbaMatchGroup.contains(user.username))
           .toList();
     } else {
       print("Failure: ${response.statusCode}");
@@ -833,9 +837,10 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                   // Content for Stats
                                   Container(
                                       child: StatsContent(
-                                          verbaMatchStatsContent:
-                                              verbaMatchGroup,
-                                          groupRating: groupRating)),
+                                    verbaMatchStatsContent: verbaMatchGroup,
+                                    groupRating: groupRating,
+                                    verbaMatchStatsUsers: verbaMatchStatsUsers,
+                                  )),
                                 ],
                               ),
                             ),
