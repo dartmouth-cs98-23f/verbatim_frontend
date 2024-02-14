@@ -23,11 +23,11 @@ Future<void> main() async {
     await Firebase.initializeApp(
         //name: 'com.example.verbatim_frontend',
         options: const FirebaseOptions(
-      apiKey: 'AIzaSyAtNTGytXuzaYGDiWyzjiQ5qzZqyH3dqYk',
-      appId: '1:89436108608:android:58705820c58e09aa7b6ca5',
-      messagingSenderId: '89436108608',
-      projectId: 'verbatim-81617',
-      storageBucket: "gs://verbatim-81617.appspot.com",
+      apiKey: "AIzaSyCoMI1z4rnhlRtgkctBH84iN4j-AuVqpx0",
+      appId: "1:1052195157201:android:c403d36febd4de5e5a81f0",
+      messagingSenderId: "1052195157201",
+      projectId: "verbatim-b4c2c",
+      storageBucket: "gs://verbatim-b4c2c.appspot.com",
     ));
   } catch (e) {
     print('\n\nError initializing Firebase: $e\n\n');
