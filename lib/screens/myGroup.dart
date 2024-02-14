@@ -848,8 +848,8 @@ class StatsContent extends StatelessWidget {
             height: 200,
             child: Padding(
               padding: EdgeInsets.all(16.0),
-              child: DonutChart(
-                  groupSimilarity: groupRating, title: 'Group Power Score'),
+              child:
+                  DonutChart(groupSimilarity: 3000, title: 'Group Power Score'),
             ),
           ),
           SizedBox(height: 15.v),
@@ -1107,7 +1107,8 @@ class _DonutChartState extends State<DonutChart> {
 
     double sim = widget.groupSimilarity;
     int simint = sim as int;
-    double outof100 = (widget.groupSimilarity / 200);
+    double outof100 = (widget.groupSimilarity / 100);
+    print("outof100 is $outof100");
 
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -1146,12 +1147,12 @@ class _DonutChartState extends State<DonutChart> {
                     sections: [
                       PieChartSectionData(
                         value: outof100,
-                        color: Color.fromARGB(100, 231, 111, 81),
+                        color: Color.fromARGB(255, 231, 111, 81),
                         radius: 25,
                         showTitle: false,
                       ),
                       PieChartSectionData(
-                        value: 100 - widget.groupSimilarity,
+                        value: 100 - outof100,
                         color: calculateColor(18.0),
 
                         //   color: calculateColor(widget.groupSimilarity),
