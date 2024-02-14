@@ -344,7 +344,7 @@ class _SideBarState extends State<SideBar> {
                           const Icon(Icons.add, color: Colors.black, size: 25),
                     ),
 
-                    initiallyExpanded: true, //showFriends,
+                    initiallyExpanded: false, //showFriends,
 
                     shape:
                         const Border(), // this will expand all of them - need to make a custom expansion tile at some point to fix this (i think)
@@ -437,7 +437,7 @@ class _SideBarState extends State<SideBar> {
                       child:
                           const Icon(Icons.add, color: Colors.black, size: 25),
                     ),
-                    initiallyExpanded: true,
+                    initiallyExpanded: false,
 
                     shape: Border(),
                     children: <Widget>[
@@ -548,7 +548,7 @@ class _SideBarState extends State<SideBar> {
                   */
                   const SizedBox(height: 20.0),
                   ExpansionTile(
-                    initiallyExpanded: true,
+                    initiallyExpanded: false,
                     title: const Text(
                       'Friend Requests',
                       style: TextStyle(
