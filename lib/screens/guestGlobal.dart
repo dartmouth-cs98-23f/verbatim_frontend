@@ -8,131 +8,49 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
 import 'package:verbatim_frontend/widgets/custom_tab.dart';
 import 'dart:async';
-import 'package:verbatim_frontend/widgets/stats.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:intl/intl.dart';
-import 'verbatastic.dart';
 import 'globalSubmitGuest.dart';
 
-class globalChallenge extends StatefulWidget {
-  const globalChallenge({
+class guestGlobal extends StatefulWidget {
+  const guestGlobal({
     Key? key,
   }) : super(key: key);
 
   @override
-  _GlobalChallengeState createState() => _GlobalChallengeState();
+  _GuestGlobalState createState() => _GuestGlobalState();
 }
 
-String email = SharedPrefs().getEmail() ?? "";
-String password = SharedPrefs().getPassword() ?? "";
-
-class _GlobalChallengeState extends State<globalChallenge> {
+class _GuestGlobalState extends State<guestGlobal> {
   String username = SharedPrefs().getUserName() ?? "";
+  List<String> userResponses = ['', '', '', '', ''];
   String userResponse = '';
-  List<String> userResponses = [];
+  List<String> responses123 = [];
+
   TextEditingController responseController = TextEditingController();
-  // Get questions and categories variables
+
+  List<String> questions = ["", "", "", "", ""];
   String question1 = "";
   String question2 = "";
   String question3 = "";
-  //new two for +2!!!
   String question4 = "";
   String question5 = "";
 
   String categoryQ1 = "";
   String categoryQ2 = "";
   String categoryQ3 = "";
-  //New two for +2!!!
   String categoryQ4 = "";
   String categoryQ5 = "";
-
   int id = 0;
 
-  // Get Stats variables
-  int totalResponses = 0;
-  int numVerbatimQ1 = 0;
-  int numVerbatimQ2 = 0;
-  int numVerbatimQ3 = 0;
-  // new two for +2 !!!!
-  int numVerbatimQ4 = 0;
-  int numVerbatimQ5 = 0;
-  int numExactVerbatim = 0;
-
-  // keep user responses to send to stats
-  String responseQ1 = "";
-  String responseQ2 = "";
-  String responseQ3 = "";
-  // new two for +2!
-  String responseQ4 = "";
-  String responseQ5 = "";
-
-  //response 123 should take em all
-  List<String> responses123 = [];
-
-  Map<String, List<String>?> verbatasticUsers = {};
-  List<String>? verbatasticUsernames = [];
-  List<String> modResponse = [];
-  String verbatimedWord = "";
-
-  Map<String, dynamic> statsQ1 = {
-    "firstMostPopular": "",
-    "numResponsesFirst": 0,
-    "secondMostPopular": "",
-    "numResponsesSecond": 0,
-    "thirdMostPopular": "",
-    "numResponsesThird": 0,
-    "friendResponses": [],
-  };
-  Map<String, dynamic> statsQ2 = {
-    "firstMostPopular": "",
-    "numResponsesFirst": 0,
-    "secondMostPopular": "",
-    "numResponsesSecond": 0,
-    "thirdMostPopular": "",
-    "numResponsesThird": 0,
-    "friendResponses": [],
-  };
-  Map<String, dynamic> statsQ3 = {
-    "firstMostPopular": "",
-    "numResponsesFirst": 0,
-    "secondMostPopular": "",
-    "numResponsesSecond": 0,
-    "thirdMostPopular": "",
-    "numResponsesThird": 0,
-    "friendResponses": [],
-  };
-
-  // NEW TWO FOR +2!!!!
-  Map<String, dynamic> statsQ4 = {
-    "firstMostPopular": "",
-    "numResponsesFirst": 0,
-    "secondMostPopular": "",
-    "numResponsesSecond": 0,
-    "thirdMostPopular": "",
-    "numResponsesThird": 0,
-    "friendResponses": [],
-  };
-  Map<String, dynamic> statsQ5 = {
-    "firstMostPopular": "",
-    "numResponsesFirst": 0,
-    "secondMostPopular": "",
-    "numResponsesSecond": 0,
-    "thirdMostPopular": "",
-    "numResponsesThird": 0,
-    "friendResponses": [],
-  };
-
   bool responded = false;
-  List<String> responses = List.filled(5, ""); //5 instead of 3 for +2!
-  String fetchQuestions = "";
-  int currentQuestionIndex = 0;
-  List<String> questions = ["", "", "", "", ""]; // +2!!!!!!!!!
+  double progressValue = 0.0;
+  int currQIdx = 0;
+  int totalResponses = 0;
 
   final StreamController<bool> _streamController = StreamController<bool>();
-  double progressValue = 0.0;
 
   Future<void> _fecthNoSignInData() async {
-    print("in no sign in");
     final url =
         Uri.parse("${BackendService.getBackendUrl()}globalChallengeNoSignIn");
     final headers = <String, String>{'Content-Type': 'application/json'};
@@ -140,147 +58,46 @@ class _GlobalChallengeState extends State<globalChallenge> {
     print("Before getting qs with no username");
 
     if (fetchQuestions.statusCode == 200) {
-      print("Success getting qs with no username");
+    
+      print("what is she?${fetchQuestions.body}");
       final Map<String, dynamic>? data = json.decode(fetchQuestions.body);
-      print("this is data in fetch questsions $data");
+   
+      id = data!['globalChallengeId'];
 
-      question1 = data!['q1'];
-
+      question1 = data['q1'];
       question2 = data['q2'];
-
       question3 = data['q3'];
       question4 = data['q4'];
       question5 = data['q5'];
 
-// change this to
-      id = data['globalChallengeDisplayNum'];
-
+     
       categoryQ1 = data['categoryQ1'];
       categoryQ2 = data['categoryQ2'];
       categoryQ3 = data['categoryQ3'];
       categoryQ4 = data['categoryQ4'];
       categoryQ5 = data['categoryQ5'];
-    }
-  }
 
-  Future<void> _fetchData(String username) async {
-    final url = Uri.parse('${BackendService.getBackendUrl()}globalChallenge');
-    final headers = <String, String>{'Content-Type': 'application/json'};
-
-    final fetchQuestions =
-        await http.post(url, headers: headers, body: username);
-
-    if (fetchQuestions.statusCode == 200) {
-      final Map<String, dynamic>? data = json.decode(fetchQuestions.body);
-
-      question1 = data!['q1'];
-
-      question2 = data['q2'];
-
-      question3 = data['q3'];
-      //newtwo for +2!
-      question4 = data['q4'];
-      question5 = data['q5'];
-// display the display num!
-      id = data['globalChallengeDisplayNum'];
-
-      categoryQ1 = data['categoryQ1'];
-      categoryQ2 = data['categoryQ2'];
-      categoryQ3 = data['categoryQ3'];
-      //new two for +2!!!
-      categoryQ4 = data['categoryQ4'];
-      categoryQ5 = data['categoryQ5'];
-      totalResponses = data['totalResponses'];
-
-      // if null, user has not yet submitted global response - if not null we NEED this for page refresh to still work
-
-      if (data["responseQ1"] != null) {
-        print("data in responseQ1 is not null");
-        // get responses
-
-        responseQ1 = data['responseQ1'];
-        id = data['globalChallengeDisplayNum'];
-        responseQ2 = data['responseQ2'];
-        responseQ3 = data['responseQ3'];
-        // new two for +2
-        responseQ4 = data['responseQ4'];
-        responseQ5 = data['responseQ5'];
-        numVerbatimQ1 = data['numVerbatimQ1'];
-        numVerbatimQ2 = data['numVerbatimQ2'];
-        numVerbatimQ3 = data['numVerbatimQ3'];
-        // new two for +2 !!
-        numVerbatimQ4 = data['numVerbatimQ4'];
-        numVerbatimQ5 = data['numVerbatimQ5'];
-        statsQ1 = data['statsQ1'];
-        statsQ2 = data['statsQ2'];
-
-        statsQ3 = data['statsQ3'];
-        // new two for +2!
-        statsQ4 = data['statsQ4'];
-        statsQ5 = data['statsQ5'];
-        totalResponses = data['totalResponses'];
-
-        responded = true;
-
-        // new two for +2!
-        responses123 = [
-          responseQ1,
-          responseQ2,
-          responseQ3,
-          responseQ4,
-          responseQ5
-        ];
-        verbatasticUsers = (data["verbatasticUsers"] as Map<String, dynamic>?)
-                ?.map((key, value) {
-              return MapEntry(key, (value as List).cast<String>());
-            }) ??
-            {};
-
-        if (verbatasticUsers.isNotEmpty) {
-          final MapEntry<String, List<String>?> firstEntry =
-              verbatasticUsers.entries.first;
-
-          verbatimedWord = firstEntry.key;
-          verbatasticUsernames = firstEntry.value;
-        } else {
-          print("verbatasticUsers is empty");
-        }
-      }
-    } else {
-      print("data in ressponse q1 is null");
+      // totalResponses = data['totalResponses'];
     }
   }
 
   @override
   void initState() {
     super.initState();
-
     if (username == '') {
       _fecthNoSignInData().then((_) {
         setState(() {
           questions = [question1, question2, question3, question4, question5];
+          
         });
       });
     } else {
-      _fetchData(username).then((_) {
-        setState(() {
-          questions = [question1, question2, question3, question4, question5];
-        });
-      });
+      print(
+          "Username present, cannot perform guest operations with signed in User");
     }
   }
 
-  void setGuestUserResponses() {
-    SharedPrefs().updateGameValues(responses123[0], responses123[1],
-        responses123[2], responses123[3], responses123[4]);
-  }
-
-  Future<void> sendUserResponses(
-      String username, String email, List<String> userResponses) async {
-    final url =
-        Uri.parse('${BackendService.getBackendUrl()}submitGlobalResponse');
-    final headers = <String, String>{'Content-Type': 'application/json'};
-
+  void parseResponses() {
     final modifiedResponses = userResponses.map((response) {
       final responseWithoutPunctuation =
           response.replaceAll(RegExp(r'[^\w\s]'), '');
@@ -305,87 +122,31 @@ class _GlobalChallengeState extends State<globalChallenge> {
 
 //make sure we can send responses to stats on the first go
     responses123 = modifiedResponses;
-    print("these are responses 123 $responses123");
-    //final CounterModel _counter = CounterModel();
+  }
 
-    //     builder:(context)=>
-    // Provider.of<GameObject>(context, listen:false).updateValues(responses123[0], responses123[1], responses123[2]);
-
-    final response = await http.post(
-      url,
-      headers: headers,
-      body: json.encode({
-        'username': username,
-        'responseQ1': modifiedResponses[0],
-        'responseQ2': modifiedResponses[1],
-        'responseQ3': modifiedResponses[2],
-        'responseQ4': modifiedResponses[3],
-        'responseQ5': modifiedResponses[4], // +2!!
-      }),
-    );
-
-    if (response.statusCode == 200) {
-      print('Responses sent successfully');
-
-      final Map<String, dynamic> stats = json.decode(response.body);
-      print("after sending user responses these are returned stats $stats");
-
-      numVerbatimQ1 = stats['numVerbatimQ1'];
-      numVerbatimQ2 = stats['numVerbatimQ2'];
-      numVerbatimQ3 = stats['numVerbatimQ3'];
-      numVerbatimQ4 = stats['numVerbatimQ4']; //+2!!
-      numVerbatimQ5 = stats['numVerbatimQ5'];
-      statsQ1 = stats['statsQ1'];
-      statsQ2 = stats['statsQ2'];
-      statsQ3 = stats['statsQ3'];
-      statsQ4 = stats['statsQ4']; //+2!!
-      statsQ5 = stats['statsQ5'];
-      verbatasticUsers = (stats["verbatasticUsers"] as Map<String, dynamic>?)
-              ?.map((key, value) {
-            return MapEntry(key, (value as List).cast<String>());
-          }) ??
-          {};
-      setState(() {
-        responded = true;
-      });
-
-      if (verbatasticUsers.isNotEmpty) {
-        final MapEntry<String, List<String>?> firstEntry =
-            verbatasticUsers.entries.first;
-
-        verbatimedWord = firstEntry.key;
-        verbatasticUsernames = firstEntry.value;
-      } else {
-        print("verbatasticUsers is empty");
-      }
-
-      totalResponses = stats['totalResponses'];
-
-      responded = true;
-    } else {
-      print('Failed to send responses. Status code: ${response.statusCode}');
-    }
+  void setGuestUserResponses() {
+    parseResponses();
+    SharedPrefs().updateGameValues(responses123[0], responses123[1],
+        responses123[2], responses123[3], responses123[4]);
+    
   }
 
   void updateProgress() {
     setState(() {
-      progressValue = (currentQuestionIndex + 1) / questions.length;
+      progressValue = (currQIdx + 1) / questions.length;
     });
   }
 
   @override
   Widget build(BuildContext context) {
     String idString = id.toString();
-
-    //TODO: check that this here works
-
     username = SharedPrefs().getUserName() ?? "";
+
+    //get time and format
     DateTime now = DateTime.now();
     DateTime midnight =
         DateTime(now.year, now.month, now.day + 1); // Set to next midnight
-
     Duration timeUntilMidnight = midnight.difference(now);
-
     String formattedTimeUntilMidnight =
         DateFormat.Hms().format(DateTime(0).add(timeUntilMidnight));
 
@@ -464,17 +225,18 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                           children: [
                                             SizedBox(
                                               child: RichText(
-                                                text: TextSpan(
+                                                text: const TextSpan(
+                                                  //TODO:
                                                   children: [
                                                     TextSpan(
-                                                      text: '$totalResponses',
-                                                      style: const TextStyle(
+                                                      text: 'TBD',
+                                                      style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           color: Colors.black,
                                                           fontSize: 15),
                                                     ),
-                                                    const TextSpan(
+                                                    TextSpan(
                                                         text:
                                                             " users have played today",
                                                         style: TextStyle(
@@ -486,8 +248,8 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                               ),
                                             ),
                                             SizedBox(
-                                                height: 43,
-                                                width: 145,
+                                                height: 50,
+                                                width: 150,
                                                 child: Container(
                                                   child: PlayTab(
                                                     onTabSelectionChanged: (bool
@@ -508,8 +270,8 @@ class _GlobalChallengeState extends State<globalChallenge> {
                         clipBehavior: Clip.hardEdge,
                         margin: EdgeInsets.only(top: 10.v),
                         //    padding: EdgeInsets.symmetric(horizontal: 10),
-                        width: 350,
-                        height: 500,
+                        width: 300,
+                        height: 400,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
                           boxShadow: [
@@ -537,7 +299,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                           padding: const EdgeInsets.symmetric(
                                               horizontal: 16.0),
                                           child: Text(
-                                            questions[currentQuestionIndex],
+                                            questions[currQIdx],
                                             style: const TextStyle(
                                               fontSize: 18,
                                               fontWeight: FontWeight.bold,
@@ -552,7 +314,10 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                             controller: responseController,
                                             onChanged: (value) {
                                               setState(() {
-                                                userResponse = value;
+                                                if (currQIdx < 5) {
+                                                  userResponses[currQIdx] =
+                                                      value;
+                                                }
                                               });
                                             },
                                             decoration: const InputDecoration(
@@ -576,17 +341,16 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                           ),
                                           onPressed: () {
                                             setState(() {
-                                              userResponse =
-                                                  responseController.text;
-                                              userResponses.add(userResponse);
-                                              responseController.clear();
-                                              if (currentQuestionIndex <= 3) {
-                                                // 3 instead of one for +2!!
+                                              if (currQIdx < 4) {
+                                                userResponses[currQIdx] =
+                                                    responseController.text;
+                                                responseController.clear();
                                                 updateProgress();
-                                                currentQuestionIndex += 1;
-                                              } else {
-                                                sendUserResponses(username,
-                                                    email, userResponses);
+                                                currQIdx += 1;
+                                              }
+
+                                              else {
+                                                //setGuestUserResponses();
                                                 setState(() {
                                                   responded = true;
                                                 });
@@ -594,10 +358,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                             });
                                           },
                                           child: Text(
-                                            currentQuestionIndex ==
-                                                    4 //4 instead of 2 for +2!
-                                                ? 'Submit'
-                                                : 'Next',
+                                            currQIdx == 4 ? 'Submit' : 'Next',
                                           ),
                                         ),
                                         const SizedBox(height: 20),
@@ -679,56 +440,15 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                         ),
                                       ],
                                     );
-                                  } else if (!snapshot.data! &&
-                                      responded == true) {
-                                    return Column(children: [
-                                      SizedBox(
-                                          width: 350,
-                                          height: 500,
-                                          child: Stats(
-                                              totalResponses: totalResponses,
-                                              tabLabels: tabLables,
-                                              statsQ1: statsQ1,
-                                              statsQ2: statsQ2,
-                                              statsQ3: statsQ3,
-                                              statsQ4:
-                                                  statsQ4, // two more for +2!
-                                              statsQ5: statsQ5,
-                                              questions: questions,
-                                              responses: responses123))
-                                    ]);
                                   }
                                   //NEED TO CHANGE THIS SNIPPET OF CODE TO HAVE THE CARD AND A SIGN UP
                                   else {
-                                    return FutureBuilder<void>(
-                                      future: _fetchData(username),
-                                      builder: (context, snapshot) {
-                                        if (snapshot.connectionState ==
-                                            ConnectionState.waiting) {
-                                          // load indicator j to make it wait
-                                          return const CircularProgressIndicator();
-                                        } else if (snapshot.hasError) {
-                                          // aka cross ur fingers
-                                          return Text(
-                                              'Error: ${snapshot.error}');
-                                        } else {
-                                          // display verbatastic data
-                                          return Column(
-                                            children: [
-                                              // Guest(formattedTimeUntilMidnight:
-                                              //       formattedTimeUntilMidnight),
-
-                                              Verbatastic(
-                                                verbatimedWord: verbatimedWord,
-                                                formattedTimeUntilMidnight:
-                                                    formattedTimeUntilMidnight,
-                                                verbatasticUsernames:
-                                                    verbatasticUsernames,
-                                              ),
-                                            ],
-                                          );
-                                        }
-                                      },
+                                    return Column(
+                                      children: [
+                                        Guest(
+                                            formattedTimeUntilMidnight:
+                                                formattedTimeUntilMidnight),
+                                      ],
                                     );
                                   }
                                 }),

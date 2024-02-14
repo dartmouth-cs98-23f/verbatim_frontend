@@ -1,19 +1,15 @@
 import 'package:flutter/material.dart';
-import 'package:get/get.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/Components/defineRoutes.dart';
 import 'dart:convert';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/User.dart';
-import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'package:verbatim_frontend/screens/profile.dart';
 import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:confetti/confetti.dart';
-import 'dart:math';
 
 class UserGroup {
   int id = 0;
@@ -104,13 +100,13 @@ class _SideBarState extends State<SideBar> {
       barrierDismissible: true,
       builder: (BuildContext context) {
         return AnimatedContainer(
-            duration: Duration(seconds: 1),
+            duration: const Duration(seconds: 1),
             curve: Curves.easeInOut,
             child: CupertinoAlertDialog(
-              title: Text('Friend Request'),
+              title: const Text('Friend Request'),
               actions: <Widget>[
                 CupertinoDialogAction(
-                  child: Text('Accept',
+                  child: const Text('Accept',
                       style: TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.green)),
                   onPressed: () {
@@ -120,7 +116,7 @@ class _SideBarState extends State<SideBar> {
                   },
                 ),
                 CupertinoDialogAction(
-                  child: Text('Decline',
+                  child: const Text('Decline',
                       style: TextStyle(
                           fontWeight: FontWeight.bold, color: Colors.red)),
                   onPressed: () {
@@ -137,7 +133,7 @@ class _SideBarState extends State<SideBar> {
   //get groups
   Future<void> getMyGroups(String username) async {
     final url = Uri.parse(
-        BackendService.getBackendUrl() + 'user/' + '$username/' + 'groups');
+        '${BackendService.getBackendUrl()}user/$username/groups');
 
     final response = await http.get(url);
 
@@ -170,9 +166,9 @@ class _SideBarState extends State<SideBar> {
       final List<dynamic> data = json.decode(response.body);
       friends = data.map((item) => User.fromJson(item)).toList();
       friends.removeWhere((user) => user.username == username);
-      friends.forEach((user) {
+      for (var user in friends) {
         user.isRequested = true;
-      });
+      }
     } else {
       print('Failed to get friends. Status code: ${response.statusCode}');
     }
@@ -378,7 +374,7 @@ class _SideBarState extends State<SideBar> {
                                   ),
                                 ),
                                 leading: Container(
-                                    decoration: BoxDecoration(
+                                    decoration: const BoxDecoration(
                                       boxShadow: [],
                                     ),
                                     child: InkWell(
@@ -439,14 +435,14 @@ class _SideBarState extends State<SideBar> {
                     ),
                     initiallyExpanded: true,
 
-                    shape: Border(),
+                    shape: const Border(),
                     children: <Widget>[
                       const SizedBox(height: 10.0),
                       Container(
-                        padding: EdgeInsets.symmetric(horizontal: 5.0),
+                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
                         child: ListView.builder(
                           shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
+                          physics: const NeverScrollableScrollPhysics(),
                           itemCount: groupnamesList.length,
                           itemBuilder: (BuildContext context, int index) {
                             String groupname = groupnamesList[index];
@@ -455,13 +451,13 @@ class _SideBarState extends State<SideBar> {
                             return ListTile(
                               title: Text(
                                 groupname,
-                                style: TextStyle(
+                                style: const TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.bold,
                                   fontSize: 15,
                                 ),
                               ),
-                              leading: Icon(Icons.people, color: Colors.black),
+                              leading: const Icon(Icons.people, color: Colors.black),
                               onTap: () {
                                 Navigator.pushNamed(this.context,
                                     '/myGroup?groupName=$groupname&groupId=$groupId');
@@ -708,7 +704,7 @@ class _SideBarState extends State<SideBar> {
                       ),
                     ],
                   ),
-                  SizedBox(height: 10.0),
+                  const SizedBox(height: 10.0),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 5.0),
                     child: Container(
@@ -727,15 +723,15 @@ class _SideBarState extends State<SideBar> {
                       ),
                     ),
                   ),
-                  SizedBox(height: 10),
+                  const SizedBox(height: 10),
                   Container(
                       child: Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 5,
                     ),
-                    child: Center(
+                    child: const Center(
                       child: ListTile(
-                        title: const Text(
+                        title: Text(
                           'Made with love, by the Verbatim team.',
                           textAlign: TextAlign.center,
                           style: TextStyle(

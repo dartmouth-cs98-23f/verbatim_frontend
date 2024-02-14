@@ -3,7 +3,6 @@ import 'package:flutter_svg/svg.dart';
 import 'package:verbatim_frontend/widgets/custom_app_bar.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
-import 'package:verbatim_frontend/widgets/stats.dart';
 import 'package:verbatim_frontend/widgets/stats_tile.dart';
 import 'package:verbatim_frontend/screens/settings.dart';
 
@@ -37,7 +36,7 @@ class _ProfileState extends State<Profile> {
         body: SingleChildScrollView(
           child: SafeArea(
             child: Container(
-              color: Color.fromARGB(255, 255, 243, 238),
+              color: const Color.fromARGB(255, 255, 243, 238),
               child: Column(
                 children: [
                   SizedBox(
@@ -64,21 +63,21 @@ class _ProfileState extends State<Profile> {
                               ),
 
                               // App bar on top of background
-                              CustomAppBar(),
+                              const CustomAppBar(),
                             ],
                           ),
                         ),
                         Card(
                           elevation: 2,
                           color: Colors.white,
-                          shadowColor: Color(0xFFE76F51).withOpacity(0.2),
+                          shadowColor: const Color(0xFFE76F51).withOpacity(0.2),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30.0),
                           ),
                           child: Container(
                             width: 300.h,
                             height: 200.v,
-                            padding: EdgeInsets.all(30),
+                            padding: const EdgeInsets.all(30),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [
@@ -115,7 +114,7 @@ class _ProfileState extends State<Profile> {
                                               fontWeight: FontWeight.bold,
                                               fontSize: 32),
                                         ),
-                                        SizedBox(
+                                        const SizedBox(
                                           height: 15,
                                         ),
                                         SafeArea(
@@ -125,7 +124,7 @@ class _ProfileState extends State<Profile> {
                                               Navigator.of(context)
                                                   .push(MaterialPageRoute(
                                                 builder: (context) =>
-                                                    settings(),
+                                                    const settings(),
                                               ));
                                               //func
                                             },
@@ -133,7 +132,7 @@ class _ProfileState extends State<Profile> {
                                               width: 120,
                                               height: 30,
                                               decoration: ShapeDecoration(
-                                                color: Color(0xFFE76F51),
+                                                color: const Color(0xFFE76F51),
                                                 shape: RoundedRectangleBorder(
                                                   borderRadius:
                                                       BorderRadius.circular(15),
@@ -149,7 +148,7 @@ class _ProfileState extends State<Profile> {
                                                     Navigator.of(context)
                                                         .push(MaterialPageRoute(
                                                       builder: (context) =>
-                                                          settings(),
+                                                          const settings(),
                                                     ));
                                                   },
                                                   child: const Row(
@@ -213,14 +212,14 @@ class _ProfileState extends State<Profile> {
                         Card(
                           elevation: 4,
                           color: Colors.white,
-                          shadowColor: Color(0xFFE76F51),
+                          shadowColor: const Color(0xFFE76F51),
                           shape: RoundedRectangleBorder(
                             borderRadius: BorderRadius.circular(30.0),
                           ),
                           child: Container(
                             width: 300.h,
                             height: 450.v,
-                            padding: EdgeInsets.all(25),
+                            padding: const EdgeInsets.all(25),
                             child: Column(
                               crossAxisAlignment: CrossAxisAlignment.start,
                               children: [

@@ -6,7 +6,7 @@ class User {
   String username = "";
   String lastName = "";
   String firstName = "";
-  dynamic profilePicture;
+  String profilePicture;
   String? bio = "";
   int numGlobalChallengesCompleted = 0;
   int numCustomChallengesCompleted = 0;

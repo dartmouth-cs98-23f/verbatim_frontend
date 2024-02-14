@@ -19,7 +19,7 @@ class myGroup extends StatefulWidget {
   final int? groupId;
   final List<String>? addedUsernames;
 
-  myGroup({
+  const myGroup({
     Key? key,
     this.addedUsernames,
     required this.groupName,
@@ -40,7 +40,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
 
   Future<void> getGroupStats(int groupId) async {
     final url =
-        Uri.parse(BackendService.getBackendUrl() + 'group/' + '$groupId');
+        Uri.parse('${BackendService.getBackendUrl()}group/$groupId');
 
     final response = await http.get(url);
 
@@ -65,7 +65,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
   }
 
   Future<void> leaveGroup(int groupId, String username) async {
-    final url = Uri.parse(BackendService.getBackendUrl() + 'leaveGroup');
+    final url = Uri.parse('${BackendService.getBackendUrl()}leaveGroup');
     final headers = <String, String>{'Content-Type': 'application/json'};
 
     final response = await http.post(url,
@@ -87,7 +87,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
 
   Future<void> getActiveChallenges(int groupId) async {
     final url = Uri.parse(
-        BackendService.getBackendUrl() + 'group/' + '$groupId/' + 'challenges');
+        '${BackendService.getBackendUrl()}group/$groupId/challenges');
 
     final response = await http.get(url);
     if (response.statusCode == 200) {
@@ -104,12 +104,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
             .toList();
 
         mappedChallenges = getMappedChallenges(activeChallenges);
-        challengeStats = Map.fromIterable(
-          //jadded
-          activeChallengeIds,
-          key: (id) => id,
-          value: (_) => {},
-        );
+        challengeStats = { for (var id in activeChallengeIds) id : {} };
       } else {}
     } else {
       print("active challenges not obtained succesfuly");
@@ -143,10 +138,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
       String user,
       Map<int, List<String>> mappedChallenges,
       Map<int, Map<String, dynamic>> challengeStats) async {
-    final url = Uri.parse(BackendService.getBackendUrl() +
-        '$challengeId/' +
-        '$user/' +
-        'getChallengeQs');
+    final url = Uri.parse('${BackendService.getBackendUrl()}$challengeId/$user/getChallengeQs');
 
     final response = await http.get(url);
     if (response.statusCode == 200) {
@@ -204,7 +196,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
 
   Future<void> createStandardChallenge(String username, int groupId) async {
     final url =
-        Uri.parse(BackendService.getBackendUrl() + 'createStandardChallenge');
+        Uri.parse('${BackendService.getBackendUrl()}createStandardChallenge');
     final headers = <String, String>{'Content-Type': 'application/json'};
     final response = await http.post(url,
         headers: headers,
@@ -219,7 +211,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
   List<String> groupUsers = ['frances', '2', '2', '3', '33', '44'];
 
   Future<void> preloadImages(BuildContext context) async {
-    for (int i = 0; i < min(groupUsers!.length + 1, 6); i++) {
+    for (int i = 0; i < min(groupUsers.length + 1, 6); i++) {
       final key = 'assets/Ellipse ${41 + i}.png';
       final image = AssetImage(key);
       await precacheImage(image, context);
@@ -247,9 +239,9 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
-                  color: Color(0xFF9E503C).withOpacity(0.5),
+                  color: const Color(0xFF9E503C).withOpacity(0.5),
                   blurRadius: 4,
-                  offset: Offset(2, 3),
+                  offset: const Offset(2, 3),
                 )
               ],
             ),
@@ -258,9 +250,9 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 Padding(
-                  padding: EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(8),
                   child: Container(
                       child: FittedBox(
                     fit: BoxFit.scaleDown,
@@ -268,7 +260,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                       textAlign: TextAlign.center,
                       text: TextSpan(
                         children: [
-                          TextSpan(
+                          const TextSpan(
                             text: 'New Challenge with ',
                             style: TextStyle(
                               color: Colors.black,
@@ -278,8 +270,8 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                           ),
                           // if groupname is a certain length, make it a new line
                           TextSpan(
-                            text: '$groupName',
-                            style: TextStyle(
+                            text: groupName,
+                            style: const TextStyle(
                               color: Colors.orange,
                               fontSize: 24,
                               fontWeight: FontWeight.w900,
@@ -290,7 +282,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                     ),
                   )),
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -310,7 +302,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                         groupId),
                   ],
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
               ],
             ),
           ),
@@ -324,16 +316,16 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
     return Container(
         width: 130,
         height: 130,
-        padding: EdgeInsets.all(5),
+        padding: const EdgeInsets.all(5),
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
-          color: Color(0xFFE76F51),
+          color: const Color(0xFFE76F51),
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: Color(0xFF997048).withOpacity(0.5),
+              color: const Color(0xFF997048).withOpacity(0.5),
               blurRadius: 4,
-              offset: Offset(0, 2),
+              offset: const Offset(0, 2),
             )
           ],
         ),
@@ -381,28 +373,28 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
               Icon(
                 iconData,
-                color: Color.fromARGB(255, 250, 192, 94),
+                color: const Color.fromARGB(255, 250, 192, 94),
                 size: 20,
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
               Text(
                 title,
-                style: TextStyle(
+                style: const TextStyle(
                   color: Color(0xFFFFF7EE),
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
                 ),
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
               SizedBox(
                 width: double.infinity,
                 child: Text(
                   description,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
+                  style: const TextStyle(
                     color: Color(0xFFFFF7EE),
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
@@ -422,7 +414,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
   }
 
   Future<void> _refresh() async {
-    await Future.delayed(Duration(seconds: 2));
+    await Future.delayed(const Duration(seconds: 2));
     setState(() {});
   }
 
@@ -442,19 +434,20 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
     }
   }
 
+  @override
   Widget build(BuildContext context) {
     // getGroupStats(widget.groupId ?? 0);
-    final String assetName = 'assets/img1.svg';
+    const String assetName = 'assets/img1.svg';
     List<String>? addedUsernames = widget.addedUsernames;
     int groupID = widget.groupId!;
     String username = SharedPrefs().getUserName() ?? "";
 
     return SafeArea(
         child: Scaffold(
-      backgroundColor: Color.fromARGB(255, 255, 243, 238),
+      backgroundColor: const Color.fromARGB(255, 255, 243, 238),
       body: SingleChildScrollView(
           child: Container(
-              color: Color.fromARGB(255, 255, 243, 238),
+              color: const Color.fromARGB(255, 255, 243, 238),
               child: Column(children: [
                 SizedBox(
                   width: double.maxFinite,
@@ -475,14 +468,14 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                             ),
                           ),
                           // app bar on top of background - currently non functional
-                          CustomAppBar(),
+                          const CustomAppBar(),
                           Container(
-                            margin: EdgeInsets.only(top: 70),
+                            margin: const EdgeInsets.only(top: 70),
                             child: Column(
                               children: [
                                 Text(
                                   widget.groupName,
-                                  style: TextStyle(
+                                  style: const TextStyle(
                                     fontSize: 30,
                                     color: Colors.white,
                                     fontWeight: FontWeight.w900,
@@ -490,13 +483,13 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                 ),
                                 SizedBox(height: 10.v),
                                 Center(
-                                  child: Container(
+                                  child: SizedBox(
                                     width: min(groupUsers.length + 1, 6) * 60,
                                     height: 45,
                                     child: Stack(
                                       children: [
                                         for (int i = 0;
-                                            i < min(groupUsers!.length + 1, 6);
+                                            i < min(groupUsers.length + 1, 6);
                                             i++)
                                           Positioned(
                                             top: 0,
@@ -512,7 +505,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                 ),
                                 Center(
                                     child: Container(
-                                        margin: EdgeInsets.only(top: 13),
+                                        margin: const EdgeInsets.only(top: 13),
                                         child: Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.spaceAround,
@@ -526,14 +519,14 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                                   },
                                                   style:
                                                       ElevatedButton.styleFrom(
-                                                    primary: Colors.white,
+                                                    backgroundColor: Colors.white,
                                                     padding:
-                                                        EdgeInsets.symmetric(
+                                                        const EdgeInsets.symmetric(
                                                             horizontal: 8,
                                                             vertical: 4),
                                                   ),
-                                                  child: Text("Leave Group",
-                                                      style: const TextStyle(
+                                                  child: const Text("Leave Group",
+                                                      style: TextStyle(
                                                         fontSize: 12,
                                                         fontWeight:
                                                             FontWeight.bold,
@@ -559,7 +552,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                               color: const Color.fromARGB(255, 117, 19, 12)
                                   .withOpacity(0.5),
                               blurRadius: 5,
-                              offset: Offset(3, 7),
+                              offset: const Offset(3, 7),
                             ),
                           ],
                           color: Colors.white,
@@ -573,11 +566,11 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                   TabBar(
                                     unselectedLabelColor: Colors.black,
                                     controller: _tabController,
-                                    indicatorColor: Color(0xFFE76F51),
-                                    labelColor: Color(0xFFE76F51),
+                                    indicatorColor: const Color(0xFFE76F51),
+                                    labelColor: const Color(0xFFE76F51),
                                     indicatorPadding: EdgeInsets.zero,
                                     indicatorSize: TabBarIndicatorSize.label,
-                                    tabs: [
+                                    tabs: const [
                                       Tab(
                                         child: Align(
                                           alignment: Alignment.center,
@@ -613,7 +606,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                 children: [
                                   // Active Challenges
                                   Container(
-                                    padding: EdgeInsets.only(
+                                    padding: const EdgeInsets.only(
                                         top: 10,
                                         right: 10,
                                         left: 10,
@@ -733,12 +726,12 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                                   }
                                                 },
                                                 child: Container(
-                                                  margin: EdgeInsets.symmetric(
+                                                  margin: const EdgeInsets.symmetric(
                                                     vertical: 10,
                                                   ),
-                                                  padding: EdgeInsets.all(10),
+                                                  padding: const EdgeInsets.all(10),
                                                   decoration: BoxDecoration(
-                                                    color: Color.fromARGB(
+                                                    color: const Color.fromARGB(
                                                         255, 231, 111, 81),
                                                     borderRadius:
                                                         BorderRadius.circular(
@@ -751,14 +744,14 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                                     children: [
                                                       Text(
                                                         title,
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                           color: Colors.white,
                                                           fontSize: 14,
                                                           fontWeight:
                                                               FontWeight.bold,
                                                         ),
                                                       ),
-                                                      Icon(
+                                                      const Icon(
                                                         Icons.arrow_forward_ios,
                                                         color: Colors.white,
                                                         size: 16,
@@ -778,7 +771,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                                 widget.groupName,
                                                 widget.groupId);
                                           },
-                                          child: Row(
+                                          child: const Row(
                                             mainAxisAlignment:
                                                 MainAxisAlignment.end,
                                             children: [
@@ -813,9 +806,9 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                             ),
                           ],
                         ))),
-                Center(child: SizedBox(height: 50))
+                const Center(child: SizedBox(height: 50))
               ]))),
-      drawer: SideBar(),
+      drawer: const SideBar(),
     ));
   }
 }
@@ -824,7 +817,7 @@ class StatsContent extends StatelessWidget {
   List<String> verbaMatchStatsContent;
   double groupRating;
 
-  StatsContent({
+  StatsContent({super.key, 
     required this.verbaMatchStatsContent,
     required this.groupRating,
   });
@@ -848,11 +841,11 @@ class StatsContent extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
+          SizedBox(
             // color: Colors.white,
             height: 200,
             child: Padding(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: DonutChart(
                   groupSimilarity: groupRating, title: 'Group Power Score'),
             ),
@@ -861,7 +854,7 @@ class StatsContent extends StatelessWidget {
           Visibility(
             visible: !isEmpty,
             child: Container(
-              child: Center(
+              child: const Center(
                 child: Text(
                   'Most Similar: ',
                   style: TextStyle(
@@ -877,7 +870,7 @@ class StatsContent extends StatelessWidget {
               child: Container(
                 child: Center(
                   child: RichText(
-                    text: TextSpan(
+                    text: const TextSpan(
                       children: [
                         TextSpan(
                           text: 'No ',
@@ -910,14 +903,14 @@ class StatsContent extends StatelessWidget {
               )),
           Visibility(
             visible: verbaMatchStatsContent.isEmpty,
-            child: SizedBox(
+            child: const SizedBox(
               height: 20,
             ),
           ),
           Visibility(
             visible: isEmpty,
             child: Container(
-              child: Center(
+              child: const Center(
                 child: Text(
                   'Play more challenges to match!',
                   style: TextStyle(
@@ -932,7 +925,7 @@ class StatsContent extends StatelessWidget {
             visible: !isEmpty,
             child: Container(
               child: RichText(
-                text: TextSpan(
+                text: const TextSpan(
                   children: [
                     TextSpan(
                       text: 'Verba',
@@ -978,7 +971,7 @@ class StatsContent extends StatelessWidget {
           Visibility(
             visible: !isEmpty,
             child: Center(
-              child: Container(
+              child: SizedBox(
                 width: 170,
                 height: 60,
                 child: Stack(
@@ -1008,12 +1001,12 @@ class StatsContent extends StatelessWidget {
                   child: verb1 != "" && verb2 != ""
                       ? Text(
                           '$verb1 and $verb2',
-                          style: TextStyle(
+                          style: const TextStyle(
                             fontSize: 14,
                             fontWeight: FontWeight.bold,
                           ),
                         )
-                      : SizedBox(
+                      : const SizedBox(
                           height: 4,
                         )),
             ),
@@ -1029,7 +1022,7 @@ class DonutChart extends StatefulWidget {
   final double groupSimilarity;
   final String title;
 
-  DonutChart({
+  const DonutChart({
     Key? key,
     required this.groupSimilarity,
     required this.title,
@@ -1055,9 +1048,9 @@ class _DonutChartState extends State<DonutChart> {
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
-                    color: Color(0xFF9E503C).withOpacity(0.5),
+                    color: const Color(0xFF9E503C).withOpacity(0.5),
                     blurRadius: 4,
-                    offset: Offset(2, 3),
+                    offset: const Offset(2, 3),
                   )
                 ],
               ),
@@ -1066,12 +1059,12 @@ class _DonutChartState extends State<DonutChart> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   Padding(
-                    padding: EdgeInsets.all(6),
+                    padding: const EdgeInsets.all(6),
                     child: RichText(
                       textAlign: TextAlign.center,
-                      text: TextSpan(
+                      text: const TextSpan(
                         children: [
                           TextSpan(
                             text: 'Your score increases when you:\n\n',
@@ -1105,7 +1098,7 @@ class _DonutChartState extends State<DonutChart> {
   @override
   Widget build(BuildContext context) {
     Color calculateColor(double similarity) {
-      int score = (similarity / 2).toInt();
+      int score = similarity ~/ 2;
 
       return Color.fromARGB(255, 250, 192 + score, 94 + score);
     }
@@ -1122,15 +1115,15 @@ class _DonutChartState extends State<DonutChart> {
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Text(
               widget.title,
-              style: TextStyle(
+              style: const TextStyle(
                 fontSize: 18,
                 fontWeight: FontWeight.bold,
               ),
             ),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             InkWell(
               onTap: () => _showPopup(context),
-              child: Icon(
+              child: const Icon(
                 Icons.help_outline,
                 color: Color(0xFFE76F51),
               ),
@@ -1151,7 +1144,7 @@ class _DonutChartState extends State<DonutChart> {
                     sections: [
                       PieChartSectionData(
                         value: outof100,
-                        color: Color.fromARGB(255, 231, 111, 81),
+                        color: const Color.fromARGB(255, 231, 111, 81),
                         radius: 25,
                         showTitle: false,
                       ),
@@ -1174,7 +1167,7 @@ class _DonutChartState extends State<DonutChart> {
                       Container(
                         height: 80,
                         width: 80,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: Colors.white,
                           shape: BoxShape.circle,
                           boxShadow: [
@@ -1182,7 +1175,7 @@ class _DonutChartState extends State<DonutChart> {
                                 color: Color.fromARGB(255, 255, 243, 238),
                                 blurRadius: 10.0,
                                 spreadRadius: 10.0,
-                                offset: const Offset(3, 3)),
+                                offset: Offset(3, 3)),
                           ],
                         ),
                         child: Align(
@@ -1191,13 +1184,13 @@ class _DonutChartState extends State<DonutChart> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                "${simint.toStringAsFixed(2)}",
-                                style: TextStyle(
+                                simint.toStringAsFixed(2),
+                                style: const TextStyle(
                                   fontSize: 10,
                                   fontWeight: FontWeight.bold,
                                 ),
                               ),
-                              Text(
+                              const Text(
                                 "Rating",
                                 style: TextStyle(
                                   fontSize: 10,
