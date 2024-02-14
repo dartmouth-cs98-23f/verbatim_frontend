@@ -13,6 +13,7 @@ import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:confetti/confetti.dart';
+import 'dart:math';
 
 class UserGroup {
   int id = 0;
@@ -77,6 +78,9 @@ class _SideBarState extends State<SideBar> {
   late ConfettiController _confettiController;
 
   final Color primary = const Color.fromARGB(255, 231, 111, 81);
+  bool showFriends = false;
+  bool showGroups = false;
+  bool showFriendRequests = false;
 
   List<User> friendRequests = [];
   List<User> friends = [];
@@ -340,7 +344,7 @@ class _SideBarState extends State<SideBar> {
                           const Icon(Icons.add, color: Colors.black, size: 25),
                     ),
 
-                    initiallyExpanded: true,
+                    initiallyExpanded: true, //showFriends,
 
                     shape:
                         const Border(), // this will expand all of them - need to make a custom expansion tile at some point to fix this (i think)
@@ -433,7 +437,7 @@ class _SideBarState extends State<SideBar> {
                       child:
                           const Icon(Icons.add, color: Colors.black, size: 25),
                     ),
-                    initiallyExpanded: false,
+                    initiallyExpanded: showGroups,
 
                     shape: Border(),
                     children: <Widget>[
@@ -441,13 +445,23 @@ class _SideBarState extends State<SideBar> {
                       Container(
                         padding: EdgeInsets.symmetric(horizontal: 5.0),
                         child: ListView.builder(
+                          itemCount: showGroups
+                              ? groupnamesList.length
+                              : min(groupnamesList.length, 2),
                           shrinkWrap: true,
                           physics: NeverScrollableScrollPhysics(),
-                          itemCount: groupnamesList.length,
+                          // itemCount: groupnamesList.length,
                           itemBuilder: (BuildContext context, int index) {
+                            if (showGroups) {
+                              int initialDisplayedItems =
+                                  min(groupnamesList.length, 2);
+                              groupnamesList =
+                                  groupnamesList.sublist(initialDisplayedItems);
+                              userGroups =
+                                  userGroups.sublist(initialDisplayedItems);
+                            }
                             String groupname = groupnamesList[index];
                             int? groupId = userGroups[index].id;
-// go to group with this Id
                             return ListTile(
                               title: Text(
                                 groupname,
@@ -466,6 +480,16 @@ class _SideBarState extends State<SideBar> {
                           },
                         ),
                       ),
+                      if (!showGroups && groupnamesList.length > 2)
+                        // Only show a button to expand if there are more items
+                        ListTile(
+                          title: Text('Show more'),
+                          onTap: () {
+                            setState(() {
+                              showGroups = true;
+                            });
+                          },
+                        ),
                     ],
                   ),
                   const SizedBox(height: 20.0),
@@ -526,7 +550,7 @@ class _SideBarState extends State<SideBar> {
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  GestureDetector(
+                                  /*GestureDetector(
                                     onTap: () {
                                       _showAcceptDeclineDialog(context,
                                           (accepted) {
@@ -552,7 +576,46 @@ class _SideBarState extends State<SideBar> {
                                       child: Image.asset('assets/decision.png'),
                                       radius: 18,
                                     ),
+                                  ),*/
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        friendRequests.remove(requester);
+                                        if (friendRequests.isNotEmpty) {
+                                          trailingIconColor = Colors.orange;
+                                        } else {
+                                          trailingIconColor = Colors.black;
+                                        }
+                                      });
+                                      setState(() {
+                                        handleFriendRequests(
+                                            username, requester.username, true);
+                                      });
+                                    },
+                                    child: const Icon(Icons.check_box,
+                                        color: Colors.black),
                                   ),
+                                  GestureDetector(
+                                    onTap: () {
+                                      setState(() {
+                                        friendRequests.remove(requester);
+                                        if (friendRequests.isNotEmpty) {
+                                          trailingIconColor = Colors.orange;
+                                        } else {
+                                          trailingIconColor = Colors.black;
+                                        }
+
+                                        setState(() {
+                                          handleFriendRequests(username,
+                                              requester.username, false);
+                                        });
+                                        // friendRequests.remove(requester);
+                                      });
+                                    },
+                                    child: const Icon(Icons.cancel,
+                                        color: Colors.black),
+                                  ),
+
                                   /*
                                   GestureDetector(
                                     onTap: () {
@@ -610,35 +673,31 @@ class _SideBarState extends State<SideBar> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 30),
+                  SizedBox(height: 10),
                   Container(
                       child: Container(
                     padding: const EdgeInsets.symmetric(
                       horizontal: 5,
                     ),
                     child: Center(
-                        child: ListTile(
-                      title: const Text('Made with love, by the Verbatim team.',
+                      child: ListTile(
+                        title: const Text(
+                          'Made with love, by the Verbatim team.',
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: Colors.black,
                               fontStyle: FontStyle.italic,
                               fontWeight: FontWeight.w700,
-                              fontSize: 15)),
-                    )),
-                  )),
-                  Container(
-                      child: Container(
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 5,
-                    ),
-                    child: Center(
-                        child: ListTile(
-                      title: Icon(
-                        Icons.favorite,
-                        color: Colors.red, // Set the color to red
+                              fontSize: 15),
+                        ),
+                        leading: Icon(Icons.favorite,
+                            color: Colors.red, size: 17 // Set the color to red
+                            ),
+                        trailing: Icon(Icons.favorite,
+                            color: Colors.red, size: 17 // Set the color to red
+                            ),
                       ),
-                    )),
+                    ),
                   )),
                   Container(
                       child: Container(
@@ -649,8 +708,8 @@ class _SideBarState extends State<SideBar> {
                           textAlign: TextAlign.center,
                           style: TextStyle(
                               color: Colors.black,
-                              fontStyle: FontStyle.italic,
-                              fontWeight: FontWeight.w700,
+                              //  fontStyle: FontStyle.,
+                              fontWeight: FontWeight.w900,
                               fontSize: 15)),
                       onTap: () {
                         _launchURL(formUri);

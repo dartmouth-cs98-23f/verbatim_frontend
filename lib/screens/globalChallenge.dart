@@ -152,7 +152,8 @@ class _GlobalChallengeState extends State<globalChallenge> {
       question4 = data['q4'];
       question5 = data['q5'];
 
-      id = data['globalChallengeId'];
+// change this to
+      id = data['globalChallengeDisplayNum'];
 
       categoryQ1 = data['categoryQ1'];
       categoryQ2 = data['categoryQ2'];
