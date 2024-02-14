@@ -548,7 +548,7 @@ class _SideBarState extends State<SideBar> {
                   */
                   const SizedBox(height: 20.0),
                   ExpansionTile(
-                    initiallyExpanded: false,
+                    initiallyExpanded: true,
                     title: const Text(
                       'Friend Requests',
                       style: TextStyle(

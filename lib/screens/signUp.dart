@@ -260,14 +260,16 @@ class _SignUpState extends State<SignUp> {
 
       if (SharedPrefs().getResponse1() == '') {
         //if user hasnt played global challenge yer
+        print("signup 1");
 
         signUp(context, firstName, lastName, username.toLowerCase(),
             email.toLowerCase(), password, confirmedPassword);
       } else {
         //signUp(context, firstName, lastName, username.toLowerCase(),
+        print("signup 2");
         //email.toLowerCase(), password, confirmedPassword);
-        guestSignUp(context, firstName, lastName, username.toLowerCase(),
-            email.toLowerCase(), password);
+        signUp(context, firstName, lastName, username.toLowerCase(),
+            email.toLowerCase(), password, confirmedPassword);
       }
     }
   }
