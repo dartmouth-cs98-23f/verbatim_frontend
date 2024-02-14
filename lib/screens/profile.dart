@@ -485,19 +485,22 @@ class _ProfileState extends State<Profile> {
                                                                       : "Add Friend"),
                                                               style: GoogleFonts
                                                                   .poppins(
-                                                                textStyle:
-                                                                    const TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize: 12,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  height: 0.12,
-                                                                  letterSpacing:
-                                                                      0.20,
-                                                                ),
-                                                              ),
+                                                                      textStyle: widget.user ==
+                                                                              null
+                                                                          ? const TextStyle(
+                                                                              color: Colors.white,
+                                                                              fontSize: 12,
+                                                                              fontWeight: FontWeight.w600,
+                                                                              height: 0.12,
+                                                                              letterSpacing: 0.20,
+                                                                            )
+                                                                          : const TextStyle(
+                                                                              color: Colors.white,
+                                                                              fontSize: 10,
+                                                                              fontWeight: FontWeight.w600,
+                                                                              height: 0.12,
+                                                                              letterSpacing: 0.20,
+                                                                            )),
                                                             ),
                                                           ),
                                                         )

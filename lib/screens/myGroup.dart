@@ -230,8 +230,13 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
       BuildContext context, String groupName, int? groupId) async {
     return showDialog<void>(
       context: context,
+      // barrierColor: Color(0x00ffffff), / maybe this will fix weird looking border?
       builder: (BuildContext context) {
         return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(
+                20.0), // maybe this will fix weird looking border?
+          ),
           contentPadding: EdgeInsets.zero,
           content: Container(
             width: 200,
@@ -317,8 +322,6 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
   Widget _buildOptionButton(BuildContext context, title, String description,
       IconData iconData, String groupName, int? groupId) {
     return Container(
-        constraints: BoxConstraints(
-            minWidth: 80.0, maxWidth: 150.0, minHeight: 80.0, maxHeight: 150.0),
         width: 130,
         height: 130,
         padding: EdgeInsets.all(5),
@@ -824,13 +827,15 @@ class StatsContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isEmpty = false;
+    String verb1 = "";
+    String verb2 = "";
     print("this is grouprating in groups stats content $groupRating");
     if (verbaMatchStatsContent.isEmpty) {
       isEmpty = true;
-      verbaMatchStatsContent = ["i", "amempty"];
+    } else {
+      verb1 = verbaMatchStatsContent[0];
+      verb2 = verbaMatchStatsContent[1];
     }
-    String verb1 = verbaMatchStatsContent[0];
-    String verb2 = verbaMatchStatsContent[1];
 
     print(
         "this is verbamatch in groups stats content $String verb1 = verbaMatchStatsContent[0];");
@@ -844,7 +849,7 @@ class StatsContent extends StatelessWidget {
             child: Padding(
               padding: EdgeInsets.all(16.0),
               child: DonutChart(
-                  groupSimilarity: groupRating, title: 'Group Power Score'),
+                  groupSimilarity: 120.0, title: 'Group Power Score'),
             ),
           ),
           SizedBox(height: 15.v),
@@ -995,14 +1000,17 @@ class StatsContent extends StatelessWidget {
             visible: !isEmpty,
             child: Container(
               child: Center(
-                child: Text(
-                  '$verb1 and $verb2',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
+                  child: verb1 != "" && verb2 != ""
+                      ? Text(
+                          '$verb1 and $verb2',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      : SizedBox(
+                          height: 4,
+                        )),
             ),
           ),
           SizedBox(height: 50.v)
@@ -1143,7 +1151,9 @@ class _DonutChartState extends State<DonutChart> {
                       ),
                       PieChartSectionData(
                         value: 100 - widget.groupSimilarity,
-                        color: calculateColor(widget.groupSimilarity),
+                        color: calculateColor(18.0),
+
+                        //   color: calculateColor(widget.groupSimilarity),
                         radius: 16,
                         showTitle: false,
                       ),
