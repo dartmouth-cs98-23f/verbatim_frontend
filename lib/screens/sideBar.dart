@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
 import 'package:verbatim_frontend/BackendService.dart';
@@ -72,6 +74,59 @@ class _SideBarState extends State<SideBar> {
   List<User> friends = [];
   List<String> groupnamesList = [];
   List<UserGroup> userGroups = [];
+  Map<int, List<User>> groupMemberObjects = {};
+  List<String> groupMembers = [];
+
+  Future<void> getGroupStats(int groupId) async {
+    print("\ngroupId here is ${groupId}\n");
+    final url = Uri.parse('${BackendService.getBackendUrl()}group/$groupId');
+
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final dynamic jsonData = json.decode(response.body);
+
+      print("this is groupstats json code $jsonData");
+      double rating = jsonData["groupRating"];
+      print("this is the rating in mygroup $rating");
+
+      List<dynamic> verbaMatchList = jsonData["verbaMatch"];
+      List<String> usernames = [];
+      for (var item in verbaMatchList) {
+        usernames.add(item["username"]);
+      }
+      groupMembers = List<String>.from(jsonData["groupMembers"]);
+
+      await getGroupMemberObjects(groupId, groupMembers);
+
+      print(
+          "\nHere in getGroupStats, groupMemberObjects contains ${groupMemberObjects.length} objects\n");
+    } else {
+      print('failed to get group stats. Status code: ${response.statusCode}');
+    }
+  }
+
+  // get all users to display
+  Future<void> getGroupMemberObjects(
+      int groupId, List<String> groupMembersList) async {
+    final url = Uri.parse('${BackendService.getBackendUrl()}users');
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+
+      final List<User> userList =
+          data.map((item) => User.fromJson(item)).toList();
+
+      // Filter users based on groupMembersList and modify groupMemberObjects
+      groupMemberObjects[groupId] = userList
+          .where((user) => groupMembersList.contains(user.username))
+          .toList();
+    } else {
+      print("Failure: ${response.statusCode}");
+      // Handle failure if needed
+    }
+  }
 
   //get groups
   Future<void> getMyGroups(String username) async {
@@ -90,6 +145,8 @@ class _SideBarState extends State<SideBar> {
         String name = group["name"];
         userGroups.add(UserGroup(id: id, groupName: name));
         groupnamesList.add(name);
+
+        getGroupStats(id);
       }
     } else {
       print('Failed to send responses. Status code: ${response.statusCode}');
@@ -341,34 +398,71 @@ class _SideBarState extends State<SideBar> {
                     shape: const Border(),
                     children: <Widget>[
                       const SizedBox(height: 10.0),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: groupnamesList.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            String groupname = groupnamesList[index];
-                            int? groupId = userGroups[index].id;
-// go to group with this Id
-                            return ListTile(
-                              title: Text(
-                                groupname,
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
+                      ListView.builder(
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        itemCount: groupnamesList.length,
+                        itemBuilder: (context, index) {
+                          final groupname = groupnamesList[index];
+                          final groupId = userGroups[index].id;
+                          final memberObjects =
+                              groupMemberObjects[groupId] ?? [];
+
+                          print("\nMember objects are ${memberObjects}\n");
+
+                          return ListTile(
+                            title: Row(
+                              children: [
+                                // If you want the images to appear before the text, keep this block here
+                                SizedBox(
+                                  width: 48.0 +
+                                      min(memberObjects.length, 3) *
+                                          20.0, // Adjust based on the number of images
+                                  height: 30.0, // Height to accommodate images
+                                  child: Stack(
+                                    children: [
+                                      for (int i = 0;
+                                          i < min(memberObjects.length, 3);
+                                          i++) // Show max 3 images
+                                        Positioned(
+                                          top: 0.0,
+                                          left: i *
+                                              20.0, // Adjust spacing as needed
+                                          child: SizedBox(
+                                            width: 30.0, // Image width
+                                            height: 30.0, // Image height
+                                            child: ClipOval(
+                                              child: FirebaseStorageImage(
+                                                profileUrl: memberObjects[i]
+                                                    .profilePicture,
+                                                user: memberObjects[i],
+                                              ),
+                                            ),
+                                          ),
+                                        ),
+                                    ],
+                                  ),
                                 ),
-                              ),
-                              leading:
-                                  const Icon(Icons.people, color: Colors.black),
-                              onTap: () {
-                                Navigator.pushNamed(this.context,
-                                    '/myGroup?groupName=$groupname&groupId=$groupId');
-                              },
-                            );
-                          },
-                        ),
+                                // Spacer or sized box can be added here if needed
+                                Expanded(
+                                  child: Text(
+                                    groupname,
+                                    style: const TextStyle(
+                                      color: Colors.black,
+                                      fontWeight: FontWeight.bold,
+                                      fontSize: 15,
+                                    ),
+                                    overflow: TextOverflow.ellipsis,
+                                  ),
+                                ),
+                              ],
+                            ),
+                            onTap: () => Navigator.pushNamed(
+                              context,
+                              '/myGroup?groupName=$groupname&groupId=$groupId',
+                            ),
+                          );
+                        },
                       ),
                     ],
                   ),
