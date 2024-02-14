@@ -64,7 +64,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
       verbaMatchGroup = usernames;
 
       // For testing purposes;
-      verbaMatchGroup = ['ian', 'ange'];
+      // verbaMatchGroup = ['ian', 'ange'];
 
       groupMembers = List<String>.from(jsonData["groupMembers"]);
 
