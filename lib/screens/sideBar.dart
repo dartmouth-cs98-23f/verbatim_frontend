@@ -11,6 +11,8 @@ import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'package:verbatim_frontend/screens/profile.dart';
 import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:flutter/cupertino.dart';
+import 'package:confetti/confetti.dart';
 
 class UserGroup {
   int id = 0;
@@ -20,6 +22,23 @@ class UserGroup {
 
   factory UserGroup.fromJson(Map<String, dynamic> json) {
     return UserGroup(groupName: json['name'], id: json['id']);
+  }
+}
+
+class FriendRequestsIcon extends StatefulWidget {
+  final Color iconColor;
+
+  const FriendRequestsIcon({Key? key, required this.iconColor})
+      : super(key: key);
+
+  @override
+  _FriendRequestsIconState createState() => _FriendRequestsIconState();
+}
+
+class _FriendRequestsIconState extends State<FriendRequestsIcon> {
+  @override
+  Widget build(BuildContext context) {
+    return Icon(Icons.pending, color: widget.iconColor, size: 25);
   }
 }
 
@@ -53,6 +72,7 @@ class SideBar extends StatefulWidget {
 }
 
 class _SideBarState extends State<SideBar> {
+  Color trailingIconColor = Colors.black;
   String username = SharedPrefs().getUserName() as String;
 
   final Color primary = const Color.fromARGB(255, 231, 111, 81);
@@ -70,6 +90,39 @@ class _SideBarState extends State<SideBar> {
     } else {
       throw 'Could not launch $url';
     }
+  }
+
+  Future<void> _showAcceptDeclineDialog(
+      BuildContext context, Function(bool) onAction) async {
+    return showDialog<void>(
+      context: context,
+      barrierDismissible: true,
+      builder: (BuildContext context) {
+        return CupertinoAlertDialog(
+          title: Text('Friend Request'),
+          actions: <Widget>[
+            CupertinoDialogAction(
+              child: Text('Accept',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.green)),
+              onPressed: () {
+                onAction(true);
+                Navigator.of(context).pop();
+              },
+            ),
+            CupertinoDialogAction(
+              child: Text('Decline',
+                  style: TextStyle(
+                      fontWeight: FontWeight.bold, color: Colors.red)),
+              onPressed: () {
+                onAction(false);
+                Navigator.of(context).pop();
+              },
+            ),
+          ],
+        );
+      },
+    );
   }
 
   //get groups
@@ -128,6 +181,9 @@ class _SideBarState extends State<SideBar> {
       final List<dynamic> data = json.decode(response.body);
       friendRequests = data.map((item) => User.fromJson(item)).toList();
       friendRequests.removeWhere((user) => user.username == username);
+      if (friendRequests.isNotEmpty) {
+        trailingIconColor = Colors.orange;
+      }
     } else {
       print(
           'Failed to get friend requests. Status code: ${response.statusCode}');
@@ -153,6 +209,9 @@ class _SideBarState extends State<SideBar> {
     );
 
     if (response.statusCode == 200) {
+      setState(() {
+        getFriends(username);
+      });
     } else {
       print('Failed to send responses. Status code: ${response.statusCode}');
     }
@@ -260,6 +319,7 @@ class _SideBarState extends State<SideBar> {
                     ),
 
                     initiallyExpanded: true,
+
                     shape:
                         const Border(), // this will expand all of them - need to make a custom expansion tile at some point to fix this (i think)
 
@@ -370,6 +430,7 @@ class _SideBarState extends State<SideBar> {
                   ),
                   const SizedBox(height: 20.0),
                   ExpansionTile(
+                    initiallyExpanded: true,
                     title: const Text(
                       'Friend Requests',
                       style: TextStyle(
@@ -377,11 +438,14 @@ class _SideBarState extends State<SideBar> {
                           fontWeight: FontWeight.bold,
                           fontSize: 18),
                     ),
-                    trailing: friendRequests.isNotEmpty
+                    //   trailing: FriendRequestsIcon(iconColor: trailingIconColor),
+
+                    trailing: trailingIconColor == Colors.orange
                         ? const Icon(Icons.pending,
                             color: Colors.orange, size: 25)
                         : const Icon(Icons.pending,
                             color: Colors.black, size: 25),
+
                     shape: const Border(),
                     children: <Widget>[
                       const SizedBox(height: 10.0),
@@ -424,26 +488,59 @@ class _SideBarState extends State<SideBar> {
                                 children: [
                                   GestureDetector(
                                     onTap: () {
-                                      handleFriendRequests(
-                                          username, requester.username, true);
+                                      _showAcceptDeclineDialog(context,
+                                          (accepted) {
+                                        setState(() {
+                                          friendRequests.remove(requester);
+                                          if (friendRequests.isNotEmpty) {
+                                            trailingIconColor = Colors.orange;
+                                          } else {
+                                            trailingIconColor = Colors.black;
+                                          }
+                                          if (accepted) {
+                                            handleFriendRequests(username,
+                                                requester.username, true);
+                                          } else {
+                                            handleFriendRequests(username,
+                                                requester.username, false);
+                                          }
+                                        });
+                                      });
+                                    },
+                                    child: CircleAvatar(
+                                      backgroundColor: Colors.transparent,
+                                      child: Image.asset('assets/decision.png'),
+                                      radius: 18,
+                                    ),
+                                  ),
+                                  /*
+                                  GestureDetector(
+                                    onTap: () {
                                       setState(() {
                                         friendRequests.remove(requester);
+                                        handleFriendRequests(
+                                            username, requester.username, true);
                                       });
                                     },
                                     child: const Icon(Icons.check_box,
                                         color: Colors.black),
                                   ),
+                                  */
+
+                                  /*
                                   GestureDetector(
                                     onTap: () {
-                                      handleFriendRequests(
-                                          username, requester.username, false);
                                       setState(() {
-                                        friendRequests.remove(requester);
+                                        handleFriendRequests(username,
+                                            requester.username, false);
+
+                                        // friendRequests.remove(requester);
                                       });
                                     },
                                     child: const Icon(Icons.cancel,
                                         color: Colors.black),
                                   ),
+                                  */
                                 ],
                               ),
                               onTap:
