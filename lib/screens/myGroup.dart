@@ -421,6 +421,11 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
     _loadChallenges();
   }
 
+  Future<void> _refresh() async {
+    await Future.delayed(Duration(seconds: 2));
+    setState(() {});
+  }
+
   Future<void> _loadChallenges() async {
     await getGroupStats(widget.groupId ?? 0);
     await getActiveChallenges(widget.groupId ?? 0);
