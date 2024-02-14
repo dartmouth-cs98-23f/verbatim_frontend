@@ -32,7 +32,7 @@ class Guest extends StatelessWidget {
         SharedPrefs().updateReferer('');
       }
 
-      Navigator.pushNamed(context, '/signup');
+      Navigator.pushNamed(context, '/guest_signup');
     }
 
     return Column(

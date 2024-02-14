@@ -22,21 +22,21 @@ class _LandingPageState extends State<LandingPage> {
     SharedPrefs().setBio('');
     SharedPrefs().updateGameValues('', '', '', "", '');
     SharedPrefs().updateReferer('');
-    SharedPrefs().setCurrentPage('/global_challenge');
   }
 
   void onTap() {
-    // String routeName = ModalRoute.of(this.context)?.settings.name ?? '';
-    // Uri uri = Uri.parse(routeName);
-    // Map<String, dynamic>? arguments = uri.queryParameters;
-    // //String referer = '';
-    // String referer = arguments['referer']?arguments['referer']: '';
-    String routeName = ModalRoute.of(context)?.settings.name ?? '';
+    String routeName = ModalRoute.of(this.context)?.settings.name ?? '';
     Uri uri = Uri.parse(routeName);
+
+
     Map<String, dynamic>? arguments = uri.queryParameters;
     String referer = arguments['referer'] ?? '';
+  
+    Navigator.pushNamed(context, '/guest_global');
+        //Navigator.pushNamed(context, '/guest_global?referer=$referer');
 
-    Navigator.pushNamed(context, '/global_challenge?referer=$referer');
+    print("Username in this shady ass place:" + SharedPrefs().getCurrentPage()!);
+
   }
 
 // will this make shared preferences clear on opening?

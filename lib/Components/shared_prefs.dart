@@ -41,6 +41,9 @@ class SharedPrefs {
   void setCurrentPage(String currentPage) {
     _sharedPrefs!.setString("currentPage", currentPage);
   }
+  String? getCurrentPage() {
+    return _sharedPrefs!.getString("currentPage");
+  }
 
   String? getLastName() {
     return _sharedPrefs!.getString("lastname");
@@ -133,7 +136,5 @@ class SharedPrefs {
     return _sharedPrefs!.getString("profileUrl");
   }
 
-  String? getCurrentPage() {
-    return _sharedPrefs!.getString("currentPage");
-  }
+ 
 }

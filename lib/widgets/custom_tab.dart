@@ -53,82 +53,83 @@ class _PlayTabState extends State<PlayTab> {
               ),
             ],
           ),
-          width: double.infinity,
-          height: double.infinity,
+          width: 150,
+          height: 50,
           child: _isFirstTabSelected ? content : content2,
         ),
       ),
     );
   }
 
-  Widget _buildTabContent1(bool firsttab) {
-    final String play = 'assets/playtoggle.svg';
-    Widget content = SvgPicture.asset(play, fit: BoxFit.cover);
+  // Widget _buildTabContent1(bool firsttab) {
+  //   final String play = 'assets/playtoggle.svg';
+  //   Widget content = SvgPicture.asset(play, fit: BoxFit.contain);
 
-    return Visibility(
-      visible: firsttab,
-      child: Align(
-        alignment: Alignment.centerRight,
-        child: Container(
-          height: 60,
-          width: 200,
-          child: ClipOval(
-            child: content,
-          ),
-        ),
-      ),
-    );
-  }
+  //   return Visibility(
+  //     visible: firsttab,
+  //     child: Align(
+  //       alignment: Alignment.centerRight,
+  //       child: Container(
+  //         height: 54,
+  //         width: 86,
+  //         child: ClipOval(
+  //           child: content,
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 
-  Widget _buildTabContent2(bool secondtab) {
-    final String stats = 'assets/statstoggle.svg';
-    Widget content = SvgPicture.asset(stats, fit: BoxFit.cover);
+  // Widget _buildTabContent2(bool secondtab) {
+  //   final String stats = 'assets/statstoggle.svg';
+  //   Widget content = SvgPicture.asset(stats, fit: BoxFit.cover);
 
-    return Visibility(
-      visible: secondtab,
-      child: Center(
-        child: Container(
-          height: 0,
-          width: 0,
-          child: ClipOval(child: content),
-        ),
-      ),
-    );
-  }
+  //   return Visibility(
+  //     visible: secondtab,
+  //     child: Center(
+  //       child: Container(
+  //         height: 54,
+  //         width: 86,
+  //         child: ClipOval(child: content),
+  //       ),
+  //     ),
+  //   );
+  // }
 
-  Widget _buildTabContent(IconData icon, String text, double width) {
-    final String stats = 'assets/statstoggle.svg';
-    Widget content = SvgPicture.asset(stats, fit: BoxFit.cover);
+  // Widget _buildTabContent(IconData icon, String text, double width) {
+  //   final String stats = 'assets/statstoggle.svg';
+  //   Widget content = SvgPicture.asset(stats, fit: BoxFit.cover);
 
-    return Center(
-      child: Container(
-        height: 45,
-        width: width,
-        decoration: BoxDecoration(
-          borderRadius: BorderRadius.circular(50),
-        ),
-        child: Center(
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.center,
-            children: [
-              Icon(
-                icon,
-                color: Colors.black,
-              ),
-              Text(
-                text,
-                style: TextStyle(
-                  fontWeight: FontWeight.bold,
-                  fontSize: 14,
-                  color: Colors.black,
-                ),
-              ),
-            ],
-          ),
-        ),
-      ),
-    );
-  }
+  //   return Center(
+  //     child: Container(
+  //       height: 54,
+  //       width: width,
+  //       decoration: BoxDecoration(
+  //         borderRadius: BorderRadius.circular(10
+  //         ),
+  //       ),
+  //       child: Center(
+  //         child: Column(
+  //           mainAxisAlignment: MainAxisAlignment.center,
+  //           children: [
+  //             Icon(
+  //               icon,
+  //               color: Colors.black,
+  //             ),
+  //             Text(
+  //               text,
+  //               style: TextStyle(
+  //                 fontWeight: FontWeight.bold,
+  //                 fontSize: 14,
+  //                 color: Colors.black,
+  //               ),
+  //             ),
+  //           ],
+  //         ),
+  //       ),
+  //     ),
+  //   );
+  // }
 }
 /*
     return Scaffold(

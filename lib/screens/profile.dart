@@ -90,7 +90,7 @@ class _ProfileState extends State<Profile> {
     email: '',
     lastName: '',
     firstName: '',
-    profilePicture: '',
+    profilePicture:'assets/profile_pic.png',
     numGlobalChallengesCompleted: 0,
     numCustomChallengesCompleted: 0,
     streak: 0,
@@ -135,14 +135,14 @@ class _ProfileState extends State<Profile> {
         print("stats.match is null");
       }
 
-      if (match.bio == '') {
-      } else {
-        //TODO: match.getprofile
-      }
-      if (SharedPrefs().getBio() == '') {
+      if (match.profilePicture == '') {
+        match.profilePicture = profile;
+      } 
+      if (SharedPrefs().getProfileUrl() == '') {
+        SharedPrefs().setProfileUrl(profile);
       } else {
         //TODO: sharedprefs.getprofile
-        profile = profile;
+        profile = SharedPrefs().getProfileUrl()!;
       }
       // print("Itsss okkkk");
     } else {
