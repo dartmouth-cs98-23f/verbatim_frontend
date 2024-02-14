@@ -1,20 +1,28 @@
+import 'dart:convert';
 import 'dart:math';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
+import 'package:verbatim_frontend/BackendService%202.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
+import 'package:verbatim_frontend/screens/addFriend.dart';
+import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 import 'package:verbatim_frontend/widgets/my_button_with_svg.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
+import 'package:http/http.dart' as http;
 
 class Verbatastic extends StatelessWidget {
   final String verbatimedWord;
   final String formattedTimeUntilMidnight;
   final List<String>? verbatasticUsernames;
+  final List<User>? verbatasticUserObjects;
 
-  const Verbatastic({super.key, 
+  const Verbatastic({
+    super.key,
     required this.verbatimedWord,
     required this.formattedTimeUntilMidnight,
     required this.verbatasticUsernames,
+    required this.verbatasticUserObjects,
   });
 
   void copyInvite() {
@@ -82,44 +90,48 @@ class Verbatastic extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         Center(
-            child: verbatasticUsernames!.isEmpty
-                ? SizedBox(
-                    width: 100,
-                    height: 48,
+          child: verbatasticUsernames!.isEmpty
+              ? SizedBox(
+                  width: 100,
+                  height: 48,
+                  child: Stack(
+                    children: [
+                      Positioned(
+                        top: 0,
+                        left: 30.0,
+                        child: Image.asset(
+                          'assets/Ellipse ${41}.png',
+                          height: 48,
+                        ),
+                      ),
+                    ],
+                  ),
+                )
+              : Center(
+                  child: SizedBox(
+                    width: min(verbatasticUsernames!.length + 1, 6) * 38,
+                    height: 45,
                     child: Stack(
                       children: [
-                        Positioned(
-                          top: 0,
-                          left: 30.0,
-                          child: Image.asset(
-                            'assets/Ellipse ${41}.png',
-                            height: 48,
+                        for (int i = 0;
+                            i <
+                                min(verbatasticUserObjects!.length,
+                                    6); // Limit loop to the length of the list
+                            i++)
+                          Positioned(
+                            top: 0,
+                            left: 30.0 * i,
+                            child: FirebaseStorageImage(
+                              profileUrl:
+                                  verbatasticUserObjects![i].profilePicture,
+                              user: verbatasticUserObjects![i],
+                            ),
                           ),
-                        ),
                       ],
                     ),
-                  )
-                : Center(
-                    child: SizedBox(
-                      width: min(verbatasticUsernames!.length + 1, 6) * 38,
-                      height: 45,
-                      child: Stack(
-                        children: [
-                          for (int i = 0;
-                              i < min(verbatasticUsernames!.length + 1, 6);
-                              i++)
-                            Positioned(
-                              top: 0,
-                              left: 30.0 * i,
-                              child: Image.asset(
-                                'assets/Ellipse ${41 + i}.png',
-                                height: 45,
-                              ),
-                            ),
-                        ],
-                      ),
-                    ),
-                  )),
+                  ),
+                ),
+        ),
         const SizedBox(height: 10),
         SizedBox(
           width: 200,

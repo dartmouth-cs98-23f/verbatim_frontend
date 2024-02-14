@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/BackendService.dart';
+import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'sideBar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -70,9 +71,10 @@ class _GlobalChallengeState extends State<globalChallenge> {
   List<String> responses123 = [];
 
   Map<String, List<String>?> verbatasticUsers = {};
-  List<String>? verbatasticUsernames = [];
+  List<String> verbatasticUsernames = [];
   List<String> modResponse = [];
   String verbatimedWord = "";
+  List<User> verbatasticUserObjects = [];
 
   Map<String, dynamic> statsQ1 = {
     "firstMostPopular": "",
@@ -162,6 +164,35 @@ class _GlobalChallengeState extends State<globalChallenge> {
     }
   }
 
+  // get all users to display
+  Future<void> getVerbatasticUserObjects() async {
+    final url = Uri.parse('${BackendService.getBackendUrl()}users');
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+
+      final List<User> userList =
+          data.map((item) => User.fromJson(item)).toList();
+
+      print("\nUserList is of length: ${userList.length}\n");
+
+      List<String> neededUserNames = verbatasticUsernames;
+      neededUserNames.add(SharedPrefs().getUserName() as String);
+
+      // Users who are verba matches
+      verbatasticUserObjects = userList
+          .where((user) => neededUserNames.contains(user.username))
+          .toList();
+
+      print(
+          "\nReturned verbatasticUsers are ${verbatasticUserObjects.length}\n");
+    } else {
+      print("Failure: ${response.statusCode}");
+      // Handle failure if needed
+    }
+  }
+
   Future<void> _fetchData(String username) async {
     final url = Uri.parse('${BackendService.getBackendUrl()}globalChallenge');
     final headers = <String, String>{'Content-Type': 'application/json'};
@@ -241,7 +272,13 @@ class _GlobalChallengeState extends State<globalChallenge> {
               verbatasticUsers.entries.first;
 
           verbatimedWord = firstEntry.key;
-          verbatasticUsernames = firstEntry.value;
+          verbatasticUsernames = firstEntry.value as List<String>;
+
+          print("\nverbatasticUsernames contains ${verbatasticUsernames}\n");
+          getVerbatasticUserObjects();
+
+          print(
+              "\nverbatasticUserObjects contains ${verbatasticUserObjects.length} user objects\n");
         } else {
           print("verbatasticUsers is empty");
         }
@@ -354,7 +391,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
             verbatasticUsers.entries.first;
 
         verbatimedWord = firstEntry.key;
-        verbatasticUsernames = firstEntry.value;
+        verbatasticUsernames = firstEntry.value as List<String>;
       } else {
         print("verbatasticUsers is empty");
       }
@@ -724,6 +761,8 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                                     formattedTimeUntilMidnight,
                                                 verbatasticUsernames:
                                                     verbatasticUsernames,
+                                                verbatasticUserObjects:
+                                                    verbatasticUserObjects,
                                               ),
                                             ],
                                           );
