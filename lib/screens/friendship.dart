@@ -1049,6 +1049,10 @@ class _DonutChartState extends State<DonutChart> {
       return Color.fromARGB(255, 250, 192 + score, 94 + score);
     }
 
+    double sim = widget.groupSimilarity;
+
+    double outof100 = (widget.groupSimilarity / 100);
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Column(
@@ -1085,13 +1089,13 @@ class _DonutChartState extends State<DonutChart> {
                     centerSpaceRadius: 50,
                     sections: [
                       PieChartSectionData(
-                        value: widget.groupSimilarity,
+                        value: outof100,
                         color: Color(0xFFE76F51),
                         radius: 25,
                         showTitle: false,
                       ),
                       PieChartSectionData(
-                        value: 100 - widget.groupSimilarity,
+                        value: 100 - outof100,
                         color: calculateColor(widget.groupSimilarity),
                         radius: 16,
                         showTitle: false,
