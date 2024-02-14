@@ -229,7 +229,7 @@ class _ProfileState extends State<Profile> {
         lastName.isNotEmpty ? lastName.substring(0, 1).toUpperCase() : "U";
 
     // Format displayName using firstName and initial
-    displayName = '$firstName $initial.';
+    displayName = lastName.isNotEmpty ? '$firstName $initial.' : '$firstName';
     _getStats(username).then((_) {
       setState(() {
         stats = [friends, streaks, globals, customs];
@@ -485,19 +485,22 @@ class _ProfileState extends State<Profile> {
                                                                       : "Add Friend"),
                                                               style: GoogleFonts
                                                                   .poppins(
-                                                                textStyle:
-                                                                    const TextStyle(
-                                                                  color: Colors
-                                                                      .white,
-                                                                  fontSize: 12,
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .w600,
-                                                                  height: 0.12,
-                                                                  letterSpacing:
-                                                                      0.20,
-                                                                ),
-                                                              ),
+                                                                      textStyle: widget.user ==
+                                                                              null
+                                                                          ? const TextStyle(
+                                                                              color: Colors.white,
+                                                                              fontSize: 12,
+                                                                              fontWeight: FontWeight.w600,
+                                                                              height: 0.12,
+                                                                              letterSpacing: 0.20,
+                                                                            )
+                                                                          : const TextStyle(
+                                                                              color: Colors.white,
+                                                                              fontSize: 10,
+                                                                              fontWeight: FontWeight.w600,
+                                                                              height: 0.12,
+                                                                              letterSpacing: 0.20,
+                                                                            )),
                                                             ),
                                                           ),
                                                         )
@@ -788,6 +791,7 @@ class _ProfileState extends State<Profile> {
                                                           as String,
                                                     ),
                                                   )
+
                                             // : Stack(
                                             //     children: [
                                             //       Align(
@@ -825,21 +829,26 @@ class _ProfileState extends State<Profile> {
                                             ),
                                       ),
                                       Align(
-                                        widthFactor: .65,
-                                        child: ClipOval(
+                                        widthFactor: 1.3,
+                                        child: ClipRect(
                                             child: widget.user != null
                                                 ? SizedBox(
                                                     width: 100,
                                                     height: 100,
+                                                    child: Center(
+                                                        child: Text(
+                                                            match.username)))
+                                                /*
                                                     child: FirebaseStorageImage(
                                                       profileUrl:
                                                           match.profilePicture,
                                                     ),
-                                                  )
+                                                  )*/
                                                 : SizedBox(
                                                     width: 100,
                                                     height: 100,
-                                                  )), /*SizedBox(
+                                                    child: Text(match
+                                                        .username))), /*SizedBox(
                                                     width: 100,
                                                     height: 100,
                                                     child: FirebaseStorageImage(

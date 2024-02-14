@@ -33,7 +33,10 @@ class _PlayTabState extends State<PlayTab> {
     final String play = 'assets/playtoggle.svg';
     final String stats = 'assets/statstoggle.svg';
     Widget content = SvgPicture.asset(play, fit: BoxFit.fill);
-    Widget content2 = SvgPicture.asset(stats, fit: BoxFit.fill);
+    Widget content2 = SvgPicture.asset(
+      stats,
+      fit: BoxFit.fill,
+    );
 
     return Scaffold(
       resizeToAvoidBottomInset: false,
@@ -65,36 +68,42 @@ class _PlayTabState extends State<PlayTab> {
   //   final String play = 'assets/playtoggle.svg';
   //   Widget content = SvgPicture.asset(play, fit: BoxFit.contain);
 
-  //   return Visibility(
-  //     visible: firsttab,
-  //     child: Align(
-  //       alignment: Alignment.centerRight,
-  //       child: Container(
-  //         height: 54,
-  //         width: 86,
-  //         child: ClipOval(
-  //           child: content,
-  //         ),
-  //       ),
-  //     ),
-  //   );
-  // }
+
+    return Visibility(
+      visible: firsttab,
+      child: Align(
+        alignment: Alignment.centerRight,
+        child: Container(
+          height: 60,
+          color: Colors.transparent,
+          width: 200,
+          child: ClipOval(
+            child: content,
+          ),
+        ),
+      ),
+    );
+  }
+
 
   // Widget _buildTabContent2(bool secondtab) {
   //   final String stats = 'assets/statstoggle.svg';
   //   Widget content = SvgPicture.asset(stats, fit: BoxFit.cover);
 
-  //   return Visibility(
-  //     visible: secondtab,
-  //     child: Center(
-  //       child: Container(
-  //         height: 54,
-  //         width: 86,
-  //         child: ClipOval(child: content),
-  //       ),
-  //     ),
-  //   );
-  // }
+
+    return Visibility(
+      visible: secondtab,
+      child: Center(
+        child: Container(
+          color: Colors.transparent,
+          height: 0,
+          width: 0,
+          child: ClipOval(child: content),
+        ),
+      ),
+    );
+  }
+
 
   // Widget _buildTabContent(IconData icon, String text, double width) {
   //   final String stats = 'assets/statstoggle.svg';

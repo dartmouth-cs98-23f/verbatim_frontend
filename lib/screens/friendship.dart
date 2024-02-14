@@ -40,6 +40,10 @@ class _FriendshipState extends State<friendship>
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(
+                20.0), // maybe this will fix weird looking border?
+          ),
           contentPadding: EdgeInsets.zero,
           insetPadding: EdgeInsets.symmetric(horizontal: 16.0),
           content: Container(
@@ -797,6 +801,7 @@ class StatsContent extends StatelessWidget {
             ),
           ),
           SizedBox(height: 15.v),
+          /*
           Visibility(
             visible: verbaMatchGroup.length != 0,
             child: Container(
@@ -951,7 +956,7 @@ class StatsContent extends StatelessWidget {
                 ),
               ),
             ),
-          ),
+          ),*/
           SizedBox(height: 50.v)
         ],
       ),
@@ -1044,6 +1049,10 @@ class _DonutChartState extends State<DonutChart> {
       return Color.fromARGB(255, 250, 192 + score, 94 + score);
     }
 
+    double sim = widget.groupSimilarity;
+
+    double outof100 = (widget.groupSimilarity / 100);
+
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Column(
@@ -1080,13 +1089,13 @@ class _DonutChartState extends State<DonutChart> {
                     centerSpaceRadius: 50,
                     sections: [
                       PieChartSectionData(
-                        value: widget.groupSimilarity,
+                        value: outof100,
                         color: Color(0xFFE76F51),
                         radius: 25,
                         showTitle: false,
                       ),
                       PieChartSectionData(
-                        value: 100 - widget.groupSimilarity,
+                        value: 100 - outof100,
                         color: calculateColor(widget.groupSimilarity),
                         radius: 16,
                         showTitle: false,

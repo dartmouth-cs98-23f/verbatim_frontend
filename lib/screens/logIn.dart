@@ -170,7 +170,8 @@ class _LogInState extends State<LogIn> {
       logIn(context, email, password);
     } else if (SharedPrefs().getResponse1() != '') {
       //logIn(context, email, password);
-      logInGuest(context, email, password);
+      logIn(context, email, password);
+      // logInGuest(context, email, password);
     }
   }
 

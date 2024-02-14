@@ -230,8 +230,13 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
       BuildContext context, String groupName, int? groupId) async {
     return showDialog<void>(
       context: context,
+      // barrierColor: Color(0x00ffffff), / maybe this will fix weird looking border?
       builder: (BuildContext context) {
         return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(
+                20.0), // maybe this will fix weird looking border?
+          ),
           contentPadding: EdgeInsets.zero,
           content: Container(
             width: 200,
@@ -317,8 +322,6 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
   Widget _buildOptionButton(BuildContext context, title, String description,
       IconData iconData, String groupName, int? groupId) {
     return Container(
-        constraints: BoxConstraints(
-            minWidth: 80.0, maxWidth: 150.0, minHeight: 80.0, maxHeight: 150.0),
         width: 130,
         height: 130,
         padding: EdgeInsets.all(5),
@@ -416,6 +419,11 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
     super.initState();
     _tabController = TabController(length: 2, vsync: this);
     _loadChallenges();
+  }
+
+  Future<void> _refresh() async {
+    await Future.delayed(Duration(seconds: 2));
+    setState(() {});
   }
 
   Future<void> _loadChallenges() async {
@@ -824,13 +832,15 @@ class StatsContent extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     bool isEmpty = false;
+    String verb1 = "";
+    String verb2 = "";
     print("this is grouprating in groups stats content $groupRating");
     if (verbaMatchStatsContent.isEmpty) {
       isEmpty = true;
-      verbaMatchStatsContent = ["i", "amempty"];
+    } else {
+      verb1 = verbaMatchStatsContent[0];
+      verb2 = verbaMatchStatsContent[1];
     }
-    String verb1 = verbaMatchStatsContent[0];
-    String verb2 = verbaMatchStatsContent[1];
 
     print(
         "this is verbamatch in groups stats content $String verb1 = verbaMatchStatsContent[0];");
@@ -945,6 +955,7 @@ class StatsContent extends StatelessWidget {
               ),
             ),
           ),
+          /*
           Visibility(
             visible: !isEmpty,
             child: Container(
@@ -959,6 +970,7 @@ class StatsContent extends StatelessWidget {
               ),
             ),
           ),
+          */
           Visibility(
             visible: !isEmpty,
             child: SizedBox(height: 10.v),
@@ -993,14 +1005,17 @@ class StatsContent extends StatelessWidget {
             visible: !isEmpty,
             child: Container(
               child: Center(
-                child: Text(
-                  '$verb1 and $verb2',
-                  style: TextStyle(
-                    fontSize: 14,
-                    fontWeight: FontWeight.bold,
-                  ),
-                ),
-              ),
+                  child: verb1 != "" && verb2 != ""
+                      ? Text(
+                          '$verb1 and $verb2',
+                          style: TextStyle(
+                            fontSize: 14,
+                            fontWeight: FontWeight.bold,
+                          ),
+                        )
+                      : SizedBox(
+                          height: 4,
+                        )),
             ),
           ),
           SizedBox(height: 50.v)
@@ -1097,6 +1112,7 @@ class _DonutChartState extends State<DonutChart> {
 
     double sim = widget.groupSimilarity;
     int simint = sim as int;
+    double outof100 = (widget.groupSimilarity / 100);
 
     return Scaffold(
       backgroundColor: Colors.transparent,
@@ -1134,14 +1150,16 @@ class _DonutChartState extends State<DonutChart> {
                     centerSpaceRadius: 50,
                     sections: [
                       PieChartSectionData(
-                        value: widget.groupSimilarity,
-                        color: Color(0xFFE76F51),
+                        value: outof100,
+                        color: Color.fromARGB(255, 231, 111, 81),
                         radius: 25,
                         showTitle: false,
                       ),
                       PieChartSectionData(
-                        value: 100 - widget.groupSimilarity,
-                        color: calculateColor(widget.groupSimilarity),
+                        value: 100 - outof100,
+                        color: calculateColor(18.0),
+
+                        //   color: calculateColor(widget.groupSimilarity),
                         radius: 16,
                         showTitle: false,
                       ),
