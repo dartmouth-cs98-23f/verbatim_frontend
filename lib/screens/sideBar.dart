@@ -437,7 +437,60 @@ class _SideBarState extends State<SideBar> {
                       child:
                           const Icon(Icons.add, color: Colors.black, size: 25),
                     ),
-                    initiallyExpanded: showGroups,
+                    initiallyExpanded: true,
+
+                    shape: Border(),
+                    children: <Widget>[
+                      const SizedBox(height: 10.0),
+                      Container(
+                        padding: EdgeInsets.symmetric(horizontal: 5.0),
+                        child: ListView.builder(
+                          shrinkWrap: true,
+                          physics: NeverScrollableScrollPhysics(),
+                          itemCount: groupnamesList.length,
+                          itemBuilder: (BuildContext context, int index) {
+                            String groupname = groupnamesList[index];
+                            int? groupId = userGroups[index].id;
+// go to group with this Id
+                            return ListTile(
+                              title: Text(
+                                groupname,
+                                style: TextStyle(
+                                  color: Colors.black,
+                                  fontWeight: FontWeight.bold,
+                                  fontSize: 15,
+                                ),
+                              ),
+                              leading: Icon(Icons.people, color: Colors.black),
+                              onTap: () {
+                                Navigator.pushNamed(this.context,
+                                    '/myGroup?groupName=$groupname&groupId=$groupId');
+                              },
+                            );
+                          },
+                        ),
+                      ),
+                    ],
+                  ),
+                  /*
+                  ExpansionTile(
+                    title: const Text(
+                      'Groups',
+                      style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18),
+                    ),
+
+                    // takes you to the add groups page
+                    trailing: GestureDetector(
+                      onTap: () {
+                        handleTap(context, 4);
+                      },
+                      child:
+                          const Icon(Icons.add, color: Colors.black, size: 25),
+                    ),
+                    initiallyExpanded: true, //showGroups,
 
                     shape: Border(),
                     children: <Widget>[
@@ -492,6 +545,7 @@ class _SideBarState extends State<SideBar> {
                         ),
                     ],
                   ),
+                  */
                   const SizedBox(height: 20.0),
                   ExpansionTile(
                     initiallyExpanded: true,
