@@ -415,14 +415,14 @@ class _SideBarState extends State<SideBar> {
                               children: [
                                 // If you want the images to appear before the text, keep this block here
                                 SizedBox(
-                                  width: 48.0 +
-                                      min(memberObjects.length, 3) *
+                                  width: 20.0 +
+                                      min(memberObjects.length, 6) *
                                           20.0, // Adjust based on the number of images
                                   height: 30.0, // Height to accommodate images
                                   child: Stack(
                                     children: [
                                       for (int i = 0;
-                                          i < min(memberObjects.length, 3);
+                                          i < min(memberObjects.length, 6);
                                           i++) // Show max 3 images
                                         Positioned(
                                           top: 0.0,
