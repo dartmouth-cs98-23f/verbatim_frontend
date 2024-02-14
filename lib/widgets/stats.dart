@@ -225,7 +225,7 @@ class Stats extends StatelessWidget {
                           ),
                           SizedBox(
                             width: 300,
-                            height: 350.v,
+                            height: 250,
                             child: PieChart(
                               PieChartData(
                                 centerSpaceRadius: 0,
@@ -450,7 +450,7 @@ class Stats extends StatelessWidget {
                           ),
                           SizedBox(
                             width: 300,
-                            height: 350.v,
+                            height: 250,
                             child: PieChart(
                               PieChartData(
                                 centerSpaceRadius: 0,
@@ -898,7 +898,7 @@ class Stats extends StatelessWidget {
                           ),
                           Container(
                             width: 300,
-                            height: 350.v,
+                            height: 250,
                             child: PieChart(
                               PieChartData(
                                 centerSpaceRadius: 0,
@@ -1120,7 +1120,7 @@ class Stats extends StatelessWidget {
                           ),
                           Container(
                             width: 300,
-                            height: 350.v,
+                            height: 250,
                             child: PieChart(
                               PieChartData(
                                 centerSpaceRadius: 0,
