@@ -466,10 +466,14 @@ class _AddFriendState extends State<addFriend> {
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(
-                                                builder: (context) => Profile(
-                                                      user: currentUser,
-                                                    )),
+                                              builder: (context) => Profile(
+                                                user: currentUser,
+                                              ),
+                                            ),
                                           );
+                                          // Navigator.pushNamed(
+                                          //     context, '/profile',
+                                          //     arguments: currentUser);
                                         },
                                         child: Text(
                                           name,
