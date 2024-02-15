@@ -9,7 +9,7 @@ import 'package:verbatim_frontend/screens/profile.dart';
 import 'package:verbatim_frontend/screens/sideBar.dart';
 import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 import 'package:verbatim_frontend/widgets/friends_app_bar.dart';
-import 'package:verbatim_frontend/widgets/size.dart'; 
+import 'package:verbatim_frontend/widgets/size.dart';
 
 // Update User class
 class User {
@@ -83,7 +83,7 @@ class _AddFriendState extends State<addFriend> {
   List<User> friendsList = []; // User objects corresponding to friends
 
 // suggested - need to add the logic here - not yet implemented
-  final List<String> _suggestedNames = []; 
+  final List<String> _suggestedNames = [];
 
   // get friend requests to build list of requesting users, to remove
   // from displayed users (to avoid crash on requesting again)
@@ -314,7 +314,7 @@ class _AddFriendState extends State<addFriend> {
   Widget build(BuildContext context) {
     String username = SharedPrefs().getUserName() ?? "";
 
-    const String assetName = 'assets/img1.svg'; 
+    const String assetName = 'assets/img1.svg';
 
     return SafeArea(
       child: Scaffold(
@@ -363,30 +363,33 @@ class _AddFriendState extends State<addFriend> {
                                       borderRadius: BorderRadius.circular(20),
                                     ),
 
-                                  // search bar
-                                  child: Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      const SizedBox(width: 8),
-                                      const Icon(Icons.search, color: Colors.black),
-                                      const SizedBox(width: 8), 
-                                      Expanded(
-                                        child: TextField(
-                                          controller: _searchController,
-                                          decoration: const InputDecoration(
-                                            hintStyle: TextStyle(
-                                                fontSize: 14.0,
-                                                color: Color.fromARGB(
-                                                    255, 6, 5, 5)),
-                                            border: InputBorder.none,
+                                    // search bar
+                                    child: Row(
+                                      mainAxisAlignment:
+                                          MainAxisAlignment.center,
+                                      children: [
+                                        const SizedBox(width: 8),
+                                        const Icon(Icons.search,
+                                            color: Colors.black),
+                                        const SizedBox(width: 8),
+                                        Expanded(
+                                          child: TextField(
+                                            controller: _searchController,
+                                            decoration: const InputDecoration(
+                                              hintStyle: TextStyle(
+                                                  fontSize: 14.0,
+                                                  color: Color.fromARGB(
+                                                      255, 6, 5, 5),
+                                                  fontFamily: 'Poppins'),
+                                              border: InputBorder.none,
+                                            ),
+                                            textAlign: TextAlign.left,
                                           ),
-                                          textAlign: TextAlign.left,
-                                        ),
-                                      )
-                                    ],
-                                  )),
+                                        )
+                                      ],
+                                    )),
+                              ),
                             ),
-                          ),
 
                             // search results
                           ]),
@@ -476,10 +479,11 @@ class _AddFriendState extends State<addFriend> {
                                         child: Text(
                                           name,
                                           style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors
-                                                .black, // Optional: Change text color to blue for clickable effect
-                                          ),
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black,
+                                              fontFamily:
+                                                  'Poppins' // Optional: Change text color to blue for clickable effect
+                                              ),
                                         ),
                                       ),
                                     ],
@@ -541,10 +545,11 @@ class _AddFriendState extends State<addFriend> {
                                         child: Text(
                                           name,
                                           style: const TextStyle(
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors
-                                                .black, // Optional: Change text color to blue for clickable effect
-                                          ),
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black,
+                                              fontFamily:
+                                                  'Poppins' // Optional: Change text color to blue for clickable effect
+                                              ),
                                         ),
                                       ),
                                     ],

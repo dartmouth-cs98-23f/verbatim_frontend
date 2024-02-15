@@ -47,7 +47,6 @@ class _LogInState extends State<LogIn> {
         'responseQ3': SharedPrefs().getResponse3(),
         'responseQ4': SharedPrefs().getResponse4(),
         'responseQ5': SharedPrefs().getResponse5(),
-      
         'isLogin': true,
         'emailOrUsername': usernameOrEmail,
         'password': password,
@@ -145,7 +144,10 @@ class _LogInState extends State<LogIn> {
     setState(() {
       validationErrors[field] = Text(
         message,
-        style: const TextStyle(color: Colors.red),
+        style: const TextStyle(
+          color: Colors.red,
+          fontFamily: 'Poppins',
+        ),
       );
     });
   }
@@ -239,6 +241,7 @@ class _LogInState extends State<LogIn> {
                           style: const TextStyle(
                             color: Color(0xFF3C64B1),
                             fontWeight: FontWeight.w700,
+                            fontFamily: 'Poppins',
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
@@ -287,14 +290,16 @@ class _LogInState extends State<LogIn> {
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.w700,
+                                  fontFamily: 'Poppins',
                                 ),
                               ),
                               TextSpan(
                                 text: 'Register',
                                 style: const TextStyle(
                                   color: Color(0xFF3C64B1),
-                                  fontWeight: FontWeight
-                                      .w700, // Blue color for the link
+                                  fontWeight: FontWeight.w700,
+                                  fontFamily: 'Poppins',
+// Blue color for the link
                                 ),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {

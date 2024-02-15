@@ -320,8 +320,10 @@ class _ProfileState extends State<Profile> {
                                             displayName,
                                             style: GoogleFonts.poppins(
                                                 textStyle: const TextStyle(
-                                                    fontWeight: FontWeight.bold,
-                                                    fontSize: 32)),
+                                              fontWeight: FontWeight.bold,
+                                              fontSize: 32,
+                                              fontFamily: 'Poppins',
+                                            )),
                                           ),
                                           const SizedBox(
                                             height: 10,
@@ -495,6 +497,7 @@ class _ProfileState extends State<Profile> {
                                                                               fontWeight: FontWeight.w600,
                                                                               height: 0.12,
                                                                               letterSpacing: 0.20,
+                                                                              fontFamily: 'Poppins',
                                                                             )
                                                                           : const TextStyle(
                                                                               color: Colors.white,
@@ -502,6 +505,7 @@ class _ProfileState extends State<Profile> {
                                                                               fontWeight: FontWeight.w600,
                                                                               height: 0.12,
                                                                               letterSpacing: 0.20,
+                                                                              fontFamily: 'Poppins',
                                                                             )),
                                                             ),
                                                           ),
@@ -529,6 +533,7 @@ class _ProfileState extends State<Profile> {
                                       textStyle: const TextStyle(
                                         color: Colors.black,
                                         fontSize: 16,
+                                        fontFamily: 'Poppins',
                                       ),
                                     ),
                                   ),
@@ -566,6 +571,7 @@ class _ProfileState extends State<Profile> {
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
+                                        fontFamily: 'Poppins',
                                       ),
                                     ),
                                   ),
@@ -690,6 +696,7 @@ class _ProfileState extends State<Profile> {
                                               color: Colors.black,
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold,
+                                              fontFamily: 'Poppins',
                                             ),
                                           ),
                                         ),
@@ -697,18 +704,22 @@ class _ProfileState extends State<Profile> {
                                             text: 'Verba',
                                             style: GoogleFonts.poppins(
                                               textStyle: const TextStyle(
-                                                  color: Color.fromARGB(
-                                                      255, 231, 111, 81),
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold),
+                                                color: Color.fromARGB(
+                                                    255, 231, 111, 81),
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                                fontFamily: 'Poppins',
+                                              ),
                                             )),
                                         TextSpan(
                                             text: 'Match',
                                             style: GoogleFonts.poppins(
                                               textStyle: const TextStyle(
-                                                  color: Colors.black,
-                                                  fontSize: 20,
-                                                  fontWeight: FontWeight.bold),
+                                                color: Colors.black,
+                                                fontSize: 20,
+                                                fontWeight: FontWeight.bold,
+                                                fontFamily: 'Poppins',
+                                              ),
                                             )),
                                       ],
                                     )),
@@ -729,6 +740,7 @@ class _ProfileState extends State<Profile> {
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w500,
                                                   color: Colors.black,
+                                                  fontFamily: 'Poppins',
                                                 ),
                                               ),
                                               const TextSpan(
@@ -737,6 +749,7 @@ class _ProfileState extends State<Profile> {
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w500,
                                                   color: Colors.black,
+                                                  fontFamily: 'Poppins',
                                                 ),
                                               )
                                             ],

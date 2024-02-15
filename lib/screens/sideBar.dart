@@ -738,14 +738,31 @@ class _SideBarState extends State<SideBar> {
                                 fontWeight: FontWeight.bold,
                                 fontFamily: 'Poppins',
                                 fontSize: 18)),
-                        leading: const Icon(Icons.logout, color: Colors.black),
                         onTap: () {
                           Navigator.pushNamed(context, '/logout');
                         },
                       ),
                     ),
                   ),
-                  const SizedBox(height: 10),
+                  const SizedBox(height: 30),
+                  Container(
+                    child: ListTile(
+                      title: const Text(
+                        'Questions? Feedback? Click Here!',
+                        textAlign: TextAlign.center,
+                        style: TextStyle(
+                          color: Colors.black,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Poppins',
+                          fontSize: 15,
+                        ),
+                      ),
+                      onTap: () {
+                        _launchURL(formUri);
+                      },
+                    ),
+                  ),
+                  const SizedBox(height: 60),
                   Container(
                       child: Container(
                     padding: const EdgeInsets.symmetric(
@@ -772,32 +789,7 @@ class _SideBarState extends State<SideBar> {
                       ),
                     ),
                   )),
-                  Container(
-                    child: Container(
-                      padding: const EdgeInsets.symmetric(horizontal: 5),
-                      child: Center(
-                        child: ListTile(
-                          title: const Text(
-                            'Questions? Feedback? Click Here!',
-                            textAlign: TextAlign.center,
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontWeight: FontWeight.w900,
-                              fontFamily: 'Poppins',
-                              fontSize: 15,
-                            ),
-                          ),
-                          onTap: () {
-                            _launchURL(formUri);
-                          },
-                        ),
-                      ),
-                    ),
-                    // Removed extra semicolon at the end
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(vertical: 15.0),
-                  )
+                  const SizedBox(height: 10),
                 ],
               ),
             );

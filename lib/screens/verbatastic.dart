@@ -23,7 +23,7 @@ class Verbatastic extends StatelessWidget {
   });
 
   void copyInvite() {
-    //TODO: 
+    //TODO:
 
     String username = SharedPrefs().getUserName() ?? "";
     String inviteLink = 'http://localhost:3000/#/landingPage?referer=$username';
@@ -64,6 +64,7 @@ class Verbatastic extends StatelessWidget {
                         color: Color(0xFFE76F51),
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
+                        fontFamily: 'Poppins',
                       ),
                     ),
                   ),
@@ -74,6 +75,7 @@ class Verbatastic extends StatelessWidget {
                         color: Colors.black,
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
+                        fontFamily: 'Poppins',
                       ),
                     ),
                   ),
@@ -141,6 +143,7 @@ class Verbatastic extends StatelessWidget {
                             textStyle: const TextStyle(
                           color: Colors.black,
                           fontSize: 16,
+                          fontFamily: 'Poppins',
                         )),
                       ),
                     ]
@@ -151,6 +154,7 @@ class Verbatastic extends StatelessWidget {
                         style: const TextStyle(
                           color: Colors.black,
                           fontSize: 16,
+                          fontFamily: 'Poppins',
                         ),
                       ),
                       for (int i = 0;
@@ -166,6 +170,7 @@ class Verbatastic extends StatelessWidget {
                           style: const TextStyle(
                             color: Colors.black,
                             fontSize: 16,
+                            fontFamily: 'Poppins',
                           ),
                         ),
                       TextSpan(
@@ -174,6 +179,7 @@ class Verbatastic extends StatelessWidget {
                         style: const TextStyle(
                           color: Colors.black,
                           fontSize: 16,
+                          fontFamily: 'Poppins',
                         ),
                       ),
                       TextSpan(
@@ -182,6 +188,7 @@ class Verbatastic extends StatelessWidget {
                           color: Colors.black,
                           fontSize: 17,
                           fontWeight: FontWeight.bold,
+                          fontFamily: 'Poppins',
                         ),
                       ),
                     ],
@@ -195,6 +202,7 @@ class Verbatastic extends StatelessWidget {
           style: const TextStyle(
             color: Colors.black,
             fontSize: 16,
+            fontFamily: 'Poppins',
           ),
         ),
         const SizedBox(height: 25),
@@ -214,6 +222,7 @@ class Verbatastic extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
+                fontFamily: 'Poppins',
               ),
             ),
           ),

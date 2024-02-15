@@ -9,29 +9,6 @@ import 'package:verbatim_frontend/widgets/create_group_app_bar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-// User class for when backend passes in users
-// class User {
-//   int id = 0;
-//   String email = "";
-//   String username = "";
-//   String lastName = "";
-//   String password = "";
-//   dynamic profilePicture;
-//   String? bio = "";
-//   int numGlobalChallengesCompleted = 0;
-//   int numCustomChallengesCompleted = 0;
-//   int streak = 0;
-//   bool hasCompletedDailyChallenge = false;
-
-//   User({required this.username});
-
-//   factory User.fromJson(Map<String, dynamic> json) {
-//     return User(
-//       username: json['username'],
-//     );
-//   }
-// }
-
 class createGroup extends StatefulWidget {
   const createGroup({
     Key? key,
@@ -239,7 +216,8 @@ class _CreateGroupState extends State<createGroup> {
                                               hintStyle: TextStyle(
                                                   fontSize: 14.0,
                                                   color: Color.fromARGB(
-                                                      255, 6, 5, 5)),
+                                                      255, 6, 5, 5),
+                                                  fontFamily: 'Poppins'),
                                               border: InputBorder.none,
                                             ),
                                             textAlign: TextAlign.left,
@@ -264,10 +242,10 @@ class _CreateGroupState extends State<createGroup> {
                                 text:
                                     "Add at least two friends to make a group",
                                 style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                    fontSize: 15,
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Poppins'),
                               )
                             ],
                           ),
@@ -285,10 +263,10 @@ class _CreateGroupState extends State<createGroup> {
                                 text:
                                     "Error creating duplicate group - do you already have a group with these users?",
                                 style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                    fontSize: 15,
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Poppins'),
                               )
                             ],
                           ),
@@ -348,14 +326,16 @@ class _CreateGroupState extends State<createGroup> {
                                                     name,
                                                     style: const TextStyle(
                                                         fontWeight:
-                                                            FontWeight.bold),
+                                                            FontWeight.bold,
+                                                        fontFamily: 'Poppins'),
                                                   ),
                                                 ],
                                               ),
                                               trailing: IconButton(
                                                 icon:
                                                     isAdded // if they're added then show this
-                                                        ? const Icon(Icons.check)
+                                                        ? const Icon(
+                                                            Icons.check)
                                                         : const Icon(Icons
                                                             .person_add_alt),
                                                 onPressed: () {
@@ -394,9 +374,10 @@ class _CreateGroupState extends State<createGroup> {
                                                 child: Text(
                                                   "All Friends",
                                                   style: TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontFamily: 'Poppins'),
                                                 )),
                                             Expanded(
                                               child: ListView.builder(
@@ -426,7 +407,9 @@ class _CreateGroupState extends State<createGroup> {
                                                           style: const TextStyle(
                                                               fontWeight:
                                                                   FontWeight
-                                                                      .bold),
+                                                                      .bold,
+                                                              fontFamily:
+                                                                  'Poppins'),
                                                         ),
                                                       ],
                                                     ),
@@ -464,9 +447,9 @@ class _CreateGroupState extends State<createGroup> {
                                 child: Text(
                                   'Word! Give your group a name!',
                                   style: TextStyle(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Poppins'),
                                 ),
                               ),
                               const SizedBox(height: 30.0),
@@ -525,9 +508,9 @@ class _CreateGroupState extends State<createGroup> {
                       child: Text(
                         isCreated ? 'Back' : 'Cancel',
                         style: const TextStyle(
-                          color: Color(0xFFE76F51),
-                          fontWeight: FontWeight.bold,
-                        ),
+                            color: Color(0xFFE76F51),
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Poppins'),
                       ),
                     ),
                     const SizedBox(width: 16.0),
@@ -586,9 +569,9 @@ class _CreateGroupState extends State<createGroup> {
                       child: const Text(
                         'Next',
                         style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Poppins'),
                       ),
                     ),
                   ],

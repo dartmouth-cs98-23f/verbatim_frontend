@@ -482,10 +482,10 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                 child: Text(
                                   'Global Challenge #$idString',
                                   style: const TextStyle(
-                                    fontSize: 27,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w900,
-                                  ),
+                                      fontSize: 27,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w900,
+                                      fontFamily: 'Poppins'),
                                 ),
                               ),
                             ),
@@ -509,15 +509,18 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           color: Colors.black,
-                                                          fontSize: 15),
+                                                          fontSize: 15,
+                                                          fontFamily:
+                                                              'Poppins'),
                                                     ),
                                                     const TextSpan(
                                                         text:
                                                             " users have played today",
                                                         style: TextStyle(
-                                                          fontSize: 15,
-                                                          color: Colors.black,
-                                                        )),
+                                                            fontSize: 15,
+                                                            color: Colors.black,
+                                                            fontFamily:
+                                                                'Poppins')),
                                                   ],
                                                 ),
                                               ),
@@ -576,9 +579,9 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                           child: Text(
                                             questions[currentQuestionIndex],
                                             style: const TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                                fontFamily: 'Poppins'),
                                           ),
                                         ),
                                         const SizedBox(height: 30.0),
@@ -662,40 +665,40 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                               child: Text(
                                                 'Play the',
                                                 style: TextStyle(
-                                                  fontSize: 30,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xFFE76F51),
-                                                ),
+                                                    fontSize: 30,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Color(0xFFE76F51),
+                                                    fontFamily: 'Poppins'),
                                               ),
                                             ),
                                             Center(
                                               child: Text(
                                                 'challenge',
                                                 style: TextStyle(
-                                                  fontSize: 30,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xFFE76F51),
-                                                ),
+                                                    fontSize: 30,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Color(0xFFE76F51),
+                                                    fontFamily: 'Poppins'),
                                               ),
                                             ),
                                             Center(
                                               child: Text(
                                                 'to see ',
                                                 style: TextStyle(
-                                                  fontSize: 30,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xFFE76F51),
-                                                ),
+                                                    fontSize: 30,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Color(0xFFE76F51),
+                                                    fontFamily: 'Poppins'),
                                               ),
                                             ),
                                             Center(
                                               child: Text(
                                                 'Global Stats!',
                                                 style: TextStyle(
-                                                  fontSize: 30,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xFFE76F51),
-                                                ),
+                                                    fontSize: 30,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Color(0xFFE76F51),
+                                                    fontFamily: 'Poppins'),
                                               ),
                                             ),
                                           ],

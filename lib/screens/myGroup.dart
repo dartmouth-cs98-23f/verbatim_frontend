@@ -304,6 +304,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                               color: Colors.black,
                               fontSize: 22,
                               fontWeight: FontWeight.bold,
+                              fontFamily: 'Poppins',
                             ),
                           ),
                           // if groupname is a certain length, make it a new line
@@ -313,6 +314,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                               color: Colors.orange,
                               fontSize: 24,
                               fontWeight: FontWeight.w900,
+                              fontFamily: 'Poppins',
                             ),
                           ),
                         ],
@@ -426,6 +428,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                   color: Color(0xFFFFF7EE),
                   fontSize: 16,
                   fontWeight: FontWeight.w700,
+                  fontFamily: 'Poppins',
                 ),
               ),
               const SizedBox(height: 5),
@@ -438,6 +441,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                     color: Color(0xFFFFF7EE),
                     fontSize: 12,
                     fontWeight: FontWeight.w600,
+                    fontFamily: 'Poppins',
                   ),
                 ),
               ),
@@ -519,6 +523,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                     fontSize: 30,
                                     color: Colors.white,
                                     fontWeight: FontWeight.w900,
+                                    fontFamily: 'Poppins',
                                   ),
                                 ),
                                 SizedBox(height: 10.v),
@@ -576,6 +581,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                                         fontSize: 12,
                                                         fontWeight:
                                                             FontWeight.bold,
+                                                        fontFamily: 'Poppins',
                                                         color:
                                                             Color(0xFFE76F51),
                                                       ))),
@@ -625,6 +631,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                             style: TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.bold,
+                                              fontFamily: 'Poppins',
                                             ),
                                           ),
                                         ),
@@ -637,6 +644,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                             style: TextStyle(
                                               fontSize: 16,
                                               fontWeight: FontWeight.bold,
+                                              fontFamily: 'Poppins',
                                             ),
                                           ),
                                         ),
@@ -797,6 +805,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                                           fontSize: 14,
                                                           fontWeight:
                                                               FontWeight.bold,
+                                                          fontFamily: 'Poppins',
                                                         ),
                                                       ),
                                                       const Icon(
@@ -829,6 +838,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                                   fontSize: 18,
                                                   fontWeight: FontWeight.bold,
                                                   color: Color(0xFFE76F51),
+                                                  fontFamily: 'Poppins',
                                                 ),
                                               ),
                                               SizedBox(width: 5),

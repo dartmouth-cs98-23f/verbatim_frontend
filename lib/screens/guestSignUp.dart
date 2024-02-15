@@ -75,8 +75,7 @@ class _GuestSignUpState extends State<GuestSignUp> {
     }
   }
 
-
-    void validateUserInfo(
+  void validateUserInfo(
       BuildContext context,
       String firstName,
       String lastName,
@@ -168,8 +167,7 @@ class _GuestSignUpState extends State<GuestSignUp> {
           'Successfully signed up with this info: $firstName, $lastName, $username, $email, $password, $confirmedPassword');
 
       guestSignUp(context, firstName, lastName, username.toLowerCase(),
-            email.toLowerCase(), password);
-      
+          email.toLowerCase(), password);
     }
   }
 
@@ -183,7 +181,7 @@ class _GuestSignUpState extends State<GuestSignUp> {
     setState(() {
       validationErrors[field] = Text(
         message,
-        style: const TextStyle(color: Colors.red),
+        style: const TextStyle(color: Colors.red, fontFamily: 'Poppins'),
       );
     });
   }
@@ -192,11 +190,8 @@ class _GuestSignUpState extends State<GuestSignUp> {
     return validationErrors.containsKey(field) ? validationErrors[field] : null;
   }
 
-
-  
-
   @override
- @override
+  @override
   Widget build(BuildContext context) {
     //TODO: homie use this
     return Scaffold(
@@ -227,7 +222,7 @@ class _GuestSignUpState extends State<GuestSignUp> {
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 20,
-                        fontFamily: 'Mulish',
+                        fontFamily: 'Poppins',
                         fontWeight: FontWeight.w700,
                         height: 0.04,
                         letterSpacing: 0.30,
@@ -321,9 +316,7 @@ class _GuestSignUpState extends State<GuestSignUp> {
                           );
                         },
                       ),
-
                       const SizedBox(height: 10),
-
                       Center(
                         child: RichText(
                           text: TextSpan(
@@ -333,14 +326,16 @@ class _GuestSignUpState extends State<GuestSignUp> {
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.w700,
+                                  fontFamily: 'Poppins',
                                 ),
                               ),
                               TextSpan(
                                 text: 'Sign in',
                                 style: const TextStyle(
                                   color: Color(0xFF3C64B1),
-                                  fontWeight: FontWeight
-                                      .w800, // Blue color for the link
+                                  fontWeight: FontWeight.w800,
+                                  fontFamily: 'Poppins',
+// Blue color for the link
                                 ),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {

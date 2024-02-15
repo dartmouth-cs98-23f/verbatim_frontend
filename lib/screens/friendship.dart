@@ -79,18 +79,18 @@ class _FriendshipState extends State<friendship>
                           const TextSpan(
                             text: 'New Challenge with ',
                             style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                            ),
+                                color: Colors.black,
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Poppins'),
                           ),
                           TextSpan(
                             text: groupName,
                             style: const TextStyle(
-                              color: Colors.orange,
-                              fontSize: 24,
-                              fontWeight: FontWeight.w900,
-                            ),
+                                color: Colors.orange,
+                                fontSize: 24,
+                                fontWeight: FontWeight.w900,
+                                fontFamily: 'Poppins'),
                           ),
                         ],
                       ),
@@ -198,10 +198,10 @@ class _FriendshipState extends State<friendship>
               Text(
                 title,
                 style: const TextStyle(
-                  color: Color(0xFFFFF7EE),
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                ),
+                    color: Color(0xFFFFF7EE),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: 'Poppins'),
               ),
               const SizedBox(height: 5),
               SizedBox(
@@ -210,10 +210,10 @@ class _FriendshipState extends State<friendship>
                   description,
                   textAlign: TextAlign.center,
                   style: const TextStyle(
-                    color: Color(0xFFFFF7EE),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                  ),
+                      color: Color(0xFFFFF7EE),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      fontFamily: 'Poppins'),
                 ),
               ),
             ],
@@ -471,10 +471,10 @@ class _FriendshipState extends State<friendship>
                                               .toUpperCase(), // Ensures the first letter of first name is capitalized.
                                         )}',
                                         style: const TextStyle(
-                                          fontSize: 27,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w900,
-                                        ),
+                                            fontSize: 27,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w900,
+                                            fontFamily: 'Poppins'),
                                       ),
                                     ])))
                           ],
@@ -519,9 +519,9 @@ class _FriendshipState extends State<friendship>
                                               child: Text(
                                                 "Play",
                                                 style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontFamily: 'Poppins'),
                                               ),
                                             ),
                                           ),
@@ -531,9 +531,9 @@ class _FriendshipState extends State<friendship>
                                               child: Text(
                                                 "Group Stats",
                                                 style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontFamily: 'Poppins'),
                                               ),
                                             ),
                                           ),
@@ -698,15 +698,15 @@ class _FriendshipState extends State<friendship>
                                                         children: [
                                                           Text(
                                                             title,
-                                                            style:
-                                                                const TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 14,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            ),
+                                                            style: const TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 14,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontFamily:
+                                                                    'Poppins'),
                                                           ),
                                                           const Icon(
                                                             Icons
@@ -813,6 +813,7 @@ class StatsContent extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
+                    fontFamily: 'Poppins'
                   ),
                 ),
               ),
@@ -831,6 +832,7 @@ class StatsContent extends StatelessWidget {
                             color: Colors.black,
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
+                            fontFamily: 'Poppins'
                           ),
                         ),
                         TextSpan(
@@ -839,6 +841,7 @@ class StatsContent extends StatelessWidget {
                             color: Colors.orange,
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
+                            fontFamily: 'Poppins'
                           ),
                         ),
                         TextSpan(
@@ -847,6 +850,7 @@ class StatsContent extends StatelessWidget {
                             color: Colors.black,
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
+                            fontFamily: 'Poppins'
                           ),
                         ),
                       ],
@@ -869,6 +873,7 @@ class StatsContent extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
+                    fontFamily: 'Poppins'
                   ),
                 ),
               ),
@@ -886,6 +891,7 @@ class StatsContent extends StatelessWidget {
                         color: Colors.orange,
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
+                        fontFamily: 'Poppins'
                       ),
                     ),
                     TextSpan(
@@ -894,6 +900,7 @@ class StatsContent extends StatelessWidget {
                         color: Colors.black,
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
+                        fontFamily: 'Poppins'
                       ),
                     ),
                   ],
@@ -910,6 +917,7 @@ class StatsContent extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
+                    fontFamily: 'Poppins'
                   ),
                 ),
               ),
@@ -954,6 +962,7 @@ class StatsContent extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
+                    fontFamily: 'Poppins'
                   ),
                 ),
               ),
@@ -1017,20 +1026,20 @@ class _DonutChartState extends State<DonutChart> {
                           TextSpan(
                             text: 'Your score increases when you:\n\n',
                             style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 19,
-                              fontWeight: FontWeight.bold,
-                            ),
+                                color: Colors.black,
+                                fontSize: 19,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Poppins'),
                           ),
                           // if groupname is a certain length, make it a new line
                           TextSpan(
                             text:
                                 'Verbatim, Build Streaks, and Play Challenges!',
                             style: TextStyle(
-                              color: Colors.orange,
-                              fontSize: 21,
-                              fontWeight: FontWeight.w900,
-                            ),
+                                color: Colors.orange,
+                                fontSize: 21,
+                                fontWeight: FontWeight.w900,
+                                fontFamily: 'Poppins'),
                           ),
                         ],
                       ),
@@ -1064,9 +1073,9 @@ class _DonutChartState extends State<DonutChart> {
             Text(
               widget.title,
               style: const TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Poppins'),
             ),
             const SizedBox(width: 8),
             InkWell(
@@ -1132,16 +1141,16 @@ class _DonutChartState extends State<DonutChart> {
                               Text(
                                 widget.groupSimilarity.toStringAsFixed(2),
                                 style: const TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Poppins'),
                               ),
                               const Text(
                                 "Rating",
                                 style: TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Poppins'),
                               ),
                             ],
                           ),

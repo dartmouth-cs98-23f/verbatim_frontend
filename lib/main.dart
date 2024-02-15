@@ -77,7 +77,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey,
       onGenerateRoute: Application.router.generator,
-        //initialRoute: SharedPrefs().getCurrentPage() ?? '/landingPage',
+      //initialRoute: SharedPrefs().getCurrentPage() ?? '/landingPage',
       home: const LandingPage(),
     );
   }

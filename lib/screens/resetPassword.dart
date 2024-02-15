@@ -76,7 +76,10 @@ class _ResetPasswordState extends State<ResetPassword> {
     setState(() {
       validationErrors[field] = Text(
         message,
-        style: const TextStyle(color: Colors.red),
+        style: const TextStyle(
+          color: Colors.red,
+          fontFamily: 'Poppins',
+        ),
       );
     });
   }
