@@ -235,11 +235,7 @@ class _CustomChallengeState extends State<customChallenge>
         height: expandedStates[index] ? 100 : 50,
         width: double.infinity,
         margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-<<<<<<< HEAD
-        padding: const EdgeInsets.all(8),
-=======
         padding: const EdgeInsets.symmetric(horizontal: 8),
->>>>>>> main
         decoration: BoxDecoration(
           color: Colors.white,
           borderRadius: BorderRadius.circular(10),
@@ -318,13 +314,6 @@ class _CustomChallengeState extends State<customChallenge>
                     Flexible(
                       child: Text(
                         prompts[index],
-<<<<<<< HEAD
-                        style: const TextStyle(
-                          fontSize: 16,
-                          fontWeight: FontWeight.bold,
-                          overflow: TextOverflow.ellipsis,
-                        ),
-=======
                         style: prompts[index] == hintText
                             ? TextStyle(
                                 fontSize: 16,
@@ -337,7 +326,6 @@ class _CustomChallengeState extends State<customChallenge>
                                 fontWeight: FontWeight.bold,
                                 overflow: TextOverflow.ellipsis,
                               ),
->>>>>>> main
                       ),
                     ),
                   ],

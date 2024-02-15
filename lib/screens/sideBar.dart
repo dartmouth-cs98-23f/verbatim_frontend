@@ -2,15 +2,14 @@ import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:url_launcher/url_launcher.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/Components/defineRoutes.dart';
 import 'dart:convert';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
-import 'package:verbatim_frontend/screens/User.dart';
+import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'package:verbatim_frontend/screens/profile.dart';
 import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
-import 'package:url_launcher/url_launcher.dart';
-import 'package:flutter/cupertino.dart';
 import 'package:confetti/confetti.dart';
 
 class UserGroup {
@@ -98,12 +97,22 @@ class _SideBarState extends State<SideBar> {
   List<User> friends = [];
   List<String> groupnamesList = [];
   List<UserGroup> userGroups = [];
-<<<<<<< HEAD
   Map<int, List<User>> groupMemberObjects = {};
   List<String> groupMembers = [];
 
+  final formUri = Uri.parse(
+      'https://docs.google.com/forms/d/e/1FAIpQLSdcfcWUuU19auQXU0Jj_s--x4t_lVPVvOWqURWgP49z1HWZaA/viewform');
+
+  Future<void> _launchURL(Uri url) async {
+    if (await canLaunchUrl(url)) {
+      await launchUrl(url);
+    } else {
+      throw 'Could not launch $url';
+    }
+  }
+
   Future<void> getGroupStats(int groupId) async {
-    print("\ngroupId here is ${groupId}\n");
+    print("\ngroupId here is $groupId\n");
     final url = Uri.parse('${BackendService.getBackendUrl()}group/$groupId');
 
     final response = await http.get(url);
@@ -147,69 +156,22 @@ class _SideBarState extends State<SideBar> {
       groupMemberObjects[groupId] = userList
           .where((user) => groupMembersList.contains(user.username))
           .toList();
+
+      groupMemberObjects.forEach((groupId, memberObjects) {
+        for (var member in memberObjects) {
+          member.isRequested = true;
+        }
+      });
     } else {
       print("Failure: ${response.statusCode}");
       // Handle failure if needed
     }
-=======
-  final formUri = Uri.parse(
-      'https://docs.google.com/forms/d/e/1FAIpQLSdcfcWUuU19auQXU0Jj_s--x4t_lVPVvOWqURWgP49z1HWZaA/viewform');
-
-  Future<void> _launchURL(Uri url) async {
-    if (await canLaunchUrl(url)) {
-      await launchUrl(url);
-    } else {
-      throw 'Could not launch $url';
-    }
-  }
-
-  Future<void> _showAcceptDeclineDialog(
-      BuildContext context, Function(bool) onAction) async {
-    return showDialog<void>(
-      context: context,
-      barrierDismissible: true,
-      builder: (BuildContext context) {
-        return AnimatedContainer(
-            duration: const Duration(seconds: 1),
-            curve: Curves.easeInOut,
-            child: CupertinoAlertDialog(
-              title: const Text('Friend Request'),
-              actions: <Widget>[
-                CupertinoDialogAction(
-                  child: const Text('Accept',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.green)),
-                  onPressed: () {
-                    onAction(true);
-                    _triggerConfettiAnimation();
-                    Navigator.of(context).pop();
-                  },
-                ),
-                CupertinoDialogAction(
-                  child: const Text('Decline',
-                      style: TextStyle(
-                          fontWeight: FontWeight.bold, color: Colors.red)),
-                  onPressed: () {
-                    onAction(false);
-                    Navigator.of(context).pop();
-                  },
-                ),
-              ],
-            ));
-      },
-    );
->>>>>>> main
   }
 
   //get groups
   Future<void> getMyGroups(String username) async {
-<<<<<<< HEAD
     final url =
         Uri.parse('${BackendService.getBackendUrl()}user/$username/groups');
-=======
-    final url = Uri.parse(
-        '${BackendService.getBackendUrl()}user/$username/groups');
->>>>>>> main
 
     final response = await http.get(url);
 
@@ -354,9 +316,12 @@ class _SideBarState extends State<SideBar> {
                             title: Text(
                               (SharedPrefs().getLastName() ?? "Name").isNotEmpty
                                   ? '$firstName $lastNameInitial.'
-                                  : '$firstName',
+                                  : firstName,
                               style: const TextStyle(
-                                  color: Colors.white, fontSize: 20),
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.bold),
                             ),
                             leading: FirebaseStorageImage(
                               profileUrl:
@@ -395,6 +360,7 @@ class _SideBarState extends State<SideBar> {
                             style: TextStyle(
                                 color: primary,
                                 fontWeight: FontWeight.bold,
+                                fontFamily: 'Poppins',
                                 fontSize: 17)),
                         leading: Icon(Icons.home, color: primary),
                         onTap: () {
@@ -409,6 +375,7 @@ class _SideBarState extends State<SideBar> {
                         style: TextStyle(
                             color: Colors.black,
                             fontWeight: FontWeight.bold,
+                            fontFamily: 'Poppins',
                             fontSize: 18)),
 
                     // takes you to the addFriend page
@@ -445,10 +412,16 @@ class _SideBarState extends State<SideBar> {
                                         '/friendship?friendUsername=$friendUsername');
                                   },
                                   child: Text(
-                                    friend.username,
+                                    friend.username.replaceFirstMapped(
+                                      RegExp(r'^\w'),
+                                      (match) => match
+                                          .group(0)!
+                                          .toUpperCase(), // Ensures the first letter of first name is capitalized.
+                                    ),
                                     style: const TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold,
+                                      fontFamily: 'Poppins',
                                       fontSize: 15,
                                     ),
                                   ),
@@ -502,6 +475,7 @@ class _SideBarState extends State<SideBar> {
                       style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
+                          fontFamily: 'Poppins',
                           fontSize: 18),
                     ),
 
@@ -513,65 +487,11 @@ class _SideBarState extends State<SideBar> {
                       child:
                           const Icon(Icons.add, color: Colors.black, size: 25),
                     ),
-                    initiallyExpanded: true,
+                    initiallyExpanded: false,
 
                     shape: const Border(),
                     children: <Widget>[
                       const SizedBox(height: 10.0),
-                      Container(
-                        padding: const EdgeInsets.symmetric(horizontal: 5.0),
-                        child: ListView.builder(
-                          shrinkWrap: true,
-                          physics: const NeverScrollableScrollPhysics(),
-                          itemCount: groupnamesList.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            String groupname = groupnamesList[index];
-                            int? groupId = userGroups[index].id;
-// go to group with this Id
-                            return ListTile(
-                              title: Text(
-                                groupname,
-                                style: const TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
-                                ),
-                              ),
-                              leading: const Icon(Icons.people, color: Colors.black),
-                              onTap: () {
-                                Navigator.pushNamed(this.context,
-                                    '/myGroup?groupName=$groupname&groupId=$groupId');
-                              },
-                            );
-                          },
-                        ),
-                      ),
-                    ],
-                  ),
-                  /*
-                  ExpansionTile(
-                    title: const Text(
-                      'Groups',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18),
-                    ),
-
-                    // takes you to the add groups page
-                    trailing: GestureDetector(
-                      onTap: () {
-                        handleTap(context, 4);
-                      },
-                      child:
-                          const Icon(Icons.add, color: Colors.black, size: 25),
-                    ),
-                    initiallyExpanded: true, //showGroups,
-
-                    shape: const Border(),
-                    children: <Widget>[
-                      const SizedBox(height: 10.0),
-<<<<<<< HEAD
                       ListView.builder(
                         shrinkWrap: true,
                         physics: const NeverScrollableScrollPhysics(),
@@ -616,35 +536,6 @@ class _SideBarState extends State<SideBar> {
                                         ),
                                     ],
                                   ),
-=======
-                      Container(
-                        padding: EdgeInsets.symmetric(horizontal: 5.0),
-                        child: ListView.builder(
-                          itemCount: showGroups
-                              ? groupnamesList.length
-                              : min(groupnamesList.length, 2),
-                          shrinkWrap: true,
-                          physics: NeverScrollableScrollPhysics(),
-                          // itemCount: groupnamesList.length,
-                          itemBuilder: (BuildContext context, int index) {
-                            if (showGroups) {
-                              int initialDisplayedItems =
-                                  min(groupnamesList.length, 2);
-                              groupnamesList =
-                                  groupnamesList.sublist(initialDisplayedItems);
-                              userGroups =
-                                  userGroups.sublist(initialDisplayedItems);
-                            }
-                            String groupname = groupnamesList[index];
-                            int? groupId = userGroups[index].id;
-                            return ListTile(
-                              title: Text(
-                                groupname,
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.bold,
-                                  fontSize: 15,
->>>>>>> main
                                 ),
                                 // Spacer or sized box can be added here if needed
                                 Expanded(
@@ -653,6 +544,7 @@ class _SideBarState extends State<SideBar> {
                                     style: const TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold,
+                                      fontFamily: 'Poppins',
                                       fontSize: 15,
                                     ),
                                     overflow: TextOverflow.ellipsis,
@@ -667,19 +559,8 @@ class _SideBarState extends State<SideBar> {
                           );
                         },
                       ),
-                      if (!showGroups && groupnamesList.length > 2)
-                        // Only show a button to expand if there are more items
-                        ListTile(
-                          title: Text('Show more'),
-                          onTap: () {
-                            setState(() {
-                              showGroups = true;
-                            });
-                          },
-                        ),
                     ],
                   ),
-                  */
                   const SizedBox(height: 20.0),
                   ExpansionTile(
                     initiallyExpanded: true,
@@ -688,6 +569,7 @@ class _SideBarState extends State<SideBar> {
                       style: TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
+                          fontFamily: 'Poppins',
                           fontSize: 18),
                     ),
                     //   trailing: FriendRequestsIcon(iconColor: trailingIconColor),
@@ -727,6 +609,7 @@ class _SideBarState extends State<SideBar> {
                                   style: const TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
+                                    fontFamily: 'Poppins',
                                     fontSize: 15,
                                   ),
                                 ),
@@ -853,6 +736,7 @@ class _SideBarState extends State<SideBar> {
                             style: TextStyle(
                                 color: Colors.black,
                                 fontWeight: FontWeight.bold,
+                                fontFamily: 'Poppins',
                                 fontSize: 18)),
                         leading: const Icon(Icons.logout, color: Colors.black),
                         onTap: () {
@@ -876,6 +760,7 @@ class _SideBarState extends State<SideBar> {
                               color: Colors.black,
                               fontStyle: FontStyle.italic,
                               fontWeight: FontWeight.w700,
+                              fontFamily: 'Poppins',
                               fontSize: 15),
                         ),
                         leading: Icon(Icons.favorite,
@@ -888,22 +773,31 @@ class _SideBarState extends State<SideBar> {
                     ),
                   )),
                   Container(
-                      child: Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 5),
-                    child: Center(
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(horizontal: 5),
+                      child: Center(
                         child: ListTile(
-                      title: const Text('Questions? Feedback? Click Here!',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
+                          title: const Text(
+                            'Questions? Feedback? Click Here!',
+                            textAlign: TextAlign.center,
+                            style: TextStyle(
                               color: Colors.black,
-                              //  fontStyle: FontStyle.,
                               fontWeight: FontWeight.w900,
-                              fontSize: 15)),
-                      onTap: () {
-                        _launchURL(formUri);
-                      },
-                    )),
-                  )),
+                              fontFamily: 'Poppins',
+                              fontSize: 15,
+                            ),
+                          ),
+                          onTap: () {
+                            _launchURL(formUri);
+                          },
+                        ),
+                      ),
+                    ),
+                    // Removed extra semicolon at the end
+                  ),
+                  Container(
+                    padding: const EdgeInsets.symmetric(vertical: 15.0),
+                  )
                 ],
               ),
             );

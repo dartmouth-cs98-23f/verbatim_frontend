@@ -897,13 +897,8 @@ class Stats extends StatelessWidget {
                             ),
                           ),
                           SizedBox(
-<<<<<<< HEAD
-                            width: 300.h,
-                            height: 350.v,
-=======
                             width: 300,
                             height: 250,
->>>>>>> main
                             child: PieChart(
                               PieChartData(
                                 centerSpaceRadius: 0,
@@ -933,11 +928,7 @@ class Stats extends StatelessWidget {
                             ),
                           ),
                           SizedBox(
-<<<<<<< HEAD
-                              width: 300.h,
-=======
                               width: 300,
->>>>>>> main
                               child: Center(
                                 child: Legend(
                                   data: [
@@ -984,11 +975,7 @@ class Stats extends StatelessWidget {
                               )),
                           const SizedBox(height: 10),
                           SizedBox(
-<<<<<<< HEAD
-                              width: 300.h,
-=======
                               width: 300,
->>>>>>> main
                               height: 250,
                               child: friends.isEmpty
                                   ? const Padding(
@@ -1132,13 +1119,8 @@ class Stats extends StatelessWidget {
                             ),
                           ),
                           SizedBox(
-<<<<<<< HEAD
-                            width: 300.h,
-                            height: 350.v,
-=======
                             width: 300,
                             height: 250,
->>>>>>> main
                             child: PieChart(
                               PieChartData(
                                 centerSpaceRadius: 0,
@@ -1168,11 +1150,7 @@ class Stats extends StatelessWidget {
                             ),
                           ),
                           SizedBox(
-<<<<<<< HEAD
-                              width: 300.h,
-=======
                               width: 300,
->>>>>>> main
                               child: Center(
                                 child: Legend(
                                   data: [
@@ -1219,11 +1197,7 @@ class Stats extends StatelessWidget {
                               )),
                           const SizedBox(height: 10),
                           SizedBox(
-<<<<<<< HEAD
-                              width: 300.h,
-=======
                               width: 300,
->>>>>>> main
                               height: 250,
                               child: friends.isEmpty
                                   ? const Padding(

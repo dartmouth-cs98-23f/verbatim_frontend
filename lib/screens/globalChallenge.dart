@@ -274,7 +274,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
           verbatimedWord = firstEntry.key;
           verbatasticUsernames = firstEntry.value as List<String>;
 
-          print("\nverbatasticUsernames contains ${verbatasticUsernames}\n");
+          print("\nverbatasticUsernames contains $verbatasticUsernames\n");
           getVerbatasticUserObjects();
 
           print(
@@ -391,7 +391,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
             verbatasticUsers.entries.first;
 
         verbatimedWord = firstEntry.key;
-        verbatasticUsernames = firstEntry.value as List<String>;
+        verbatasticUsernames = firstEntry.value!;
       } else {
         print("verbatasticUsers is empty");
       }

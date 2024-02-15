@@ -223,12 +223,7 @@ class _FriendshipState extends State<friendship>
 
 // ask backend for stats between the two friends
   Future<void> getFriendStats(String user, String friend) async {
-<<<<<<< HEAD
     final url = Uri.parse('${BackendService.getBackendUrl()}$user/$friend');
-=======
-    final url =
-        Uri.parse('${BackendService.getBackendUrl()}$user/$friend');
->>>>>>> main
 
     final response = await http.get(url);
 
@@ -261,13 +256,8 @@ class _FriendshipState extends State<friendship>
 
 // asks backend for active challenges between these friends
   Future<void> getActiveChallenges(String user, String friend) async {
-<<<<<<< HEAD
     final url =
         Uri.parse('${BackendService.getBackendUrl()}$user/$friend/challenges');
-=======
-    final url = Uri.parse(
-        '${BackendService.getBackendUrl()}$user/$friend/challenges');
->>>>>>> main
     final response = await http.get(url);
     if (response.statusCode == 200) {
       final dynamic jsonData = json.decode(response.body);
@@ -284,11 +274,7 @@ class _FriendshipState extends State<friendship>
             .toList();
 
         mappedChallenges = getMappedChallenges(activeChallenges);
-<<<<<<< HEAD
         challengeStats = {for (var id in activeChallengeIds) id: {}};
-=======
-        challengeStats = { for (var id in activeChallengeIds) id : {} };
->>>>>>> main
       } else {}
     } else {
       print("active challenges not obtained succesfuly");
@@ -320,12 +306,8 @@ class _FriendshipState extends State<friendship>
   int totalResponses = 0;
 
   Future<void> getUserHasCompleted(int challengeId, String user) async {
-<<<<<<< HEAD
     final url = Uri.parse(
         '${BackendService.getBackendUrl()}$challengeId/$user/userHasCompleted');
-=======
-    final url = Uri.parse('${BackendService.getBackendUrl()}$challengeId/$user/userHasCompleted');
->>>>>>> main
 
     final response = await http.get(url);
 
@@ -341,12 +323,8 @@ class _FriendshipState extends State<friendship>
       String user,
       Map<int, List<String>> mappedChallenges,
       Map<int, Map<String, dynamic>> challengeStats) async {
-<<<<<<< HEAD
     final url = Uri.parse(
         '${BackendService.getBackendUrl()}$challengeId/$user/getChallengeQs');
-=======
-    final url = Uri.parse('${BackendService.getBackendUrl()}$challengeId/$user/getChallengeQs');
->>>>>>> main
 
     // await getUserHasCompleted(challengeId, user);
 
@@ -486,7 +464,12 @@ class _FriendshipState extends State<friendship>
                                     padding: const EdgeInsets.only(top: 100),
                                     child: Column(children: [
                                       Text(
-                                        'You and ${widget.friendUsername}',
+                                        'You and ${widget.friendUsername.replaceFirstMapped(
+                                          RegExp(r'^\w'),
+                                          (match) => match
+                                              .group(0)!
+                                              .toUpperCase(), // Ensures the first letter of first name is capitalized.
+                                        )}',
                                         style: const TextStyle(
                                           fontSize: 27,
                                           color: Colors.white,
@@ -693,7 +676,6 @@ class _FriendshipState extends State<friendship>
                                                       }
                                                     },
                                                     child: Container(
-<<<<<<< HEAD
                                                       margin: const EdgeInsets
                                                           .symmetric(
                                                         vertical: 10,
@@ -704,16 +686,6 @@ class _FriendshipState extends State<friendship>
                                                       decoration: BoxDecoration(
                                                         color: const Color
                                                             .fromARGB(
-=======
-                                                      margin:
-                                                          const EdgeInsets.symmetric(
-                                                        vertical: 10,
-                                                      ),
-                                                      padding:
-                                                          const EdgeInsets.all(10),
-                                                      decoration: BoxDecoration(
-                                                        color: const Color.fromARGB(
->>>>>>> main
                                                             255, 231, 111, 81),
                                                         borderRadius:
                                                             BorderRadius
@@ -726,12 +698,8 @@ class _FriendshipState extends State<friendship>
                                                         children: [
                                                           Text(
                                                             title,
-<<<<<<< HEAD
                                                             style:
                                                                 const TextStyle(
-=======
-                                                            style: const TextStyle(
->>>>>>> main
                                                               color:
                                                                   Colors.white,
                                                               fontSize: 14,
@@ -769,14 +737,15 @@ class _FriendshipState extends State<friendship>
                                                       fontSize: 18,
                                                       fontWeight:
                                                           FontWeight.bold,
-                                                      color: Colors.black,
+                                                      fontFamily: 'Poppins',
+                                                      color: Color(0xFFE76F51),
                                                     ),
                                                   ),
                                                   SizedBox(width: 5),
                                                   Icon(
                                                     Icons.add,
                                                     size: 20,
-                                                    color: Colors.black,
+                                                    color: Color(0xFFE76F51),
                                                   ),
                                                 ],
                                               ),
@@ -809,12 +778,8 @@ class StatsContent extends StatelessWidget {
   List<String> verbaMatchGroup;
   double groupRating;
 
-<<<<<<< HEAD
   StatsContent({
     super.key,
-=======
-  StatsContent({super.key, 
->>>>>>> main
     required this.verbaMatchGroup,
     required this.groupRating,
   });
@@ -1126,11 +1091,7 @@ class _DonutChartState extends State<DonutChart> {
                     centerSpaceRadius: 50,
                     sections: [
                       PieChartSectionData(
-<<<<<<< HEAD
-                        value: widget.groupSimilarity,
-=======
                         value: outof100,
->>>>>>> main
                         color: const Color(0xFFE76F51),
                         radius: 25,
                         showTitle: false,

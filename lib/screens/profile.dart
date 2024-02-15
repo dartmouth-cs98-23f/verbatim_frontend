@@ -1,15 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
-<<<<<<< HEAD
 import 'package:intl/intl.dart';
 import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'package:verbatim_frontend/screens/sideBar.dart';
 import 'package:verbatim_frontend/widgets/center_custom_app_bar.dart';
-import 'package:verbatim_frontend/widgets/customAppBar_Settings.dart';
-=======
-import 'package:verbatim_frontend/screens/User.dart';
-import 'package:verbatim_frontend/screens/sideBar.dart';
->>>>>>> main
 import 'package:verbatim_frontend/widgets/custom_challenge_button.dart';
 import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 import 'package:verbatim_frontend/widgets/showSuccessDialog.dart';
@@ -80,30 +74,13 @@ class _ProfileState extends State<Profile> {
   Map<String, bool> friendRequestStates = {};
   bool drawButton = false;
   String groupName = '';
-  User? toBeDisplayedUser = null;
+  User? toBeDisplayedUser;
 
   static int friends = 0;
   static int globals = 0;
   static int customs = 0;
   static int streaks = 0;
   static double verbaMatchScore = 0;
-<<<<<<< HEAD
-
-=======
-  static User match = User(
-    username: '',
-    bio: '',
-    id: 0,
-    email: '',
-    lastName: '',
-    firstName: '',
-    profilePicture:'assets/profile_pic.png',
-    numGlobalChallengesCompleted: 0,
-    numCustomChallengesCompleted: 0,
-    streak: 0,
-    hasCompletedDailyChallenge: false,
-  );
->>>>>>> main
   static String profile = 'assets/default.jpeg';
 
   Future<void> _getStats(String username) async {
@@ -126,7 +103,6 @@ class _ProfileState extends State<Profile> {
         verbaMatchScore = 0;
       }
 
-<<<<<<< HEAD
       final Map<String, dynamic> matchDeets = stats.match;
 
       // Remove the current user's details from matchDeets
@@ -158,22 +134,10 @@ class _ProfileState extends State<Profile> {
       });
 
       // Print statements for debugging (can be removed in production)
-      print("\nVerba match score: ${verbaMatchScore}\n");
-      print("\nMatch user: ${match}\n");
-      print("\nMatchDeets : ${matchDeets}\n");
+      print("\nVerba match score: $verbaMatchScore\n");
+      print("\nMatch user: $match\n");
+      print("\nMatchDeets : $matchDeets\n");
       print("\nStats.match is : ${stats.match}\n");
-=======
-      if (match.profilePicture == '') {
-        match.profilePicture = profile;
-      } 
-      if (SharedPrefs().getProfileUrl() == '') {
-        SharedPrefs().setProfileUrl(profile);
-      } else {
-        //TODO: sharedprefs.getprofile
-        profile = SharedPrefs().getProfileUrl()!;
-      }
-      // print("Itsss okkkk");
->>>>>>> main
     } else {
       print(
           'Error: Could not fetch user stats. Status code: ${getStats.statusCode}');
@@ -291,11 +255,7 @@ class _ProfileState extends State<Profile> {
           body: SingleChildScrollView(
             child: SafeArea(
               child: Container(
-<<<<<<< HEAD
                 color: const Color.fromRGBO(255, 243, 238, 1),
-=======
-                color: const Color.fromARGB(255, 255, 243, 238),
->>>>>>> main
                 child: Column(
                   children: [
                     SizedBox(
@@ -801,7 +761,7 @@ class _ProfileState extends State<Profile> {
                                           ),
                                         ),
                                       ),
-                                      SizedBox(
+                                      const SizedBox(
                                           width:
                                               25), // Add spacing between the profile pictures
                                       Align(
@@ -828,12 +788,12 @@ class _ProfileState extends State<Profile> {
                                                         user: match,
                                                       ),
                                                     )
-                                                  : Align(
+                                                  : const Align(
                                                       alignment:
                                                           Alignment.center,
                                                       child: Icon(
                                                         Icons.help_outline,
-                                                        size: 100,
+                                                        size: 110,
                                                         color:
                                                             Color(0xFFE76F51),
                                                       ),

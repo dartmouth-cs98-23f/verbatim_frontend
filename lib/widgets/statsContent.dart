@@ -11,7 +11,7 @@ class StatsContent extends StatelessWidget {
   final double groupRating;
   final List<User> verbaMatchStatsUsers;
 
-  StatsContent({
+  const StatsContent({
     Key? key,
     required this.verbaMatchStatsContent,
     required this.groupRating,
@@ -152,7 +152,7 @@ class StatsContent extends StatelessWidget {
                     Positioned(
                       top: 0,
                       left: 35.0 + (i * 50),
-                      child: Container(
+                      child: SizedBox(
                         width: 100,
                         height: 100,
                         child: FirebaseStorageImage(
@@ -183,7 +183,7 @@ class StatsContent extends StatelessWidget {
                       ),
                     ),
                   )
-                : SizedBox(), // Empty SizedBox to render nothing if verbaMatchStatsUsers is empty
+                : const SizedBox(), // Empty SizedBox to render nothing if verbaMatchStatsUsers is empty
           ),
           SizedBox(height: 50.v)
         ],

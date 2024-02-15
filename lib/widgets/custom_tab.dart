@@ -1,17 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+
 class PlayTab extends StatefulWidget {
   final void Function(bool) onTabSelectionChanged;
-<<<<<<< HEAD
-
-  const PlayTab({Key? key, required this.onTabSelectionChanged}) : super(key: key);
-
-=======
   PlayTab({Key? key, required this.onTabSelectionChanged}) : super(key: key);
->>>>>>> main
   @override
   _PlayTabState createState() => _PlayTabState();
 }
+
 class _PlayTabState extends State<PlayTab> {
   late bool _isFirstTabSelected;
   @override
@@ -19,6 +15,7 @@ class _PlayTabState extends State<PlayTab> {
     super.initState();
     _isFirstTabSelected = true;
   }
+
   void _toggleTabSelection(bool isFirstTabSelected) {
     if (_isFirstTabSelected != isFirstTabSelected) {
       widget.onTabSelectionChanged(isFirstTabSelected);
@@ -27,10 +24,11 @@ class _PlayTabState extends State<PlayTab> {
       });
     }
   }
+
   @override
   Widget build(BuildContext context) {
-    const String play = 'assets/playtoggle.svg';
-    const String stats = 'assets/statstoggle.svg';
+    final String play = 'assets/playtoggle.svg';
+    final String stats = 'assets/statstoggle.svg';
     Widget content = SvgPicture.asset(play, fit: BoxFit.fill);
     Widget content2 = SvgPicture.asset(
       stats,
@@ -50,7 +48,7 @@ class _PlayTabState extends State<PlayTab> {
                 color: Colors.black.withOpacity(.25),
                 blurRadius: 5,
                 spreadRadius: -5,
-                offset: const Offset(0, 1),
+                offset: Offset(0, 1),
               ),
             ],
           ),
@@ -61,14 +59,15 @@ class _PlayTabState extends State<PlayTab> {
       ),
     );
   }
+
   Widget _buildTabContent1(bool firsttab) {
-    const String play = 'assets/playtoggle.svg';
+    final String play = 'assets/playtoggle.svg';
     Widget content = SvgPicture.asset(play, fit: BoxFit.cover);
     return Visibility(
       visible: firsttab,
       child: Align(
         alignment: Alignment.centerRight,
-        child: SizedBox(
+        child: Container(
           height: 60,
           color: Colors.transparent,
           width: 200,
@@ -79,18 +78,15 @@ class _PlayTabState extends State<PlayTab> {
       ),
     );
   }
+
   Widget _buildTabContent2(bool secondtab) {
-    const String stats = 'assets/statstoggle.svg';
+    final String stats = 'assets/statstoggle.svg';
     Widget content = SvgPicture.asset(stats, fit: BoxFit.cover);
     return Visibility(
       visible: secondtab,
       child: Center(
-<<<<<<< HEAD
-        child: SizedBox(
-=======
         child: Container(
           color: Colors.transparent,
->>>>>>> main
           height: 0,
           width: 0,
           child: ClipOval(child: content),
@@ -98,8 +94,9 @@ class _PlayTabState extends State<PlayTab> {
       ),
     );
   }
+
   Widget _buildTabContent(IconData icon, String text, double width) {
-    const String stats = 'assets/statstoggle.svg';
+    final String stats = 'assets/statstoggle.svg';
     Widget content = SvgPicture.asset(stats, fit: BoxFit.cover);
     return Center(
       child: Container(
@@ -118,7 +115,7 @@ class _PlayTabState extends State<PlayTab> {
               ),
               Text(
                 text,
-                style: const TextStyle(
+                style: TextStyle(
                   fontWeight: FontWeight.bold,
                   fontSize: 14,
                   color: Colors.black,
@@ -131,6 +128,3 @@ class _PlayTabState extends State<PlayTab> {
     );
   }
 }
-
-
-

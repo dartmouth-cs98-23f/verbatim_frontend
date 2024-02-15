@@ -229,12 +229,8 @@ class _CreateGroupState extends State<createGroup> {
                                           MainAxisAlignment.center,
                                       children: [
                                         const SizedBox(width: 8),
-<<<<<<< HEAD
                                         const Icon(Icons.search,
                                             color: Colors.black),
-=======
-                                        const Icon(Icons.search, color: Colors.black),
->>>>>>> main
                                         const SizedBox(width: 8),
                                         Expanded(
                                           child: TextField(
@@ -342,16 +338,11 @@ class _CreateGroupState extends State<createGroup> {
                                               title: Row(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
-<<<<<<< HEAD
                                                   FirebaseStorageImage(
                                                     profileUrl: currentUser
                                                         .profilePicture,
                                                     user: currentUser,
                                                   ), // prof pic of user
-=======
-                                                  const Icon(Icons
-                                                      .mood), // prof pic of user
->>>>>>> main
                                                   const SizedBox(width: 8),
                                                   Text(
                                                     name,
@@ -364,12 +355,7 @@ class _CreateGroupState extends State<createGroup> {
                                               trailing: IconButton(
                                                 icon:
                                                     isAdded // if they're added then show this
-<<<<<<< HEAD
-                                                        ? const Icon(
-                                                            Icons.pending)
-=======
                                                         ? const Icon(Icons.check)
->>>>>>> main
                                                         : const Icon(Icons
                                                             .person_add_alt),
                                                 onPressed: () {
@@ -428,7 +414,6 @@ class _CreateGroupState extends State<createGroup> {
                                                   return ListTile(
                                                     title: Row(
                                                       children: [
-<<<<<<< HEAD
                                                         FirebaseStorageImage(
                                                           profileUrl: currentUser
                                                               .profilePicture,
@@ -436,10 +421,6 @@ class _CreateGroupState extends State<createGroup> {
                                                         ),
                                                         const SizedBox(
                                                             width: 8),
-=======
-                                                        const Icon(Icons.mood),
-                                                        const SizedBox(width: 8),
->>>>>>> main
                                                         Text(
                                                           name,
                                                           style: const TextStyle(
@@ -453,11 +434,7 @@ class _CreateGroupState extends State<createGroup> {
                                                       icon:
                                                           isAdded // if they're added then show this
                                                               ? const Icon(
-<<<<<<< HEAD
-                                                                  Icons.pending)
-=======
                                                                   Icons.check)
->>>>>>> main
                                                               : const Icon(Icons
                                                                   .person_add_alt),
                                                       onPressed: () {
@@ -483,12 +460,7 @@ class _CreateGroupState extends State<createGroup> {
                             Column(children: [
                               const SizedBox(height: 30),
                               const Padding(
-<<<<<<< HEAD
                                 padding: EdgeInsets.symmetric(horizontal: 16.0),
-=======
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 16.0),
->>>>>>> main
                                 child: Text(
                                   'Word! Give your group a name!',
                                   style: TextStyle(
@@ -499,12 +471,8 @@ class _CreateGroupState extends State<createGroup> {
                               ),
                               const SizedBox(height: 30.0),
                               Container(
-<<<<<<< HEAD
                                 padding: const EdgeInsets.symmetric(
                                     horizontal: 20.0),
-=======
-                                padding: const EdgeInsets.symmetric(horizontal: 20.0),
->>>>>>> main
                                 child: TextField(
                                   controller: responseController,
                                   onChanged: (value) {
@@ -542,12 +510,8 @@ class _CreateGroupState extends State<createGroup> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-<<<<<<< HEAD
                         backgroundColor:
                             const Color.fromARGB(255, 255, 243, 238),
-=======
-                        backgroundColor: const Color.fromARGB(255, 255, 243, 238),
->>>>>>> main
                         padding: const EdgeInsets.all(16.0),
                         elevation: 0.0,
                         shape: RoundedRectangleBorder(

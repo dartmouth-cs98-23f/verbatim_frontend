@@ -311,8 +311,8 @@ class _CreateGroupState extends State<createGroup> {
                                               trailing: IconButton(
                                                 icon:
                                                     isAdded // if they're added then show this
-                                                        ? Icon(Icons.pending)
-                                                        : Icon(Icons
+                                                        ? const Icon(Icons.pending)
+                                                        : const Icon(Icons
                                                             .person_add_alt),
                                                 onPressed: () {
                                                   if (!isAdded) {
@@ -369,8 +369,8 @@ class _CreateGroupState extends State<createGroup> {
                                                   return ListTile(
                                                     title: Row(
                                                       children: [
-                                                        Icon(Icons.mood),
-                                                        SizedBox(width: 8),
+                                                        const Icon(Icons.mood),
+                                                        const SizedBox(width: 8),
                                                         Text(
                                                           name,
                                                           style: const TextStyle(
@@ -408,9 +408,9 @@ class _CreateGroupState extends State<createGroup> {
                           else
                             // if it is created then you are making your group!
                             Column(children: [
-                              SizedBox(height: 30),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
+                              const SizedBox(height: 30),
+                              const Padding(
+                                padding: EdgeInsets.symmetric(
                                     horizontal: 16.0),
                                 child: Text(
                                   'Word! Give your group a name!',
@@ -422,7 +422,7 @@ class _CreateGroupState extends State<createGroup> {
                               ),
                               const SizedBox(height: 30.0),
                               Container(
-                                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                                padding: const EdgeInsets.symmetric(horizontal: 20.0),
                                 child: TextField(
                                   controller: responseController,
                                   onChanged: (value) {

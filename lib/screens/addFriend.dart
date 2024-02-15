@@ -9,9 +9,6 @@ import 'package:verbatim_frontend/screens/profile.dart';
 import 'package:verbatim_frontend/screens/sideBar.dart';
 import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 import 'package:verbatim_frontend/widgets/friends_app_bar.dart';
-import 'package:http/http.dart' as http;
-import 'dart:convert';
-import 'package:verbatim_frontend/widgets/friends_app_bar_test.dart';
 import 'package:verbatim_frontend/widgets/size.dart'; 
 
 // Update User class
@@ -86,7 +83,7 @@ class _AddFriendState extends State<addFriend> {
   List<User> friendsList = []; // User objects corresponding to friends
 
 // suggested - need to add the logic here - not yet implemented
-  List<String> _suggestedNames = []; 
+  final List<String> _suggestedNames = []; 
 
   // get friend requests to build list of requesting users, to remove
   // from displayed users (to avoid crash on requesting again)
@@ -352,10 +349,10 @@ class _AddFriendState extends State<addFriend> {
                               height: 20,
                             ),
                             // app bar for add friend page
-                            FriendsAppBar(),
+                            const FriendsAppBar(),
 
                             Padding(
-                              padding: EdgeInsets.only(top: 20.0),
+                              padding: const EdgeInsets.only(top: 20.0),
                               child: Align(
                                 alignment: Alignment.center,
                                 child: Container(
@@ -370,14 +367,14 @@ class _AddFriendState extends State<addFriend> {
                                   child: Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      SizedBox(width: 8),
-                                      Icon(Icons.search, color: Colors.black),
-                                      SizedBox(width: 8), 
+                                      const SizedBox(width: 8),
+                                      const Icon(Icons.search, color: Colors.black),
+                                      const SizedBox(width: 8), 
                                       Expanded(
                                         child: TextField(
                                           controller: _searchController,
-                                          decoration: InputDecoration(
-                                            hintStyle: const TextStyle(
+                                          decoration: const InputDecoration(
+                                            hintStyle: TextStyle(
                                                 fontSize: 14.0,
                                                 color: Color.fromARGB(
                                                     255, 6, 5, 5)),

@@ -1,6 +1,5 @@
 // // User class for when backend passes in users
 
-<<<<<<< HEAD
 // class User {
 //   int id = 0;
 //   String email = "";
@@ -14,21 +13,20 @@
 //   int streak = 0;
 //   bool hasCompletedDailyChallenge = false;
 //   bool isRequested = false;
-=======
-class User {
-  int id = 0;
-  String email = "";
-  String username = "";
-  String lastName = "";
-  String firstName = "";
-  String profilePicture;
-  String? bio = "";
-  int numGlobalChallengesCompleted = 0;
-  int numCustomChallengesCompleted = 0;
-  int streak = 0;
-  bool hasCompletedDailyChallenge = false;
-  bool isRequested = false;
->>>>>>> main
+
+// class User {
+//   int id = 0;
+//   String email = "";
+//   String username = "";
+//   String lastName = "";
+//   String firstName = "";
+//   String profilePicture;
+//   String? bio = "";
+//   int numGlobalChallengesCompleted = 0;
+//   int numCustomChallengesCompleted = 0;
+//   int streak = 0;
+//   bool hasCompletedDailyChallenge = false;
+//   bool isRequested = false;
 
 //   User({
 //     required this.id,
