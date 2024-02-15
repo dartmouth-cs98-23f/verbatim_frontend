@@ -75,6 +75,7 @@ class _ProfileState extends State<Profile> {
   bool drawButton = false;
   String groupName = '';
   User? toBeDisplayedUser;
+  String friendshipDate = '';
 
   static int friends = 0;
   static int globals = 0;
@@ -191,6 +192,36 @@ class _ProfileState extends State<Profile> {
     }
   }
 
+  void getFriendshipDate(String currentUsername, String friendUsername) async {
+    final String url =
+        "${BackendService.getBackendUrl()}${currentUsername}/${friendUsername}/getUserStats";
+
+    try {
+      final http.Response response = await http.get(Uri.parse(url));
+
+      if (response.statusCode == 200) {
+        // Parse the JSON string
+        Map<String, dynamic> friendshipJson = jsonDecode(response.body);
+
+        // Get the value of 'friendsSince'
+        String friendsSince = friendshipJson['friendsSince'];
+
+        // Parse the original date string
+        DateTime dateTime = DateFormat("MM-dd-yyyy").parse(friendsSince);
+
+        // Format the date in the desired format
+        friendshipDate = DateFormat("MM/dd/yy").format(dateTime);
+
+        print('\nFriendship Date: $friendshipDate\n');
+      } else {
+        print(
+            '\nFailed to get friendship data. Status code: ${response.statusCode}\n');
+      }
+    } catch (error) {
+      print('\nError getting friendship data: $error\n');
+    }
+  }
+
   final String field = "Friend";
   @override
   void initState() {
@@ -228,6 +259,11 @@ class _ProfileState extends State<Profile> {
 
     lastName = widget.user?.lastName ?? SharedPrefs().getLastName() ?? "Name";
     initial = lastName.isNotEmpty ? lastName.substring(0, 1).toUpperCase() : "";
+
+    if (widget.user != null) {
+      getFriendshipDate(
+          SharedPrefs().getUserName() as String, widget.user!.username);
+    }
 
     // Format displayName using firstName and initial
     displayName = lastName.isNotEmpty ? '$firstName $initial.' : firstName;
@@ -485,7 +521,7 @@ class _ProfileState extends State<Profile> {
                                                                               .user!
                                                                               .username] ==
                                                                           true
-                                                                      ? "Friends Since ${DateFormat('MM/dd/yy').format(DateTime.now())}"
+                                                                      ? "Friends Since $friendshipDate"
                                                                       : "Add Friend",
                                                               style: GoogleFonts
                                                                   .poppins(
