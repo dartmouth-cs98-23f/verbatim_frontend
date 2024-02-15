@@ -76,6 +76,7 @@ class _ProfileState extends State<Profile> {
   String groupName = '';
   User? toBeDisplayedUser;
   String friendshipDate = '';
+  String friendshipStatusDescription = "Friendship Request Pending";
 
   static int friends = 0;
   static int globals = 0;
@@ -201,21 +202,30 @@ class _ProfileState extends State<Profile> {
 
       if (response.statusCode == 200) {
         // Parse the JSON string
-        Map<String, dynamic> friendshipJson = jsonDecode(response.body);
+        Map<String, dynamic>? friendshipJson = jsonDecode(response.body);
 
-        // Get the value of 'friendsSince'
-        String friendsSince = friendshipJson['friendsSince'];
+        // Check if the key exists and its value is not null
+        String? friendsSince = friendshipJson?['friendsSince'];
 
-        // Parse the original date string
-        DateTime dateTime = DateFormat("MM-dd-yyyy").parse(friendsSince);
+        if (friendsSince != null) {
+          // Parse the original date string
+          DateTime dateTime = DateFormat("MM-dd-yyyy").parse(friendsSince);
 
-        // Format the date in the desired format
-        friendshipDate = DateFormat("MM/dd/yy").format(dateTime);
+          // Format the date in the desired format
+          friendshipDate = DateFormat("MM/dd/yy").format(dateTime);
 
-        print('\nFriendship Date: $friendshipDate\n');
+          print('\nFriendship Date: $friendshipDate\n');
+        } else {
+          print(
+              '\nError: "friendsSince" is null or not found in JSON response\n');
+        }
       } else {
         print(
             '\nFailed to get friendship data. Status code: ${response.statusCode}\n');
+      }
+
+      if (friendshipDate.isNotEmpty) {
+        friendshipStatusDescription = "Friends Since ${friendshipDate}";
       }
     } catch (error) {
       print('\nError getting friendship data: $error\n');
@@ -521,7 +531,7 @@ class _ProfileState extends State<Profile> {
                                                                               .user!
                                                                               .username] ==
                                                                           true
-                                                                      ? "Friends Since $friendshipDate"
+                                                                      ? friendshipStatusDescription
                                                                       : "Add Friend",
                                                               style: GoogleFonts
                                                                   .poppins(

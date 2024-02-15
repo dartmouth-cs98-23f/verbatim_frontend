@@ -605,7 +605,12 @@ class _SideBarState extends State<SideBar> {
                                   );
                                 },
                                 child: Text(
-                                  requester.username,
+                                  requester.username.replaceFirstMapped(
+                                    RegExp(r'^\w'),
+                                    (match) => match
+                                        .group(0)!
+                                        .toUpperCase(), // Ensures the first letter of first name is capitalized.
+                                  ),
                                   style: const TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
@@ -725,7 +730,7 @@ class _SideBarState extends State<SideBar> {
                       ),
                     ],
                   ),
-                  const SizedBox(height: 10.0),
+                  const SizedBox(height: 20.0),
                   Container(
                     padding: const EdgeInsets.symmetric(horizontal: 5.0),
                     child: Container(
@@ -744,22 +749,27 @@ class _SideBarState extends State<SideBar> {
                       ),
                     ),
                   ),
-                  const SizedBox(height: 30),
+                  const SizedBox(height: 20),
                   Container(
-                    child: ListTile(
-                      title: const Text(
-                        'Questions? Feedback? Click Here!',
-                        textAlign: TextAlign.center,
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Poppins',
-                          fontSize: 15,
+                    padding: const EdgeInsets.symmetric(horizontal: 5.0),
+                    child: Container(
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 0.0, vertical: 0.1),
+                      child: ListTile(
+                        title: const Text(
+                          'Questions? Feedback? Click Here!',
+                          textAlign: TextAlign.left,
+                          style: TextStyle(
+                            color: Colors.black,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Poppins',
+                            fontSize: 15,
+                          ),
                         ),
+                        onTap: () {
+                          _launchURL(formUri);
+                        },
                       ),
-                      onTap: () {
-                        _launchURL(formUri);
-                      },
                     ),
                   ),
                   const SizedBox(height: 60),

@@ -477,7 +477,12 @@ class _AddFriendState extends State<addFriend> {
                                           //     arguments: currentUser);
                                         },
                                         child: Text(
-                                          name,
+                                          name.replaceFirstMapped(
+                                            RegExp(r'^\w'),
+                                            (match) => match
+                                                .group(0)!
+                                                .toUpperCase(), // Ensures the first letter of first name is capitalized.
+                                          ),
                                           style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               color: Colors.black,
@@ -543,7 +548,12 @@ class _AddFriendState extends State<addFriend> {
                                           );
                                         },
                                         child: Text(
-                                          name,
+                                          name.replaceFirstMapped(
+                                            RegExp(r'^\w'),
+                                            (match) => match
+                                                .group(0)!
+                                                .toUpperCase(), // Ensures the first letter of first name is capitalized.
+                                          ),
                                           style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               color: Colors.black,

@@ -141,15 +141,17 @@ class _CreateGroupState extends State<createGroup> {
 
   // search feature control (adjust if necessary)
   List<User> _searchResults() {
-    // return friendsUsernamesList
-    //     .where((item) => item.toLowerCase().contains(_searchText.toLowerCase()))
-    //     .toList();
-
-    return searchResults
+    List<User> filteredResults = searchResults
         .where((item) =>
             item.username.toLowerCase().contains(_searchText.toLowerCase()) &&
             item.username != SharedPrefs().getUserName())
         .toList();
+
+    for (var member in filteredResults) {
+      member.isRequested = true;
+    }
+
+    return filteredResults;
   }
 
   @override
@@ -323,7 +325,12 @@ class _CreateGroupState extends State<createGroup> {
                                                   ), // prof pic of user
                                                   const SizedBox(width: 8),
                                                   Text(
-                                                    name,
+                                                    name.replaceFirstMapped(
+                                                      RegExp(r'^\w'),
+                                                      (match) => match
+                                                          .group(0)!
+                                                          .toUpperCase(), // Ensures the first letter of first name is capitalized.
+                                                    ),
                                                     style: const TextStyle(
                                                         fontWeight:
                                                             FontWeight.bold,
@@ -403,7 +410,12 @@ class _CreateGroupState extends State<createGroup> {
                                                         const SizedBox(
                                                             width: 8),
                                                         Text(
-                                                          name,
+                                                          name.replaceFirstMapped(
+                                                            RegExp(r'^\w'),
+                                                            (match) => match
+                                                                .group(0)!
+                                                                .toUpperCase(), // Ensures the first letter of first name is capitalized.
+                                                          ),
                                                           style: const TextStyle(
                                                               fontWeight:
                                                                   FontWeight
