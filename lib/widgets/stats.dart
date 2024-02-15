@@ -180,22 +180,23 @@ class Stats extends StatelessWidget {
         length: tabLabels.length,
         child: Scaffold(
             appBar: AppBar(
+              centerTitle: true,
               backgroundColor: Colors.transparent,
               elevation: 0,
               title: TabBar(
+                isScrollable: true,
+
                 unselectedLabelColor: Colors.black,
-                labelPadding: const EdgeInsets.symmetric(horizontal: 4.0),
+                // labelPadding: const EdgeInsets.only(right: 16.0),
                 indicatorColor: const Color(0xFFE76F51),
                 labelColor: const Color(0xFFE76F51),
-                indicatorPadding: EdgeInsets.zero,
-                indicatorSize: TabBarIndicatorSize.label,
+                //  indicatorPadding: EdgeInsets.zero,
+                //   indicatorSize: TabBarIndicatorSize.label,
                 tabs: tabLabels
                     .map((label) => Tab(
-                          child: Container(
-                            child: Text(
-                              label,
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                          child: Text(
+                            label,
+                            //  overflow: TextOverflow.ellipsis,
                           ),
                         ))
                     .toList(),

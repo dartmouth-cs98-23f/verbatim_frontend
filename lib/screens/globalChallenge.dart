@@ -697,9 +697,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                               questions: questions,
                                               responses: responses123))
                                     ]);
-                                  }
-                                  //NEED TO CHANGE THIS SNIPPET OF CODE TO HAVE THE CARD AND A SIGN UP
-                                  else {
+                                  } else {
                                     return FutureBuilder<void>(
                                       future: _fetchData(username),
                                       builder: (context, snapshot) {
