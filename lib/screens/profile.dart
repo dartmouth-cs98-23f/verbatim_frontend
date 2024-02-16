@@ -100,6 +100,8 @@ class _ProfileState extends State<Profile> {
       streaks = stats.streaks;
       verbaMatchScore = stats.verbaMatchScore;
 
+      print("this is verbamatch score $verbaMatchScore");
+
       if (verbaMatchScore == -1) {
         verbaMatchScore = 0;
       }
@@ -253,7 +255,7 @@ class _ProfileState extends State<Profile> {
         friendRequestStates[widget.user!.username] = widget.user!.isRequested;
       }
       drawButton = friendRequestStates[widget.user!.username] as bool;
-      //  groupName = '${SharedPrefs().getUserName()}&${widget.user!.username}';
+      groupName = '${widget.user!.username}';
     }
 
     // Initialize username from SharedPrefs if not provided through the widget
