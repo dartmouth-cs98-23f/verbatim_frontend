@@ -92,8 +92,7 @@ class _ProfileState extends State<Profile> {
     final getStats = await http.get(url, headers: headers);
 
     if (getStats.statusCode == 200) {
-      final Map<String, dynamic> data = jsonDecode(getStats.body);
-      final Stats stats = Stats.fromJson(data);
+      final Stats stats = Stats.fromJson(jsonDecode(getStats.body));
 
       friends = stats.friends;
       globals = stats.globals;
