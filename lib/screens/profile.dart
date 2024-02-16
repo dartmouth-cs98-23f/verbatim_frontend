@@ -70,7 +70,7 @@ class _ProfileState extends State<Profile> {
   String username = '';
 
   String bio = '';
-  String profileUrl = 'assets/profile_pic.png';
+  String profileUrl = '';
   Map<String, bool> friendRequestStates = {};
   bool drawButton = false;
   String groupName = '';
@@ -106,30 +106,37 @@ class _ProfileState extends State<Profile> {
 
       final Map<String, dynamic> matchDeets = stats.match;
 
+      print("this is match deets $matchDeets");
       // Remove the current user's details from matchDeets
-      matchDeets.removeWhere((key, value) =>
-          key == 'username' && value == SharedPrefs().getUserName() as String);
+
+      print("\nthis is match deets after remove where $matchDeets");
 
       // Set match to null if matchDeets still contains elements
-      User? newMatch = matchDeets.isEmpty
-          ? null
-          : User(
-              username: matchDeets["username"],
-              bio: matchDeets['bio'],
-              id: matchDeets['id'],
-              email: matchDeets['email'],
-              lastName: matchDeets['lastName'],
-              firstName: matchDeets['firstName'],
-              profilePicture: matchDeets['profilePicture'],
-              numGlobalChallengesCompleted:
-                  matchDeets['numGlobalChallengesCompleted'],
-              numCustomChallengesCompleted:
-                  matchDeets['numCustomChallengesCompleted'],
-              streak: matchDeets['streak'],
-              hasCompletedDailyChallenge:
-                  matchDeets['hasCompletedDailyChallenge'],
-            );
+      User? newMatch =
+          matchDeets["username"] == SharedPrefs().getUserName() as String
+              ? null
+              : User(
+                  username: matchDeets["username"],
+                  bio: matchDeets['bio'],
+                  id: matchDeets['id'],
+                  email: matchDeets['email'],
+                  lastName: matchDeets['lastName'],
+                  firstName: matchDeets['firstName'],
+                  profilePicture: matchDeets['profilePicture'],
+                  numGlobalChallengesCompleted:
+                      matchDeets['numGlobalChallengesCompleted'],
+                  numCustomChallengesCompleted:
+                      matchDeets['numCustomChallengesCompleted'],
+                  streak: matchDeets['streak'],
+                  hasCompletedDailyChallenge:
+                      matchDeets['hasCompletedDailyChallenge'],
+                );
+      print("newmatch username: ");
+      print(newMatch?.username);
 
+      newMatch?.profilePicture ??= 'assets/profile_pic.png';
+
+      print(newMatch?.profilePicture);
       setState(() {
         match = newMatch;
       });
@@ -177,8 +184,12 @@ class _ProfileState extends State<Profile> {
 
     final response = await http.post(url, headers: headers, body: username);
 
+    dynamic responsedecode = json.decode(response.body);
+    print("this is responsedecode $responsedecode");
     if (response.statusCode == 200) {
+      print("im in =200");
       List<dynamic> myfriendRequests = json.decode(response.body);
+      print("these are myfriendreqeusts $myfriendRequests");
       if (myfriendRequests.isNotEmpty) {
         for (var request in myfriendRequests) {
           String requestedUsername = request['username'];
@@ -236,13 +247,13 @@ class _ProfileState extends State<Profile> {
   void initState() {
     super.initState();
     getUsersIHaveRequested(SharedPrefs().getUserName() as String);
-
+// if this is someone else's page then draw the ''requested'' button as such
     if (widget.user != null) {
       if (!friendRequestStates.containsKey(widget.user!.username)) {
         friendRequestStates[widget.user!.username] = widget.user!.isRequested;
       }
       drawButton = friendRequestStates[widget.user!.username] as bool;
-      groupName = '${SharedPrefs().getUserName()}&${widget.user!.username}';
+      //  groupName = '${SharedPrefs().getUserName()}&${widget.user!.username}';
     }
 
     // Initialize username from SharedPrefs if not provided through the widget
@@ -256,6 +267,7 @@ class _ProfileState extends State<Profile> {
         SharedPrefs().getProfileUrl() ??
         'assets/profile_pic.png';
 
+    print("\nprofileURl $profileUrl");
     // Populate the initial values for other user details
     firstName =
         (widget.user?.firstName ?? SharedPrefs().getFirstName() ?? "User")
@@ -813,8 +825,7 @@ class _ProfileState extends State<Profile> {
                                             width: 100,
                                             height: 100,
                                             child: FirebaseStorageImage(
-                                              profileUrl: SharedPrefs()
-                                                  .getProfileUrl() as String,
+                                              profileUrl: profileUrl,
                                             ),
                                           ),
                                         ),
