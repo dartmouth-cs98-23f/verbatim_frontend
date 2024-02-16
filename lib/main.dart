@@ -7,6 +7,7 @@ import 'BackendService.dart';
 import 'Components/defineRoutes.dart';
 import 'Components/shared_prefs.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -16,19 +17,19 @@ Future<void> main() async {
 
   const String environment =
       String.fromEnvironment('FLUTTER_BACKEND_ENV', defaultValue: 'prod');
-  //print("env in main is: " + environment);
+  await dotenv.load(fileName: ".env");
 
   BackendService.loadProperties(environment);
   try {
     await Firebase.initializeApp(
-        //name: 'com.example.verbatim_frontend',
-        options: const FirebaseOptions(
-      apiKey: "AIzaSyCoMI1z4rnhlRtgkctBH84iN4j-AuVqpx0",
-      appId: "1:1052195157201:android:c403d36febd4de5e5a81f0",
-      messagingSenderId: "1052195157201",
-      projectId: "verbatim-b4c2c",
-      storageBucket: "gs://verbatim-b4c2c.appspot.com",
-    ));
+      options: FirebaseOptions(
+        apiKey: dotenv.env['apiKey']!,
+        appId: dotenv.env['appId']!,
+        messagingSenderId: dotenv.env['messagingSenderId']!,
+        projectId: dotenv.env['projectId']!,
+        storageBucket: dotenv.env['storageBucket']!,
+      ),
+    );
   } catch (e) {
     print('\n\nError initializing Firebase: $e\n\n');
   }

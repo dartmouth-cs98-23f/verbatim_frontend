@@ -187,7 +187,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
           .toList();
 
       print(
-          "\nReturned verbatasticUsers are ${verbatasticUserObjects.length}\n");
+          "\nReturned verbatasticUser Objects are ${verbatasticUserObjects.length} in total\n");
     } else {
       print("Failure: ${response.statusCode}");
       // Handle failure if needed

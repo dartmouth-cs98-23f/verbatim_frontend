@@ -367,7 +367,7 @@ class _ProfileState extends State<Profile> {
                                             style: GoogleFonts.poppins(
                                                 textStyle: const TextStyle(
                                               fontWeight: FontWeight.bold,
-                                              fontSize: 32,
+                                              fontSize: 29,
                                               fontFamily: 'Poppins',
                                             )),
                                           ),

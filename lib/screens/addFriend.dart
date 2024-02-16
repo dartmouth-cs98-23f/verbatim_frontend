@@ -537,8 +537,6 @@ class _AddFriendState extends State<addFriend> {
                                       const SizedBox(width: 8),
                                       GestureDetector(
                                         onTap: () {
-                                          print(
-                                              "\nOn line 528 in add_friend, the profile url is ${currentUser.profilePicture}");
                                           Navigator.push(
                                             context,
                                             MaterialPageRoute(

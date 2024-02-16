@@ -48,6 +48,8 @@ class Verbatastic extends StatelessWidget {
     String sendIcon = 'assets/send.svg';
     String inviteText = "\n See how your friends would compare!";
 
+    print("\nVerbatasticUserObjects are: ${verbatasticUserObjects!.length}\n");
+
     return Column(
       children: [
         const SizedBox(height: 40),
@@ -64,7 +66,6 @@ class Verbatastic extends StatelessWidget {
                         color: Color(0xFFE76F51),
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
-                        fontFamily: 'Poppins',
                       ),
                     ),
                   ),
@@ -75,7 +76,6 @@ class Verbatastic extends StatelessWidget {
                         color: Colors.black,
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
-                        fontFamily: 'Poppins',
                       ),
                     ),
                   ),
@@ -86,48 +86,45 @@ class Verbatastic extends StatelessWidget {
         ),
         const SizedBox(height: 10),
         Center(
-          child: verbatasticUsernames!.isEmpty
-              ? SizedBox(
-                  width: 100,
-                  height: 48,
-                  child: Stack(
-                    children: [
-                      Positioned(
-                        top: 0,
-                        left: 30.0,
-                        child: Image.asset(
-                          'assets/Ellipse ${41}.png',
-                          height: 48,
-                        ),
-                      ),
-                    ],
-                  ),
-                )
-              : Center(
-                  child: SizedBox(
-                    width: min(verbatasticUsernames!.length + 1, 6) * 38,
-                    height: 45,
+            child: verbatasticUsernames!.isEmpty
+                ? SizedBox(
+                    width: 100,
+                    height: 48,
                     child: Stack(
                       children: [
-                        for (int i = 0;
-                            i <
-                                min(verbatasticUserObjects!.length,
-                                    6); // Limit loop to the length of the list
-                            i++)
-                          Positioned(
-                            top: 0,
-                            left: 30.0 * i,
-                            child: FirebaseStorageImage(
-                              profileUrl:
-                                  verbatasticUserObjects![i].profilePicture,
-                              user: verbatasticUserObjects![i],
-                            ),
+                        Positioned(
+                          top: 0,
+                          left: 30.0,
+                          child: Image.asset(
+                            'assets/Ellipse ${41}.png',
+                            height: 48,
                           ),
+                        ),
                       ],
                     ),
-                  ),
-                ),
-        ),
+                  )
+                : Center(
+                    child: SizedBox(
+                      width: min(verbatasticUsernames!.length + 1, 6) * 38,
+                      height: 45,
+                      child: Stack(
+                        children: [
+                          for (int i = 0;
+                              i < min(verbatasticUsernames!.length + 1, 6);
+                              i++)
+                            Positioned(
+                              top: 0,
+                              left: 30.0 * i,
+                              child: FirebaseStorageImage(
+                                profileUrl:
+                                    verbatasticUserObjects![i].profilePicture,
+                                user: verbatasticUserObjects![i],
+                              ),
+                            ),
+                        ],
+                      ),
+                    ),
+                  )),
         const SizedBox(height: 10),
         SizedBox(
           width: 200,
@@ -143,7 +140,6 @@ class Verbatastic extends StatelessWidget {
                             textStyle: const TextStyle(
                           color: Colors.black,
                           fontSize: 16,
-                          fontFamily: 'Poppins',
                         )),
                       ),
                     ]
@@ -154,7 +150,6 @@ class Verbatastic extends StatelessWidget {
                         style: const TextStyle(
                           color: Colors.black,
                           fontSize: 16,
-                          fontFamily: 'Poppins',
                         ),
                       ),
                       for (int i = 0;
@@ -170,7 +165,6 @@ class Verbatastic extends StatelessWidget {
                           style: const TextStyle(
                             color: Colors.black,
                             fontSize: 16,
-                            fontFamily: 'Poppins',
                           ),
                         ),
                       TextSpan(
@@ -179,7 +173,6 @@ class Verbatastic extends StatelessWidget {
                         style: const TextStyle(
                           color: Colors.black,
                           fontSize: 16,
-                          fontFamily: 'Poppins',
                         ),
                       ),
                       TextSpan(
@@ -188,7 +181,6 @@ class Verbatastic extends StatelessWidget {
                           color: Colors.black,
                           fontSize: 17,
                           fontWeight: FontWeight.bold,
-                          fontFamily: 'Poppins',
                         ),
                       ),
                     ],
@@ -202,7 +194,6 @@ class Verbatastic extends StatelessWidget {
           style: const TextStyle(
             color: Colors.black,
             fontSize: 16,
-            fontFamily: 'Poppins',
           ),
         ),
         const SizedBox(height: 25),
@@ -222,7 +213,6 @@ class Verbatastic extends StatelessWidget {
               style: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-                fontFamily: 'Poppins',
               ),
             ),
           ),
