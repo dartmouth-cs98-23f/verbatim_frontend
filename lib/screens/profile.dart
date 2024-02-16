@@ -76,7 +76,7 @@ class _ProfileState extends State<Profile> {
   String groupName = '';
   User? toBeDisplayedUser;
   String friendshipDate = '';
-  String friendshipStatusDescription = "Friendship Request Pending";
+  String friendshipStatusDescription = "Friend Request Pending";
 
   static int friends = 0;
   static int globals = 0;
@@ -866,10 +866,13 @@ class _ProfileState extends State<Profile> {
                             ),
                           ),
                           const SizedBox(height: 15.0),
-                          CustomChallengeButton(
-                            drawButton: drawButton,
-                            groupName: groupName,
-                          ),
+                          // Only allow the user to create custom challenge with a friend.
+                          (friendshipDate.isNotEmpty)
+                              ? CustomChallengeButton(
+                                  drawButton: drawButton,
+                                  groupName: groupName,
+                                )
+                              : Container(),
                           const SizedBox(height: 15.0),
                         ],
                       ),
