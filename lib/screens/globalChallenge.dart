@@ -278,7 +278,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
           getVerbatasticUserObjects();
 
           print(
-              "\nverbatasticUserObjects contains ${verbatasticUserObjects.length} user objects\n");
+              "\nverbatasticUserObjects contains ${verbatasticUserObjects.length} user objects while verbatasticUsernames contains ${verbatasticUsernames.length} names\n");
         } else {
           print("verbatasticUsers is empty");
         }

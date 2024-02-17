@@ -48,8 +48,6 @@ class Verbatastic extends StatelessWidget {
     String sendIcon = 'assets/send.svg';
     String inviteText = "\n See how your friends would compare!";
 
-    print("\nVerbatasticUserObjects are: ${verbatasticUserObjects!.length}\n");
-
     return Column(
       children: [
         const SizedBox(height: 40),
@@ -105,12 +103,12 @@ class Verbatastic extends StatelessWidget {
                   )
                 : Center(
                     child: SizedBox(
-                      width: min(verbatasticUsernames!.length + 1, 6) * 38,
+                      width: min(verbatasticUserObjects!.length + 1, 6) * 38,
                       height: 45,
                       child: Stack(
                         children: [
                           for (int i = 0;
-                              i < min(verbatasticUsernames!.length + 1, 6);
+                              i < min(verbatasticUserObjects!.length, 6);
                               i++)
                             Positioned(
                               top: 0,
