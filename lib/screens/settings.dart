@@ -301,7 +301,7 @@ class _settingsState extends State<settings> {
                               // app bar on top of background
 
                               const centerAppBar(
-                                title: 'Account Settings',
+                                title: 'Settings',
                               ),
                             ],
                           ),
