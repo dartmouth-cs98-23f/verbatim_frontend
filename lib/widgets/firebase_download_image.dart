@@ -2,9 +2,8 @@ import 'dart:async';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
 import 'package:http/http.dart' as http;
+import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'package:verbatim_frontend/screens/profile.dart';
-
-import '../screens/User.dart';
 
 class FirebaseStorageImage extends StatelessWidget {
   final String profileUrl;
@@ -25,15 +24,13 @@ class FirebaseStorageImage extends StatelessWidget {
               if (user != null) {
                 Navigator.push(
                   context,
-                  MaterialPageRoute(builder: (context) => Profile(user: user!)),
+                  MaterialPageRoute(
+                    builder: (context) => Profile(
+                      user: user,
+                    ),
+                  ),
                 );
               } else {
-                // Navigator.push(
-                //   context,
-                //   MaterialPageRoute(builder: (context) => Profile()),
-
-                // );
-                // SharedPrefs().setCurrentPage('/profile');
                 Navigator.pushNamed(context, '/profile');
               }
             },
@@ -52,11 +49,6 @@ class FirebaseStorageImage extends StatelessWidget {
         } else {
           return GestureDetector(
             onTap: () {
-              // Navigate to the Profile page
-              // Navigator.push(
-              //   context,
-              //   MaterialPageRoute(builder: (context) => Profile()),
-              // );
               Navigator.pushNamed(
                 context,
                 '/profile',

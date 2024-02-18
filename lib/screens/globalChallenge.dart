@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/BackendService.dart';
+import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'sideBar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -70,9 +71,10 @@ class _GlobalChallengeState extends State<globalChallenge> {
   List<String> responses123 = [];
 
   Map<String, List<String>?> verbatasticUsers = {};
-  List<String>? verbatasticUsernames = [];
+  List<String> verbatasticUsernames = [];
   List<String> modResponse = [];
   String verbatimedWord = "";
+  List<User> verbatasticUserObjects = [];
 
   Map<String, dynamic> statsQ1 = {
     "firstMostPopular": "",
@@ -163,6 +165,35 @@ class _GlobalChallengeState extends State<globalChallenge> {
     }
   }
 
+  // get all users to display
+  Future<void> getVerbatasticUserObjects() async {
+    final url = Uri.parse('${BackendService.getBackendUrl()}users');
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      final List<dynamic> data = json.decode(response.body);
+
+      final List<User> userList =
+          data.map((item) => User.fromJson(item)).toList();
+
+      print("\nUserList is of length: ${userList.length}\n");
+
+      List<String> neededUserNames = verbatasticUsernames;
+      neededUserNames.add(SharedPrefs().getUserName() as String);
+
+      // Users who are verba matches
+      verbatasticUserObjects = userList
+          .where((user) => neededUserNames.contains(user.username))
+          .toList();
+
+      print(
+          "\nReturned verbatasticUser Objects are ${verbatasticUserObjects.length} in total\n");
+    } else {
+      print("Failure: ${response.statusCode}");
+      // Handle failure if needed
+    }
+  }
+
   Future<void> _fetchData(String username) async {
     final url = Uri.parse('${BackendService.getBackendUrl()}globalChallenge');
     final headers = <String, String>{'Content-Type': 'application/json'};
@@ -241,7 +272,13 @@ class _GlobalChallengeState extends State<globalChallenge> {
               verbatasticUsers.entries.first;
 
           verbatimedWord = firstEntry.key;
-          verbatasticUsernames = firstEntry.value;
+          verbatasticUsernames = firstEntry.value as List<String>;
+
+          print("\nverbatasticUsernames contains $verbatasticUsernames\n");
+          getVerbatasticUserObjects();
+
+          print(
+              "\nverbatasticUserObjects contains ${verbatasticUserObjects.length} user objects while verbatasticUsernames contains ${verbatasticUsernames.length} names\n");
         } else {
           print("verbatasticUsers is empty");
         }
@@ -354,7 +391,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
             verbatasticUsers.entries.first;
 
         verbatimedWord = firstEntry.key;
-        verbatasticUsernames = firstEntry.value;
+        verbatasticUsernames = firstEntry.value!;
       } else {
         print("verbatasticUsers is empty");
       }
@@ -445,10 +482,10 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                 child: Text(
                                   'Global Challenge #$idString',
                                   style: const TextStyle(
-                                    fontSize: 27,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w900,
-                                  ),
+                                      fontSize: 27,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w900,
+                                      fontFamily: 'Poppins'),
                                 ),
                               ),
                             ),
@@ -472,15 +509,18 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           color: Colors.black,
-                                                          fontSize: 15),
+                                                          fontSize: 15,
+                                                          fontFamily:
+                                                              'Poppins'),
                                                     ),
                                                     const TextSpan(
                                                         text:
                                                             " users have played today",
                                                         style: TextStyle(
-                                                          fontSize: 15,
-                                                          color: Colors.black,
-                                                        )),
+                                                            fontSize: 15,
+                                                            color: Colors.black,
+                                                            fontFamily:
+                                                                'Poppins')),
                                                   ],
                                                 ),
                                               ),
@@ -539,9 +579,9 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                           child: Text(
                                             questions[currentQuestionIndex],
                                             style: const TextStyle(
-                                              fontSize: 18,
-                                              fontWeight: FontWeight.bold,
-                                            ),
+                                                fontSize: 18,
+                                                fontWeight: FontWeight.bold,
+                                                fontFamily: 'Poppins'),
                                           ),
                                         ),
                                         const SizedBox(height: 30.0),
@@ -625,40 +665,40 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                               child: Text(
                                                 'Play the',
                                                 style: TextStyle(
-                                                  fontSize: 30,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xFFE76F51),
-                                                ),
+                                                    fontSize: 30,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Color(0xFFE76F51),
+                                                    fontFamily: 'Poppins'),
                                               ),
                                             ),
                                             Center(
                                               child: Text(
                                                 'challenge',
                                                 style: TextStyle(
-                                                  fontSize: 30,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xFFE76F51),
-                                                ),
+                                                    fontSize: 30,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Color(0xFFE76F51),
+                                                    fontFamily: 'Poppins'),
                                               ),
                                             ),
                                             Center(
                                               child: Text(
                                                 'to see ',
                                                 style: TextStyle(
-                                                  fontSize: 30,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xFFE76F51),
-                                                ),
+                                                    fontSize: 30,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Color(0xFFE76F51),
+                                                    fontFamily: 'Poppins'),
                                               ),
                                             ),
                                             Center(
                                               child: Text(
                                                 'Global Stats!',
                                                 style: TextStyle(
-                                                  fontSize: 30,
-                                                  fontWeight: FontWeight.bold,
-                                                  color: Color(0xFFE76F51),
-                                                ),
+                                                    fontSize: 30,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Color(0xFFE76F51),
+                                                    fontFamily: 'Poppins'),
                                               ),
                                             ),
                                           ],
@@ -724,6 +764,8 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                                     formattedTimeUntilMidnight,
                                                 verbatasticUsernames:
                                                     verbatasticUsernames,
+                                                verbatasticUserObjects:
+                                                    verbatasticUserObjects,
                                               ),
                                             ],
                                           );

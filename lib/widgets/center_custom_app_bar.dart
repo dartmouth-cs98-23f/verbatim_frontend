@@ -27,6 +27,7 @@ class centerAppBar extends StatelessWidget implements PreferredSizeWidget {
           fontSize: 29,
           color: Colors.white,
           fontWeight: FontWeight.w900,
+          fontFamily: 'Poppins',
         ),
       ),
       centerTitle: true,

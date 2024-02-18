@@ -28,15 +28,14 @@ class _LandingPageState extends State<LandingPage> {
     String routeName = ModalRoute.of(context)?.settings.name ?? '';
     Uri uri = Uri.parse(routeName);
 
-
     Map<String, dynamic>? arguments = uri.queryParameters;
     String referer = arguments['referer'] ?? '';
-  
+
     Navigator.pushNamed(context, '/guest_global');
-        //Navigator.pushNamed(context, '/guest_global?referer=$referer');
+    //Navigator.pushNamed(context, '/guest_global?referer=$referer');
 
-    print("Username in this shady ass place:${SharedPrefs().getCurrentPage()!}");
-
+    print(
+        "Username in this shady ass place:${SharedPrefs().getCurrentPage()!}");
   }
 
 // will this make shared preferences clear on opening?
@@ -77,6 +76,7 @@ class _LandingPageState extends State<LandingPage> {
                       color: Color.fromARGB(255, 231, 111, 81),
                       fontWeight: FontWeight.bold,
                       fontSize: 32,
+                      fontFamily: 'Poppins',
                     ),
                   ),
                 )),
@@ -90,6 +90,7 @@ class _LandingPageState extends State<LandingPage> {
                     style: TextStyle(
                       color: Colors.black,
                       fontSize: 16,
+                      fontFamily: 'Poppins',
                     ),
                   ),
                 )),
@@ -107,6 +108,7 @@ class _LandingPageState extends State<LandingPage> {
                           color: Colors.black,
                           fontWeight: FontWeight.w700,
                           fontSize: 16,
+                          fontFamily: 'Poppins',
                         ),
                       ),
                     ),
@@ -117,6 +119,7 @@ class _LandingPageState extends State<LandingPage> {
                           color: Color(0xFF3C64B1),
                           fontWeight: FontWeight.w800,
                           fontSize: 16,
+                          fontFamily: 'Poppins',
                         ),
                       ),
                       recognizer: TapGestureRecognizer()

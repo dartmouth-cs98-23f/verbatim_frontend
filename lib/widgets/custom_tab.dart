@@ -1,11 +1,13 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+
 class PlayTab extends StatefulWidget {
   final void Function(bool) onTabSelectionChanged;
   PlayTab({Key? key, required this.onTabSelectionChanged}) : super(key: key);
   @override
   _PlayTabState createState() => _PlayTabState();
 }
+
 class _PlayTabState extends State<PlayTab> {
   late bool _isFirstTabSelected;
   @override
@@ -13,6 +15,7 @@ class _PlayTabState extends State<PlayTab> {
     super.initState();
     _isFirstTabSelected = true;
   }
+
   void _toggleTabSelection(bool isFirstTabSelected) {
     if (_isFirstTabSelected != isFirstTabSelected) {
       widget.onTabSelectionChanged(isFirstTabSelected);
@@ -21,6 +24,7 @@ class _PlayTabState extends State<PlayTab> {
       });
     }
   }
+
   @override
   Widget build(BuildContext context) {
     final String play = 'assets/playtoggle.svg';
@@ -55,6 +59,7 @@ class _PlayTabState extends State<PlayTab> {
       ),
     );
   }
+
   Widget _buildTabContent1(bool firsttab) {
     final String play = 'assets/playtoggle.svg';
     Widget content = SvgPicture.asset(play, fit: BoxFit.cover);
@@ -73,6 +78,7 @@ class _PlayTabState extends State<PlayTab> {
       ),
     );
   }
+
   Widget _buildTabContent2(bool secondtab) {
     final String stats = 'assets/statstoggle.svg';
     Widget content = SvgPicture.asset(stats, fit: BoxFit.cover);
@@ -88,6 +94,7 @@ class _PlayTabState extends State<PlayTab> {
       ),
     );
   }
+
   Widget _buildTabContent(IconData icon, String text, double width) {
     final String stats = 'assets/statstoggle.svg';
     Widget content = SvgPicture.asset(stats, fit: BoxFit.cover);
@@ -121,6 +128,3 @@ class _PlayTabState extends State<PlayTab> {
     );
   }
 }
-
-
-

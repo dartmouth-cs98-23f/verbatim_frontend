@@ -102,10 +102,10 @@ class _CustomChallengeState extends State<customChallenge>
                                 const Text(
                                   'Custom Challenge',
                                   style: TextStyle(
-                                    fontSize: 27,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w900,
-                                  ),
+                                      fontSize: 27,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w900,
+                                      fontFamily: 'Poppins'),
                                 ),
                                 SizedBox(height: 10.v),
                               ]))
@@ -137,10 +137,10 @@ class _CustomChallengeState extends State<customChallenge>
                           Text(
                             'Add Prompt',
                             style: TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                              color: Color(0xFFE76F51),
-                            ),
+                                fontSize: 18,
+                                fontWeight: FontWeight.bold,
+                                color: Color(0xFFE76F51),
+                                fontFamily: 'Poppins'),
                           ),
                         ],
                       ),
@@ -195,9 +195,9 @@ class _CustomChallengeState extends State<customChallenge>
                       child: const Text(
                         'Send Challenge!',
                         style: TextStyle(
-                          fontWeight: FontWeight.bold,
-                          fontSize: 18,
-                        ),
+                            fontWeight: FontWeight.bold,
+                            fontSize: 18,
+                            fontFamily: 'Poppins'),
                       ),
                     ),
                     const SizedBox(height: 25),
@@ -281,10 +281,10 @@ class _CustomChallengeState extends State<customChallenge>
                         prompts[index] = editedText;
                       },
                       style: const TextStyle(
-                        fontSize: 16,
-                        fontWeight: FontWeight.bold,
-                        overflow: TextOverflow.ellipsis,
-                      ),
+                          fontSize: 16,
+                          fontWeight: FontWeight.bold,
+                          overflow: TextOverflow.ellipsis,
+                          fontFamily: 'Poppins'),
                     ),
                   )
                 ]),
@@ -320,12 +320,12 @@ class _CustomChallengeState extends State<customChallenge>
                                 fontWeight: FontWeight.bold,
                                 color: Colors.grey[600],
                                 overflow: TextOverflow.ellipsis,
-                              )
+                                fontFamily: 'Poppins')
                             : const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                                 overflow: TextOverflow.ellipsis,
-                              ),
+                                fontFamily: 'Poppins'),
                       ),
                     ),
                   ],
@@ -360,7 +360,9 @@ class _CustomChallengeState extends State<customChallenge>
                         });
                       },
                       child: const Text('Delete',
-                          style: TextStyle(fontWeight: FontWeight.bold)),
+                          style: TextStyle(
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Poppins')),
                     ),
                     const SizedBox(width: 10),
                     if (!editingStates[index])
@@ -381,7 +383,9 @@ class _CustomChallengeState extends State<customChallenge>
                           });
                         },
                         child: const Text('Edit',
-                            style: TextStyle(fontWeight: FontWeight.bold)),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Poppins')),
                       ),
                     if (editingStates[index])
                       ElevatedButton(
@@ -403,7 +407,9 @@ class _CustomChallengeState extends State<customChallenge>
                           });
                         },
                         child: const Text('Save',
-                            style: TextStyle(fontWeight: FontWeight.bold)),
+                            style: TextStyle(
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Poppins')),
                       ),
                     const SizedBox(width: 5),
                   ],

@@ -7,6 +7,7 @@ import 'BackendService.dart';
 import 'Components/defineRoutes.dart';
 import 'Components/shared_prefs.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -16,19 +17,19 @@ Future<void> main() async {
 
   const String environment =
       String.fromEnvironment('FLUTTER_BACKEND_ENV', defaultValue: 'prod');
-  //print("env in main is: " + environment);
+  await dotenv.load(fileName: ".env");
 
   BackendService.loadProperties(environment);
   try {
     await Firebase.initializeApp(
-        //name: 'com.example.verbatim_frontend',
-        options: const FirebaseOptions(
-      apiKey: 'AIzaSyAtNTGytXuzaYGDiWyzjiQ5qzZqyH3dqYk',
-      appId: '1:89436108608:android:58705820c58e09aa7b6ca5',
-      messagingSenderId: '89436108608',
-      projectId: 'verbatim-81617',
-      storageBucket: "gs://verbatim-81617.appspot.com",
-    ));
+      options: FirebaseOptions(
+        apiKey: dotenv.env['apiKey']!,
+        appId: dotenv.env['appId']!,
+        messagingSenderId: dotenv.env['messagingSenderId']!,
+        projectId: dotenv.env['projectId']!,
+        storageBucket: dotenv.env['storageBucket']!,
+      ),
+    );
   } catch (e) {
     print('\n\nError initializing Firebase: $e\n\n');
   }
@@ -77,7 +78,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       navigatorKey: navigatorKey,
       onGenerateRoute: Application.router.generator,
-        //initialRoute: SharedPrefs().getCurrentPage() ?? '/landingPage',
+      //initialRoute: SharedPrefs().getCurrentPage() ?? '/landingPage',
       home: const LandingPage(),
     );
   }

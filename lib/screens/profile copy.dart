@@ -58,7 +58,8 @@ class _ProfileState extends State<Profile> {
   final String streakIcon = 'assets/streak.svg';
   final String globalChallengeIcon = 'assets/globalChallenges.svg';
   final String customIcon = 'assets/customChallenges.svg';
-  User? match;
+  User? ownMatch;
+  User? otherMatch;
 
   List<int> stats = [friends, globals, customs, streaks];
 
@@ -71,12 +72,15 @@ class _ProfileState extends State<Profile> {
 
   String bio = '';
   String profileUrl = '';
-  Map<String, bool> friendRequestStates = {};
+  // Map<String, bool> friendRequestStates = {};
   bool drawButton = false;
   String groupName = '';
   User? toBeDisplayedUser;
   String friendshipDate = '';
   String friendshipStatusDescription = "Friend Request Pending";
+  String ownProfileUrl =
+      SharedPrefs().getProfileUrl() ?? 'assets/profile_pic.png';
+  String otherProfileUrl = 'assets/profile_pic.png';
 
   static int friends = 0;
   static int globals = 0;
@@ -140,12 +144,20 @@ class _ProfileState extends State<Profile> {
 
       print(newMatch?.profilePicture);
       setState(() {
-        match = newMatch;
+        if (username == SharedPrefs().getUserName() as String) {
+          ownMatch = newMatch;
+          print("\nOwnMatch username: ${ownMatch!.username}\n");
+        } else {
+          otherMatch = newMatch;
+          print("\nOtherMatch username: ${otherMatch!.username}\n");
+        }
       });
 
       // Print statements for debugging (can be removed in production)
       print("\nVerba match score: $verbaMatchScore\n");
-      print("\nMatch user: $match\n");
+      print("\nownMatch user: $ownMatch\n");
+      print("\otherMatch user: $ownMatch\n");
+
       print("\nMatchDeets : $matchDeets\n");
       print("\nStats.match is : ${stats.match}\n");
     } else {
@@ -169,7 +181,8 @@ class _ProfileState extends State<Profile> {
     if (response.statusCode == 200) {
       SuccessDialog.show(context, 'Your friend request has been sent!');
       setState(() {
-        friendRequestStates[requestedUsername] = true;
+        widget.user!.isRequested =
+            true; // Update the friend request status of this user once the friend request is sent.
         drawButton = true;
       });
     } else {
@@ -195,8 +208,10 @@ class _ProfileState extends State<Profile> {
       if (myfriendRequests.isNotEmpty) {
         for (var request in myfriendRequests) {
           String requestedUsername = request['username'];
-          // Set the friend request state to true for each user requested
-          friendRequestStates[requestedUsername] = true;
+          // Set the friend request state to true if the other user is among the ones who were sent a friend request by the current user
+          if (widget.user!.username == request['username']) {
+            widget.user!.isRequested = true;
+          }
         }
       }
     } else {
@@ -251,10 +266,8 @@ class _ProfileState extends State<Profile> {
     getUsersIHaveRequested(SharedPrefs().getUserName() as String);
 // if this is someone else's page then draw the ''requested'' button as such
     if (widget.user != null) {
-      if (!friendRequestStates.containsKey(widget.user!.username)) {
-        friendRequestStates[widget.user!.username] = widget.user!.isRequested;
-      }
-      drawButton = friendRequestStates[widget.user!.username] as bool;
+      otherProfileUrl = widget.user!.profilePicture;
+      drawButton = widget.user!.isFriend;
       groupName = '${widget.user!.username}';
     }
 
@@ -295,6 +308,14 @@ class _ProfileState extends State<Profile> {
         stats = [friends, streaks, globals, customs];
       });
     });
+
+    if (widget.user != null) {
+      _getStats(widget.user!.username).then((_) {
+        setState(() {
+          stats = [friends, streaks, globals, customs];
+        });
+      });
+    }
   }
 
   @override
@@ -394,9 +415,13 @@ class _ProfileState extends State<Profile> {
                                                   Navigator.pushNamed(
                                                       context, '/settings');
                                                 } else {
-                                                  if (friendRequestStates[widget
-                                                          .user!.username] ==
-                                                      false) {
+                                                  if (!widget
+                                                          .user!.isRequested &&
+                                                      !widget.user!.isFriend) {
+                                                    widget.user!.isRequested =
+                                                        true;
+                                                    print(
+                                                        "\nFrnd req sent: -> Frnd req status: ${widget.user!.isRequested} & frndship status: ${widget.user!.isFriend}\n");
                                                     await sendFriendRequest(
                                                         SharedPrefs()
                                                                 .getUserName()
@@ -404,9 +429,10 @@ class _ProfileState extends State<Profile> {
                                                         widget.user!.username);
                                                   } else {
                                                     print(
-                                                        "\n\n Map is $friendRequestStates");
+                                                        "\nNo frnd req sent: -> Frnd req status: ${widget.user!.isRequested} & frndship status: ${widget.user!.isFriend}\n");
+
                                                     print(
-                                                        "\n33 User's username is ${widget.user!.username}");
+                                                        "\nUser's username is ${widget.user!.username}");
                                                     print(
                                                         "\nImplement the method to handle when the user is already a friend or the FR has been sent!\n");
                                                   }
@@ -444,10 +470,10 @@ class _ProfileState extends State<Profile> {
                                                             context,
                                                             '/settings');
                                                       } else {
-                                                        if (friendRequestStates[
-                                                                widget.user!
-                                                                    .username] ==
-                                                            false) {
+                                                        if (!widget.user!
+                                                                .isRequested &&
+                                                            !widget.user!
+                                                                .isFriend) {
                                                           sendFriendRequest(
                                                               SharedPrefs()
                                                                       .getUserName()
@@ -455,8 +481,6 @@ class _ProfileState extends State<Profile> {
                                                               widget.user!
                                                                   .username);
                                                         } else {
-                                                          print(
-                                                              "\n\n Map is $friendRequestStates");
                                                           print(
                                                               "\n33 User's username is ${widget.user!.username}");
 
@@ -490,10 +514,11 @@ class _ProfileState extends State<Profile> {
                                                               // Display person_outlined icon when there is a user and friend request is accepted
                                                               if (widget.user !=
                                                                       null &&
-                                                                  friendRequestStates[widget
+                                                                  (widget.user!
+                                                                          .isRequested ||
+                                                                      widget
                                                                           .user!
-                                                                          .username] ==
-                                                                      true)
+                                                                          .isFriend))
                                                                 const Icon(
                                                                   Icons
                                                                       .person_outlined,
@@ -502,13 +527,11 @@ class _ProfileState extends State<Profile> {
                                                                   size: 20,
                                                                 ),
 
-                                                              // Display person_add_alt_outlined icon when there is a user and friend request is not sent/accepted
+                                                              // Display person_add_alt_outlined icon when there is a user and friend request is not sent
                                                               if (widget.user !=
                                                                       null &&
-                                                                  friendRequestStates[widget
-                                                                          .user!
-                                                                          .username] ==
-                                                                      false)
+                                                                  !widget.user!
+                                                                      .isRequested)
                                                                 const Icon(
                                                                   Icons
                                                                       .person_add_alt_outlined,
@@ -540,10 +563,11 @@ class _ProfileState extends State<Profile> {
                                                               widget.user ==
                                                                       null
                                                                   ? "Edit Profile"
-                                                                  : friendRequestStates[widget
+                                                                  : (widget.user!
+                                                                              .isRequested ||
+                                                                          widget
                                                                               .user!
-                                                                              .username] ==
-                                                                          true
+                                                                              .isFriend)
                                                                       ? friendshipStatusDescription
                                                                       : "Add Friend",
                                                               style: GoogleFonts
@@ -613,7 +637,7 @@ class _ProfileState extends State<Profile> {
                             ),
                             child: Container(
                               width: 360,
-                              height: 470,
+                              height: 500,
                               padding: const EdgeInsets.all(25),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -745,9 +769,7 @@ class _ProfileState extends State<Profile> {
                                         TextSpan(
                                           text: widget.user == null
                                               ? 'Highest '
-                                              : (friendRequestStates[widget
-                                                          .user!.username] ==
-                                                      true
+                                              : (widget.user!.isFriend
                                                   ? 'Your '
                                                   : 'Highest '),
                                           style: GoogleFonts.poppins(
@@ -786,8 +808,12 @@ class _ProfileState extends State<Profile> {
 
                                   const SizedBox(height: 10),
 
-                                  (match != null || widget.user != null)
+                                  // If there is a match and we are on the friend's profile
+                                  (ownMatch != null ||
+                                          widget.user != null ||
+                                          otherMatch != null)
                                       ? Center(
+                                          // Show the similarity score
                                           child: Text.rich(TextSpan(
                                             children: [
                                               TextSpan(
@@ -817,6 +843,7 @@ class _ProfileState extends State<Profile> {
                                       : Container(),
 
                                   const SizedBox(height: 5),
+
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
@@ -827,7 +854,15 @@ class _ProfileState extends State<Profile> {
                                             width: 100,
                                             height: 100,
                                             child: FirebaseStorageImage(
-                                              profileUrl: profileUrl,
+                                              profileUrl:
+                                                  (widget.user == null ||
+                                                          widget.user!.isFriend)
+                                                      ? ownProfileUrl
+                                                      : otherProfileUrl,
+                                              user: (widget.user == null ||
+                                                      widget.user!.isFriend)
+                                                  ? null
+                                                  : widget.user!,
                                             ),
                                           ),
                                         ),
@@ -838,40 +873,94 @@ class _ProfileState extends State<Profile> {
                                       Align(
                                         widthFactor: .5,
                                         child: ClipOval(
-                                          child: widget.user != null
-                                              ? SizedBox(
-                                                  width: 100,
-                                                  height: 100,
-                                                  child: FirebaseStorageImage(
+                                          child: SizedBox(
+                                            width: 100,
+                                            height: 100,
+                                            child: (widget.user != null &&
+                                                    widget.user!.isFriend)
+                                                ? FirebaseStorageImage(
                                                     profileUrl: widget
                                                         .user!.profilePicture,
-                                                    user: widget.user,
-                                                  ),
-                                                )
-                                              : match != null
-                                                  ? SizedBox(
-                                                      width: 100,
-                                                      height: 100,
-                                                      child:
-                                                          FirebaseStorageImage(
-                                                        profileUrl: match!
+                                                    user: widget.user!,
+                                                  )
+                                                : (ownMatch != null &&
+                                                        widget.user == null)
+                                                    ? FirebaseStorageImage(
+                                                        profileUrl: ownMatch!
                                                             .profilePicture,
-                                                        user: match,
-                                                      ),
-                                                    )
-                                                  : const Align(
-                                                      alignment:
-                                                          Alignment.center,
-                                                      child: Icon(
-                                                        Icons.help_outline,
-                                                        size: 110,
-                                                        color:
-                                                            Color(0xFFE76F51),
-                                                      ),
-                                                    ),
+                                                        user: ownMatch!,
+                                                      )
+                                                    : (otherMatch != null &&
+                                                            !widget
+                                                                .user!.isFriend
+                                                        ? FirebaseStorageImage(
+                                                            profileUrl: otherMatch!
+                                                                .profilePicture,
+                                                            user: otherMatch,
+                                                          )
+                                                        : Icon(
+                                                            Icons.help_outline,
+                                                            size: 110,
+                                                            color: Color(
+                                                                0xFFE76F51),
+                                                          )),
+                                          ),
                                         ),
                                       ),
                                     ],
+                                  ),
+
+                                  const SizedBox(
+                                      height:
+                                          10), // Add spacing between the row and the text
+
+                                  // Add the name of the verbamatched user if available
+                                  Text(
+                                    widget.user != null &&
+                                            widget.user!
+                                                .isFriend // If we are on a friend's profile, show their name
+                                        ? "You and ${widget.user!.username.replaceFirstMapped(
+                                            RegExp(r'^\w'),
+                                            (match) =>
+                                                match.group(0)!.toUpperCase(),
+                                          )}" // Ensures the first letter of username is capitalized.
+                                        : '',
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'Poppins'),
+                                  ),
+
+                                  Text(
+                                    (widget.user == null &&
+                                            ownMatch !=
+                                                null) // If we are on our own profile and there is a match
+                                        ? "You and ${ownMatch!.username.replaceFirstMapped(
+                                            RegExp(r'^\w'),
+                                            (match) =>
+                                                match.group(0)!.toUpperCase(),
+                                          )}" // Ensures the first letter of username is capitalized.
+                                        : widget.user != null &&
+                                                !widget.user!
+                                                    .isFriend // If we are on a stranger's profile and they have a verbaMatch
+                                            ? otherMatch != null
+                                                ? "${widget.user!.username.replaceFirstMapped(
+                                                    RegExp(r'^\w'),
+                                                    (match) => match
+                                                        .group(0)!
+                                                        .toUpperCase(),
+                                                  )} and ${otherMatch!.username.replaceFirstMapped(
+                                                    RegExp(r'^\w'),
+                                                    (match) => match
+                                                        .group(0)!
+                                                        .toUpperCase(),
+                                                  )}"
+                                                : ''
+                                            : '',
+                                    style: TextStyle(
+                                        fontSize: 12,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'Poppins'),
                                   ),
                                 ],
                               ),
