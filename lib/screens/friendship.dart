@@ -129,8 +129,6 @@ class _FriendshipState extends State<friendship>
   Widget _buildOptionButton(BuildContext context, title, String description,
       IconData iconData, String groupName) {
     return Container(
-        constraints: const BoxConstraints(
-            minWidth: 80.0, maxWidth: 150.0, minHeight: 80.0, maxHeight: 150.0),
         width: 130,
         height: 130,
         padding: const EdgeInsets.all(8),
@@ -547,211 +545,323 @@ class _FriendshipState extends State<friendship>
                                     controller: _tabController,
                                     children: [
                                       // Active Challenges
-                                      Container(
-                                        padding: const EdgeInsets.only(
-                                            top: 10,
-                                            right: 10,
-                                            left: 10,
-                                            bottom: 20),
-                                        child: Column(
-                                          children: [
-                                            Expanded(
-                                              child: ListView.builder(
-                                                itemCount:
-                                                    mappedChallenges.length,
-                                                itemBuilder: (context, index) {
-                                                  int id = mappedChallenges.keys
-                                                      .elementAt(index);
-                                                  List<String> challengeInfo =
-                                                      mappedChallenges[id]!;
-                                                  String createdByUsername =
-                                                      challengeInfo[0];
-
-                                                  String challengeType =
-                                                      challengeInfo[1] ==
-                                                              "Custom"
-                                                          ? "custom"
-                                                          : "standard";
-
-                                                  // if challenge is completed, mark it as such
-                                                  // it doesn't seem like the challenges are being marked as completed
-                                                  String challengeInfo2 =
-                                                      challengeInfo[2];
-
-                                                  bool completed =
-                                                      (challengeInfo2 !=
-                                                          "false");
-
-                                                  // initialize stats variables
-                                                  List<dynamic>
-                                                      verbaMatchUsersStats = [];
-                                                  double verbaMatchStats = 0;
-                                                  int totalResponsesStats = 0;
-                                                  List<dynamic>
-                                                      groupAnswersStats = [];
-
-                                                  if (completed) {
-                                                    verbaMatchUsersStats =
-                                                        challengeStats[id]![
-                                                            'verbaMatchUsers'];
-                                                    groupAnswersStats =
-                                                        challengeStats[id]![
-                                                            'groupAnswers'];
-
-                                                    verbaMatchStats =
-                                                        challengeStats[id]![
-                                                            'verbaMatchSimilarity'];
-
-                                                    totalResponsesStats =
-                                                        challengeStats[id]![
-                                                            'totalResponses'];
-                                                    print(
-                                                        "Challenge stats sent to backend: verbaMatchUsers: $verbaMatchUsersStats,\n  verbaMatchSimilarity: $verbaMatchSimilarity");
-                                                  }
-
-                                                  List<dynamic> questions2 =
-                                                      groupAnswersStats
-                                                          .map((entry) =>
-                                                              entry['question'])
-                                                          .toList();
-                                                  List<String> questionList =
-                                                      questions2
-                                                          .map((dynamic
-                                                                  value) =>
-                                                              value.toString())
-                                                          .toList();
-
-                                                  List<String>
-                                                      challengeQuestions =
-                                                      challengeInfo
-                                                          .skip(3)
-                                                          .toList();
-
-                                                  String title =
-                                                      "$createdByUsername's $challengeType challenge";
-                                                  return GestureDetector(
-                                                    onTap: () {
-                                                      if (!completed) {
-                                                        Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                groupChallenge(
-                                                              groupName: widget
-                                                                  .friendUsername,
-                                                              groupId: groupId,
-                                                              challengeQs:
-                                                                  challengeQuestions,
-                                                              challengeId: id,
-                                                              completed: false,
-                                                              fromFriend: true,
-                                                            ),
-                                                          ),
-                                                        );
-                                                      } else {
-                                                        Navigator.push(
-                                                          context,
-                                                          MaterialPageRoute(
-                                                            builder: (context) =>
-                                                                groupChallenge(
-                                                              groupName: widget
-                                                                  .friendUsername,
-                                                              groupId: groupId,
-                                                              challengeQs:
-                                                                  questionList,
-                                                              challengeId: id,
-                                                              completed: true,
-                                                              groupAnswers:
-                                                                  groupAnswersStats,
-                                                              verbaMatchSimilarity:
-                                                                  verbaMatchStats,
-                                                              totalResponses:
-                                                                  totalResponsesStats,
-                                                              fromFriend: true,
-                                                              verbaMatchUsers:
-                                                                  verbaMatchUsersStats,
-                                                            ),
-                                                          ),
-                                                        );
-                                                      }
-                                                    },
-                                                    child: Container(
-                                                      margin: const EdgeInsets
-                                                          .symmetric(
-                                                        vertical: 10,
-                                                      ),
-                                                      padding:
-                                                          const EdgeInsets.all(
-                                                              10),
-                                                      decoration: BoxDecoration(
-                                                        color: const Color
-                                                            .fromARGB(
-                                                            255, 231, 111, 81),
-                                                        borderRadius:
-                                                            BorderRadius
-                                                                .circular(10),
-                                                      ),
-                                                      child: Row(
+                                      Column(
+                                        children: [
+                                          Visibility(
+                                              visible:
+                                                  mappedChallenges.length == 0,
+                                              child: Container(
+                                                padding: const EdgeInsets.only(
+                                                    top: 10,
+                                                    right: 10,
+                                                    left: 10,
+                                                    bottom: 20),
+                                                child: Column(
+                                                  children: [
+                                                    SizedBox(height: 40),
+                                                    Image.asset(
+                                                      'assets/bird2.png',
+                                                      width: 240,
+                                                    ),
+                                                    SizedBox(height: 35),
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        _showChallengeOptions(
+                                                            context,
+                                                            widget
+                                                                .friendUsername);
+                                                      },
+                                                      child: const Row(
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
-                                                                .spaceBetween,
+                                                                .end,
                                                         children: [
                                                           Text(
-                                                            title,
-                                                            style: const TextStyle(
-                                                                color: Colors
-                                                                    .white,
-                                                                fontSize: 14,
-                                                                fontWeight:
-                                                                    FontWeight
-                                                                        .bold,
-                                                                fontFamily:
-                                                                    'Poppins'),
+                                                            'New Challenge',
+                                                            style: TextStyle(
+                                                              fontSize: 18,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontFamily:
+                                                                  'Poppins',
+                                                              color:
+                                                                  Colors.black,
+                                                            ),
                                                           ),
-                                                          const Icon(
-                                                            Icons
-                                                                .arrow_forward_ios,
-                                                            color: Colors.white,
-                                                            size: 16,
+                                                          SizedBox(width: 5),
+                                                          Icon(
+                                                            Icons.add,
+                                                            size: 20,
+                                                            color: Colors.black,
                                                           ),
                                                         ],
                                                       ),
                                                     ),
-                                                  );
-                                                },
-                                              ),
-                                            ),
-                                            SizedBox(height: 10.v),
-                                            GestureDetector(
-                                              onTap: () {
-                                                _showChallengeOptions(context,
-                                                    widget.friendUsername);
-                                              },
-                                              child: const Row(
-                                                mainAxisAlignment:
-                                                    MainAxisAlignment.end,
-                                                children: [
-                                                  Text(
-                                                    'New Challenge',
-                                                    style: TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontFamily: 'Poppins',
-                                                      color: Color(0xFFE76F51),
+                                                  ],
+                                                ),
+                                              )),
+                                          Visibility(
+                                              visible:
+                                                  mappedChallenges.length > 0,
+                                              child: Container(
+                                                height: 400,
+                                                width: 330,
+                                                padding: const EdgeInsets.only(
+                                                    top: 10,
+                                                    right: 10,
+                                                    left: 10,
+                                                    bottom: 20),
+                                                child: Column(
+                                                  children: [
+                                                    Expanded(
+                                                      child: ListView.builder(
+                                                        itemCount:
+                                                            mappedChallenges
+                                                                .length,
+                                                        itemBuilder:
+                                                            (context, index) {
+                                                          int id =
+                                                              mappedChallenges
+                                                                  .keys
+                                                                  .elementAt(
+                                                                      index);
+                                                          List<String>
+                                                              challengeInfo =
+                                                              mappedChallenges[
+                                                                  id]!;
+                                                          String
+                                                              createdByUsername =
+                                                              challengeInfo[0];
+
+                                                          String challengeType =
+                                                              challengeInfo[
+                                                                          1] ==
+                                                                      "Custom"
+                                                                  ? "custom"
+                                                                  : "standard";
+
+                                                          // if challenge is completed, mark it as such
+                                                          // it doesn't seem like the challenges are being marked as completed
+                                                          String
+                                                              challengeInfo2 =
+                                                              challengeInfo[2];
+
+                                                          bool completed =
+                                                              (challengeInfo2 !=
+                                                                  "false");
+
+                                                          // initialize stats variables
+                                                          List<dynamic>
+                                                              verbaMatchUsersStats =
+                                                              [];
+                                                          double
+                                                              verbaMatchStats =
+                                                              0;
+                                                          int totalResponsesStats =
+                                                              0;
+                                                          List<dynamic>
+                                                              groupAnswersStats =
+                                                              [];
+
+                                                          if (completed) {
+                                                            verbaMatchUsersStats =
+                                                                challengeStats[
+                                                                        id]![
+                                                                    'verbaMatchUsers'];
+                                                            groupAnswersStats =
+                                                                challengeStats[
+                                                                        id]![
+                                                                    'groupAnswers'];
+
+                                                            verbaMatchStats =
+                                                                challengeStats[
+                                                                        id]![
+                                                                    'verbaMatchSimilarity'];
+
+                                                            totalResponsesStats =
+                                                                challengeStats[
+                                                                        id]![
+                                                                    'totalResponses'];
+                                                            print(
+                                                                "Challenge stats sent to backend: verbaMatchUsers: $verbaMatchUsersStats,\n  verbaMatchSimilarity: $verbaMatchSimilarity");
+                                                          }
+
+                                                          List<dynamic>
+                                                              questions2 =
+                                                              groupAnswersStats
+                                                                  .map((entry) =>
+                                                                      entry[
+                                                                          'question'])
+                                                                  .toList();
+                                                          List<String>
+                                                              questionList =
+                                                              questions2
+                                                                  .map((dynamic
+                                                                          value) =>
+                                                                      value
+                                                                          .toString())
+                                                                  .toList();
+
+                                                          List<String>
+                                                              challengeQuestions =
+                                                              challengeInfo
+                                                                  .skip(3)
+                                                                  .toList();
+
+                                                          String title =
+                                                              "$createdByUsername's $challengeType challenge";
+                                                          return GestureDetector(
+                                                            onTap: () {
+                                                              if (!completed) {
+                                                                Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            groupChallenge(
+                                                                      groupName:
+                                                                          widget
+                                                                              .friendUsername,
+                                                                      groupId:
+                                                                          groupId,
+                                                                      challengeQs:
+                                                                          challengeQuestions,
+                                                                      challengeId:
+                                                                          id,
+                                                                      completed:
+                                                                          false,
+                                                                      fromFriend:
+                                                                          true,
+                                                                    ),
+                                                                  ),
+                                                                );
+                                                              } else {
+                                                                Navigator.push(
+                                                                  context,
+                                                                  MaterialPageRoute(
+                                                                    builder:
+                                                                        (context) =>
+                                                                            groupChallenge(
+                                                                      groupName:
+                                                                          widget
+                                                                              .friendUsername,
+                                                                      groupId:
+                                                                          groupId,
+                                                                      challengeQs:
+                                                                          questionList,
+                                                                      challengeId:
+                                                                          id,
+                                                                      completed:
+                                                                          true,
+                                                                      groupAnswers:
+                                                                          groupAnswersStats,
+                                                                      verbaMatchSimilarity:
+                                                                          verbaMatchStats,
+                                                                      totalResponses:
+                                                                          totalResponsesStats,
+                                                                      fromFriend:
+                                                                          true,
+                                                                      verbaMatchUsers:
+                                                                          verbaMatchUsersStats,
+                                                                    ),
+                                                                  ),
+                                                                );
+                                                              }
+                                                            },
+                                                            child: Container(
+                                                              margin:
+                                                                  const EdgeInsets
+                                                                      .symmetric(
+                                                                vertical: 10,
+                                                              ),
+                                                              padding:
+                                                                  const EdgeInsets
+                                                                      .all(10),
+                                                              decoration:
+                                                                  BoxDecoration(
+                                                                color: const Color
+                                                                    .fromARGB(
+                                                                    255,
+                                                                    231,
+                                                                    111,
+                                                                    81),
+                                                                borderRadius:
+                                                                    BorderRadius
+                                                                        .circular(
+                                                                            10),
+                                                              ),
+                                                              child: Row(
+                                                                mainAxisAlignment:
+                                                                    MainAxisAlignment
+                                                                        .spaceBetween,
+                                                                children: [
+                                                                  Text(
+                                                                    title,
+                                                                    style: const TextStyle(
+                                                                        color: Colors
+                                                                            .white,
+                                                                        fontSize:
+                                                                            14,
+                                                                        fontWeight:
+                                                                            FontWeight
+                                                                                .bold,
+                                                                        fontFamily:
+                                                                            'Poppins'),
+                                                                  ),
+                                                                  const Icon(
+                                                                    Icons
+                                                                        .arrow_forward_ios,
+                                                                    color: Colors
+                                                                        .white,
+                                                                    size: 16,
+                                                                  ),
+                                                                ],
+                                                              ),
+                                                            ),
+                                                          );
+                                                        },
+                                                      ),
                                                     ),
-                                                  ),
-                                                  SizedBox(width: 5),
-                                                  Icon(
-                                                    Icons.add,
-                                                    size: 20,
-                                                    color: Color(0xFFE76F51),
-                                                  ),
-                                                ],
-                                              ),
-                                            ),
-                                          ],
-                                        ),
+                                                    SizedBox(height: 10.v),
+                                                    GestureDetector(
+                                                      onTap: () {
+                                                        _showChallengeOptions(
+                                                            context,
+                                                            widget
+                                                                .friendUsername);
+                                                      },
+                                                      child: const Row(
+                                                        mainAxisAlignment:
+                                                            MainAxisAlignment
+                                                                .end,
+                                                        children: [
+                                                          Text(
+                                                            'New Challenge',
+                                                            style: TextStyle(
+                                                              fontSize: 18,
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontFamily:
+                                                                  'Poppins',
+                                                              color:
+                                                                  Colors.black,
+                                                            ),
+                                                          ),
+                                                          SizedBox(width: 5),
+                                                          Icon(
+                                                            Icons.add,
+                                                            size: 20,
+                                                            color: Colors.black,
+                                                          ),
+                                                        ],
+                                                      ),
+                                                    ),
+                                                  ],
+                                                ),
+                                              )),
+                                        ],
                                       ),
 
                                       // Content for Stats
