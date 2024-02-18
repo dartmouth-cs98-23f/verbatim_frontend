@@ -560,7 +560,7 @@ class _FriendshipState extends State<friendship>
                                                   children: [
                                                     SizedBox(height: 40),
                                                     Image.asset(
-                                                      'assets/bird2.png',
+                                                      'assets/bird3.png',
                                                       width: 240,
                                                     ),
                                                     SizedBox(height: 35),

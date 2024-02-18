@@ -94,6 +94,7 @@ flutter:
     - assets/googleImage.png
     - assets/bird1.png
     - assets/bird2.png
+    - assets/bird3.png
     - assets/onboardingPage2Image.png
     - assets/onboardingPage3Image.png
     - assets/onboardingPage4Image.png
