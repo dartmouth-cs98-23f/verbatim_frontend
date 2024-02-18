@@ -65,7 +65,6 @@ class _LogInState extends State<LogIn> {
       //save user SharedPrefs
       print("So the sign up actually works:");
       final responseData = json.decode(response.body);
-      print(responseData);
       saveUsersInfo(usernameOrEmail, password);
       // SharedPrefs().setEmail(responseData['email']);
       // SharedPrefs().setUserName(responseData['username']);
@@ -77,6 +76,9 @@ class _LogInState extends State<LogIn> {
       //Navigator.pushNamed(context, '/global_challenge');
      
       
+    }else{
+      print("Records show that user already played Challenge!");
+      logIn(context, usernameOrEmail, password);
     }
   }
 

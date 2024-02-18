@@ -11,7 +11,7 @@ class Guest extends StatelessWidget {
   const Guest({
     super.key,
     required this.formattedTimeUntilMidnight,
-    // required this.data,
+  
   });
 
   @override
@@ -27,10 +27,8 @@ class Guest extends StatelessWidget {
       Map<String, dynamic>? arguments = Uri.parse(routeName).queryParameters;
 
       if (arguments.containsKey('referer')) {
-        //SharedPrefs().updateReferer(arguments['referer']);
         referer = arguments['referer'];
       } else {
-        //SharedPrefs().updateReferer('');
         referer = '';
       }
 

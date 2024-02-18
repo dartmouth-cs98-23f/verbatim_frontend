@@ -188,8 +188,9 @@ class _GuestGlobalState extends State<guestGlobal> {
       _streamController.sink.add(!showText);
       showText = !showText;
     }
-
+    print("In Guest Global, username: "+ username +" ,responded: " +responded.toString());
     return SafeArea(
+    
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         backgroundColor: const Color.fromARGB(255, 255, 243, 238),

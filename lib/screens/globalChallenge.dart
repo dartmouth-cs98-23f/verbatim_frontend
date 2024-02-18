@@ -222,8 +222,11 @@ class _GlobalChallengeState extends State<globalChallenge> {
   @override
   void initState() {
     super.initState();
-
+       
+   
+        
     _fetchData(username).then((_) {
+
       setState(() {
         questions = [question1, question2, question3, question4, question5];
       });
@@ -330,6 +333,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
 
   @override
   Widget build(BuildContext context) {
+    print("Responded in global is: "+ responded.toString() );
     String idString = id.toString();
 
     //TODO: check that this here works
@@ -362,7 +366,9 @@ class _GlobalChallengeState extends State<globalChallenge> {
     }
 
     return SafeArea(
+      
       child: Scaffold(
+        
         resizeToAvoidBottomInset: true,
         backgroundColor: const Color.fromARGB(255, 255, 243, 238),
         body: SingleChildScrollView(
