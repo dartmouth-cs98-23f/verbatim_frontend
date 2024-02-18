@@ -475,7 +475,7 @@ class _GuestGlobalState extends State<guestGlobal> {
                 ],
               )),
         ),
-        drawer: const SideBar(),
+        //   drawer: const SideBar(),
       ),
     );
   }
