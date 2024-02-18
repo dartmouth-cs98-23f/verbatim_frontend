@@ -221,10 +221,10 @@ class _SignUpState extends State<SignUp> {
           'Successfully signed up with this info: $firstName, $lastName, $username, $email, $password, $confirmedPassword');
 
         //if user hasnt played global challenge yer
+        print("signup 1");
 
         signUp(context, firstName, lastName, username.toLowerCase(),
             email.toLowerCase(), password, confirmedPassword);
-      
     }
   }
 
