@@ -998,7 +998,7 @@ class _DonutChartState extends State<DonutChart> {
           contentPadding: EdgeInsets.zero,
           content: Container(
               width: 160,
-              height: 145,
+              height: 180,
               clipBehavior: Clip.antiAlias,
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -1063,6 +1063,9 @@ class _DonutChartState extends State<DonutChart> {
     double sim = widget.groupSimilarity;
 
     double outof100 = (widget.groupSimilarity / 100);
+    if (outof100 < 1) {
+      outof100 = 1;
+    }
 
     return Scaffold(
       backgroundColor: Colors.transparent,
