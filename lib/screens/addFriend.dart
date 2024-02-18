@@ -330,7 +330,7 @@ class _AddFriendState extends State<addFriend> {
                     child: Column(
                       children: [
                         SizedBox(
-                          height: 240.v,
+                          height: 240,
                           width: double.maxFinite,
                           child:
                               Stack(alignment: Alignment.topCenter, children: [
@@ -424,7 +424,7 @@ class _AddFriendState extends State<addFriend> {
                       clipBehavior: Clip.hardEdge,
                       margin: const EdgeInsets.only(top: 10),
                       width: 335,
-                      height: 508,
+                      height: 450,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
                         boxShadow: [
@@ -476,19 +476,22 @@ class _AddFriendState extends State<addFriend> {
                                           //     context, '/profile',
                                           //     arguments: currentUser);
                                         },
-                                        child: Text(
-                                          name.replaceFirstMapped(
-                                            RegExp(r'^\w'),
-                                            (match) => match
-                                                .group(0)!
-                                                .toUpperCase(), // Ensures the first letter of first name is capitalized.
+                                        child: Flexible(
+                                          child: Text(
+                                            name.replaceFirstMapped(
+                                              RegExp(r'^\w'),
+                                              (match) => match
+                                                  .group(0)!
+                                                  .toUpperCase(), // Ensures the first letter of first name is capitalized.
+                                            ),
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black,
+                                                fontFamily:
+                                                    'Poppins' // Optional: Change text color to blue for clickable effect
+                                                ),
+                                            overflow: TextOverflow.ellipsis,
                                           ),
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.black,
-                                              fontFamily:
-                                                  'Poppins' // Optional: Change text color to blue for clickable effect
-                                              ),
                                         ),
                                       ),
                                     ],
@@ -545,19 +548,22 @@ class _AddFriendState extends State<addFriend> {
                                                     )),
                                           );
                                         },
-                                        child: Text(
-                                          name.replaceFirstMapped(
-                                            RegExp(r'^\w'),
-                                            (match) => match
-                                                .group(0)!
-                                                .toUpperCase(), // Ensures the first letter of first name is capitalized.
+                                        child: Flexible(
+                                          child: Text(
+                                            name.replaceFirstMapped(
+                                              RegExp(r'^\w'),
+                                              (match) => match
+                                                  .group(0)!
+                                                  .toUpperCase(), // Ensures the first letter of first name is capitalized.
+                                            ),
+                                            style: const TextStyle(
+                                                fontWeight: FontWeight.bold,
+                                                color: Colors.black,
+                                                fontFamily:
+                                                    'Poppins' // Optional: Change text color to blue for clickable effect
+                                                ),
+                                            overflow: TextOverflow.ellipsis,
                                           ),
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              color: Colors.black,
-                                              fontFamily:
-                                                  'Poppins' // Optional: Change text color to blue for clickable effect
-                                              ),
                                         ),
                                       ),
                                     ],
