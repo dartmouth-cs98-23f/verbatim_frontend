@@ -1,35 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
+import 'package:verbatim_frontend/screens/addFriend.dart';
+import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 import 'sideBar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:verbatim_frontend/widgets/create_group_app_bar.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
-// User class for when backend passes in users
-class User {
-  int id = 0;
-  String email = "";
-  String username = "";
-  String lastName = "";
-  String password = "";
-  dynamic profilePicture;
-  String? bio = "";
-  int numGlobalChallengesCompleted = 0;
-  int numCustomChallengesCompleted = 0;
-  int streak = 0;
-  bool hasCompletedDailyChallenge = false;
-
-  User({required this.username});
-
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
-      username: json['username'],
-    );
-  }
-}
 
 class createGroup extends StatefulWidget {
   const createGroup({
@@ -51,6 +30,7 @@ class _CreateGroupState extends State<createGroup> {
   String _searchText = "";
 
   List<String> friendsUsernamesList = [];
+  List<User> searchResults = [];
   List<String> addedUsernames = []; //usernames added to the group
 
   bool friendsFetched = false;
@@ -111,6 +91,7 @@ class _CreateGroupState extends State<createGroup> {
       print('responses sent succesfully');
       final List<dynamic> data = json.decode(response.body);
       List<User> friendsList = data.map((item) => User.fromJson(item)).toList();
+      searchResults = friendsList;
       friendsUsernamesList = friendsList.map((user) => user.username).toList();
     } else {
       print('Failed to send responses. Status code: ${response.statusCode}');
@@ -157,9 +138,15 @@ class _CreateGroupState extends State<createGroup> {
   }
 
   // search feature control (adjust if necessary)
-  List<String> _searchResults() {
-    return friendsUsernamesList
-        .where((item) => item.toLowerCase().contains(_searchText.toLowerCase()))
+  List<User> _searchResults() {
+    // return friendsUsernamesList
+    //     .where((item) => item.toLowerCase().contains(_searchText.toLowerCase()))
+    //     .toList();
+
+    return searchResults
+        .where((item) =>
+            item.username.toLowerCase().contains(_searchText.toLowerCase()) &&
+            item.username != SharedPrefs().getUserName())
         .toList();
   }
 
@@ -217,7 +204,8 @@ class _CreateGroupState extends State<createGroup> {
                                           MainAxisAlignment.center,
                                       children: [
                                         const SizedBox(width: 8),
-                                        const Icon(Icons.search, color: Colors.black),
+                                        const Icon(Icons.search,
+                                            color: Colors.black),
                                         const SizedBox(width: 8),
                                         Expanded(
                                           child: TextField(
@@ -226,7 +214,8 @@ class _CreateGroupState extends State<createGroup> {
                                               hintStyle: TextStyle(
                                                   fontSize: 14.0,
                                                   color: Color.fromARGB(
-                                                      255, 6, 5, 5)),
+                                                      255, 6, 5, 5),
+                                                  fontFamily: 'Poppins'),
                                               border: InputBorder.none,
                                             ),
                                             textAlign: TextAlign.left,
@@ -271,8 +260,10 @@ class _CreateGroupState extends State<createGroup> {
                                     ? ListView.builder(
                                         itemCount: _searchResults().length,
                                         itemBuilder: (context, index) {
-                                          final name = _searchResults()[
-                                              index]; //username of each listing
+                                          final currentUser =
+                                              _searchResults()[index];
+                                          final name = currentUser
+                                              .username; //username of each listing
                                           final isAdded =
                                               addedUsernames.contains(name);
                                           if (!isCreated) {
@@ -281,21 +272,26 @@ class _CreateGroupState extends State<createGroup> {
                                               title: Row(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
-                                                  const Icon(Icons
-                                                      .mood), // prof pic of user
+                                                  FirebaseStorageImage(
+                                                    profileUrl: currentUser
+                                                        .profilePicture,
+                                                    user: currentUser,
+                                                  ), // prof pic of user
                                                   const SizedBox(width: 8),
                                                   Text(
                                                     name,
                                                     style: const TextStyle(
                                                         fontWeight:
-                                                            FontWeight.bold),
+                                                            FontWeight.bold,
+                                                        fontFamily: 'Poppins'),
                                                   ),
                                                 ],
                                               ),
                                               trailing: IconButton(
                                                 icon:
                                                     isAdded // if they're added then show this
-                                                        ? const Icon(Icons.pending)
+                                                        ? const Icon(
+                                                            Icons.pending)
                                                         : const Icon(Icons
                                                             .person_add_alt),
                                                 onPressed: () {
@@ -332,18 +328,21 @@ class _CreateGroupState extends State<createGroup> {
                                                 child: Text(
                                                   "All Friends",
                                                   style: TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontFamily: 'Poppins'),
                                                 )),
                                             Expanded(
                                               child: ListView.builder(
                                                 itemCount:
-                                                    friendsUsernamesList.length,
+                                                    _searchResults().length,
                                                 itemBuilder: (context, index) {
                                                   final name =
                                                       friendsUsernamesList[
                                                           index];
+                                                  final User currentUser =
+                                                      _searchResults()[index];
                                                   final isAdded =
                                                       addedUsernames.contains(
                                                           name); // bool to control whether you have already added them
@@ -352,13 +351,16 @@ class _CreateGroupState extends State<createGroup> {
                                                     title: Row(
                                                       children: [
                                                         const Icon(Icons.mood),
-                                                        const SizedBox(width: 8),
+                                                        const SizedBox(
+                                                            width: 8),
                                                         Text(
                                                           name,
                                                           style: const TextStyle(
                                                               fontWeight:
                                                                   FontWeight
-                                                                      .bold),
+                                                                      .bold,
+                                                              fontFamily:
+                                                                  'Poppins'),
                                                         ),
                                                       ],
                                                     ),
@@ -392,19 +394,19 @@ class _CreateGroupState extends State<createGroup> {
                             Column(children: [
                               const SizedBox(height: 30),
                               const Padding(
-                                padding: EdgeInsets.symmetric(
-                                    horizontal: 16.0),
+                                padding: EdgeInsets.symmetric(horizontal: 16.0),
                                 child: Text(
                                   'Word! Give your group a name!',
                                   style: TextStyle(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Poppins'),
                                 ),
                               ),
                               const SizedBox(height: 30.0),
                               Container(
-                                padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20.0),
                                 child: TextField(
                                   controller: responseController,
                                   onChanged: (value) {
@@ -421,8 +423,7 @@ class _CreateGroupState extends State<createGroup> {
                               Text(
                                 'Added Usernames: $addedUsernames ',
                                 style: const TextStyle(
-                                  fontSize: 16,
-                                ),
+                                    fontSize: 16, fontFamily: 'Poppins'),
                               ),
                             ]),
                         ],
@@ -459,9 +460,9 @@ class _CreateGroupState extends State<createGroup> {
                       child: Text(
                         isCreated ? 'Back' : 'Cancel',
                         style: const TextStyle(
-                          color: Color(0xFFE76F51),
-                          fontWeight: FontWeight.bold,
-                        ),
+                            color: Color(0xFFE76F51),
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Poppins'),
                       ),
                     ),
                     const SizedBox(width: 16.0),
@@ -491,9 +492,9 @@ class _CreateGroupState extends State<createGroup> {
                       child: const Text(
                         'Next',
                         style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Poppins'),
                       ),
                     ),
                   ],

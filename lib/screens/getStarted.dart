@@ -65,6 +65,7 @@ class GetStarted extends StatelessWidget {
                       'Sign Up!',
                       style: TextStyle(
                         color: Colors.white,
+                        fontFamily: 'Poppins'
                       ),
                     ),
                   ),
@@ -72,12 +73,13 @@ class GetStarted extends StatelessWidget {
                   RichText(
                     text: TextSpan(
                       text: 'Already have an account? ',
-                      style: const TextStyle(color: Colors.black),
+                      style: const TextStyle(color: Colors.black, fontFamily: 'Poppins'),
                       children: [
                         TextSpan(
                           text: 'Sign-in',
                           style: const TextStyle(
                             color: Color(0xFF1E4693),
+                            fontFamily: 'Poppins',
                             decoration: TextDecoration.underline,
                           ),
                           recognizer: TapGestureRecognizer()

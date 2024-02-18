@@ -53,10 +53,10 @@ packages:
     dependency: transitive
     description:
       name: camera_avfoundation
-      sha256: "608b56b0880722f703871329c4d7d4c2f379c8e2936940851df7fc041abc6f51"
+      sha256: "7d0763dfcbf060f56aa254a68c103210280bee9e97bbe4fdef23e257a4f70ab9"
       url: "https://pub.dev"
     source: hosted
-    version: "0.9.13+10"
+    version: "0.9.14"
   camera_platform_interface:
     dependency: transitive
     description:
@@ -233,6 +233,30 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.11.4"
+  firebase_remote_config:
+    dependency: "direct main"
+    description:
+      name: firebase_remote_config
+      sha256: "701d563063b44ea39e4d23bb5c3fcc3f6eab8fa9247a9a0b276058ad7325ec86"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.3.13"
+  firebase_remote_config_platform_interface:
+    dependency: transitive
+    description:
+      name: firebase_remote_config_platform_interface
+      sha256: "270df798d81421bfbb7fdc4f0bebdcb77e594fefdf1e6a65d56584ff5a06ea54"
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.4.21"
+  firebase_remote_config_web:
+    dependency: transitive
+    description:
+      name: firebase_remote_config_web
+      sha256: a78967a208bc7a9bf44f8339c3c411b9d7e9529c644194ea5d4d0ca503c3481b
+      url: "https://pub.dev"
+    source: hosted
+    version: "1.4.21"
   firebase_storage:
     dependency: "direct main"
     description:
@@ -286,6 +310,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  flutter_dotenv:
+    dependency: "direct main"
+    description:
+      name: flutter_dotenv
+      sha256: "9357883bdd153ab78cbf9ffa07656e336b8bbb2b5a3ca596b0b27e119f7c7d77"
+      url: "https://pub.dev"
+    source: hosted
+    version: "5.1.0"
   flutter_lints:
     dependency: "direct dev"
     description:
@@ -958,5 +990,5 @@ packages:
     source: hosted
     version: "6.5.0"
 sdks:
-  dart: ">=3.2.0 <4.0.0"
-  flutter: ">=3.16.0"
+  dart: ">=3.2.3 <4.0.0"
+  flutter: ">=3.16.6"

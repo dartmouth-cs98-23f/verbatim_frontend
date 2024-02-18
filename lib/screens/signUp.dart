@@ -238,7 +238,10 @@ class _SignUpState extends State<SignUp> {
     setState(() {
       validationErrors[field] = Text(
         message,
-        style: const TextStyle(color: Colors.red),
+        style: const TextStyle(
+          color: Colors.red,
+          fontFamily: 'Poppins',
+        ),
       );
     });
   }
@@ -278,7 +281,7 @@ class _SignUpState extends State<SignUp> {
                       style: TextStyle(
                         color: Colors.black,
                         fontSize: 20,
-                        fontFamily: 'Mulish',
+                        fontFamily: 'Poppins',
                         fontWeight: FontWeight.w700,
                         height: 0.04,
                         letterSpacing: 0.30,
@@ -391,14 +394,16 @@ class _SignUpState extends State<SignUp> {
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.w700,
+                                  fontFamily: 'Poppins',
                                 ),
                               ),
                               TextSpan(
                                 text: 'Sign in',
                                 style: const TextStyle(
                                   color: Color(0xFF3C64B1),
-                                  fontWeight: FontWeight
-                                      .w800, // Blue color for the link
+                                  fontWeight: FontWeight.w800,
+                                  fontFamily: 'Poppins',
+// Blue color for the link
                                 ),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {

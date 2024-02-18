@@ -250,10 +250,10 @@ class _GroupChallengeState extends State<groupChallenge> {
                                       ? 'Verba-Tastical!'
                                       : 'Group Challenge',
                                   style: const TextStyle(
-                                    fontSize: 27,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w900,
-                                  ),
+                                      fontSize: 27,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w900,
+                                      fontFamily: 'Poppins'),
                                 ),
                               ),
                             ),
@@ -290,14 +290,15 @@ class _GroupChallengeState extends State<groupChallenge> {
                               child: Text(
                                 questions[currentQuestionIndex],
                                 style: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Poppins'),
                               ),
                             ),
                             const SizedBox(height: 30.0),
                             Container(
-                              padding: const EdgeInsets.symmetric(horizontal: 20.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20.0),
                               child: TextField(
                                 controller: responseController,
                                 onChanged: (value) {
@@ -425,9 +426,9 @@ class _GroupChallengeState extends State<groupChallenge> {
                     child: const Text(
                       'Back to Challenge Feed',
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          fontFamily: 'Poppins'),
                     ),
                   ),
                 ),
@@ -482,9 +483,9 @@ class _GroupChallengeState extends State<groupChallenge> {
                             child: Text(
                               prompts[index],
                               style: const TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Poppins'),
                             ),
                           ),
                           const Icon(Icons.arrow_upward),
@@ -501,8 +502,8 @@ class _GroupChallengeState extends State<groupChallenge> {
                           return Container(
                               height: 40,
                               //   width: 100,
-                              margin:
-                                  const EdgeInsets.only(left: 8, right: 8, top: 10),
+                              margin: const EdgeInsets.only(
+                                  left: 8, right: 8, top: 10),
                               padding: const EdgeInsets.only(
                                   left: 5, right: 5, top: 8, bottom: 8),
                               decoration: BoxDecoration(
@@ -524,7 +525,8 @@ class _GroupChallengeState extends State<groupChallenge> {
                                             fontSize: 14,
                                             overflow: TextOverflow.ellipsis,
                                             fontWeight: FontWeight.bold,
-                                            color: Colors.white),
+                                            color: Colors.white,
+                                            fontFamily: 'Poppins'),
                                       ),
                                     ),
                                   ),
@@ -550,7 +552,8 @@ class _GroupChallengeState extends State<groupChallenge> {
                                                   fontSize: 12,
                                                   overflow:
                                                       TextOverflow.ellipsis,
-                                                  color: Colors.white),
+                                                  color: Colors.white,
+                                                  fontFamily: 'Poppins'),
                                             ))))
                               ])));
                         },
@@ -568,10 +571,10 @@ class _GroupChallengeState extends State<groupChallenge> {
                         child: Text(
                           prompts[index],
                           style: const TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              overflow: TextOverflow.ellipsis,
+                              fontFamily: 'Poppins'),
                         ),
                       ),
                       const Icon(Icons.arrow_downward),
@@ -623,22 +626,24 @@ Widget _verbaMatch(
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black,
-                                fontSize: 23),
+                                fontSize: 23,
+                                fontFamily: 'Poppins'),
                           ),
                           TextSpan(
                             text: 'Verba',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xFFE76F51),
-                                fontSize: 23),
+                                fontSize: 23,
+                                fontFamily: 'Poppins'),
                           ),
                           TextSpan(
                               text: "Match",
                               style: TextStyle(
-                                fontSize: 23,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              )),
+                                  fontSize: 23,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                  fontFamily: 'Poppins')),
                         ],
                       ),
                       textAlign: TextAlign.left,
@@ -651,8 +656,10 @@ Widget _verbaMatch(
                     const SizedBox(height: 10),
                     const Text(
                       '...yet!',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Poppins'),
                     ),
                   ],
                 ),
@@ -670,15 +677,16 @@ Widget _verbaMatch(
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xFFE76F51),
-                                fontSize: 23),
+                                fontSize: 23,
+                                fontFamily: 'Poppins'),
                           ),
                           TextSpan(
                               text: "Match!",
                               style: TextStyle(
-                                fontSize: 23,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              )),
+                                  fontSize: 23,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                  fontFamily: 'Poppins')),
                         ],
                       ),
                       textAlign: TextAlign.left,
@@ -693,8 +701,10 @@ Widget _verbaMatch(
                     const SizedBox(height: 10),
                     Text(
                       '$verb1 and $verb2',
-                      style:
-                          const TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Poppins'),
                     ),
                   ],
                 ),
@@ -810,16 +820,16 @@ class _DonutChartState extends State<DonutChart> {
                                       Text(
                                         "${widget.groupSimilarity.toStringAsFixed(2)}%",
                                         style: const TextStyle(
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'Poppins'),
                                       ),
                                       const Text(
                                         "Similarity",
                                         style: TextStyle(
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'Poppins'),
                                       ),
                                     ],
                                   ),
@@ -849,9 +859,9 @@ class _DonutChartState extends State<DonutChart> {
                                       Text(
                                         "?",
                                         style: TextStyle(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'Poppins'),
                                       ),
                                     ],
                                   ),
@@ -902,7 +912,7 @@ class _HorizontalScrollDropdownState extends State<HorizontalScrollDropdown> {
                 },
                 child: Text(
                   selectedValue,
-                  style: const TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 16, fontFamily: 'Poppins'),
                 ),
               ),
               const Icon(Icons.arrow_drop_down),
@@ -925,8 +935,8 @@ class _HorizontalScrollDropdownState extends State<HorizontalScrollDropdown> {
                     },
                     child: Container(
                       margin: const EdgeInsets.symmetric(horizontal: 8),
-                      padding:
-                          const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
                       decoration: BoxDecoration(
                         gradient: isSelected
                             ? LinearGradient(
@@ -949,7 +959,8 @@ class _HorizontalScrollDropdownState extends State<HorizontalScrollDropdown> {
                       ),
                       child: Text(
                         items[index],
-                        style: const TextStyle(fontSize: 16),
+                        style: const TextStyle(
+                            fontSize: 16, fontFamily: 'Poppins'),
                       ),
                     ),
                   );

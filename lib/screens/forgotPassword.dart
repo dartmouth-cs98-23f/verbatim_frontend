@@ -8,7 +8,6 @@ import '../widgets/my_button_no_image.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-
 class ForgotPassword extends StatefulWidget {
   const ForgotPassword({super.key});
 
@@ -47,14 +46,12 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           Navigator.push(
             context,
             MaterialPageRoute(
-              builder: (context) =>
-                  const LogIn(),
+              builder: (context) => const LogIn(),
             ),
           );
           print('Reset password successful');
         }
-      }
-      else {
+      } else {
         print('Error during reset password: ${response.statusCode.toString()}');
         Navigator.push(
           context,
@@ -63,8 +60,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
           ),
         );
       }
-    }
-    catch (e) {
+    } catch (e) {
       print('Error during reset password: ${e.toString()}');
       Navigator.push(
         context,
@@ -105,7 +101,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
     setState(() {
       validationErrors[field] = Text(
         message,
-        style: const TextStyle(color: Colors.red),
+        style: const TextStyle(color: Colors.red, fontFamily: 'Poppins'),
       );
     });
   }
@@ -134,7 +130,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 180),
                 const Center(
                   child: Text(
@@ -143,14 +138,13 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     style: TextStyle(
                       color: Color(0xFFE76F51),
                       fontSize: 32,
-                      fontFamily: 'Mulish',
+                      fontFamily: 'Poppins',
                       fontWeight: FontWeight.w700,
                       height: 1.5,
                       letterSpacing: 0.30,
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 30),
                 const Padding(
                   padding: EdgeInsets.only(left: 15.0),
@@ -163,7 +157,7 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 16,
-                          fontFamily: 'Mulish',
+                          fontFamily: 'Poppins',
                           fontWeight: FontWeight.w400,
                           height: 1.5,
                           letterSpacing: 0.30,
@@ -172,7 +166,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     ],
                   ),
                 ),
-
                 Padding(
                   padding: const EdgeInsets.only(left: 5.0),
                   child: Column(
@@ -190,7 +183,6 @@ class _ForgotPasswordState extends State<ForgotPassword> {
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 25),
                 MyButtonNoImage(
                   buttonText: 'Reset Password',

@@ -35,7 +35,7 @@ class OnBoardingPage2 extends StatelessWidget {
                           style: TextStyle(
                             color: Color(0xFFE76F51),
                             fontSize: 32,
-                            fontFamily: 'Mulish',
+                            fontFamily: 'Poppins',
                             fontWeight: FontWeight.w700,
                             height: 1.5,
                             letterSpacing: 0.30,
@@ -52,7 +52,8 @@ class OnBoardingPage2 extends StatelessWidget {
                             style: TextStyle(
                               color: Colors.black,
                               fontSize: 15,
-                              fontFamily: 'Mulish',
+                              fontFamily: 'Poppins',
+
                               // fontWeight: FontWeight.w700,
                               height: 1.5,
                               letterSpacing: 0.30,
@@ -76,7 +77,8 @@ class OnBoardingPage2 extends StatelessWidget {
                       Navigator.pushNamed(context, '/global_challenge');
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFFFF3EE), // Background color
+                      backgroundColor:
+                          const Color(0xFFFFF3EE), // Background color
                       shape: RoundedRectangleBorder(
                         borderRadius:
                             BorderRadius.circular(13.0), // Rectangular shape
@@ -86,6 +88,7 @@ class OnBoardingPage2 extends StatelessWidget {
                       'Skip',
                       style: TextStyle(
                         color: Colors.black,
+                        fontFamily: 'Poppins',
                       ),
                     ),
                   ),
@@ -95,7 +98,8 @@ class OnBoardingPage2 extends StatelessWidget {
                       Navigator.pushNamed(context, '/onboarding_page3');
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFE76F51), // Background color
+                      backgroundColor:
+                          const Color(0xFFE76F51), // Background color
                       shape: RoundedRectangleBorder(
                         borderRadius:
                             BorderRadius.circular(13.0), // Rectangular shape
@@ -105,6 +109,7 @@ class OnBoardingPage2 extends StatelessWidget {
                       'Next',
                       style: TextStyle(
                         color: Colors.white,
+                        fontFamily: 'Poppins',
                       ),
                     ),
                   ),
