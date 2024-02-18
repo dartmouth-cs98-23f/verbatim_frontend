@@ -290,11 +290,22 @@ class _ProfileState extends State<Profile> {
 
     // Format displayName using firstName and initial
     displayName = lastName.isNotEmpty ? '$firstName $initial.' : firstName;
+
+    // Get the current user stats
     _getStats(username).then((_) {
       setState(() {
         stats = [friends, streaks, globals, customs];
       });
     });
+
+    if (widget.user != null) {
+      // Get the other user stats if we are on a friend's or stranger's profile
+      _getStats(username).then((_) {
+        setState(() {
+          stats = [friends, streaks, globals, customs];
+        });
+      });
+    }
   }
 
   @override
@@ -613,7 +624,7 @@ class _ProfileState extends State<Profile> {
                             ),
                             child: Container(
                               width: 360,
-                              height: 470,
+                              height: 500,
                               padding: const EdgeInsets.all(25),
                               child: Column(
                                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -823,14 +834,28 @@ class _ProfileState extends State<Profile> {
                                       Align(
                                         widthFactor: .5,
                                         child: ClipOval(
-                                          child: SizedBox(
-                                            width: 100,
-                                            height: 100,
-                                            child: FirebaseStorageImage(
-                                              profileUrl: profileUrl,
-                                            ),
-                                          ),
-                                        ),
+                                            child: (widget.user != null &&
+                                                    friendshipDate
+                                                        .isEmpty) // When you are on a stranger's profile, the first oval should contain their profile picture
+                                                ? SizedBox(
+                                                    width: 100,
+                                                    height: 100,
+                                                    child: FirebaseStorageImage(
+                                                      profileUrl: widget
+                                                          .user!.profilePicture,
+                                                      user: widget.user!,
+                                                    ),
+                                                  )
+                                                : SizedBox(
+                                                    // When you are on your own profile or a friend's profile, the first oval should always contain your profile picture
+                                                    width: 100,
+                                                    height: 100,
+                                                    child: FirebaseStorageImage(
+                                                      profileUrl: SharedPrefs()
+                                                              .getProfileUrl()
+                                                          as String,
+                                                    ),
+                                                  )),
                                       ),
                                       const SizedBox(
                                           width:
@@ -838,7 +863,9 @@ class _ProfileState extends State<Profile> {
                                       Align(
                                         widthFactor: .5,
                                         child: ClipOval(
-                                          child: widget.user != null
+                                          child: (widget.user != null &&
+                                                  friendshipDate
+                                                      .isNotEmpty) // When you are on a friend's profile, the second oval should contain their profile picture
                                               ? SizedBox(
                                                   width: 100,
                                                   height: 100,
@@ -848,7 +875,10 @@ class _ProfileState extends State<Profile> {
                                                     user: widget.user,
                                                   ),
                                                 )
-                                              : match != null
+                                              : (widget.user != null &&
+                                                      friendshipDate.isEmpty &&
+                                                      match !=
+                                                          null) // When you are on a stranger's profile and they have a verbaMatch, the second profile should be their verbaMatch's profile picture
                                                   ? SizedBox(
                                                       width: 100,
                                                       height: 100,
@@ -859,17 +889,189 @@ class _ProfileState extends State<Profile> {
                                                         user: match,
                                                       ),
                                                     )
-                                                  : const Align(
-                                                      alignment:
-                                                          Alignment.center,
-                                                      child: Icon(
-                                                        Icons.help_outline,
-                                                        size: 110,
-                                                        color:
-                                                            Color(0xFFE76F51),
-                                                      ),
-                                                    ),
+                                                  : (widget.user == null &&
+                                                          match !=
+                                                              null) // When you are on your own profile and you have a verbaMatch, the second profile should be your verbaMatch's profile picture
+                                                      ? SizedBox(
+                                                          width: 100,
+                                                          height: 100,
+                                                          child:
+                                                              FirebaseStorageImage(
+                                                            profileUrl: match!
+                                                                .profilePicture,
+                                                            user: match,
+                                                          ),
+                                                        )
+                                                      : const Align(
+                                                          // Else, it should be the the help icon
+                                                          alignment:
+                                                              Alignment.center,
+                                                          child: Icon(
+                                                            Icons.help_outline,
+                                                            size: 110,
+                                                            color: Color(
+                                                                0xFFE76F51),
+                                                          ),
+                                                        ),
                                         ),
+                                      ),
+                                    ],
+                                  ),
+                                  const SizedBox(
+                                    height: 15.0,
+                                  ),
+                                  Row(
+                                    mainAxisAlignment: MainAxisAlignment.center,
+                                    children: [
+                                      Align(
+                                        widthFactor: .5,
+                                        child: (widget.user != null &&
+                                                friendshipDate
+                                                    .isEmpty) // When you are on a stranger's profile, the first oval should contain their profile picture
+                                            ? SizedBox(
+                                                width: 91,
+                                                child: Text(
+                                                    widget.user!.username
+                                                        .replaceFirstMapped(
+                                                      RegExp(r'^\w'),
+                                                      (match) => match
+                                                          .group(0)!
+                                                          .toUpperCase(), // Ensures the first letter of first name is capitalized.
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 18,
+                                                      fontFamily: 'Poppins',
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      height: 0.07,
+                                                      letterSpacing: 0.10,
+                                                    )),
+                                              )
+                                            : SizedBox(
+                                                width: 91,
+                                                // When you are on your own profile or a friend's profile, the first oval should always contain your profile picture
+                                                child: Text(
+                                                    (SharedPrefs().getUserName()
+                                                            as String)
+                                                        .replaceFirstMapped(
+                                                      RegExp(r'^\w'),
+                                                      (match) => match
+                                                          .group(0)!
+                                                          .toUpperCase(), // Ensures the first letter of first name is capitalized.
+                                                    ),
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 18,
+                                                      fontFamily: 'Poppins',
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      height: 0.07,
+                                                      letterSpacing: 0.10,
+                                                    ))),
+                                      ),
+                                      const SizedBox(
+                                          width:
+                                              25), // Add spacing between the profile pictures
+                                      Align(
+                                        widthFactor: .5,
+                                        child: (widget.user != null &&
+                                                friendshipDate
+                                                    .isNotEmpty) // When you are on a friend's profile, the second oval should contain their profile picture
+                                            ? SizedBox(
+                                                width: 91,
+                                                child: Text(
+                                                    "& ${widget.user!.username.replaceFirstMapped(
+                                                      RegExp(r'^\w'),
+                                                      (match) => match
+                                                          .group(0)!
+                                                          .toUpperCase(), // Ensures the first letter of first name is capitalized.
+                                                    )}",
+                                                    textAlign: TextAlign.center,
+                                                    style: TextStyle(
+                                                      color: Colors.black,
+                                                      fontSize: 18,
+                                                      fontFamily: 'Poppins',
+                                                      fontWeight:
+                                                          FontWeight.w700,
+                                                      height: 0.07,
+                                                      letterSpacing: 0.10,
+                                                    )),
+                                              )
+                                            : (widget.user != null &&
+                                                    friendshipDate.isEmpty &&
+                                                    match !=
+                                                        null) // When you are on a stranger's profile and they have a verbaMatch, the second profile should be their verbaMatch's profile picture
+                                                ? SizedBox(
+                                                    width: 91,
+                                                    child: Text(
+                                                        "& ${match!.username.replaceFirstMapped(
+                                                          RegExp(r'^\w'),
+                                                          (match) => match
+                                                              .group(0)!
+                                                              .toUpperCase(), // Ensures the first letter of first name is capitalized.
+                                                        )}",
+                                                        textAlign:
+                                                            TextAlign.center,
+                                                        style: TextStyle(
+                                                          color: Colors.black,
+                                                          fontSize: 18,
+                                                          fontFamily: 'Poppins',
+                                                          fontWeight:
+                                                              FontWeight.w700,
+                                                          height: 0.07,
+                                                          letterSpacing: 0.10,
+                                                        )),
+                                                  )
+                                                : (widget.user == null &&
+                                                        match !=
+                                                            null) // When you are on your own profile and you have a verbaMatch, the second profile should be your verbaMatch's profile picture
+                                                    ? SizedBox(
+                                                        width: 91,
+                                                        child: Text(
+                                                            "& ${match!.username.replaceFirstMapped(
+                                                              RegExp(r'^\w'),
+                                                              (match) => match
+                                                                  .group(0)!
+                                                                  .toUpperCase(), // Ensures the first letter of first name is capitalized.
+                                                            )}",
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 18,
+                                                              fontFamily:
+                                                                  'Poppins',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700,
+                                                              height: 0.07,
+                                                              letterSpacing:
+                                                                  0.10,
+                                                            )),
+                                                      )
+                                                    : SizedBox(
+                                                        width: 91,
+                                                        child: Text(' ',
+                                                            textAlign: TextAlign
+                                                                .center,
+                                                            style: TextStyle(
+                                                              color:
+                                                                  Colors.black,
+                                                              fontSize: 18,
+                                                              fontFamily:
+                                                                  'Poppins',
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .w700,
+                                                              height: 0.07,
+                                                              letterSpacing:
+                                                                  0.10,
+                                                            )),
+                                                      ),
                                       ),
                                     ],
                                   ),
@@ -878,6 +1080,7 @@ class _ProfileState extends State<Profile> {
                             ),
                           ),
                           const SizedBox(height: 15.0),
+
                           // Only allow the user to create custom challenge with a friend.
                           (friendshipDate.isNotEmpty)
                               ? CustomChallengeButton(
