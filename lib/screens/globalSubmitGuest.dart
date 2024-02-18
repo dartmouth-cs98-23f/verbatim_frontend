@@ -4,23 +4,21 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/gameObject.dart';
+
 class Guest extends StatelessWidget {
   final String formattedTimeUntilMidnight;
-
 
   const Guest({
     super.key,
     required this.formattedTimeUntilMidnight,
-  
   });
 
   @override
   Widget build(BuildContext context) {
-  
     String copyIcon = 'assets/copy.svg';
     String sendIcon = 'assets/send.svg';
     String inviteText =
-        "\n Want to know how your friend's responses compare to yours? Sign up to meet Verba-friends, create custom challenges, and compare scores!";
+        "\nWant to know how your friend's responses compare to yours? Sign up to meet Verba-friends, create custom challenges, and compare scores!";
     // ignore: unused_element
     void onTap() {
       String routeName = ModalRoute.of(context)?.settings.name ?? '';
@@ -66,7 +64,7 @@ class Guest extends StatelessWidget {
           ),
           // ),
         ),
-        const SizedBox(height: 10),
+        const SizedBox(height: 8),
         Center(
             child: Padding(
           padding: const EdgeInsets.only(left: 25, right: 25),
@@ -76,14 +74,14 @@ class Guest extends StatelessWidget {
                 color: Colors.black, fontSize: 16, fontFamily: 'Poppins'),
           ),
         )),
-        const SizedBox(height: 25),
+        const SizedBox(height: 20),
         SizedBox(
           width: 220,
           child: Center(
             child: Text(
               'New Challenge in $formattedTimeUntilMidnight',
               style: const TextStyle(
-                  fontSize: 16,
+                  fontSize: 13,
                   fontWeight: FontWeight.bold,
                   fontFamily: 'Poppins'),
             ),
@@ -94,7 +92,7 @@ class Guest extends StatelessWidget {
           buttonText: "Sign Up",
           onTap: onTap,
         ),
-        const SizedBox(height: 20),
+        const SizedBox(height: 15),
         Center(
           child: RichText(
             text: TextSpan(
@@ -104,7 +102,7 @@ class Guest extends StatelessWidget {
                   style: GoogleFonts.poppins(
                     textStyle: const TextStyle(
                       color: Colors.black,
-                      fontWeight: FontWeight.w700,
+                      fontWeight: FontWeight.w500,
                       fontFamily: 'Poppins',
                       fontSize: 16,
                     ),
@@ -115,7 +113,7 @@ class Guest extends StatelessWidget {
                   style: GoogleFonts.poppins(
                     textStyle: const TextStyle(
                         color: Color(0xFF3C64B1),
-                        fontWeight: FontWeight.w800,
+                        fontWeight: FontWeight.w700,
                         fontSize: 16,
                         fontFamily: 'Poppins'),
                   ),
