@@ -207,7 +207,7 @@ class _ProfileState extends State<Profile> {
 
   void getFriendshipDate(String currentUsername, String friendUsername) async {
     final String url =
-        "${BackendService.getBackendUrl()}${currentUsername}/${friendUsername}/getUserStats";
+        "${BackendService.getBackendUrl()}$currentUsername/$friendUsername/getUserStats";
 
     try {
       final http.Response response = await http.get(Uri.parse(url));
@@ -237,7 +237,7 @@ class _ProfileState extends State<Profile> {
       }
 
       if (friendshipDate.isNotEmpty) {
-        friendshipStatusDescription = "Friends Since ${friendshipDate}";
+        friendshipStatusDescription = "Friends Since $friendshipDate";
       }
     } catch (error) {
       print('\nError getting friendship data: $error\n');
@@ -255,7 +255,7 @@ class _ProfileState extends State<Profile> {
         friendRequestStates[widget.user!.username] = widget.user!.isRequested;
       }
       drawButton = friendRequestStates[widget.user!.username] as bool;
-      groupName = '${widget.user!.username}';
+      groupName = widget.user!.username;
     }
 
     // Initialize username from SharedPrefs if not provided through the widget
@@ -385,15 +385,24 @@ class _ProfileState extends State<Profile> {
                                       const SizedBox(width: 10),
                                       Column(
                                         children: [
-                                          Text(
-                                            softWrap: true,
-                                            displayName,
-                                            style: GoogleFonts.poppins(
+                                          SizedBox(
+                                            width: 160,
+                                            child: Text(
+                                              displayName,
+                                              softWrap:
+                                                  true, // Wrap text across multiple lines if needed
+                                              style: GoogleFonts.poppins(
                                                 textStyle: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 29,
-                                              fontFamily: 'Poppins',
-                                            )),
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 29,
+                                                  fontFamily: 'Poppins',
+                                                ),
+                                              ),
+                                              overflow: TextOverflow
+                                                  .ellipsis, // Use ellipsis to indicate text overflow
+                                              maxLines:
+                                                  2, // Example: Limit text to 2 lines; adjust as needed
+                                            ),
                                           ),
                                           const SizedBox(
                                             height: 10,
@@ -923,156 +932,134 @@ class _ProfileState extends State<Profile> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Align(
-                                        widthFactor: .5,
-                                        child: (widget.user != null &&
-                                                friendshipDate
-                                                    .isEmpty) // When you are on a stranger's profile, the first oval should contain their profile picture
-                                            ? SizedBox(
-                                                width: 91,
-                                                child: Text(
-                                                    widget.user!.username
-                                                        .replaceFirstMapped(
-                                                      RegExp(r'^\w'),
-                                                      (match) => match
-                                                          .group(0)!
-                                                          .toUpperCase(), // Ensures the first letter of first name is capitalized.
-                                                    ),
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 18,
-                                                      fontFamily: 'Poppins',
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      height: 0.07,
-                                                      letterSpacing: 0.10,
-                                                    )),
-                                              )
-                                            : SizedBox(
-                                                width: 91,
-                                                // When you are on your own profile or a friend's profile, the first oval should always contain your profile picture
-                                                child: Text(
-                                                    (SharedPrefs().getUserName()
-                                                            as String)
-                                                        .replaceFirstMapped(
-                                                      RegExp(r'^\w'),
-                                                      (match) => match
-                                                          .group(0)!
-                                                          .toUpperCase(), // Ensures the first letter of first name is capitalized.
-                                                    ),
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 18,
-                                                      fontFamily: 'Poppins',
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      height: 0.07,
-                                                      letterSpacing: 0.10,
-                                                    ))),
+                                      // Removed Align and widthFactor as they conflict with the approach of allowing text to wrap.
+                                      Flexible(
+                                        // Allow the text to expand within the limits of the row.
+                                        child: SizedBox(
+                                          width:
+                                              91, // You can maintain a width for the container if needed for layout.
+                                          child: (widget.user != null &&
+                                                  friendshipDate.isEmpty)
+                                              ? Text(
+                                                  widget.user!.username
+                                                      .replaceFirstMapped(
+                                                    RegExp(r'^\w'),
+                                                    (match) => match
+                                                        .group(0)!
+                                                        .toUpperCase(), // Capitalize the first letter
+                                                  ),
+                                                  textAlign: TextAlign.center,
+                                                  style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 18,
+                                                    fontFamily: 'Poppins',
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                                  overflow: TextOverflow
+                                                      .ellipsis, // Prevent overflow with ellipsis
+                                                )
+                                              : Text(
+                                                  (SharedPrefs().getUserName()
+                                                          as String)
+                                                      .replaceFirstMapped(
+                                                    RegExp(r'^\w'),
+                                                    (match) => match
+                                                        .group(0)!
+                                                        .toUpperCase(), // Capitalize the first letter
+                                                  ),
+                                                  textAlign: TextAlign.center,
+                                                  style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 18,
+                                                    fontFamily: 'Poppins',
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  // Prevent overflow with ellipsis
+                                                ),
+                                        ),
                                       ),
                                       const SizedBox(
+                                          width: 5), // Spacing between elements
+                                      Flexible(
+                                        // Repeat the Flexible widget for the second text
+                                        child: SizedBox(
                                           width:
-                                              25), // Add spacing between the profile pictures
-                                      Align(
-                                        widthFactor: .5,
-                                        child: (widget.user != null &&
-                                                friendshipDate
-                                                    .isNotEmpty) // When you are on a friend's profile, the second oval should contain their profile picture
-                                            ? SizedBox(
-                                                width: 91,
-                                                child: Text(
-                                                    "& ${widget.user!.username.replaceFirstMapped(
-                                                      RegExp(r'^\w'),
-                                                      (match) => match
-                                                          .group(0)!
-                                                          .toUpperCase(), // Ensures the first letter of first name is capitalized.
-                                                    )}",
-                                                    textAlign: TextAlign.center,
-                                                    style: TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 18,
-                                                      fontFamily: 'Poppins',
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      height: 0.07,
-                                                      letterSpacing: 0.10,
-                                                    )),
-                                              )
-                                            : (widget.user != null &&
-                                                    friendshipDate.isEmpty &&
-                                                    match !=
-                                                        null) // When you are on a stranger's profile and they have a verbaMatch, the second profile should be their verbaMatch's profile picture
-                                                ? SizedBox(
-                                                    width: 91,
-                                                    child: Text(
-                                                        "& ${match!.username.replaceFirstMapped(
-                                                          RegExp(r'^\w'),
-                                                          (match) => match
-                                                              .group(0)!
-                                                              .toUpperCase(), // Ensures the first letter of first name is capitalized.
-                                                        )}",
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style: TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 18,
-                                                          fontFamily: 'Poppins',
-                                                          fontWeight:
-                                                              FontWeight.w700,
-                                                          height: 0.07,
-                                                          letterSpacing: 0.10,
-                                                        )),
-                                                  )
-                                                : (widget.user == null &&
-                                                        match !=
-                                                            null) // When you are on your own profile and you have a verbaMatch, the second profile should be your verbaMatch's profile picture
-                                                    ? SizedBox(
-                                                        width: 91,
-                                                        child: Text(
-                                                            "& ${match!.username.replaceFirstMapped(
-                                                              RegExp(r'^\w'),
-                                                              (match) => match
-                                                                  .group(0)!
-                                                                  .toUpperCase(), // Ensures the first letter of first name is capitalized.
-                                                            )}",
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontSize: 18,
-                                                              fontFamily:
-                                                                  'Poppins',
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700,
-                                                              height: 0.07,
-                                                              letterSpacing:
-                                                                  0.10,
-                                                            )),
-                                                      )
-                                                    : SizedBox(
-                                                        width: 91,
-                                                        child: Text(' ',
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontSize: 18,
-                                                              fontFamily:
-                                                                  'Poppins',
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700,
-                                                              height: 0.07,
-                                                              letterSpacing:
-                                                                  0.10,
-                                                            )),
+                                              100, // Maintain width for consistency
+                                          child: (widget.user != null &&
+                                                  friendshipDate.isNotEmpty)
+                                              ? Text(
+                                                  "& ${widget.user!.username.replaceFirstMapped(
+                                                    RegExp(r'^\w'),
+                                                    (match) => match
+                                                        .group(0)!
+                                                        .toUpperCase(), // Capitalize the first letter
+                                                  )}",
+                                                  textAlign: TextAlign.center,
+                                                  style: const TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 18,
+                                                    fontFamily: 'Poppins',
+                                                    fontWeight: FontWeight.w700,
+                                                  ),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  // Use ellipsis for overflow
+                                                )
+                                              : (widget.user != null &&
+                                                      friendshipDate.isEmpty &&
+                                                      match != null)
+                                                  ? Text(
+                                                      "& ${match!.username.replaceFirstMapped(
+                                                        RegExp(r'^\w'),
+                                                        (match) => match
+                                                            .group(0)!
+                                                            .toUpperCase(), // Capitalize the first letter
+                                                      )}",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style: const TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 18,
+                                                        fontFamily: 'Poppins',
+                                                        fontWeight:
+                                                            FontWeight.w700,
                                                       ),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      // Use ellipsis for overflow
+                                                    )
+                                                  : (widget.user == null &&
+                                                          match != null)
+                                                      ? Text(
+                                                          "& ${match!.username.replaceFirstMapped(
+                                                            RegExp(r'^\w'),
+                                                            (match) => match
+                                                                .group(0)!
+                                                                .toUpperCase(), // Capitalize the first letter
+                                                          )}",
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style:
+                                                              const TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 18,
+                                                            fontFamily:
+                                                                'Poppins',
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                          ),
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          // Use ellipsis for overflow
+                                                        )
+                                                      : const SizedBox
+                                                          .shrink(), // Use SizedBox.shrink() for cases where no text should be shown
+                                        ),
                                       ),
+
+                                      // Add other Flexible widgets for additional text elements as needed.
                                     ],
                                   ),
                                 ],

@@ -460,37 +460,39 @@ class _AddFriendState extends State<addFriend> {
                                       ),
                                       const SizedBox(width: 8),
                                       GestureDetector(
-                                        onTap: () {
-                                          currentUser.bio ??= '';
-                                          currentUser.profilePicture ??= '';
+                                          onTap: () {
+                                            currentUser.bio ??= '';
+                                            currentUser.profilePicture ??= '';
 
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => Profile(
-                                                user: currentUser,
+                                            Navigator.push(
+                                              context,
+                                              MaterialPageRoute(
+                                                builder: (context) => Profile(
+                                                  user: currentUser,
+                                                ),
                                               ),
-                                            ),
-                                          );
-                                          // Navigator.pushNamed(
-                                          //     context, '/profile',
-                                          //     arguments: currentUser);
-                                        },
-                                        child: Text(
-                                          name.replaceFirstMapped(
-                                            RegExp(r'^\w'),
-                                            (match) => match
-                                                .group(0)!
-                                                .toUpperCase(), // Ensures the first letter of first name is capitalized.
-                                          ),
-                                          style: const TextStyle(
-                                              fontWeight: FontWeight.bold,
+                                            );
+                                            // Navigator.pushNamed(
+                                            //     context, '/profile',
+                                            //     arguments: currentUser);
+                                          },
+                                          child: Text(
+                                            name.replaceFirstMapped(
+                                                RegExp(r'^\w'),
+                                                (match) => match
+                                                    .group(0)!
+                                                    .toUpperCase()), // Capitalize the first letter
+
+                                            textAlign: TextAlign.center,
+                                            style: const TextStyle(
                                               color: Colors.black,
-                                              fontFamily:
-                                                  'Poppins' // Optional: Change text color to blue for clickable effect
-                                              ),
-                                        ),
-                                      ),
+                                              fontSize: 18,
+                                              fontFamily: 'Poppins',
+                                              fontWeight: FontWeight.w700,
+                                            ),
+                                            overflow: TextOverflow
+                                                .ellipsis, // Use ellipsis to indicate text overflow
+                                          )),
                                     ],
                                   ),
 

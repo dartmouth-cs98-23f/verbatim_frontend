@@ -502,7 +502,7 @@ class _SideBarState extends State<SideBar> {
                           final memberObjects =
                               groupMemberObjects[groupId] ?? [];
 
-                          print("\nMember objects are ${memberObjects}\n");
+                          print("\nMember objects are $memberObjects\n");
 
                           return ListTile(
                             title: Row(
