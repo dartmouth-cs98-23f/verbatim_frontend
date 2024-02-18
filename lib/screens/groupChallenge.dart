@@ -626,7 +626,7 @@ Widget _verbaMatch(
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black,
-                                fontSize: 23,
+                                fontSize: 21,
                                 fontFamily: 'Poppins'),
                           ),
                           TextSpan(
@@ -634,13 +634,13 @@ Widget _verbaMatch(
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xFFE76F51),
-                                fontSize: 23,
+                                fontSize: 22,
                                 fontFamily: 'Poppins'),
                           ),
                           TextSpan(
                               text: "Match",
                               style: TextStyle(
-                                  fontSize: 23,
+                                  fontSize: 21,
                                   fontWeight: FontWeight.bold,
                                   color: Colors.black,
                                   fontFamily: 'Poppins')),
@@ -715,8 +715,8 @@ Widget _verbaMatch(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Container(
-                          height: 200,
-                          width: 200,
+                          height: 190,
+                          width: 190,
                           alignment: Alignment.center,
                           child: DonutChart(
                               groupSimilarity: verbaMatchSimilarity,
@@ -729,8 +729,8 @@ Widget _verbaMatch(
                       mainAxisAlignment: MainAxisAlignment.start,
                       children: [
                         Container(
-                          height: 200,
-                          width: 200,
+                          height: 190,
+                          width: 190,
                           alignment: Alignment.center,
                           child: DonutChart(
                               groupSimilarity: verbaMatchSimilarity,
@@ -768,8 +768,8 @@ class _DonutChartState extends State<DonutChart> {
     return Scaffold(
         backgroundColor: Colors.transparent,
         body: SizedBox(
-          height: 190,
-          width: 190,
+          height: 180,
+          width: 180,
           child: Column(
             children: [
               SizedBox(
