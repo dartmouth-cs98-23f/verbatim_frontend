@@ -314,8 +314,8 @@ class _GroupChallengeState extends State<groupChallenge> {
                             const SizedBox(height: 40.0),
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
-                                backgroundColor:
-                                    const Color.fromARGB(255, 255, 106, 0),
+                                elevation: 0,
+                                backgroundColor: Color(0xFFE76F51),
                                 foregroundColor: Colors.white,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30),
