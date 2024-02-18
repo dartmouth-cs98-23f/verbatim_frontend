@@ -37,7 +37,6 @@ class SignupErrorMessage extends StatelessWidget {
                     ),
                   ),
                 ),
-
                 const SizedBox(height: 230),
                 const Center(
                   child: Text(
@@ -46,7 +45,7 @@ class SignupErrorMessage extends StatelessWidget {
                     style: TextStyle(
                       color: Color(0xFFE76F51),
                       fontSize: 32,
-                      fontFamily: 'Mulish',
+                      fontFamily: 'Poppins',
                       fontWeight: FontWeight.w700,
                       height: 1.5,
                       letterSpacing: 0.30,
@@ -64,7 +63,7 @@ class SignupErrorMessage extends StatelessWidget {
                         style: const TextStyle(
                           color: Colors.black,
                           fontSize: 16,
-                          fontFamily: 'Mulish',
+                          fontFamily: 'Poppins',
                           fontWeight: FontWeight.w400,
                           height: 1.5,
                           letterSpacing: 0.30,
@@ -73,13 +72,13 @@ class SignupErrorMessage extends StatelessWidget {
                     ],
                   ),
                 ),
-
                 const SizedBox(height: 25),
                 MyButtonNoImage(
                   buttonText: 'Try Again',
                   onTap: () {
                     // Navigate back to the 'SignUp' page
-                    Navigator.of(context).push(MaterialPageRoute(builder: (context) => const LogIn()));
+                    Navigator.of(context).push(
+                        MaterialPageRoute(builder: (context) => const LogIn()));
                   },
                 ),
               ],

@@ -1,40 +1,25 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-// import 'package:google_sign_in/google_sign_in.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/signupErrorMessage.dart';
-import '../widgets/my_button_with_image.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
-class SignUp extends StatefulWidget {
+class GuestSignUp extends StatefulWidget {
   //TODO: figure out how to not need the
-  const SignUp({
+  const GuestSignUp({
     super.key,
   });
 
   @override
-  State<SignUp> createState() => _SignUpState();
+  State<GuestSignUp> createState() => _GuestSignUpState();
 }
 
-/** 
-                    firstName(request.getFirstName())
-                    lastName(request.getLastName())
-                    email(request.getEmail())
-                    .username(request.getUsername())
-                    .password(passwordEncoder.encode(request.getPassword()))
-                    .numGlobalChallengesCompleted(0)
-                    .numCustomChallengesCompleted(0)
-                    .role(roleRepository.findByRolename("ROLE_USER"))
-                    .streak(0)
-                    .hasCompletedDailyChallenge(false)
-      */
-
-class _SignUpState extends State<SignUp> {
+class _GuestSignUpState extends State<GuestSignUp> {
   Map<String, Text> validationErrors = {};
   final firstNameController = TextEditingController();
   final lastNameController = TextEditingController();
@@ -43,71 +28,7 @@ class _SignUpState extends State<SignUp> {
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
 
-//TODO: gets widget data
-
-  // final GoogleSignIn _googleSignIn = GoogleSignIn(
-  //     scopes: ['email'],
-  //     clientId:
-  //         '297398575103-o3engamrir3bf4pupurvj8lm4mn0iuqt.apps.googleusercontent.com');
-
-  void signUp(BuildContext context, String firstName, String lastName,
-      String username, String email, String password, String confirmPassword) {
-    saveUsersInfo(context, firstName, lastName, username, email, password,
-        confirmPassword);
-  }
-
-  // Function to save user's info to the database
-  void saveUsersInfo(
-      BuildContext context,
-      String firstName,
-      String lastName,
-      String username,
-      String email,
-      String password,
-      String confirmPassword) async {
-    try {
-      final response = await http.post(
-        Uri.parse('${BackendService.getBackendUrl()}register'),
-        headers: <String, String>{
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode({
-          'firstName': firstName,
-          'lastName': lastName,
-          'username': username,
-          'email': email,
-          'password': password
-        }),
-      );
-
-      if (response.statusCode == 200) {
-        // Save the user's info in the shared prefs
-        SharedPrefs().setEmail(email);
-        SharedPrefs().setFirstName(firstName);
-        SharedPrefs().setLastName(lastName);
-        SharedPrefs().setPassword(password);
-        SharedPrefs().setUserName(username);
-        SharedPrefs().setBio("");
-        SharedPrefs().setProfileUrl("assets/profile_pic.png");
-
-        // Successful sign-up: Navigate to the 'OnBoardingPage1' page
-        Navigator.pushNamed(context, '/onboarding_page1');
-
-        print('Sign-up successful');
-      } else {
-        print('Error during sign-up: ${response.statusCode.toString()}');
-        Navigator.of(context).push(MaterialPageRoute(
-          builder: (context) => const SignupErrorMessage(pageName: 'sign up'),
-        ));
-      }
-    } catch (e) {
-      print('Error during sign-up: ${e.toString()}');
-      Navigator.of(context).push(MaterialPageRoute(
-        builder: (context) => const SignupErrorMessage(pageName: 'sign up'),
-      ));
-    }
-  }
-
+  /// ********************
   void guestSignUp(BuildContext context, String firstName, String lastName,
       String username, String email, String password) async {
     final response = await http.post(
@@ -134,30 +55,25 @@ class _SignUpState extends State<SignUp> {
       }),
     );
     if (response.statusCode == 200) {
-      print("LetsssGOOO");
+      print("LetsssGOOO!, Guest signed up!");
       SharedPrefs().setEmail(email);
       SharedPrefs().setFirstName(firstName);
       SharedPrefs().setLastName(lastName);
       SharedPrefs().setPassword(password);
       SharedPrefs().setUserName(username);
+      SharedPrefs().setProfileUrl("assets/profile_pic.png");
+      SharedPrefs().setBio("");
 
       // Successful sign-up: Navigate to the 'OnBoardingPage1' page
       Navigator.pushNamed(context,
           '/global_challenge'); //push them to the stats page if we have one
+    } else {
+      print('Error during sign-up: ${response.statusCode.toString()}');
+      Navigator.of(context).push(MaterialPageRoute(
+        builder: (context) => const SignupErrorMessage(pageName: 'sign up'),
+      ));
     }
   }
-
-  // Function to sign up with Google
-  // Future<void> signUpWithGoogle() async {
-  //   final GoogleSignInAccount? account = await _googleSignIn.signIn();
-
-  //   if (account != null) {
-  //     saveUsersInfo(context, '<unavailable>', '<unavailable>', '<unavailable>',
-  //         account.email, 'unavailable', 'unavailable');
-  //   } else {
-  //     print('\nThe google account is not found.');
-  //   }
-  // }
 
   void validateUserInfo(
       BuildContext context,
@@ -234,13 +150,6 @@ class _SignUpState extends State<SignUp> {
 
     // Validate password
     if (password.isNotEmpty) {
-      // Check password length and complexity (at least one uppercase letter, one lowercase letter, one number, and one special character)
-
-      // if (!passwordComplexity.hasMatch(password) || password.length < 8) {
-      //   setValidationError("password",
-      //       "Your password should be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and one of the following special characters: !, @, #, \$, %, ^, &, *");
-      // }
-
       if (password.length < 8) {
         setValidationError(
             "password", "Your password should be at least 8 characters long.");
@@ -254,23 +163,11 @@ class _SignUpState extends State<SignUp> {
 
     // Validate there are no errors at all
     if (validationErrors.isEmpty) {
-      // Continue with sign-up
       print(
           'Successfully signed up with this info: $firstName, $lastName, $username, $email, $password, $confirmedPassword');
 
-      if (SharedPrefs().getResponse1() == '') {
-        //if user hasnt played global challenge yer
-        print("signup 1");
-
-        signUp(context, firstName, lastName, username.toLowerCase(),
-            email.toLowerCase(), password, confirmedPassword);
-      } else {
-        //signUp(context, firstName, lastName, username.toLowerCase(),
-        print("signup 2");
-        //email.toLowerCase(), password, confirmedPassword);
-        signUp(context, firstName, lastName, username.toLowerCase(),
-            email.toLowerCase(), password, confirmedPassword);
-      }
+      guestSignUp(context, firstName, lastName, username.toLowerCase(),
+          email.toLowerCase(), password);
     }
   }
 
@@ -284,10 +181,7 @@ class _SignUpState extends State<SignUp> {
     setState(() {
       validationErrors[field] = Text(
         message,
-        style: const TextStyle(
-          color: Colors.red,
-          fontFamily: 'Poppins',
-        ),
+        style: const TextStyle(color: Colors.red, fontFamily: 'Poppins'),
       );
     });
   }
@@ -296,6 +190,7 @@ class _SignUpState extends State<SignUp> {
     return validationErrors.containsKey(field) ? validationErrors[field] : null;
   }
 
+  @override
   @override
   Widget build(BuildContext context) {
     //TODO: homie use this
@@ -419,15 +314,6 @@ class _SignUpState extends State<SignUp> {
                             passwordController.text,
                             confirmPasswordController.text,
                           );
-                        },
-                      ),
-                      const SizedBox(height: 10),
-                      MyButtonWithImage(
-                        buttonText: "Sign in with Google",
-                        hasButtonImage: true,
-                        onTap: () {
-                          // print(this.data);
-                          // signUpWithGoogle();
                         },
                       ),
                       const SizedBox(height: 10),

@@ -3,6 +3,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
+import 'package:verbatim_frontend/screens/addFriend.dart';
+import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 import 'package:verbatim_frontend/widgets/my_button_with_svg.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
 
@@ -10,20 +12,20 @@ class Verbatastic extends StatelessWidget {
   final String verbatimedWord;
   final String formattedTimeUntilMidnight;
   final List<String>? verbatasticUsernames;
+  final List<User>? verbatasticUserObjects;
 
-  const Verbatastic({super.key, 
+  const Verbatastic({
+    super.key,
     required this.verbatimedWord,
     required this.formattedTimeUntilMidnight,
     required this.verbatasticUsernames,
+    required this.verbatasticUserObjects,
   });
 
   void copyInvite() {
-    //TODO
-    //'https://example.com?referrer=$referrerToken';
-    String username = SharedPrefs().getUserName() ?? "";
-    //Navigator.pushNamed(context, '/details', arguments: {'referer': 'friend123'});
+    //TODO:
 
-    //String tempLink = http://localhost:3000/#/landingPage?referer=$username;
+    String username = SharedPrefs().getUserName() ?? "";
     String inviteLink = 'http://localhost:3000/#/landingPage?referer=$username';
     Clipboard.setData(ClipboardData(text: inviteLink));
   }
@@ -101,19 +103,20 @@ class Verbatastic extends StatelessWidget {
                   )
                 : Center(
                     child: SizedBox(
-                      width: min(verbatasticUsernames!.length + 1, 6) * 38,
+                      width: min(verbatasticUserObjects!.length + 1, 6) * 38,
                       height: 45,
                       child: Stack(
                         children: [
                           for (int i = 0;
-                              i < min(verbatasticUsernames!.length + 1, 6);
+                              i < min(verbatasticUserObjects!.length, 6);
                               i++)
                             Positioned(
                               top: 0,
                               left: 30.0 * i,
-                              child: Image.asset(
-                                'assets/Ellipse ${41 + i}.png',
-                                height: 45,
+                              child: FirebaseStorageImage(
+                                profileUrl:
+                                    verbatasticUserObjects![i].profilePicture,
+                                user: verbatasticUserObjects![i],
                               ),
                             ),
                         ],

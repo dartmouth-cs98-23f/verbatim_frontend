@@ -1,40 +1,16 @@
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
+import 'package:verbatim_frontend/screens/addFriend.dart';
+import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 import 'sideBar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:verbatim_frontend/widgets/create_group_app_bar.dart';
-import 'package:verbatim_frontend/widgets/size.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:verbatim_frontend/Components/defineRoutes.dart';
-import 'package:verbatim_frontend/screens/myGroup.dart';
-
-// User class for when backend passes in users
-class User {
-  int id = 0;
-  String email = "";
-  String username = "";
-  String lastName = "";
-  String password = "";
-  dynamic profilePicture;
-  String? bio = "";
-  int numGlobalChallengesCompleted = 0;
-  int numCustomChallengesCompleted = 0;
-  int streak = 0;
-  bool hasCompletedDailyChallenge = false;
-
-  User({required this.username});
-
-  factory User.fromJson(Map<String, dynamic> json) {
-    return User(
-      username: json['username'],
-    );
-  }
-}
 
 class createGroup extends StatefulWidget {
-  createGroup({
+  const createGroup({
     Key? key,
   }) : super(key: key);
 
@@ -55,6 +31,7 @@ class _CreateGroupState extends State<createGroup> {
   String _searchText = "";
 
   List<String> friendsUsernamesList = [];
+  List<User> searchResults = [];
   List<String> addedUsernames = []; //usernames added to the group
 
   bool friendsFetched = false;
@@ -63,7 +40,7 @@ class _CreateGroupState extends State<createGroup> {
   // create group
   Future<Map<int?, bool>> create(String groupName, String createdByUsername,
       List<String> usernamesToAdd) async {
-    final url = Uri.parse(BackendService.getBackendUrl() + 'createGroup');
+    final url = Uri.parse('${BackendService.getBackendUrl()}createGroup');
     final headers = <String, String>{'Content-Type': 'application/json'};
     final requestPayload = json.encode({
       'groupName': groupName,
@@ -105,7 +82,7 @@ class _CreateGroupState extends State<createGroup> {
 //Find my friends!
 
   Future<void> getFriends(String username) async {
-    final url = Uri.parse(BackendService.getBackendUrl() + 'getFriends');
+    final url = Uri.parse('${BackendService.getBackendUrl()}getFriends');
     final Map<String, String> headers = {
       'Content-Type': 'text/plain',
     };
@@ -116,6 +93,7 @@ class _CreateGroupState extends State<createGroup> {
       print('responses sent succesfully');
       final List<dynamic> data = json.decode(response.body);
       List<User> friendsList = data.map((item) => User.fromJson(item)).toList();
+      searchResults = friendsList;
       friendsUsernamesList = friendsList.map((user) => user.username).toList();
     } else {
       print('Failed to send responses. Status code: ${response.statusCode}');
@@ -162,23 +140,32 @@ class _CreateGroupState extends State<createGroup> {
   }
 
   // search feature control (adjust if necessary)
-  List<String> _searchResults() {
-    return friendsUsernamesList
-        .where((item) => item.toLowerCase().contains(_searchText.toLowerCase()))
+  List<User> _searchResults() {
+    List<User> filteredResults = searchResults
+        .where((item) =>
+            item.username.toLowerCase().contains(_searchText.toLowerCase()) &&
+            item.username != SharedPrefs().getUserName())
         .toList();
+
+    for (var member in filteredResults) {
+      member.isRequested = true;
+    }
+
+    return filteredResults;
   }
 
+  @override
   Widget build(BuildContext context) {
     String username = SharedPrefs().getUserName() ?? "";
 
-    final String assetName = 'assets/img1.svg'; // orange (top) background
+    const String assetName = 'assets/img1.svg'; // orange (top) background
 
     return SafeArea(
         child: Scaffold(
-      backgroundColor: Color.fromARGB(255, 255, 243, 238),
+      backgroundColor: const Color.fromARGB(255, 255, 243, 238),
       body: SingleChildScrollView(
           child: Container(
-              color: Color.fromARGB(255, 255, 243, 238),
+              color: const Color.fromARGB(255, 255, 243, 238),
               child: Column(children: [
                 SizedBox(
                   width: double.maxFinite,
@@ -200,18 +187,18 @@ class _CreateGroupState extends State<createGroup> {
                           ),
 
                           // appbar on top of orange background
-                          groupAppBar(title: 'Create Group'),
+                          const groupAppBar(title: 'Create Group'),
 
                           // don't show the search bar in 'nameGroup' mode
                           Visibility(
                             visible: !isCreated,
                             child: Padding(
-                              padding: EdgeInsets.only(top: 20.0),
+                              padding: const EdgeInsets.only(top: 20.0),
                               child: Align(
                                 alignment: Alignment.center,
                                 child: Container(
-                                    width: 350,
-                                    height: 30,
+                                    width: 357,
+                                    height: 50,
                                     decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(20),
@@ -220,17 +207,19 @@ class _CreateGroupState extends State<createGroup> {
                                       mainAxisAlignment:
                                           MainAxisAlignment.center,
                                       children: [
-                                        SizedBox(width: 8),
-                                        Icon(Icons.search, color: Colors.black),
-                                        SizedBox(width: 8),
+                                        const SizedBox(width: 8),
+                                        const Icon(Icons.search,
+                                            color: Colors.black),
+                                        const SizedBox(width: 8),
                                         Expanded(
                                           child: TextField(
                                             controller: _searchController,
-                                            decoration: InputDecoration(
-                                              hintStyle: const TextStyle(
+                                            decoration: const InputDecoration(
+                                              hintStyle: TextStyle(
                                                   fontSize: 14.0,
                                                   color: Color.fromARGB(
-                                                      255, 6, 5, 5)),
+                                                      255, 6, 5, 5),
+                                                  fontFamily: 'Poppins'),
                                               border: InputBorder.none,
                                             ),
                                             textAlign: TextAlign.left,
@@ -249,16 +238,16 @@ class _CreateGroupState extends State<createGroup> {
                     child: Center(
                       child: SizedBox(
                         child: RichText(
-                          text: TextSpan(
+                          text: const TextSpan(
                             children: [
                               TextSpan(
                                 text:
                                     "Add at least two friends to make a group",
                                 style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                    fontSize: 15,
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Poppins'),
                               )
                             ],
                           ),
@@ -270,16 +259,16 @@ class _CreateGroupState extends State<createGroup> {
                     child: Center(
                       child: SizedBox(
                         child: RichText(
-                          text: TextSpan(
+                          text: const TextSpan(
                             children: [
                               TextSpan(
                                 text:
                                     "Error creating duplicate group - do you already have a group with these users?",
                                 style: TextStyle(
-                                  fontSize: 15,
-                                  color: Colors.red,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                    fontSize: 15,
+                                    color: Colors.red,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Poppins'),
                               )
                             ],
                           ),
@@ -291,7 +280,7 @@ class _CreateGroupState extends State<createGroup> {
                 Center(
                   child: Container(
                       clipBehavior: Clip.hardEdge,
-                      margin: EdgeInsets.only(top: 10),
+                      margin: const EdgeInsets.only(top: 10),
                       width: 300,
                       height: 350,
                       decoration: BoxDecoration(
@@ -301,7 +290,7 @@ class _CreateGroupState extends State<createGroup> {
                             color: const Color.fromARGB(255, 117, 19, 12)
                                 .withOpacity(0.5),
                             blurRadius: 5,
-                            offset: Offset(3, 7),
+                            offset: const Offset(3, 7),
                           ),
                         ],
                         color: Colors.white,
@@ -317,8 +306,10 @@ class _CreateGroupState extends State<createGroup> {
                                     ? ListView.builder(
                                         itemCount: _searchResults().length,
                                         itemBuilder: (context, index) {
-                                          final name = _searchResults()[
-                                              index]; //username of each listing
+                                          final currentUser =
+                                              _searchResults()[index];
+                                          final name = currentUser
+                                              .username; //username of each listing
                                           final isAdded =
                                               addedUsernames.contains(name);
                                           if (!isCreated) {
@@ -327,22 +318,32 @@ class _CreateGroupState extends State<createGroup> {
                                               title: Row(
                                                 mainAxisSize: MainAxisSize.min,
                                                 children: [
-                                                  Icon(Icons
-                                                      .mood), // prof pic of user
-                                                  SizedBox(width: 8),
+                                                  FirebaseStorageImage(
+                                                    profileUrl: currentUser
+                                                        .profilePicture,
+                                                    user: currentUser,
+                                                  ), // prof pic of user
+                                                  const SizedBox(width: 8),
                                                   Text(
-                                                    name,
-                                                    style: TextStyle(
+                                                    name.replaceFirstMapped(
+                                                      RegExp(r'^\w'),
+                                                      (match) => match
+                                                          .group(0)!
+                                                          .toUpperCase(), // Ensures the first letter of first name is capitalized.
+                                                    ),
+                                                    style: const TextStyle(
                                                         fontWeight:
-                                                            FontWeight.bold),
+                                                            FontWeight.bold,
+                                                        fontFamily: 'Poppins'),
                                                   ),
                                                 ],
                                               ),
                                               trailing: IconButton(
                                                 icon:
                                                     isAdded // if they're added then show this
-                                                        ? Icon(Icons.check)
-                                                        : Icon(Icons
+                                                        ? const Icon(
+                                                            Icons.check)
+                                                        : const Icon(Icons
                                                             .person_add_alt),
                                                 onPressed: () {
                                                   if (!isAdded) {
@@ -364,6 +365,7 @@ class _CreateGroupState extends State<createGroup> {
                                               // icon displayed is dependent on whether you have requested this user.
                                             );
                                           }
+                                          return null;
                                         },
                                       )
                                     // if not searching, display all friends
@@ -373,24 +375,26 @@ class _CreateGroupState extends State<createGroup> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         children: [
-                                            Padding(
-                                                padding: const EdgeInsets.only(
+                                            const Padding(
+                                                padding: EdgeInsets.only(
                                                     left: 12.0, top: 14.0),
                                                 child: Text(
                                                   "All Friends",
                                                   style: TextStyle(
-                                                    fontSize: 15,
-                                                    fontWeight: FontWeight.bold,
-                                                  ),
+                                                      fontSize: 15,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      fontFamily: 'Poppins'),
                                                 )),
                                             Expanded(
                                               child: ListView.builder(
                                                 itemCount:
-                                                    friendsUsernamesList.length,
+                                                    _searchResults().length,
                                                 itemBuilder: (context, index) {
+                                                  final currentUser =
+                                                      _searchResults()[index];
                                                   final name =
-                                                      friendsUsernamesList[
-                                                          index];
+                                                      currentUser.username;
                                                   final isAdded =
                                                       addedUsernames.contains(
                                                           name); // bool to control whether you have already added them
@@ -398,23 +402,35 @@ class _CreateGroupState extends State<createGroup> {
                                                   return ListTile(
                                                     title: Row(
                                                       children: [
-                                                        Icon(Icons.mood),
-                                                        SizedBox(width: 8),
+                                                        FirebaseStorageImage(
+                                                          profileUrl: currentUser
+                                                              .profilePicture,
+                                                          user: currentUser,
+                                                        ),
+                                                        const SizedBox(
+                                                            width: 8),
                                                         Text(
-                                                          name,
-                                                          style: TextStyle(
+                                                          name.replaceFirstMapped(
+                                                            RegExp(r'^\w'),
+                                                            (match) => match
+                                                                .group(0)!
+                                                                .toUpperCase(), // Ensures the first letter of first name is capitalized.
+                                                          ),
+                                                          style: const TextStyle(
                                                               fontWeight:
                                                                   FontWeight
-                                                                      .bold),
+                                                                      .bold,
+                                                              fontFamily:
+                                                                  'Poppins'),
                                                         ),
                                                       ],
                                                     ),
                                                     trailing: IconButton(
                                                       icon:
                                                           isAdded // if they're added then show this
-                                                              ? Icon(
+                                                              ? const Icon(
                                                                   Icons.check)
-                                                              : Icon(Icons
+                                                              : const Icon(Icons
                                                                   .person_add_alt),
                                                       onPressed: () {
                                                         if (!isAdded) {
@@ -437,21 +453,21 @@ class _CreateGroupState extends State<createGroup> {
                           else
                             // if it is created then you are making your group!
                             Column(children: [
-                              SizedBox(height: 30),
-                              Padding(
-                                padding: const EdgeInsets.symmetric(
-                                    horizontal: 16.0),
+                              const SizedBox(height: 30),
+                              const Padding(
+                                padding: EdgeInsets.symmetric(horizontal: 16.0),
                                 child: Text(
                                   'Word! Give your group a name!',
                                   style: TextStyle(
-                                    fontSize: 22,
-                                    fontWeight: FontWeight.bold,
-                                  ),
+                                      fontSize: 22,
+                                      fontWeight: FontWeight.bold,
+                                      fontFamily: 'Poppins'),
                                 ),
                               ),
-                              SizedBox(height: 30.0),
+                              const SizedBox(height: 30.0),
                               Container(
-                                padding: EdgeInsets.symmetric(horizontal: 20.0),
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 20.0),
                                 child: TextField(
                                   controller: responseController,
                                   onChanged: (value) {
@@ -459,18 +475,18 @@ class _CreateGroupState extends State<createGroup> {
                                       userResponse = value;
                                     });
                                   },
-                                  decoration: InputDecoration(
+                                  decoration: const InputDecoration(
                                     hintText: 'Type your group name here...',
                                   ),
                                 ),
                               ),
-                              SizedBox(height: 30.0),
+                              const SizedBox(height: 30.0),
                             ]),
                         ],
                       )),
                 ),
 
-                SizedBox(height: 16.0),
+                const SizedBox(height: 16.0),
 
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
@@ -489,26 +505,27 @@ class _CreateGroupState extends State<createGroup> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color.fromARGB(255, 255, 243, 238),
-                        padding: EdgeInsets.all(16.0),
+                        backgroundColor:
+                            const Color.fromARGB(255, 255, 243, 238),
+                        padding: const EdgeInsets.all(16.0),
                         elevation: 0.0,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0),
                           //why doesnt this work  side: BorderSide(width: 20.0),
                         ),
                         minimumSize: const Size(100, 50),
-                        side: BorderSide(color: Color(0xFFE76F51)),
+                        side: const BorderSide(color: Color(0xFFE76F51)),
                       ),
                       // display different text based on which 'stage' we're in
                       child: Text(
                         isCreated ? 'Back' : 'Cancel',
-                        style: TextStyle(
-                          color: Color(0xFFE76F51),
-                          fontWeight: FontWeight.bold,
-                        ),
+                        style: const TextStyle(
+                            color: Color(0xFFE76F51),
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Poppins'),
                       ),
                     ),
-                    SizedBox(width: 16.0),
+                    const SizedBox(width: 16.0),
                     ElevatedButton(
                       onPressed: () async {
                         // if group isn't created, create it
@@ -554,25 +571,25 @@ class _CreateGroupState extends State<createGroup> {
                         }
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: Color(0xFFE76F51),
-                        padding: EdgeInsets.all(16.0),
+                        backgroundColor: const Color(0xFFE76F51),
+                        padding: const EdgeInsets.all(16.0),
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0),
                         ),
                         minimumSize: const Size(100, 50),
                       ),
-                      child: Text(
+                      child: const Text(
                         'Next',
                         style: TextStyle(
-                          color: Colors.white,
-                          fontWeight: FontWeight.bold,
-                        ),
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontFamily: 'Poppins'),
                       ),
                     ),
                   ],
                 )
               ]))),
-      drawer: SideBar(),
+      drawer: const SideBar(),
     ));
   }
 }

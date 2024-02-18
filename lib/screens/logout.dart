@@ -60,7 +60,7 @@ class _LogoutPageState extends State<LogoutPage> {
                     style: TextStyle(
                       color: Color(0xFFE76F51),
                       fontSize: 32,
-                      fontFamily: 'Mulish',
+                      fontFamily: 'Poppins',
                       fontWeight: FontWeight.w700,
                       height: 1.5,
                       letterSpacing: 0.30,
@@ -79,7 +79,7 @@ class _LogoutPageState extends State<LogoutPage> {
                         style: TextStyle(
                           color: Colors.black,
                           fontSize: 16,
-                          fontFamily: 'Mulish',
+                          fontFamily: 'Poppins',
                           fontWeight: FontWeight.w400,
                           height: 1.5,
                           letterSpacing: 0.30,
@@ -98,7 +98,8 @@ class _LogoutPageState extends State<LogoutPage> {
                         Navigator.pop(context);
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFE76F51), // Background color
+                        backgroundColor:
+                            const Color(0xFFE76F51), // Background color
                         shape: RoundedRectangleBorder(
                           borderRadius:
                               BorderRadius.circular(13.0), // Rectangular shape
@@ -108,6 +109,7 @@ class _LogoutPageState extends State<LogoutPage> {
                         'Go Back',
                         style: TextStyle(
                           color: Colors.white,
+                          fontFamily: 'Poppins',
                         ),
                       ),
                     ),
@@ -118,7 +120,8 @@ class _LogoutPageState extends State<LogoutPage> {
                         logout(context);
                       },
                       style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color(0xFFFFF3EE), // Background color
+                        backgroundColor:
+                            const Color(0xFFFFF3EE), // Background color
                         shape: RoundedRectangleBorder(
                           borderRadius:
                               BorderRadius.circular(13.0), // Rectangular shape
@@ -128,6 +131,7 @@ class _LogoutPageState extends State<LogoutPage> {
                         'Log Out',
                         style: TextStyle(
                           color: Colors.black,
+                          fontFamily: 'Poppins',
                         ),
                       ),
                     ),

@@ -606,7 +606,12 @@ class _SideBarState extends State<SideBar> {
                                   );
                                 },
                                 child: Text(
-                                  requester.username,
+                                  requester.username.replaceFirstMapped(
+                                    RegExp(r'^\w'),
+                                    (match) => match
+                                        .group(0)!
+                                        .toUpperCase(), // Ensures the first letter of first name is capitalized.
+                                  ),
                                   style: const TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,

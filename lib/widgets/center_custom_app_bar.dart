@@ -18,7 +18,7 @@ class centerAppBar extends StatelessWidget implements PreferredSizeWidget {
     return AppBar(
       backgroundColor: Colors.transparent,
       toolbarHeight: 100,
-      iconTheme: IconThemeData(color: Colors.white),
+      iconTheme: const IconThemeData(color: Colors.white),
       elevation: 0,
       scrolledUnderElevation: 0.0,
       title: Text(
@@ -27,6 +27,7 @@ class centerAppBar extends StatelessWidget implements PreferredSizeWidget {
           fontSize: 29,
           color: Colors.white,
           fontWeight: FontWeight.w900,
+          fontFamily: 'Poppins',
         ),
       ),
       centerTitle: true,

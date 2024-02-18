@@ -5,7 +5,6 @@ import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'package:verbatim_frontend/screens/signupErrorMessage.dart';
 import '../Components/shared_prefs.dart';
-import '../widgets/my_button_with_image.dart';
 import '../widgets/my_button_no_image.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -46,6 +45,8 @@ class _LogInState extends State<LogIn> {
         'responseQ1': SharedPrefs().getResponse1(),
         'responseQ2': SharedPrefs().getResponse2(),
         'responseQ3': SharedPrefs().getResponse3(),
+        'responseQ4': SharedPrefs().getResponse4(),
+        'responseQ5': SharedPrefs().getResponse5(),
         'isLogin': true,
         'emailOrUsername': usernameOrEmail,
         'password': password,
@@ -143,7 +144,10 @@ class _LogInState extends State<LogIn> {
     setState(() {
       validationErrors[field] = Text(
         message,
-        style: const TextStyle(color: Colors.red),
+        style: const TextStyle(
+          color: Colors.red,
+          fontFamily: 'Poppins',
+        ),
       );
     });
   }
@@ -237,6 +241,7 @@ class _LogInState extends State<LogIn> {
                           style: const TextStyle(
                             color: Color(0xFF3C64B1),
                             fontWeight: FontWeight.w700,
+                            fontFamily: 'Poppins',
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
@@ -285,14 +290,16 @@ class _LogInState extends State<LogIn> {
                                 style: TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.w700,
+                                  fontFamily: 'Poppins',
                                 ),
                               ),
                               TextSpan(
                                 text: 'Register',
                                 style: const TextStyle(
                                   color: Color(0xFF3C64B1),
-                                  fontWeight: FontWeight
-                                      .w700, // Blue color for the link
+                                  fontWeight: FontWeight.w700,
+                                  fontFamily: 'Poppins',
+// Blue color for the link
                                 ),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {

@@ -15,7 +15,7 @@ import 'package:fl_chart/fl_chart.dart';
 class friendship extends StatefulWidget {
   final String friendUsername;
 
-  friendship({
+  const friendship({
     Key? key,
     required this.friendUsername,
   }) : super(key: key);
@@ -45,7 +45,7 @@ class _FriendshipState extends State<friendship>
                 20.0), // maybe this will fix weird looking border?
           ),
           contentPadding: EdgeInsets.zero,
-          insetPadding: EdgeInsets.symmetric(horizontal: 16.0),
+          insetPadding: const EdgeInsets.symmetric(horizontal: 16.0),
           content: Container(
             width: 220,
             height: 230,
@@ -55,9 +55,9 @@ class _FriendshipState extends State<friendship>
               borderRadius: BorderRadius.circular(20),
               boxShadow: [
                 BoxShadow(
-                  color: Color(0xFF9E503C).withOpacity(0.5),
+                  color: const Color(0xFF9E503C).withOpacity(0.5),
                   blurRadius: 4,
-                  offset: Offset(2, 3),
+                  offset: const Offset(2, 3),
                 )
               ],
             ),
@@ -66,9 +66,9 @@ class _FriendshipState extends State<friendship>
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.center,
               children: [
-                SizedBox(height: 5),
+                const SizedBox(height: 5),
                 Padding(
-                  padding: EdgeInsets.all(8),
+                  padding: const EdgeInsets.all(8),
                   child: Container(
                       child: FittedBox(
                     fit: BoxFit.scaleDown,
@@ -76,28 +76,28 @@ class _FriendshipState extends State<friendship>
                       textAlign: TextAlign.center,
                       text: TextSpan(
                         children: [
-                          TextSpan(
+                          const TextSpan(
                             text: 'New Challenge with ',
                             style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                            ),
+                                color: Colors.black,
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Poppins'),
                           ),
                           TextSpan(
-                            text: '$groupName',
-                            style: TextStyle(
-                              color: Colors.orange,
-                              fontSize: 24,
-                              fontWeight: FontWeight.w900,
-                            ),
+                            text: groupName,
+                            style: const TextStyle(
+                                color: Colors.orange,
+                                fontSize: 24,
+                                fontWeight: FontWeight.w900,
+                                fontFamily: 'Poppins'),
                           ),
                         ],
                       ),
                     ),
                   )),
                 ),
-                SizedBox(height: 15),
+                const SizedBox(height: 15),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                   children: [
@@ -115,7 +115,7 @@ class _FriendshipState extends State<friendship>
                         groupName),
                   ],
                 ),
-                SizedBox(height: 10),
+                const SizedBox(height: 10),
               ],
             ),
           ),
@@ -129,20 +129,20 @@ class _FriendshipState extends State<friendship>
   Widget _buildOptionButton(BuildContext context, title, String description,
       IconData iconData, String groupName) {
     return Container(
-        constraints: BoxConstraints(
+        constraints: const BoxConstraints(
             minWidth: 80.0, maxWidth: 150.0, minHeight: 80.0, maxHeight: 150.0),
         width: 130,
         height: 130,
-        padding: EdgeInsets.all(8),
+        padding: const EdgeInsets.all(8),
         clipBehavior: Clip.antiAlias,
         decoration: BoxDecoration(
-          color: Color(0xFFE76F51),
+          color: const Color(0xFFE76F51),
           borderRadius: BorderRadius.circular(20),
           boxShadow: [
             BoxShadow(
-              color: Color(0xFF997048).withOpacity(0.5),
+              color: const Color(0xFF997048).withOpacity(0.5),
               blurRadius: 4,
-              offset: Offset(0, 2),
+              offset: const Offset(0, 2),
             )
           ],
         ),
@@ -188,32 +188,32 @@ class _FriendshipState extends State<friendship>
             mainAxisAlignment: MainAxisAlignment.center,
             crossAxisAlignment: CrossAxisAlignment.center,
             children: [
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
               Icon(
                 iconData,
-                color: Color.fromARGB(255, 250, 192, 94),
+                color: const Color.fromARGB(255, 250, 192, 94),
                 size: 20,
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
               Text(
                 title,
-                style: TextStyle(
-                  color: Color(0xFFFFF7EE),
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                ),
+                style: const TextStyle(
+                    color: Color(0xFFFFF7EE),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                    fontFamily: 'Poppins'),
               ),
-              SizedBox(height: 5),
+              const SizedBox(height: 5),
               SizedBox(
                 width: double.infinity,
                 child: Text(
                   description,
                   textAlign: TextAlign.center,
-                  style: TextStyle(
-                    color: Color(0xFFFFF7EE),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                  ),
+                  style: const TextStyle(
+                      color: Color(0xFFFFF7EE),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                      fontFamily: 'Poppins'),
                 ),
               ),
             ],
@@ -223,14 +223,13 @@ class _FriendshipState extends State<friendship>
 
 // ask backend for stats between the two friends
   Future<void> getFriendStats(String user, String friend) async {
-    final url =
-        Uri.parse(BackendService.getBackendUrl() + '$user/' + '$friend');
+    final url = Uri.parse('${BackendService.getBackendUrl()}$user/$friend');
 
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
       final dynamic jsonData = json.decode(response.body);
-      print("this is the jsonData from getFriendStats $jsonData");
+      print("\nthis is the jsonData from getFriendStats $jsonData\n");
 
       double rating = jsonData["groupRating"];
       groupRating = rating;
@@ -257,8 +256,8 @@ class _FriendshipState extends State<friendship>
 
 // asks backend for active challenges between these friends
   Future<void> getActiveChallenges(String user, String friend) async {
-    final url = Uri.parse(
-        BackendService.getBackendUrl() + '$user/' + '$friend/' + 'challenges');
+    final url =
+        Uri.parse('${BackendService.getBackendUrl()}$user/$friend/challenges');
     final response = await http.get(url);
     if (response.statusCode == 200) {
       final dynamic jsonData = json.decode(response.body);
@@ -275,11 +274,7 @@ class _FriendshipState extends State<friendship>
             .toList();
 
         mappedChallenges = getMappedChallenges(activeChallenges);
-        challengeStats = Map.fromIterable(
-          activeChallengeIds,
-          key: (id) => id,
-          value: (_) => {},
-        );
+        challengeStats = {for (var id in activeChallengeIds) id: {}};
       } else {}
     } else {
       print("active challenges not obtained succesfuly");
@@ -311,10 +306,8 @@ class _FriendshipState extends State<friendship>
   int totalResponses = 0;
 
   Future<void> getUserHasCompleted(int challengeId, String user) async {
-    final url = Uri.parse(BackendService.getBackendUrl() +
-        '$challengeId/' +
-        '$user/' +
-        'userHasCompleted');
+    final url = Uri.parse(
+        '${BackendService.getBackendUrl()}$challengeId/$user/userHasCompleted');
 
     final response = await http.get(url);
 
@@ -330,10 +323,8 @@ class _FriendshipState extends State<friendship>
       String user,
       Map<int, List<String>> mappedChallenges,
       Map<int, Map<String, dynamic>> challengeStats) async {
-    final url = Uri.parse(BackendService.getBackendUrl() +
-        '$challengeId/' +
-        '$user/' +
-        'getChallengeQs');
+    final url = Uri.parse(
+        '${BackendService.getBackendUrl()}$challengeId/$user/getChallengeQs');
 
     // await getUserHasCompleted(challengeId, user);
 
@@ -397,7 +388,7 @@ class _FriendshipState extends State<friendship>
 
   Future<void> createStandardChallenge(String username, int groupId) async {
     final url =
-        Uri.parse(BackendService.getBackendUrl() + 'createStandardChallenge');
+        Uri.parse('${BackendService.getBackendUrl()}createStandardChallenge');
     final headers = <String, String>{'Content-Type': 'application/json'};
     final response = await http.post(url,
         headers: headers,
@@ -436,15 +427,16 @@ class _FriendshipState extends State<friendship>
     }
   }
 
+  @override
   Widget build(BuildContext context) {
-    final String assetName = 'assets/img1.svg';
+    const String assetName = 'assets/img1.svg';
 
     return SafeArea(
         child: Scaffold(
-      backgroundColor: Color.fromARGB(255, 255, 243, 238),
+      backgroundColor: const Color.fromARGB(255, 255, 243, 238),
       body: SingleChildScrollView(
           child: Container(
-              color: Color.fromARGB(255, 255, 243, 238),
+              color: const Color.fromARGB(255, 255, 243, 238),
               child: Column(children: [
                 SizedBox(
                     width: double.maxFinite,
@@ -466,18 +458,23 @@ class _FriendshipState extends State<friendship>
                                 fit: BoxFit.fill,
                               ),
                             ),
-                            CustomAppBar(),
+                            const CustomAppBar(),
                             Center(
                                 child: Container(
-                                    padding: EdgeInsets.only(top: 100),
+                                    padding: const EdgeInsets.only(top: 100),
                                     child: Column(children: [
                                       Text(
-                                        'You and ${widget.friendUsername}',
-                                        style: TextStyle(
-                                          fontSize: 27,
-                                          color: Colors.white,
-                                          fontWeight: FontWeight.w900,
-                                        ),
+                                        'You and ${widget.friendUsername.replaceFirstMapped(
+                                          RegExp(r'^\w'),
+                                          (match) => match
+                                              .group(0)!
+                                              .toUpperCase(), // Ensures the first letter of first name is capitalized.
+                                        )}',
+                                        style: const TextStyle(
+                                            fontSize: 27,
+                                            color: Colors.white,
+                                            fontWeight: FontWeight.w900,
+                                            fontFamily: 'Poppins'),
                                       ),
                                     ])))
                           ],
@@ -486,7 +483,7 @@ class _FriendshipState extends State<friendship>
                       Center(
                         child: Container(
                             clipBehavior: Clip.hardEdge,
-                            margin: EdgeInsets.only(top: 10),
+                            margin: const EdgeInsets.only(top: 10),
                             width: 340,
                             height: 450,
                             decoration: BoxDecoration(
@@ -496,7 +493,7 @@ class _FriendshipState extends State<friendship>
                                   color: const Color.fromARGB(255, 117, 19, 12)
                                       .withOpacity(0.5),
                                   blurRadius: 5,
-                                  offset: Offset(3, 7),
+                                  offset: const Offset(3, 7),
                                 ),
                               ],
                               color: Colors.white,
@@ -510,21 +507,21 @@ class _FriendshipState extends State<friendship>
                                       TabBar(
                                         unselectedLabelColor: Colors.black,
                                         controller: _tabController,
-                                        indicatorColor: Color(0xFFE76F51),
-                                        labelColor: Color(0xFFE76F51),
+                                        indicatorColor: const Color(0xFFE76F51),
+                                        labelColor: const Color(0xFFE76F51),
                                         indicatorPadding: EdgeInsets.zero,
                                         indicatorSize:
                                             TabBarIndicatorSize.label,
-                                        tabs: [
+                                        tabs: const [
                                           Tab(
                                             child: Align(
                                               alignment: Alignment.center,
                                               child: Text(
                                                 "Play",
                                                 style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontFamily: 'Poppins'),
                                               ),
                                             ),
                                           ),
@@ -534,9 +531,9 @@ class _FriendshipState extends State<friendship>
                                               child: Text(
                                                 "Group Stats",
                                                 style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.bold,
-                                                ),
+                                                    fontSize: 16,
+                                                    fontWeight: FontWeight.bold,
+                                                    fontFamily: 'Poppins'),
                                               ),
                                             ),
                                           ),
@@ -551,7 +548,7 @@ class _FriendshipState extends State<friendship>
                                     children: [
                                       // Active Challenges
                                       Container(
-                                        padding: EdgeInsets.only(
+                                        padding: const EdgeInsets.only(
                                             top: 10,
                                             right: 10,
                                             left: 10,
@@ -679,14 +676,16 @@ class _FriendshipState extends State<friendship>
                                                       }
                                                     },
                                                     child: Container(
-                                                      margin:
-                                                          EdgeInsets.symmetric(
+                                                      margin: const EdgeInsets
+                                                          .symmetric(
                                                         vertical: 10,
                                                       ),
                                                       padding:
-                                                          EdgeInsets.all(10),
+                                                          const EdgeInsets.all(
+                                                              10),
                                                       decoration: BoxDecoration(
-                                                        color: Color.fromARGB(
+                                                        color: const Color
+                                                            .fromARGB(
                                                             255, 231, 111, 81),
                                                         borderRadius:
                                                             BorderRadius
@@ -699,16 +698,17 @@ class _FriendshipState extends State<friendship>
                                                         children: [
                                                           Text(
                                                             title,
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 14,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                            ),
+                                                            style: const TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 14,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontFamily:
+                                                                    'Poppins'),
                                                           ),
-                                                          Icon(
+                                                          const Icon(
                                                             Icons
                                                                 .arrow_forward_ios,
                                                             color: Colors.white,
@@ -727,7 +727,7 @@ class _FriendshipState extends State<friendship>
                                                 _showChallengeOptions(context,
                                                     widget.friendUsername);
                                               },
-                                              child: Row(
+                                              child: const Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.end,
                                                 children: [
@@ -737,14 +737,15 @@ class _FriendshipState extends State<friendship>
                                                       fontSize: 18,
                                                       fontWeight:
                                                           FontWeight.bold,
-                                                      color: Colors.black,
+                                                      fontFamily: 'Poppins',
+                                                      color: Color(0xFFE76F51),
                                                     ),
                                                   ),
                                                   SizedBox(width: 5),
                                                   Icon(
                                                     Icons.add,
                                                     size: 20,
-                                                    color: Colors.black,
+                                                    color: Color(0xFFE76F51),
                                                   ),
                                                 ],
                                               ),
@@ -765,10 +766,10 @@ class _FriendshipState extends State<friendship>
                               ],
                             )),
                       ),
-                      Center(child: SizedBox(height: 50))
+                      const Center(child: SizedBox(height: 50))
                     ]))
               ]))),
-      drawer: SideBar(),
+      drawer: const SideBar(),
     ));
   }
 }
@@ -778,6 +779,7 @@ class StatsContent extends StatelessWidget {
   double groupRating;
 
   StatsContent({
+    super.key,
     required this.verbaMatchGroup,
     required this.groupRating,
   });
@@ -791,11 +793,11 @@ class StatsContent extends StatelessWidget {
       child: Column(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          Container(
+          SizedBox(
             // color: Colors.white,
             height: 200,
             child: Padding(
-              padding: EdgeInsets.all(16.0),
+              padding: const EdgeInsets.all(16.0),
               child: DonutChart(
                   groupSimilarity: groupRating, title: 'Group Power Score'),
             ),
@@ -811,6 +813,7 @@ class StatsContent extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
+                    fontFamily: 'Poppins'
                   ),
                 ),
               ),
@@ -829,6 +832,7 @@ class StatsContent extends StatelessWidget {
                             color: Colors.black,
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
+                            fontFamily: 'Poppins'
                           ),
                         ),
                         TextSpan(
@@ -837,6 +841,7 @@ class StatsContent extends StatelessWidget {
                             color: Colors.orange,
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
+                            fontFamily: 'Poppins'
                           ),
                         ),
                         TextSpan(
@@ -845,6 +850,7 @@ class StatsContent extends StatelessWidget {
                             color: Colors.black,
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
+                            fontFamily: 'Poppins'
                           ),
                         ),
                       ],
@@ -867,6 +873,7 @@ class StatsContent extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
+                    fontFamily: 'Poppins'
                   ),
                 ),
               ),
@@ -884,6 +891,7 @@ class StatsContent extends StatelessWidget {
                         color: Colors.orange,
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
+                        fontFamily: 'Poppins'
                       ),
                     ),
                     TextSpan(
@@ -892,6 +900,7 @@ class StatsContent extends StatelessWidget {
                         color: Colors.black,
                         fontSize: 24,
                         fontWeight: FontWeight.bold,
+                        fontFamily: 'Poppins'
                       ),
                     ),
                   ],
@@ -908,6 +917,7 @@ class StatsContent extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 18,
                     fontWeight: FontWeight.bold,
+                    fontFamily: 'Poppins'
                   ),
                 ),
               ),
@@ -952,6 +962,7 @@ class StatsContent extends StatelessWidget {
                   style: TextStyle(
                     fontSize: 14,
                     fontWeight: FontWeight.bold,
+                    fontFamily: 'Poppins'
                   ),
                 ),
               ),
@@ -968,7 +979,7 @@ class DonutChart extends StatefulWidget {
   final double groupSimilarity;
   final String title;
 
-  DonutChart({
+  const DonutChart({
     Key? key,
     required this.groupSimilarity,
     required this.title,
@@ -994,9 +1005,9 @@ class _DonutChartState extends State<DonutChart> {
                 borderRadius: BorderRadius.circular(20),
                 boxShadow: [
                   BoxShadow(
-                    color: Color(0xFF9E503C).withOpacity(0.5),
+                    color: const Color(0xFF9E503C).withOpacity(0.5),
                     blurRadius: 4,
-                    offset: Offset(2, 3),
+                    offset: const Offset(2, 3),
                   )
                 ],
               ),
@@ -1005,30 +1016,30 @@ class _DonutChartState extends State<DonutChart> {
                 mainAxisAlignment: MainAxisAlignment.center,
                 crossAxisAlignment: CrossAxisAlignment.center,
                 children: [
-                  SizedBox(height: 5),
+                  const SizedBox(height: 5),
                   Padding(
-                    padding: EdgeInsets.all(6),
+                    padding: const EdgeInsets.all(6),
                     child: RichText(
                       textAlign: TextAlign.center,
-                      text: TextSpan(
+                      text: const TextSpan(
                         children: [
                           TextSpan(
                             text: 'Your score increases when you:\n\n',
                             style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 19,
-                              fontWeight: FontWeight.bold,
-                            ),
+                                color: Colors.black,
+                                fontSize: 19,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Poppins'),
                           ),
                           // if groupname is a certain length, make it a new line
                           TextSpan(
                             text:
                                 'Verbatim, Build Streaks, and Play Challenges!',
                             style: TextStyle(
-                              color: Colors.orange,
-                              fontSize: 21,
-                              fontWeight: FontWeight.w900,
-                            ),
+                                color: Colors.orange,
+                                fontSize: 21,
+                                fontWeight: FontWeight.w900,
+                                fontFamily: 'Poppins'),
                           ),
                         ],
                       ),
@@ -1044,7 +1055,7 @@ class _DonutChartState extends State<DonutChart> {
   @override
   Widget build(BuildContext context) {
     Color calculateColor(double similarity) {
-      int score = (similarity / 2).toInt();
+      int score = similarity ~/ 2;
 
       return Color.fromARGB(255, 250, 192 + score, 94 + score);
     }
@@ -1061,15 +1072,15 @@ class _DonutChartState extends State<DonutChart> {
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Text(
               widget.title,
-              style: TextStyle(
-                fontSize: 18,
-                fontWeight: FontWeight.bold,
-              ),
+              style: const TextStyle(
+                  fontSize: 18,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Poppins'),
             ),
-            SizedBox(width: 8),
+            const SizedBox(width: 8),
             InkWell(
               onTap: () => _showPopup(context),
-              child: Icon(
+              child: const Icon(
                 Icons.help_outline,
                 color: Color(0xFFE76F51),
               ),
@@ -1090,7 +1101,7 @@ class _DonutChartState extends State<DonutChart> {
                     sections: [
                       PieChartSectionData(
                         value: outof100,
-                        color: Color(0xFFE76F51),
+                        color: const Color(0xFFE76F51),
                         radius: 25,
                         showTitle: false,
                       ),
@@ -1111,7 +1122,7 @@ class _DonutChartState extends State<DonutChart> {
                       Container(
                         height: 80,
                         width: 80,
-                        decoration: BoxDecoration(
+                        decoration: const BoxDecoration(
                           color: Colors.white,
                           shape: BoxShape.circle,
                           boxShadow: [
@@ -1119,7 +1130,7 @@ class _DonutChartState extends State<DonutChart> {
                                 color: Color.fromARGB(255, 255, 243, 238),
                                 blurRadius: 10.0,
                                 spreadRadius: 10.0,
-                                offset: const Offset(3, 3)),
+                                offset: Offset(3, 3)),
                           ],
                         ),
                         child: Align(
@@ -1128,18 +1139,18 @@ class _DonutChartState extends State<DonutChart> {
                             mainAxisSize: MainAxisSize.min,
                             children: [
                               Text(
-                                "${widget.groupSimilarity.toStringAsFixed(2)}",
-                                style: TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                widget.groupSimilarity.toStringAsFixed(2),
+                                style: const TextStyle(
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Poppins'),
                               ),
-                              Text(
+                              const Text(
                                 "Rating",
                                 style: TextStyle(
-                                  fontSize: 10,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                    fontSize: 10,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Poppins'),
                               ),
                             ],
                           ),

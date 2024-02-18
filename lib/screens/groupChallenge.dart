@@ -6,14 +6,11 @@ import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/friendship.dart';
 import 'sideBar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:verbatim_frontend/widgets/create_group_app_bar.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:verbatim_frontend/Components/defineRoutes.dart';
 import 'package:verbatim_frontend/screens/myGroup.dart';
 import 'package:verbatim_frontend/widgets/custom_app_bar.dart';
-import 'dart:math';
 
 // submit challenge
 
@@ -30,7 +27,7 @@ class groupChallenge extends StatefulWidget {
   final bool? fromFriend;
   final List<dynamic>? verbaMatchUsers;
 
-  groupChallenge({
+  const groupChallenge({
     Key? key,
     required this.groupName,
     required this.groupId,
@@ -54,7 +51,7 @@ class _GroupChallengeState extends State<groupChallenge> {
 
 //fix image getting but jsut use this for now
   Future<void> preloadImages(BuildContext context) async {
-    for (int i = 0; i < min(groupUsers!.length + 1, 6); i++) {
+    for (int i = 0; i < min(groupUsers.length + 1, 6); i++) {
       final key = 'assets/Ellipse ${41 + i}.png';
       final image = AssetImage(key);
       await precacheImage(image, context);
@@ -84,7 +81,7 @@ class _GroupChallengeState extends State<groupChallenge> {
   Future<void> submitChallenge(
       String username, int challengeId, List<String> userResponses) async {
     final url =
-        Uri.parse(BackendService.getBackendUrl() + 'submitGroupResponse');
+        Uri.parse('${BackendService.getBackendUrl()}submitGroupResponse');
     final headers = <String, String>{'Content-Type': 'application/json'};
     final modifiedResponses = userResponses.map((response) {
       final responseWithoutPunctuation =
@@ -186,7 +183,7 @@ class _GroupChallengeState extends State<groupChallenge> {
     questions = sentquestions;
     prompts = sentquestions;
     updateProgress();
-    final String assetName = 'assets/img1.svg';
+    const String assetName = 'assets/img1.svg';
     List<dynamic>? groupAnswersStats = widget.groupAnswers;
     // get questions from groupAnswersStats
 
@@ -217,10 +214,10 @@ class _GroupChallengeState extends State<groupChallenge> {
     return SafeArea(
         child: Scaffold(
       resizeToAvoidBottomInset: true,
-      backgroundColor: Color.fromARGB(255, 255, 243, 238),
+      backgroundColor: const Color.fromARGB(255, 255, 243, 238),
       body: SingleChildScrollView(
           child: Container(
-              color: Color.fromARGB(255, 255, 243, 238),
+              color: const Color.fromARGB(255, 255, 243, 238),
               child: Column(children: [
                 SizedBox(
                     width: double.maxFinite,
@@ -243,7 +240,7 @@ class _GroupChallengeState extends State<groupChallenge> {
                             ),
 
                             // app bar on top of background
-                            CustomAppBar(),
+                            const CustomAppBar(),
 
                             // 'Global Challenge #'
                             Positioned(
@@ -252,11 +249,11 @@ class _GroupChallengeState extends State<groupChallenge> {
                                   responded
                                       ? 'Verba-Tastical!'
                                       : 'Group Challenge',
-                                  style: TextStyle(
-                                    fontSize: 27,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w900,
-                                  ),
+                                  style: const TextStyle(
+                                      fontSize: 27,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w900,
+                                      fontFamily: 'Poppins'),
                                 ),
                               ),
                             ),
@@ -278,7 +275,7 @@ class _GroupChallengeState extends State<groupChallenge> {
                               color: const Color.fromARGB(255, 117, 19, 12)
                                   .withOpacity(0.9),
                               blurRadius: 5,
-                              offset: Offset(3, 7),
+                              offset: const Offset(3, 7),
                             ),
                           ],
                           color: Colors.white,
@@ -286,21 +283,22 @@ class _GroupChallengeState extends State<groupChallenge> {
 
                         child: Column(
                           children: [
-                            SizedBox(height: 30),
+                            const SizedBox(height: 30),
                             Padding(
                               padding:
                                   const EdgeInsets.symmetric(horizontal: 16.0),
                               child: Text(
                                 questions[currentQuestionIndex],
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
+                                style: const TextStyle(
+                                    fontSize: 18,
+                                    fontWeight: FontWeight.bold,
+                                    fontFamily: 'Poppins'),
                               ),
                             ),
-                            SizedBox(height: 30.0),
+                            const SizedBox(height: 30.0),
                             Container(
-                              padding: EdgeInsets.symmetric(horizontal: 20.0),
+                              padding:
+                                  const EdgeInsets.symmetric(horizontal: 20.0),
                               child: TextField(
                                 controller: responseController,
                                 onChanged: (value) {
@@ -308,12 +306,12 @@ class _GroupChallengeState extends State<groupChallenge> {
                                     userResponse = value;
                                   });
                                 },
-                                decoration: InputDecoration(
+                                decoration: const InputDecoration(
                                   hintText: 'Type your answer here...',
                                 ),
                               ),
                             ),
-                            SizedBox(height: 40.0),
+                            const SizedBox(height: 40.0),
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 backgroundColor:
@@ -322,8 +320,8 @@ class _GroupChallengeState extends State<groupChallenge> {
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30),
                                 ),
-                                minimumSize: Size(150, 40),
-                                padding: EdgeInsets.all(16),
+                                minimumSize: const Size(150, 40),
+                                padding: const EdgeInsets.all(16),
                               ),
                               onPressed: () {
                                 setState(() {
@@ -357,13 +355,13 @@ class _GroupChallengeState extends State<groupChallenge> {
                                     : 'Next',
                               ),
                             ),
-                            SizedBox(height: 20),
-                            Container(
+                            const SizedBox(height: 20),
+                            SizedBox(
                               width: 200,
                               child: LinearProgressIndicator(
                                 value: progressValue,
                                 backgroundColor: Colors.grey[300],
-                                valueColor: AlwaysStoppedAnimation<Color>(
+                                valueColor: const AlwaysStoppedAnimation<Color>(
                                     Colors.orange),
                                 minHeight: 10,
                               ),
@@ -397,7 +395,7 @@ class _GroupChallengeState extends State<groupChallenge> {
                   child: ElevatedButton(
                     style: ElevatedButton.styleFrom(
                       foregroundColor: Colors.white,
-                      backgroundColor: Color(0xFFE76F51),
+                      backgroundColor: const Color(0xFFE76F51),
                       enableFeedback: true,
                       shape: RoundedRectangleBorder(
                         borderRadius: BorderRadius.circular(10),
@@ -425,18 +423,18 @@ class _GroupChallengeState extends State<groupChallenge> {
                             );
                     }, //send prompts to backend
 
-                    child: Text(
+                    child: const Text(
                       'Back to Challenge Feed',
                       style: TextStyle(
-                        fontWeight: FontWeight.bold,
-                        fontSize: 18,
-                      ),
+                          fontWeight: FontWeight.bold,
+                          fontSize: 18,
+                          fontFamily: 'Poppins'),
                     ),
                   ),
                 ),
                 SizedBox(height: 30.v),
               ]))),
-      drawer: SideBar(),
+      drawer: const SideBar(),
     ));
   }
 
@@ -465,11 +463,11 @@ class _GroupChallengeState extends State<groupChallenge> {
         });
       },
       child: AnimatedContainer(
-          duration: Duration(milliseconds: 400),
+          duration: const Duration(milliseconds: 400),
           height: expandedStates[index] ? 125 : 50,
           width: double.infinity,
-          margin: EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-          padding: EdgeInsets.only(top: 1, bottom: 1, left: 1, right: 1),
+          margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
+          padding: const EdgeInsets.only(top: 1, bottom: 1, left: 1, right: 1),
           child: SingleChildScrollView(
               child: Column(
             children: [
@@ -484,18 +482,18 @@ class _GroupChallengeState extends State<groupChallenge> {
                           Expanded(
                             child: Text(
                               prompts[index],
-                              style: TextStyle(
-                                fontSize: 16,
-                                fontWeight: FontWeight.bold,
-                              ),
+                              style: const TextStyle(
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.bold,
+                                  fontFamily: 'Poppins'),
                             ),
                           ),
-                          Icon(Icons.arrow_upward),
+                          const Icon(Icons.arrow_upward),
                         ],
                       ),
                     ),
                     AnimatedContainer(
-                      duration: Duration(milliseconds: 1000),
+                      duration: const Duration(milliseconds: 1000),
                       height: 70,
                       child: ListView.builder(
                         scrollDirection: Axis.horizontal,
@@ -504,37 +502,38 @@ class _GroupChallengeState extends State<groupChallenge> {
                           return Container(
                               height: 40,
                               //   width: 100,
-                              margin:
-                                  EdgeInsets.only(left: 8, right: 8, top: 10),
-                              padding: EdgeInsets.only(
+                              margin: const EdgeInsets.only(
+                                  left: 8, right: 8, top: 10),
+                              padding: const EdgeInsets.only(
                                   left: 5, right: 5, top: 8, bottom: 8),
                               decoration: BoxDecoration(
-                                color: Color(0xFFE76F51),
+                                color: const Color(0xFFE76F51),
                                 borderRadius: BorderRadius.circular(5),
                               ),
                               child: Center(
                                   child: Column(children: [
                                 Flexible(
                                   child: ConstrainedBox(
-                                    constraints: BoxConstraints(
+                                    constraints: const BoxConstraints(
                                       minWidth: 100,
                                     ),
                                     child: Align(
                                       alignment: Alignment.center,
                                       child: Text(
                                         usersList[indexB],
-                                        style: TextStyle(
+                                        style: const TextStyle(
                                             fontSize: 14,
                                             overflow: TextOverflow.ellipsis,
                                             fontWeight: FontWeight.bold,
-                                            color: Colors.white),
+                                            color: Colors.white,
+                                            fontFamily: 'Poppins'),
                                       ),
                                     ),
                                   ),
                                 ),
                                 Flexible(
                                     child: ConstrainedBox(
-                                        constraints: BoxConstraints(
+                                        constraints: const BoxConstraints(
                                           minWidth: 100,
                                         ),
                                         child: Align(
@@ -549,11 +548,12 @@ class _GroupChallengeState extends State<groupChallenge> {
                                                   ? answersMap[prompts[index]]![
                                                       usersList[indexB]]
                                                   : 'No response found',
-                                              style: TextStyle(
+                                              style: const TextStyle(
                                                   fontSize: 12,
                                                   overflow:
                                                       TextOverflow.ellipsis,
-                                                  color: Colors.white),
+                                                  color: Colors.white,
+                                                  fontFamily: 'Poppins'),
                                             ))))
                               ])));
                         },
@@ -570,14 +570,14 @@ class _GroupChallengeState extends State<groupChallenge> {
                       Flexible(
                         child: Text(
                           prompts[index],
-                          style: TextStyle(
-                            fontSize: 16,
-                            fontWeight: FontWeight.bold,
-                            overflow: TextOverflow.ellipsis,
-                          ),
+                          style: const TextStyle(
+                              fontSize: 16,
+                              fontWeight: FontWeight.bold,
+                              overflow: TextOverflow.ellipsis,
+                              fontFamily: 'Poppins'),
                         ),
                       ),
-                      Icon(Icons.arrow_downward),
+                      const Icon(Icons.arrow_downward),
                     ],
                   ),
                 ),
@@ -606,7 +606,7 @@ Widget _verbaMatch(
   String verb2 = verbaMatchInVerbaMatch[1];
   return Align(
       alignment: Alignment.topCenter,
-      child: Container(
+      child: SizedBox(
           width: 600,
           height: 200,
           // color: Colors.yellow,
@@ -619,43 +619,47 @@ Widget _verbaMatch(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     RichText(
-                      text: TextSpan(
+                      text: const TextSpan(
                         children: [
                           TextSpan(
                             text: 'No',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black,
-                                fontSize: 23),
+                                fontSize: 23,
+                                fontFamily: 'Poppins'),
                           ),
                           TextSpan(
                             text: 'Verba',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xFFE76F51),
-                                fontSize: 23),
+                                fontSize: 23,
+                                fontFamily: 'Poppins'),
                           ),
                           TextSpan(
                               text: "Match",
                               style: TextStyle(
-                                fontSize: 23,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              )),
+                                  fontSize: 23,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                  fontFamily: 'Poppins')),
                         ],
                       ),
                       textAlign: TextAlign.left,
                     ),
-                    SizedBox(height: 10),
-                    Row(children: [
+                    const SizedBox(height: 10),
+                    const Row(children: [
                       Icon(Icons.help_outline, size: 50),
                       Icon(Icons.help_outline, size: 50),
                     ]),
-                    SizedBox(height: 10),
-                    Text(
+                    const SizedBox(height: 10),
+                    const Text(
                       '...yet!',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Poppins'),
                     ),
                   ],
                 ),
@@ -666,38 +670,41 @@ Widget _verbaMatch(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     RichText(
-                      text: TextSpan(
+                      text: const TextSpan(
                         children: [
                           TextSpan(
                             text: 'Verba',
                             style: TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xFFE76F51),
-                                fontSize: 23),
+                                fontSize: 23,
+                                fontFamily: 'Poppins'),
                           ),
                           TextSpan(
                               text: "Match!",
                               style: TextStyle(
-                                fontSize: 23,
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                              )),
+                                  fontSize: 23,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                  fontFamily: 'Poppins')),
                         ],
                       ),
                       textAlign: TextAlign.left,
                     ),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Row(children: [
                       Image.asset('assets/Ellipse 42.png',
                           height: 50, width: 50),
                       Image.asset('assets/Ellipse 43.png',
                           height: 50, width: 50),
                     ]),
-                    SizedBox(height: 10),
+                    const SizedBox(height: 10),
                     Text(
                       '$verb1 and $verb2',
-                      style:
-                          TextStyle(fontSize: 18, fontWeight: FontWeight.bold),
+                      style: const TextStyle(
+                          fontSize: 18,
+                          fontWeight: FontWeight.bold,
+                          fontFamily: 'Poppins'),
                     ),
                   ],
                 ),
@@ -738,7 +745,7 @@ class DonutChart extends StatefulWidget {
   final double groupSimilarity;
   final bool match;
 
-  DonutChart({
+  const DonutChart({
     Key? key,
     required this.groupSimilarity,
     required this.match,
@@ -760,7 +767,7 @@ class _DonutChartState extends State<DonutChart> {
 
     return Scaffold(
         backgroundColor: Colors.transparent,
-        body: Container(
+        body: SizedBox(
           height: 190,
           width: 190,
           child: Column(
@@ -778,7 +785,7 @@ class _DonutChartState extends State<DonutChart> {
                         sections: [
                           PieChartSectionData(
                             value: widget.groupSimilarity,
-                            color: Color(0xFFE76F51),
+                            color: const Color(0xFFE76F51),
                             radius: 19,
                             showTitle: false,
                           ),
@@ -801,7 +808,7 @@ class _DonutChartState extends State<DonutChart> {
                               Container(
                                 height: 80,
                                 width: 80,
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                   color: Color.fromARGB(255, 255, 243, 238),
                                   shape: BoxShape.circle,
                                 ),
@@ -812,17 +819,17 @@ class _DonutChartState extends State<DonutChart> {
                                     children: [
                                       Text(
                                         "${widget.groupSimilarity.toStringAsFixed(2)}%",
-                                        style: TextStyle(
-                                          fontSize: 13,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                        style: const TextStyle(
+                                            fontSize: 13,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'Poppins'),
                                       ),
-                                      Text(
+                                      const Text(
                                         "Similarity",
                                         style: TextStyle(
-                                          fontSize: 10,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                            fontSize: 10,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'Poppins'),
                                       ),
                                     ],
                                   ),
@@ -840,11 +847,11 @@ class _DonutChartState extends State<DonutChart> {
                               Container(
                                 height: 80,
                                 width: 80,
-                                decoration: BoxDecoration(
+                                decoration: const BoxDecoration(
                                   color: Color.fromARGB(255, 255, 243, 238),
                                   shape: BoxShape.circle,
                                 ),
-                                child: Align(
+                                child: const Align(
                                   alignment: Alignment.center,
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
@@ -852,9 +859,9 @@ class _DonutChartState extends State<DonutChart> {
                                       Text(
                                         "?",
                                         style: TextStyle(
-                                          fontSize: 17,
-                                          fontWeight: FontWeight.bold,
-                                        ),
+                                            fontSize: 17,
+                                            fontWeight: FontWeight.bold,
+                                            fontFamily: 'Poppins'),
                                       ),
                                     ],
                                   ),
@@ -873,6 +880,8 @@ class _DonutChartState extends State<DonutChart> {
 }
 
 class HorizontalScrollDropdown extends StatefulWidget {
+  const HorizontalScrollDropdown({super.key});
+
   @override
   _HorizontalScrollDropdownState createState() =>
       _HorizontalScrollDropdownState();
@@ -886,7 +895,7 @@ class _HorizontalScrollDropdownState extends State<HorizontalScrollDropdown> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.all(10),
+      padding: const EdgeInsets.all(10),
       decoration: BoxDecoration(
         border: Border.all(color: Colors.black),
         borderRadius: BorderRadius.circular(5),
@@ -903,14 +912,14 @@ class _HorizontalScrollDropdownState extends State<HorizontalScrollDropdown> {
                 },
                 child: Text(
                   selectedValue,
-                  style: TextStyle(fontSize: 16),
+                  style: const TextStyle(fontSize: 16, fontFamily: 'Poppins'),
                 ),
               ),
-              Icon(Icons.arrow_drop_down),
+              const Icon(Icons.arrow_drop_down),
             ],
           ),
           if (isDropdownVisible)
-            Container(
+            SizedBox(
               height: 150,
               child: ListView.builder(
                 scrollDirection: Axis.horizontal,
@@ -925,9 +934,9 @@ class _HorizontalScrollDropdownState extends State<HorizontalScrollDropdown> {
                       });
                     },
                     child: Container(
-                      margin: EdgeInsets.symmetric(horizontal: 8),
-                      padding:
-                          EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                      margin: const EdgeInsets.symmetric(horizontal: 8),
+                      padding: const EdgeInsets.symmetric(
+                          horizontal: 20, vertical: 10),
                       decoration: BoxDecoration(
                         gradient: isSelected
                             ? LinearGradient(
@@ -950,7 +959,8 @@ class _HorizontalScrollDropdownState extends State<HorizontalScrollDropdown> {
                       ),
                       child: Text(
                         items[index],
-                        style: TextStyle(fontSize: 16),
+                        style: const TextStyle(
+                            fontSize: 16, fontFamily: 'Poppins'),
                       ),
                     ),
                   );

@@ -1,13 +1,13 @@
 {
   "project_info": {
-    "project_number": "89436108608",
-    "project_id": "verbatim-81617",
-    "storage_bucket": "verbatim-81617.appspot.com"
+    "project_number": "1052195157201",
+    "project_id": "verbatim-b4c2c",
+    "storage_bucket": "verbatim-b4c2c.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:89436108608:android:58705820c58e09aa7b6ca5",
+        "mobilesdk_app_id": "1:1052195157201:android:c403d36febd4de5e5a81f0",
         "android_client_info": {
           "package_name": "com.example.verbatim_frontend"
         }
@@ -15,7 +15,7 @@
       "oauth_client": [],
       "api_key": [
         {
-          "current_key": "AIzaSyAtNTGytXuzaYGDiWyzjiQ5qzZqyH3dqYk"
+          "current_key": "AIzaSyCoMI1z4rnhlRtgkctBH84iN4j-AuVqpx0"
         }
       ],
       "services": {

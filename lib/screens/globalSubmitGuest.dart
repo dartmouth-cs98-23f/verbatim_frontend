@@ -32,7 +32,7 @@ class Guest extends StatelessWidget {
         SharedPrefs().updateReferer('');
       }
 
-      Navigator.pushNamed(context, '/signup');
+      Navigator.pushNamed(context, '/guest_signup');
     }
 
     return Column(
@@ -48,18 +48,18 @@ class Guest extends StatelessWidget {
                 TextSpan(
                   text: 'Verba',
                   style: TextStyle(
-                    color: Color(0xFFE76F51),
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
+                      color: Color(0xFFE76F51),
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Poppins'),
                 ),
                 TextSpan(
                   text: '-tastic!',
                   style: TextStyle(
-                    color: Colors.black,
-                    fontSize: 24,
-                    fontWeight: FontWeight.bold,
-                  ),
+                      color: Colors.black,
+                      fontSize: 24,
+                      fontWeight: FontWeight.bold,
+                      fontFamily: 'Poppins'),
                 ),
               ],
             ),
@@ -73,9 +73,7 @@ class Guest extends StatelessWidget {
           child: Text(
             inviteText,
             style: const TextStyle(
-              color: Colors.black,
-              fontSize: 16,
-            ),
+                color: Colors.black, fontSize: 16, fontFamily: 'Poppins'),
           ),
         )),
         const SizedBox(height: 25),
@@ -85,9 +83,9 @@ class Guest extends StatelessWidget {
             child: Text(
               'New Challenge in $formattedTimeUntilMidnight',
               style: const TextStyle(
-                fontSize: 16,
-                fontWeight: FontWeight.bold,
-              ),
+                  fontSize: 16,
+                  fontWeight: FontWeight.bold,
+                  fontFamily: 'Poppins'),
             ),
           ),
         ),
@@ -107,6 +105,7 @@ class Guest extends StatelessWidget {
                     textStyle: const TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w700,
+                      fontFamily: 'Poppins',
                       fontSize: 16,
                     ),
                   ),
@@ -115,10 +114,10 @@ class Guest extends StatelessWidget {
                   text: 'Sign in',
                   style: GoogleFonts.poppins(
                     textStyle: const TextStyle(
-                      color: Color(0xFF3C64B1),
-                      fontWeight: FontWeight.w800,
-                      fontSize: 16,
-                    ),
+                        color: Color(0xFF3C64B1),
+                        fontWeight: FontWeight.w800,
+                        fontSize: 16,
+                        fontFamily: 'Poppins'),
                   ),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {
