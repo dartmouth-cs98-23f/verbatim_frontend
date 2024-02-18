@@ -108,7 +108,6 @@ class _SignUpState extends State<SignUp> {
     }
   }
 
- 
   // Function to sign up with Google
   // Future<void> signUpWithGoogle() async {
   //   final GoogleSignInAccount? account = await _googleSignIn.signIn();
@@ -220,11 +219,11 @@ class _SignUpState extends State<SignUp> {
       print(
           'Successfully signed up with this info: $firstName, $lastName, $username, $email, $password, $confirmedPassword');
 
-        //if user hasnt played global challenge yer
-        print("signup 1");
+      //if user hasnt played global challenge yer
+      print("signup 1");
 
-        signUp(context, firstName, lastName, username.toLowerCase(),
-            email.toLowerCase(), password, confirmedPassword);
+      signUp(context, firstName, lastName, username.toLowerCase(),
+          email.toLowerCase(), password, confirmedPassword);
     }
   }
 
@@ -375,6 +374,7 @@ class _SignUpState extends State<SignUp> {
                           );
                         },
                       ),
+                      /*
                       const SizedBox(height: 10),
                       MyButtonWithImage(
                         buttonText: "Sign in with Google",
@@ -384,6 +384,7 @@ class _SignUpState extends State<SignUp> {
                           // signUpWithGoogle();
                         },
                       ),
+                      */
                       const SizedBox(height: 10),
                       Center(
                         child: RichText(
