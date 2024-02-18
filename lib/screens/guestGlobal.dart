@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/BackendService.dart';
+import 'package:verbatim_frontend/gameObject.dart';
 import 'sideBar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -43,7 +44,7 @@ class _GuestGlobalState extends State<guestGlobal> {
   String categoryQ5 = "";
   int id = 0;
 
-  bool responded = false;
+  // bool responded = false;
   double progressValue = 0.0;
   int currQIdx = 0;
   int totalResponses = 0;
@@ -123,8 +124,11 @@ class _GuestGlobalState extends State<guestGlobal> {
 
   void setGuestUserResponses() {
     parseResponses();
-    SharedPrefs().updateGameValues(responses123[0], responses123[1],
-        responses123[2], responses123[3], responses123[4]);
+      responseQ1 = responses123[0];
+      responseQ2 = responses123[1];
+      responseQ3 = responses123[2];
+      responseQ4 = responses123[3];
+      responseQ5 = responses123[4];
   }
 
   void updateProgress() {
@@ -162,8 +166,9 @@ class _GuestGlobalState extends State<guestGlobal> {
       _streamController.sink.add(!showText);
       showText = !showText;
     }
-
+    print("In Guest Global, username: "+ username +" ,responded: " +responded.toString());
     return SafeArea(
+    
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         backgroundColor: const Color.fromARGB(255, 255, 243, 238),
@@ -427,6 +432,9 @@ class _GuestGlobalState extends State<guestGlobal> {
                                   //if guest
                                   else if (username == '' &&
                                       responded == true) {
+                                    // setState(() {
+                                    //   responded = true;
+                                    // });
                                     setGuestUserResponses();
 
                                     return Column(

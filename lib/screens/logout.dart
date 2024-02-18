@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:verbatim_frontend/gameObject.dart';
 import 'package:verbatim_frontend/screens/logIn.dart';
+import 'package:verbatim_frontend/widgets/guest_utility.dart';
 import '../Components/shared_prefs.dart';
+
+
 
 class LogoutPage extends StatefulWidget {
   const LogoutPage({super.key});
@@ -23,6 +27,12 @@ class _LogoutPageState extends State<LogoutPage> {
     SharedPrefs().setBio('');
     SharedPrefs().setCurrentPage('/login');
 
+    //TODO:clear stats, clear guest stuff
+    final GuestUtility guestUtility= new GuestUtility();
+    guestUtility.clearStats();
+    guestUtility.clearGameObject();
+
+
     // Navigate to the login page after logout
     Navigator.push(
       context,
@@ -31,6 +41,8 @@ class _LogoutPageState extends State<LogoutPage> {
       ),
     );
   }
+
+
 
   @override
   Widget build(BuildContext context) {

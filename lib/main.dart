@@ -36,8 +36,6 @@ Future<void> main() async {
 
   runApp(const MyApp());
 
-  ChangeNotifierProvider(
-      create: (context) => GameObject(), child: const MyApp());
   defineRoutes();
 }
 

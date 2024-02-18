@@ -108,45 +108,7 @@ class _SignUpState extends State<SignUp> {
     }
   }
 
-  void guestSignUp(BuildContext context, String firstName, String lastName,
-      String username, String email, String password) async {
-    final response = await http.post(
-      Uri.parse(
-          '${BackendService.getBackendUrl()}submitResponseAfterLoginOrRegister'),
-      headers: <String, String>{
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode({
-        'responseQ1': SharedPrefs().getResponse1(),
-        'responseQ2': SharedPrefs().getResponse2(),
-        'responseQ3': SharedPrefs().getResponse3(),
-        'responseQ4': SharedPrefs().getResponse4(),
-        'responseQ5': SharedPrefs().getResponse5(),
-        'isLogin': false,
-        'emailOrUsername': email,
-        'password': password,
-        'username': username,
-        'firstName': firstName,
-        'lastName': lastName,
-        'email': email,
-        'withReferral': SharedPrefs().getReferer() != '',
-        'referringUsername': SharedPrefs().getReferer(),
-      }),
-    );
-    if (response.statusCode == 200) {
-      print("LetsssGOOO");
-      SharedPrefs().setEmail(email);
-      SharedPrefs().setFirstName(firstName);
-      SharedPrefs().setLastName(lastName);
-      SharedPrefs().setPassword(password);
-      SharedPrefs().setUserName(username);
-
-      // Successful sign-up: Navigate to the 'OnBoardingPage1' page
-      Navigator.pushNamed(context,
-          '/global_challenge'); //push them to the stats page if we have one
-    }
-  }
-
+ 
   // Function to sign up with Google
   // Future<void> signUpWithGoogle() async {
   //   final GoogleSignInAccount? account = await _googleSignIn.signIn();
@@ -258,19 +220,11 @@ class _SignUpState extends State<SignUp> {
       print(
           'Successfully signed up with this info: $firstName, $lastName, $username, $email, $password, $confirmedPassword');
 
-      if (SharedPrefs().getResponse1() == '') {
         //if user hasnt played global challenge yer
         print("signup 1");
 
         signUp(context, firstName, lastName, username.toLowerCase(),
             email.toLowerCase(), password, confirmedPassword);
-      } else {
-        //signUp(context, firstName, lastName, username.toLowerCase(),
-        print("signup 2");
-        //email.toLowerCase(), password, confirmedPassword);
-        signUp(context, firstName, lastName, username.toLowerCase(),
-            email.toLowerCase(), password, confirmedPassword);
-      }
     }
   }
 

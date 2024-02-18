@@ -1,40 +1,39 @@
-import 'package:flutter/foundation.dart';
+// import 'package:flutter/foundation.dart';
 
-class GameObject extends ChangeNotifier{
-  String responseQ1 = '';
-  String responseQ2 = '';
-  String responseQ3 = '';
-  String referer = '';
-  // String responseQ4;
-  // String responseQ5;
+// class GameObject{
+//   static String responseQ1 = '';
+//   static String responseQ2 = '';
+//   static String responseQ3 = '';
+//   static String responseQ4 = '';
+//   static String responseQ5 = '';
+//   static String referer = '';
 
-  // GameObject(this.responseQ1, this.responseQ2, this.responseQ3, this.referer
-  //     );
 
-   //GameObject get obj => obj;
-  bool isEmpty(){
-    return responseQ1== '' && responseQ2== ''&& responseQ3 == '';
-  }
+//   // GameObject(this.responseQ1, this.responseQ2, this.responseQ3, this.referer
+//   //     );
 
-  bool hasReferer(){
-    return referer != '';
-  }
+//    //GameObject get obj => obj;
+//   bool isEmpty(){
+//     return responseQ1== '' && responseQ2== ''&& responseQ3 == '' && responseQ4 == '' && responseQ5 == '';
+//   }
 
-  void updateValues(String response1, String response2, String response3)async {
-    responseQ1 = response1;
-    responseQ2 = response2;
-    responseQ3 = response3;
-    // this.responseQ4 = response;
-    // this.responseQ5 = response;
-    print("In update of game object$response1");
-   
-    notifyListeners(); 
-  }
+//   bool hasReferer(){
+//     return referer != '';
+//   }
 
-  void setReferer(String referer)async{
-    this.referer = referer;
-    notifyListeners(); 
 
-  }
-}
+
+//   void setReferer(String referer){
+//     referer = referer;
+
+//   }
+// }
+ String responseQ1 = '';
+ String responseQ2 = '';
+ String responseQ3 = '';
+ String responseQ4 = '';
+ String responseQ5 = '';
+ String referer = '';
+ bool responded = false;
+ bool isGuest = false;
 

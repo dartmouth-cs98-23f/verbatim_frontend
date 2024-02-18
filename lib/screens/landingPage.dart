@@ -20,8 +20,6 @@ class _LandingPageState extends State<LandingPage> {
     SharedPrefs().setFirstName('');
     SharedPrefs().setLastName('');
     SharedPrefs().setBio('');
-    SharedPrefs().updateGameValues('', '', '', "", '');
-    SharedPrefs().updateReferer('');
   }
 
   void onTap() {
@@ -30,12 +28,11 @@ class _LandingPageState extends State<LandingPage> {
 
     Map<String, dynamic>? arguments = uri.queryParameters;
     String referer = arguments['referer'] ?? '';
+  
+    //Navigator.pushNamed(context, '/guest_global');
+    Navigator.pushNamed(context, '/guest_global?referer=$referer');
 
-    Navigator.pushNamed(context, '/guest_global');
-    //Navigator.pushNamed(context, '/guest_global?referer=$referer');
 
-    print(
-        "Username in this shady ass place:${SharedPrefs().getCurrentPage()!}");
   }
 
 // will this make shared preferences clear on opening?
