@@ -60,7 +60,11 @@ class _GuestSignUpState extends State<GuestSignUp> {
     if (response.statusCode == 200) {
       //TODO: Set shared prefs
       final Map<String, dynamic>? data = json.decode(response.body);
-
+      setState(() {
+         responded = true;
+         isGuest = true;
+      });
+     
       question1 = data!['q1'];
       question2 = data['q2'];
       question3 = data['q3'];
@@ -77,7 +81,6 @@ class _GuestSignUpState extends State<GuestSignUp> {
       categoryQ5 = data['categoryQ5'];
 
       if (responded) {
-        
         numVerbatimQ1 = data['numVerbatimQ1'];
         numVerbatimQ2 = data['numVerbatimQ2'];
         numVerbatimQ3 = data['numVerbatimQ3'];
@@ -108,6 +111,13 @@ class _GuestSignUpState extends State<GuestSignUp> {
           print("verbatasticUsers is empty");
         }
       }
+      SharedPrefs().setEmail(email);
+      SharedPrefs().setFirstName(firstName);
+      SharedPrefs().setLastName(lastName);
+      SharedPrefs().setPassword(password);
+      SharedPrefs().setUserName(username);
+      SharedPrefs().setBio("");
+      SharedPrefs().setProfileUrl("assets/profile_pic.png");
       Navigator.pushNamed(context,
           '/global_challenge'); //push them to the stats page if we have one
     } else {

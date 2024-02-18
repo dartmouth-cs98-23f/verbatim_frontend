@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/screens/addFriend.dart';
+import 'package:verbatim_frontend/widgets/globalSubmittedResponse.dart';
 import 'sideBar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -13,6 +14,7 @@ import 'package:verbatim_frontend/widgets/stats.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:intl/intl.dart';
 import 'verbatastic.dart';
+import 'package:verbatim_frontend/gameObject.dart';
 
 class globalChallenge extends StatefulWidget {
   const globalChallenge({
@@ -123,7 +125,6 @@ class _GlobalChallengeState extends State<globalChallenge> {
     "friendResponses": [],
   };
 
-  bool responded = false;
   List<String> responses = List.filled(5, ""); //5 instead of 3 for +2!
   String fetchQuestions = "";
   int currentQuestionIndex = 0;
@@ -131,7 +132,6 @@ class _GlobalChallengeState extends State<globalChallenge> {
 
   final StreamController<bool> _streamController = StreamController<bool>();
   double progressValue = 0.0;
-
 
   // get all users to display
   Future<void> getVerbatasticUserObjects() async {
@@ -163,107 +163,110 @@ class _GlobalChallengeState extends State<globalChallenge> {
   }
 
   Future<void> _fetchData(String username) async {
-    final url = Uri.parse('${BackendService.getBackendUrl()}globalChallenge');
-    final headers = <String, String>{'Content-Type': 'application/json'};
+    if (!isGuest) {
+      final url = Uri.parse('${BackendService.getBackendUrl()}globalChallenge');
+      final headers = <String, String>{'Content-Type': 'application/json'};
 
-    final fetchQuestions =
-        await http.post(url, headers: headers, body: username);
+      final fetchQuestions =
+          await http.post(url, headers: headers, body: username);
 
-    if (fetchQuestions.statusCode == 200) {
-      final Map<String, dynamic>? data = json.decode(fetchQuestions.body);
+      if (fetchQuestions.statusCode == 200) {
+        final Map<String, dynamic>? data = json.decode(fetchQuestions.body);
 
-      question1 = data!['q1'];
+        question1 = data!['q1'];
 
-      question2 = data['q2'];
+        question2 = data['q2'];
 
-      question3 = data['q3'];
-      //newtwo for +2!
-      question4 = data['q4'];
-      question5 = data['q5'];
+        question3 = data['q3'];
+        //newtwo for +2!
+        question4 = data['q4'];
+        question5 = data['q5'];
 // display the display num!
-      id = data['globalChallengeDisplayNum'];
-
-      categoryQ1 = data['categoryQ1'];
-      categoryQ2 = data['categoryQ2'];
-      categoryQ3 = data['categoryQ3'];
-      //new two for +2!!!
-      categoryQ4 = data['categoryQ4'];
-      categoryQ5 = data['categoryQ5'];
-      totalResponses = data['totalResponses'];
-
-      // if null, user has not yet submitted global response - if not null we NEED this for page refresh to still work
-
-      if (data["responseQ1"] != null) {
-        print("data in responseQ1 is not null");
-        // get responses
-
-        responseQ1 = data['responseQ1'];
         id = data['globalChallengeDisplayNum'];
-        responseQ2 = data['responseQ2'];
-        responseQ3 = data['responseQ3'];
-        // new two for +2
-        responseQ4 = data['responseQ4'];
-        responseQ5 = data['responseQ5'];
-        numVerbatimQ1 = data['numVerbatimQ1'];
-        numVerbatimQ2 = data['numVerbatimQ2'];
-        numVerbatimQ3 = data['numVerbatimQ3'];
-        // new two for +2 !!
-        numVerbatimQ4 = data['numVerbatimQ4'];
-        numVerbatimQ5 = data['numVerbatimQ5'];
-        statsQ1 = data['statsQ1'];
-        statsQ2 = data['statsQ2'];
 
-        statsQ3 = data['statsQ3'];
-        // new two for +2!
-        statsQ4 = data['statsQ4'];
-        statsQ5 = data['statsQ5'];
+        categoryQ1 = data['categoryQ1'];
+        categoryQ2 = data['categoryQ2'];
+        categoryQ3 = data['categoryQ3'];
+        //new two for +2!!!
+        categoryQ4 = data['categoryQ4'];
+        categoryQ5 = data['categoryQ5'];
         totalResponses = data['totalResponses'];
 
-        responded = true;
+        // if null, user has not yet submitted global response - if not null we NEED this for page refresh to still work
 
-        // new two for +2!
-        responses123 = [
-          responseQ1,
-          responseQ2,
-          responseQ3,
-          responseQ4,
-          responseQ5
-        ];
-        verbatasticUsers = (data["verbatasticUsers"] as Map<String, dynamic>?)
-                ?.map((key, value) {
-              return MapEntry(key, (value as List).cast<String>());
-            }) ??
-            {};
+        if (data["responseQ1"] != null) {
+          print("data in responseQ1 is not null");
+          // get responses
 
-        if (verbatasticUsers.isNotEmpty) {
-          final MapEntry<String, List<String>?> firstEntry =
-              verbatasticUsers.entries.first;
+          responseQ1 = data['responseQ1'];
+          id = data['globalChallengeDisplayNum'];
+          responseQ2 = data['responseQ2'];
+          responseQ3 = data['responseQ3'];
+          // new two for +2
+          responseQ4 = data['responseQ4'];
+          responseQ5 = data['responseQ5'];
+          numVerbatimQ1 = data['numVerbatimQ1'];
+          numVerbatimQ2 = data['numVerbatimQ2'];
+          numVerbatimQ3 = data['numVerbatimQ3'];
+          // new two for +2 !!
+          numVerbatimQ4 = data['numVerbatimQ4'];
+          numVerbatimQ5 = data['numVerbatimQ5'];
+          statsQ1 = data['statsQ1'];
+          statsQ2 = data['statsQ2'];
 
-          verbatimedWord = firstEntry.key;
-          verbatasticUsernames = firstEntry.value as List<String>;
+          statsQ3 = data['statsQ3'];
+          // new two for +2!
+          statsQ4 = data['statsQ4'];
+          statsQ5 = data['statsQ5'];
+          totalResponses = data['totalResponses'];
 
-          print("\nverbatasticUsernames contains $verbatasticUsernames\n");
-          getVerbatasticUserObjects();
+          responded = true;
 
-          print(
-              "\nverbatasticUserObjects contains ${verbatasticUserObjects.length} user objects while verbatasticUsernames contains ${verbatasticUsernames.length} names\n");
-        } else {
-          print("verbatasticUsers is empty");
+          // new two for +2!
+          responses123 = [
+            responseQ1,
+            responseQ2,
+            responseQ3,
+            responseQ4,
+            responseQ5
+          ];
+          verbatasticUsers = (data["verbatasticUsers"] as Map<String, dynamic>?)
+                  ?.map((key, value) {
+                return MapEntry(key, (value as List).cast<String>());
+              }) ??
+              {};
+
+          if (verbatasticUsers.isNotEmpty) {
+            final MapEntry<String, List<String>?> firstEntry =
+                verbatasticUsers.entries.first;
+
+            verbatimedWord = firstEntry.key;
+            verbatasticUsernames = firstEntry.value as List<String>;
+
+            print("\nverbatasticUsernames contains $verbatasticUsernames\n");
+            getVerbatasticUserObjects();
+
+            print(
+                "\nverbatasticUserObjects contains ${verbatasticUserObjects.length} user objects while verbatasticUsernames contains ${verbatasticUsernames.length} names\n");
+          } else {
+            print("verbatasticUsers is empty");
+          }
         }
+      } else {
+        print("data in ressponse q1 is null");
       }
     } else {
-      print("data in ressponse q1 is null");
+      print(
+          "This is a guest sequence hopefully we alreay have stats eg numVerbatimQ1: ");
+      print(numVerbatimQ1);
     }
   }
 
   @override
   void initState() {
     super.initState();
-       
-   
-        
-    _fetchData(username).then((_) {
 
+    _fetchData(username).then((_) {
       setState(() {
         questions = [question1, question2, question3, question4, question5];
       });
@@ -370,7 +373,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
 
   @override
   Widget build(BuildContext context) {
-    print("Responded in global is: "+ responded.toString() );
+    print("Responded in global is: " + responded.toString());
     String idString = id.toString();
 
     //TODO: check that this here works
@@ -403,9 +406,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
     }
 
     return SafeArea(
-      
       child: Scaffold(
-        
         resizeToAvoidBottomInset: true,
         backgroundColor: const Color.fromARGB(255, 255, 243, 238),
         body: SingleChildScrollView(
@@ -667,7 +668,10 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                       ],
                                     );
                                   } else if (!snapshot.data! &&
-                                      responded == true) {
+                                      responded == true &&
+                                      !isGuest) {
+                                    print(
+                                        "Actually just want to know if i ever get to the right col");
                                     return Column(children: [
                                       SizedBox(
                                           width: 350,
@@ -684,6 +688,10 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                               questions: questions,
                                               responses: responses123))
                                     ]);
+                                  } else if (!snapshot.data! &&
+                                      responded == true &&
+                                      isGuest) {
+                                    return globalSubmittedResponse();
                                   }
                                   //NEED TO CHANGE THIS SNIPPET OF CODE TO HAVE THE CARD AND A SIGN UP
                                   else {

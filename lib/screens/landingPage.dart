@@ -20,8 +20,6 @@ class _LandingPageState extends State<LandingPage> {
     SharedPrefs().setFirstName('');
     SharedPrefs().setLastName('');
     SharedPrefs().setBio('');
-    SharedPrefs().updateGameValues('', '', '', "", '');
-    SharedPrefs().updateReferer('');
   }
 
   void onTap() {

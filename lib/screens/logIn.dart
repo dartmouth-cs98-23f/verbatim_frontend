@@ -10,6 +10,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:verbatim_frontend/widgets/size.dart';
 import 'package:verbatim_frontend/gameObject.dart';
+import 'package:verbatim_frontend/statsGameObject.dart';
 
 class LogIn extends StatefulWidget {
   const LogIn({Key? key}) : super(key: key);
@@ -52,7 +53,7 @@ class _LogInState extends State<LogIn> {
         'isLogin': true,
         'emailOrUsername': usernameOrEmail,
         'password': password,
-        'username': '',
+        'username': usernameOrEmail,
         'firstName': '',
         'lastName': '',
         'email': '',
@@ -64,16 +65,68 @@ class _LogInState extends State<LogIn> {
     if (response.statusCode == 200) {
       //save user SharedPrefs
       print("So the sign up actually works:");
-      final responseData = json.decode(response.body);
+    
+      final Map<String, dynamic>? data = json.decode(response.body);
+      setState(() {
+         responded = true;
+         isGuest = true;
+      });
+     
+      question1 = data!['q1'];
+      question2 = data['q2'];
+      question3 = data['q3'];
+      question4 = data['q4'];
+      question5 = data['q5'];
+
+      id = data['globalChallengeId'];
+      totalResponses = data['totalResponses'];
+
+      categoryQ1 = data['categoryQ1'];
+      categoryQ2 = data['categoryQ2'];
+      categoryQ3 = data['categoryQ3'];
+      categoryQ4 = data['categoryQ4'];
+      categoryQ5 = data['categoryQ5'];
+
+      if (responded) {
+        numVerbatimQ1 = data['numVerbatimQ1'];
+        numVerbatimQ2 = data['numVerbatimQ2'];
+        numVerbatimQ3 = data['numVerbatimQ3'];
+        numVerbatimQ4 = data['numVerbatimQ4'];
+        numVerbatimQ5 = data['numVerbatimQ5'];
+
+        statsQ1 = data['statsQ1'];
+        statsQ2 = data['statsQ2'];
+        statsQ3 = data['statsQ3'];
+        statsQ4 = data['statsQ4'];
+        statsQ5 = data['statsQ5'];
+
+        totalResponses = data['totalResponses'];
+        responded = true;
+
+        verbatasticUsers = (data["verbatasticUsers"] as Map<String, dynamic>?)
+                ?.map((key, value) {
+              return MapEntry(key, (value as List).cast<String>());
+            }) ??
+            {};
+        if (verbatasticUsers.isNotEmpty) {
+          final MapEntry<String, List<String>?> firstEntry =
+              verbatasticUsers.entries.first;
+
+          verbatimedWord = firstEntry.key;
+          verbatasticUsernames = firstEntry.value;
+        } else {
+          print("verbatasticUsers is empty");
+        }
+      }
+      // SharedPrefs().setEmail(email);
+      // SharedPrefs().setFirstName(firstName);
+      // SharedPrefs().setLastName(lastName);
+      // SharedPrefs().setPassword(password);
+      // SharedPrefs().setUserName(username);
+      // SharedPrefs().setBio("");
+      // SharedPrefs().setProfileUrl("assets/profile_pic.png");
       saveUsersInfo(usernameOrEmail, password);
-      // SharedPrefs().setEmail(responseData['email']);
-      // SharedPrefs().setUserName(responseData['username']);
-      // SharedPrefs().setPassword(responseData['password']);
-      // SharedPrefs().setFirstName(responseData['firstName'] ?? '');
-      // SharedPrefs().setLastName(responseData['lastName'] ?? '');
-      // SharedPrefs().setBio(responseData['bio'] ?? '');
-      // SharedPrefs().setBio(responseData['profilePicture']);
-      //Navigator.pushNamed(context, '/global_challenge');
+     
      
       
     }else{

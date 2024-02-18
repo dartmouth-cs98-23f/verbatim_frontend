@@ -3,17 +3,9 @@ import 'package:verbatim_frontend/gameObject.dart';
 import 'package:verbatim_frontend/statsGameObject.dart';
 import 'package:verbatim_frontend/widgets/stats.dart';
 
-class globalSubmittedResponse extends StatefulWidget {
-  const globalSubmittedResponse({
-    Key? key,
-  }) : super(key: key);
+class globalSubmittedResponse extends StatelessWidget {
 
-  @override
-  _GlobalSubmittedResponseState createState() =>
-      _GlobalSubmittedResponseState();
-}
 
-class _GlobalSubmittedResponseState extends State<globalSubmittedResponse> {
   @override
   Widget build(BuildContext context) {
     return Column(children: [

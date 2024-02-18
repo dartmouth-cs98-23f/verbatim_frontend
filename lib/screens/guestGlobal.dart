@@ -124,33 +124,11 @@ class _GuestGlobalState extends State<guestGlobal> {
 
   void setGuestUserResponses() {
     parseResponses();
-    SharedPrefs().updateGameValues(responses123[0], responses123[1],
-        responses123[2], responses123[3], responses123[4]);
-
-       responseQ1 = responses123[0];
+      responseQ1 = responses123[0];
       responseQ2 = responses123[1];
       responseQ3 = responses123[2];
       responseQ4 = responses123[3];
       responseQ5 = responses123[4];
-    // setState(() {
-    //   responseQ1 = responses123[0];
-    //   responseQ2 = responses123[1];
-    //   responseQ3 = responses123[2];
-    //   responseQ4 = responses123[3];
-    //   responseQ5 = responses123[4];
-    // });
-    // setState(() {
-    //   GameObject.responseQ2 = responses123[1];
-    // });
-    // setState(() {
-    //   GameObject.responseQ3 = responses123[2];
-    // });
-    // setState(() {
-    //   GameObject.responseQ4 = responses123[3];
-    // });
-    // setState(() {
-    //   GameObject.responseQ5 = responses123[4];
-    // });
   }
 
   void updateProgress() {

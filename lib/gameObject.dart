@@ -35,4 +35,5 @@
  String responseQ5 = '';
  String referer = '';
  bool responded = false;
+ bool isGuest = false;
 
