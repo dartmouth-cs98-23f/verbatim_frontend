@@ -281,8 +281,8 @@ class _CreateGroupState extends State<createGroup> {
                   child: Container(
                       clipBehavior: Clip.hardEdge,
                       margin: const EdgeInsets.only(top: 10),
-                      width: 300,
-                      height: 350,
+                      width: 340,
+                      height: 400,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
                         boxShadow: [
@@ -324,18 +324,21 @@ class _CreateGroupState extends State<createGroup> {
                                                     user: currentUser,
                                                   ), // prof pic of user
                                                   const SizedBox(width: 8),
-                                                  Text(
+                                                  Flexible(
+                                                      child: Text(
                                                     name.replaceFirstMapped(
                                                       RegExp(r'^\w'),
                                                       (match) => match
                                                           .group(0)!
                                                           .toUpperCase(), // Ensures the first letter of first name is capitalized.
                                                     ),
-                                                    style: const TextStyle(
+                                                    style: TextStyle(
                                                         fontWeight:
                                                             FontWeight.bold,
                                                         fontFamily: 'Poppins'),
-                                                  ),
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                  )),
                                                 ],
                                               ),
                                               trailing: IconButton(
@@ -409,20 +412,25 @@ class _CreateGroupState extends State<createGroup> {
                                                         ),
                                                         const SizedBox(
                                                             width: 8),
-                                                        Text(
-                                                          name.replaceFirstMapped(
-                                                            RegExp(r'^\w'),
-                                                            (match) => match
-                                                                .group(0)!
-                                                                .toUpperCase(), // Ensures the first letter of first name is capitalized.
+                                                        Flexible(
+                                                          child: Text(
+                                                            name.replaceFirstMapped(
+                                                              RegExp(r'^\w'),
+                                                              (match) => match
+                                                                  .group(0)!
+                                                                  .toUpperCase(), // Ensures the first letter of first name is capitalized.
+                                                            ),
+                                                            style: const TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontFamily:
+                                                                    'Poppins'),
+                                                            overflow:
+                                                                TextOverflow
+                                                                    .ellipsis,
                                                           ),
-                                                          style: const TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontFamily:
-                                                                  'Poppins'),
-                                                        ),
+                                                        )
                                                       ],
                                                     ),
                                                     trailing: IconButton(

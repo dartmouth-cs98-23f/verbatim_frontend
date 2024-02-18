@@ -25,7 +25,7 @@ class _DonutChartState extends State<DonutChart> {
           contentPadding: EdgeInsets.zero,
           content: Container(
               width: 160,
-              height: 145,
+              height: 180,
               clipBehavior: Clip.antiAlias,
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -53,10 +53,10 @@ class _DonutChartState extends State<DonutChart> {
                           TextSpan(
                             text: 'Your score increases when you:\n\n',
                             style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 19,
-                              fontWeight: FontWeight.bold,
-                            ),
+                                color: Colors.black,
+                                fontSize: 19,
+                                fontWeight: FontWeight.bold,
+                                fontFamily: 'Poppins'),
                           ),
                           // if groupname is a certain length, make it a new line
                           TextSpan(
@@ -66,6 +66,7 @@ class _DonutChartState extends State<DonutChart> {
                               color: Colors.orange,
                               fontSize: 21,
                               fontWeight: FontWeight.w900,
+                              fontFamily: 'Poppins',
                             ),
                           ),
                         ],
@@ -90,6 +91,10 @@ class _DonutChartState extends State<DonutChart> {
     double sim = widget.groupSimilarity;
     int simint = sim as int;
 
+    double outof100 = (widget.groupSimilarity / 100);
+    if (outof100 < 1) {
+      outof100 = 1;
+    }
     return Scaffold(
       backgroundColor: Colors.transparent,
       body: Column(
@@ -126,13 +131,13 @@ class _DonutChartState extends State<DonutChart> {
                     centerSpaceRadius: 50,
                     sections: [
                       PieChartSectionData(
-                        value: widget.groupSimilarity,
+                        value: outof100,
                         color: const Color(0xFFE76F51),
                         radius: 25,
                         showTitle: false,
                       ),
                       PieChartSectionData(
-                        value: 100 - widget.groupSimilarity,
+                        value: 100 - outof100,
                         color: calculateColor(widget.groupSimilarity),
                         radius: 16,
                         showTitle: false,
