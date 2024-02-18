@@ -3,10 +3,10 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
-
+import 'package:verbatim_frontend/gameObject.dart';
 class Guest extends StatelessWidget {
   final String formattedTimeUntilMidnight;
-  // final GameObject data;
+
 
   const Guest({
     super.key,
@@ -16,7 +16,7 @@ class Guest extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    String referer;
+  
     String copyIcon = 'assets/copy.svg';
     String sendIcon = 'assets/send.svg';
     String inviteText =
@@ -27,9 +27,11 @@ class Guest extends StatelessWidget {
       Map<String, dynamic>? arguments = Uri.parse(routeName).queryParameters;
 
       if (arguments.containsKey('referer')) {
-        SharedPrefs().updateReferer(arguments['referer']);
+        //SharedPrefs().updateReferer(arguments['referer']);
+        referer = arguments['referer'];
       } else {
-        SharedPrefs().updateReferer('');
+        //SharedPrefs().updateReferer('');
+        referer = '';
       }
 
       Navigator.pushNamed(context, '/guest_signup');

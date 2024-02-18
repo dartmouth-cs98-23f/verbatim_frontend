@@ -2,12 +2,15 @@ import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/BackendService.dart';
+import 'package:verbatim_frontend/gameObject.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/signupErrorMessage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:verbatim_frontend/gameObject.dart';
+import 'package:verbatim_frontend/statsGameObject.dart';
 
 class GuestSignUp extends StatefulWidget {
   //TODO: figure out how to not need the
@@ -38,11 +41,11 @@ class _GuestSignUpState extends State<GuestSignUp> {
         'Content-Type': 'application/json',
       },
       body: jsonEncode({
-        'responseQ1': SharedPrefs().getResponse1(),
-        'responseQ2': SharedPrefs().getResponse2(),
-        'responseQ3': SharedPrefs().getResponse3(),
-        'responseQ4': SharedPrefs().getResponse4(),
-        'responseQ5': SharedPrefs().getResponse5(),
+        'responseQ1': responseQ1,
+        'responseQ2': responseQ2,
+        'responseQ3': responseQ3,
+        'responseQ4': responseQ4,
+        'responseQ5': responseQ5,
         'isLogin': false,
         'emailOrUsername': email,
         'password': password,
@@ -50,21 +53,61 @@ class _GuestSignUpState extends State<GuestSignUp> {
         'firstName': firstName,
         'lastName': lastName,
         'email': email,
-        'withReferral': SharedPrefs().getReferer() != '',
-        'referringUsername': SharedPrefs().getReferer(),
+        'withReferral': referer != '',
+        'referringUsername': referer,
       }),
     );
     if (response.statusCode == 200) {
-      print("LetsssGOOO!, Guest signed up!");
-      SharedPrefs().setEmail(email);
-      SharedPrefs().setFirstName(firstName);
-      SharedPrefs().setLastName(lastName);
-      SharedPrefs().setPassword(password);
-      SharedPrefs().setUserName(username);
-      SharedPrefs().setProfileUrl("assets/profile_pic.png");
-      SharedPrefs().setBio("");
+      //TODO: Set shared prefs
+      final Map<String, dynamic>? data = json.decode(response.body);
 
-      // Successful sign-up: Navigate to the 'OnBoardingPage1' page
+      question1 = data!['q1'];
+      question2 = data['q2'];
+      question3 = data['q3'];
+      question4 = data['q4'];
+      question5 = data['q5'];
+
+      id = data['globalChallengeId'];
+      totalResponses = data['totalResponses'];
+
+      categoryQ1 = data['categoryQ1'];
+      categoryQ2 = data['categoryQ2'];
+      categoryQ3 = data['categoryQ3'];
+      categoryQ4 = data['categoryQ4'];
+      categoryQ5 = data['categoryQ5'];
+
+      if (responded) {
+        
+        numVerbatimQ1 = data['numVerbatimQ1'];
+        numVerbatimQ2 = data['numVerbatimQ2'];
+        numVerbatimQ3 = data['numVerbatimQ3'];
+        numVerbatimQ4 = data['numVerbatimQ4'];
+        numVerbatimQ5 = data['numVerbatimQ5'];
+
+        statsQ1 = data['statsQ1'];
+        statsQ2 = data['statsQ2'];
+        statsQ3 = data['statsQ3'];
+        statsQ4 = data['statsQ4'];
+        statsQ5 = data['statsQ5'];
+
+        totalResponses = data['totalResponses'];
+        responded = true;
+
+        verbatasticUsers = (data["verbatasticUsers"] as Map<String, dynamic>?)
+                ?.map((key, value) {
+              return MapEntry(key, (value as List).cast<String>());
+            }) ??
+            {};
+        if (verbatasticUsers.isNotEmpty) {
+          final MapEntry<String, List<String>?> firstEntry =
+              verbatasticUsers.entries.first;
+
+          verbatimedWord = firstEntry.key;
+          verbatasticUsernames = firstEntry.value;
+        } else {
+          print("verbatasticUsers is empty");
+        }
+      }
       Navigator.pushNamed(context,
           '/global_challenge'); //push them to the stats page if we have one
     } else {
@@ -75,8 +118,7 @@ class _GuestSignUpState extends State<GuestSignUp> {
     }
   }
 
-
-    void validateUserInfo(
+  void validateUserInfo(
       BuildContext context,
       String firstName,
       String lastName,
@@ -168,8 +210,7 @@ class _GuestSignUpState extends State<GuestSignUp> {
           'Successfully signed up with this info: $firstName, $lastName, $username, $email, $password, $confirmedPassword');
 
       guestSignUp(context, firstName, lastName, username.toLowerCase(),
-            email.toLowerCase(), password);
-      
+          email.toLowerCase(), password);
     }
   }
 
@@ -192,11 +233,8 @@ class _GuestSignUpState extends State<GuestSignUp> {
     return validationErrors.containsKey(field) ? validationErrors[field] : null;
   }
 
-
-  
-
   @override
- @override
+  @override
   Widget build(BuildContext context) {
     //TODO: homie use this
     return Scaffold(
@@ -321,9 +359,7 @@ class _GuestSignUpState extends State<GuestSignUp> {
                           );
                         },
                       ),
-
                       const SizedBox(height: 10),
-
                       Center(
                         child: RichText(
                           text: TextSpan(

@@ -12,7 +12,6 @@ import 'package:verbatim_frontend/widgets/stats.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:intl/intl.dart';
 import 'verbatastic.dart';
-import 'globalSubmitGuest.dart';
 
 class globalChallenge extends StatefulWidget {
   const globalChallenge({
@@ -131,37 +130,6 @@ class _GlobalChallengeState extends State<globalChallenge> {
   final StreamController<bool> _streamController = StreamController<bool>();
   double progressValue = 0.0;
 
-  Future<void> _fecthNoSignInData() async {
-    print("in no sign in");
-    final url =
-        Uri.parse("${BackendService.getBackendUrl()}globalChallengeNoSignIn");
-    final headers = <String, String>{'Content-Type': 'application/json'};
-    final fetchQuestions = await http.get(url, headers: headers);
-    print("Before getting qs with no username");
-
-    if (fetchQuestions.statusCode == 200) {
-      print("Success getting qs with no username");
-      final Map<String, dynamic>? data = json.decode(fetchQuestions.body);
-      print("this is data in fetch questsions $data");
-
-      question1 = data!['q1'];
-
-      question2 = data['q2'];
-
-      question3 = data['q3'];
-      question4 = data['q4'];
-      question5 = data['q5'];
-
-// change this to
-      id = data['globalChallengeDisplayNum'];
-
-      categoryQ1 = data['categoryQ1'];
-      categoryQ2 = data['categoryQ2'];
-      categoryQ3 = data['categoryQ3'];
-      categoryQ4 = data['categoryQ4'];
-      categoryQ5 = data['categoryQ5'];
-    }
-  }
 
   Future<void> _fetchData(String username) async {
     final url = Uri.parse('${BackendService.getBackendUrl()}globalChallenge');
@@ -255,24 +223,11 @@ class _GlobalChallengeState extends State<globalChallenge> {
   void initState() {
     super.initState();
 
-    if (username == '') {
-      _fecthNoSignInData().then((_) {
-        setState(() {
-          questions = [question1, question2, question3, question4, question5];
-        });
+    _fetchData(username).then((_) {
+      setState(() {
+        questions = [question1, question2, question3, question4, question5];
       });
-    } else {
-      _fetchData(username).then((_) {
-        setState(() {
-          questions = [question1, question2, question3, question4, question5];
-        });
-      });
-    }
-  }
-
-  void setGuestUserResponses() {
-    SharedPrefs().updateGameValues(responses123[0], responses123[1],
-        responses123[2], responses123[3], responses123[4]);
+    });
   }
 
   Future<void> sendUserResponses(
@@ -615,7 +570,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                       ],
                                     );
                                   } else if (responded == false) {
-                                    return const Column(
+                                    return Column(
                                       children: [
                                         SizedBox(height: 20.0),
                                         Column(
@@ -665,20 +620,6 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                         ),
                                       ],
                                     );
-                                  }
-                                  //if guest
-                                  else if (username == '' &&
-                                      responded == true) {
-                                    setGuestUserResponses();
-
-                                    return Column(
-                                      children: [
-                                        Guest(
-                                          formattedTimeUntilMidnight:
-                                              formattedTimeUntilMidnight,
-                                        ),
-                                      ],
-                                    );
                                   } else if (!snapshot.data! &&
                                       responded == true) {
                                     return Column(children: [
@@ -715,9 +656,6 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                           // display verbatastic data
                                           return Column(
                                             children: [
-                                              // Guest(formattedTimeUntilMidnight:
-                                              //       formattedTimeUntilMidnight),
-
                                               Verbatastic(
                                                 verbatimedWord: verbatimedWord,
                                                 formattedTimeUntilMidnight:

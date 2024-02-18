@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/BackendService.dart';
+import 'package:verbatim_frontend/gameObject.dart';
 import 'sideBar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -43,7 +44,7 @@ class _GuestGlobalState extends State<guestGlobal> {
   String categoryQ5 = "";
   int id = 0;
 
-  bool responded = false;
+  // bool responded = false;
   double progressValue = 0.0;
   int currQIdx = 0;
   int totalResponses = 0;
@@ -58,10 +59,9 @@ class _GuestGlobalState extends State<guestGlobal> {
     print("Before getting qs with no username");
 
     if (fetchQuestions.statusCode == 200) {
-    
       print("what is she?${fetchQuestions.body}");
       final Map<String, dynamic>? data = json.decode(fetchQuestions.body);
-   
+
       id = data!['globalChallengeId'];
 
       question1 = data['q1'];
@@ -70,7 +70,6 @@ class _GuestGlobalState extends State<guestGlobal> {
       question4 = data['q4'];
       question5 = data['q5'];
 
-     
       categoryQ1 = data['categoryQ1'];
       categoryQ2 = data['categoryQ2'];
       categoryQ3 = data['categoryQ3'];
@@ -88,7 +87,6 @@ class _GuestGlobalState extends State<guestGlobal> {
       _fecthNoSignInData().then((_) {
         setState(() {
           questions = [question1, question2, question3, question4, question5];
-          
         });
       });
     } else {
@@ -128,7 +126,31 @@ class _GuestGlobalState extends State<guestGlobal> {
     parseResponses();
     SharedPrefs().updateGameValues(responses123[0], responses123[1],
         responses123[2], responses123[3], responses123[4]);
-    
+
+       responseQ1 = responses123[0];
+      responseQ2 = responses123[1];
+      responseQ3 = responses123[2];
+      responseQ4 = responses123[3];
+      responseQ5 = responses123[4];
+    // setState(() {
+    //   responseQ1 = responses123[0];
+    //   responseQ2 = responses123[1];
+    //   responseQ3 = responses123[2];
+    //   responseQ4 = responses123[3];
+    //   responseQ5 = responses123[4];
+    // });
+    // setState(() {
+    //   GameObject.responseQ2 = responses123[1];
+    // });
+    // setState(() {
+    //   GameObject.responseQ3 = responses123[2];
+    // });
+    // setState(() {
+    //   GameObject.responseQ4 = responses123[3];
+    // });
+    // setState(() {
+    //   GameObject.responseQ5 = responses123[4];
+    // });
   }
 
   void updateProgress() {
@@ -347,9 +369,7 @@ class _GuestGlobalState extends State<guestGlobal> {
                                                 responseController.clear();
                                                 updateProgress();
                                                 currQIdx += 1;
-                                              }
-
-                                              else {
+                                              } else {
                                                 //setGuestUserResponses();
                                                 setState(() {
                                                   responded = true;
@@ -430,6 +450,9 @@ class _GuestGlobalState extends State<guestGlobal> {
                                   //if guest
                                   else if (username == '' &&
                                       responded == true) {
+                                    // setState(() {
+                                    //   responded = true;
+                                    // });
                                     setGuestUserResponses();
 
                                     return Column(

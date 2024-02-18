@@ -9,6 +9,7 @@ import '../widgets/my_button_no_image.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:verbatim_frontend/widgets/size.dart';
+import 'package:verbatim_frontend/gameObject.dart';
 
 class LogIn extends StatefulWidget {
   const LogIn({Key? key}) : super(key: key);
@@ -34,7 +35,8 @@ class _LogInState extends State<LogIn> {
   }
 
   void logInGuest(
-      BuildContext context, String usernameOrEmail, String password) async {
+    BuildContext context, String usernameOrEmail, String password) async {
+    
     final response = await http.post(
       Uri.parse(
           '${BackendService.getBackendUrl()}submitResponseAfterLoginOrRegister'),
@@ -42,12 +44,11 @@ class _LogInState extends State<LogIn> {
         'Content-Type': 'application/json',
       },
       body: jsonEncode({
-        'responseQ1': SharedPrefs().getResponse1(),
-        'responseQ2': SharedPrefs().getResponse2(),
-        'responseQ3': SharedPrefs().getResponse3(),
-        'responseQ4': SharedPrefs().getResponse4(),
-        'responseQ5': SharedPrefs().getResponse5(),
-      
+        'responseQ1': responseQ1,
+        'responseQ2': responseQ2,
+        'responseQ3': responseQ3,
+        'responseQ4': responseQ4,
+        'responseQ5': responseQ5,
         'isLogin': true,
         'emailOrUsername': usernameOrEmail,
         'password': password,
@@ -55,24 +56,27 @@ class _LogInState extends State<LogIn> {
         'firstName': '',
         'lastName': '',
         'email': '',
-        'withReferral': SharedPrefs().getReferer() != '',
-        'referringUsername': SharedPrefs().getReferer(),
+        'withReferral':referer != '',
+        'referringUsername': referer,
       }),
     );
 
     if (response.statusCode == 200) {
       //save user SharedPrefs
+      print("So the sign up actually works:");
       final responseData = json.decode(response.body);
-      SharedPrefs().setEmail(responseData['email']);
-      SharedPrefs().setUserName(responseData['username']);
-      SharedPrefs().setPassword(responseData['password']);
-      SharedPrefs().setFirstName(responseData['firstName'] ?? '');
-      SharedPrefs().setLastName(responseData['lastName'] ?? '');
-      SharedPrefs().setBio(responseData['bio'] ?? '');
+      print(responseData);
+      saveUsersInfo(usernameOrEmail, password);
+      // SharedPrefs().setEmail(responseData['email']);
+      // SharedPrefs().setUserName(responseData['username']);
+      // SharedPrefs().setPassword(responseData['password']);
+      // SharedPrefs().setFirstName(responseData['firstName'] ?? '');
+      // SharedPrefs().setLastName(responseData['lastName'] ?? '');
+      // SharedPrefs().setBio(responseData['bio'] ?? '');
       // SharedPrefs().setBio(responseData['profilePicture']);
-      Navigator.pushNamed(context, '/global_challenge');
-      print('Log-in successful');
-      print("Yaaaay lets go");
+      //Navigator.pushNamed(context, '/global_challenge');
+     
+      
     }
   }
 
@@ -167,13 +171,15 @@ class _LogInState extends State<LogIn> {
 
     // All validations passed; proceed with login
 
-    if (validationErrors.isEmpty && SharedPrefs().getResponse1() == '') {
+    if (validationErrors.isEmpty && responseQ1 == '') {
       //user not played
+      print("Logging in guest, does not work with globals");
       logIn(context, email, password);
-    } else if (SharedPrefs().getResponse1() != '') {
-      //logIn(context, email, password);
-      logIn(context, email, password);
-      // logInGuest(context, email, password);
+
+    } 
+    //in case theres data to carry over
+    else if (responseQ1!= '') {
+      logInGuest(context, email, password);
     }
   }
 
