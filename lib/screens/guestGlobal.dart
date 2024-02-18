@@ -124,11 +124,11 @@ class _GuestGlobalState extends State<guestGlobal> {
 
   void setGuestUserResponses() {
     parseResponses();
-      responseQ1 = responses123[0];
-      responseQ2 = responses123[1];
-      responseQ3 = responses123[2];
-      responseQ4 = responses123[3];
-      responseQ5 = responses123[4];
+    responseQ1 = responses123[0];
+    responseQ2 = responses123[1];
+    responseQ3 = responses123[2];
+    responseQ4 = responses123[3];
+    responseQ5 = responses123[4];
   }
 
   void updateProgress() {
@@ -166,9 +166,12 @@ class _GuestGlobalState extends State<guestGlobal> {
       _streamController.sink.add(!showText);
       showText = !showText;
     }
-    print("In Guest Global, username: "+ username +" ,responded: " +responded.toString());
+
+    print("In Guest Global, username: " +
+        username +
+        " ,responded: " +
+        responded.toString());
     return SafeArea(
-    
       child: Scaffold(
         resizeToAvoidBottomInset: true,
         backgroundColor: const Color.fromARGB(255, 255, 243, 238),
@@ -230,12 +233,12 @@ class _GuestGlobalState extends State<guestGlobal> {
                                                   //TODO:
                                                   children: [
                                                     TextSpan(
-                                                      text: 'TBD',
+                                                      text: 'TBD\n',
                                                       style: TextStyle(
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           color: Colors.black,
-                                                          fontSize: 15,
+                                                          fontSize: 13,
                                                           fontFamily:
                                                               'Poppins'),
                                                     ),
@@ -243,7 +246,7 @@ class _GuestGlobalState extends State<guestGlobal> {
                                                         text:
                                                             " users have played today",
                                                         style: TextStyle(
-                                                            fontSize: 15,
+                                                            fontSize: 14,
                                                             color: Colors.black,
                                                             fontFamily:
                                                                 'Poppins')),
