@@ -666,7 +666,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                 Column(
                                   children: [
                                     Visibility(
-                                        visible: mappedChallenges.length == 0,
+                                        visible: mappedChallenges.isEmpty,
                                         child: Container(
                                           padding: const EdgeInsets.only(
                                               top: 10,
@@ -675,12 +675,12 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                               bottom: 20),
                                           child: Column(
                                             children: [
-                                              SizedBox(height: 40),
+                                              const SizedBox(height: 40),
                                               Image.asset(
                                                 'assets/bird3.png',
                                                 width: 240,
                                               ),
-                                              SizedBox(height: 35),
+                                              const SizedBox(height: 35),
                                               GestureDetector(
                                                 onTap: () {
                                                   _showChallengeOptions(
@@ -718,7 +718,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                           ),
                                         )),
                                     Visibility(
-                                      visible: mappedChallenges.length > 0,
+                                      visible: mappedChallenges.isNotEmpty,
                                       child: Container(
                                         height: 400,
                                         width: 330,

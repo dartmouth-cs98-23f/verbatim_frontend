@@ -26,9 +26,7 @@ class _LogoutPageState extends State<LogoutPage> {
     SharedPrefs().setCurrentPage('/login');
 
     //TODO:clear stats, clear guest stuff
-
     final GuestUtility guestUtility= GuestUtility();
-
     guestUtility.clearStats();
     guestUtility.clearGameObject();
 

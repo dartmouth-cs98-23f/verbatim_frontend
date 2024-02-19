@@ -242,12 +242,12 @@ class Stats extends StatelessWidget {
                                       title: ''),
                                   PieChartSectionData(
                                       value: statsQ1["numResponsesSecond"],
-                                      color: Color.fromRGBO(77, 161, 100, 1.0),
+                                      color: const Color.fromRGBO(77, 161, 100, 1.0),
                                       radius: 80,
                                       title: ''),
                                   PieChartSectionData(
                                       value: statsQ1["numResponsesThird"],
-                                      color: Color.fromRGBO(99, 118, 221, 1.0),
+                                      color: const Color.fromRGBO(99, 118, 221, 1.0),
                                       radius: 80,
                                       title: ''),
                                   PieChartSectionData(
@@ -273,11 +273,11 @@ class Stats extends StatelessWidget {
                                     LegendData(
                                         title: statsQ1["secondMostPopular"],
                                         color:
-                                            Color.fromRGBO(77, 161, 100, 1.0)),
+                                            const Color.fromRGBO(77, 161, 100, 1.0)),
                                     LegendData(
                                         title: statsQ1["thirdMostPopular"],
                                         color:
-                                            Color.fromRGBO(99, 118, 221, 1.0)),
+                                            const Color.fromRGBO(99, 118, 221, 1.0)),
                                     LegendData(
                                         title: 'Other',
                                         color: const Color.fromRGBO(
@@ -493,12 +493,12 @@ class Stats extends StatelessWidget {
                                       title: ''),
                                   PieChartSectionData(
                                       value: statsQ2["numResponsesSecond"],
-                                      color: Color.fromRGBO(77, 161, 100, 1.0),
+                                      color: const Color.fromRGBO(77, 161, 100, 1.0),
                                       radius: 80,
                                       title: ''),
                                   PieChartSectionData(
                                       value: statsQ2["numResponsesThird"],
-                                      color: Color.fromRGBO(99, 118, 221, 1.0),
+                                      color: const Color.fromRGBO(99, 118, 221, 1.0),
                                       radius: 80,
                                       title: ''),
                                   PieChartSectionData(
@@ -524,11 +524,11 @@ class Stats extends StatelessWidget {
                                     LegendData(
                                         title: statsQ2["secondMostPopular"],
                                         color:
-                                            Color.fromRGBO(77, 161, 100, 1.0)),
+                                            const Color.fromRGBO(77, 161, 100, 1.0)),
                                     LegendData(
                                         title: statsQ2["thirdMostPopular"],
                                         color:
-                                            Color.fromRGBO(99, 118, 221, 1.0)),
+                                            const Color.fromRGBO(99, 118, 221, 1.0)),
                                     LegendData(
                                         title: 'Other',
                                         color: const Color.fromRGBO(
@@ -742,12 +742,12 @@ class Stats extends StatelessWidget {
                                       title: ''),
                                   PieChartSectionData(
                                       value: statsQ3["numResponsesSecond"],
-                                      color: Color.fromRGBO(77, 161, 100, 1.0),
+                                      color: const Color.fromRGBO(77, 161, 100, 1.0),
                                       radius: 90,
                                       title: ''),
                                   PieChartSectionData(
                                       value: statsQ3["numResponsesThird"],
-                                      color: Color.fromRGBO(99, 118, 221, 1.0),
+                                      color: const Color.fromRGBO(99, 118, 221, 1.0),
                                       radius: 90,
                                       title: ''),
                                   PieChartSectionData(
@@ -773,11 +773,11 @@ class Stats extends StatelessWidget {
                                     LegendData(
                                         title: statsQ3["secondMostPopular"],
                                         color:
-                                            Color.fromRGBO(77, 161, 100, 1.0)),
+                                            const Color.fromRGBO(77, 161, 100, 1.0)),
                                     LegendData(
                                         title: statsQ3["thirdMostPopular"],
                                         color:
-                                            Color.fromRGBO(99, 118, 221, 1.0)),
+                                            const Color.fromRGBO(99, 118, 221, 1.0)),
                                     LegendData(
                                         title: 'Other',
                                         color: const Color.fromRGBO(
@@ -994,12 +994,12 @@ class Stats extends StatelessWidget {
                                       title: ''),
                                   PieChartSectionData(
                                       value: statsQ4["numResponsesSecond"],
-                                      color: Color.fromRGBO(77, 161, 100, 1.0),
+                                      color: const Color.fromRGBO(77, 161, 100, 1.0),
                                       radius: 80,
                                       title: ''),
                                   PieChartSectionData(
                                       value: statsQ4["numResponsesThird"],
-                                      color: Color.fromRGBO(99, 118, 221, 1.0),
+                                      color: const Color.fromRGBO(99, 118, 221, 1.0),
                                       radius: 80,
                                       title: ''),
                                   PieChartSectionData(
@@ -1025,11 +1025,11 @@ class Stats extends StatelessWidget {
                                     LegendData(
                                         title: statsQ4["secondMostPopular"],
                                         color:
-                                            Color.fromRGBO(77, 161, 100, 1.0)),
+                                            const Color.fromRGBO(77, 161, 100, 1.0)),
                                     LegendData(
                                         title: statsQ4["thirdMostPopular"],
                                         color:
-                                            Color.fromRGBO(99, 118, 221, 1.0)),
+                                            const Color.fromRGBO(99, 118, 221, 1.0)),
                                     LegendData(
                                         title: 'Other',
                                         color: const Color.fromRGBO(
@@ -1244,12 +1244,12 @@ class Stats extends StatelessWidget {
                                       title: ''),
                                   PieChartSectionData(
                                       value: statsQ5["numResponsesSecond"],
-                                      color: Color.fromRGBO(77, 161, 100, 1.0),
+                                      color: const Color.fromRGBO(77, 161, 100, 1.0),
                                       radius: 80,
                                       title: ''),
                                   PieChartSectionData(
                                       value: statsQ5["numResponsesThird"],
-                                      color: Color.fromRGBO(99, 118, 221, 1.0),
+                                      color: const Color.fromRGBO(99, 118, 221, 1.0),
                                       radius: 80,
                                       title: ''),
                                   PieChartSectionData(
@@ -1275,11 +1275,11 @@ class Stats extends StatelessWidget {
                                     LegendData(
                                         title: statsQ5["secondMostPopular"],
                                         color:
-                                            Color.fromRGBO(77, 161, 100, 1.0)),
+                                            const Color.fromRGBO(77, 161, 100, 1.0)),
                                     LegendData(
                                         title: statsQ5["thirdMostPopular"],
                                         color:
-                                            Color.fromRGBO(99, 118, 221, 1.0)),
+                                            const Color.fromRGBO(99, 118, 221, 1.0)),
                                     LegendData(
                                         title: 'Other',
                                         color: const Color.fromRGBO(

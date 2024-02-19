@@ -145,10 +145,11 @@ class Verbatastic extends StatelessWidget {
                       TextSpan(
                         text:
                             'You${verbatasticUsernames!.length == 1 ? ' and ' : ', '}',
-                        style: const TextStyle(
+                        style: GoogleFonts.poppins(
+                            textStyle: const TextStyle(
                           color: Colors.black,
                           fontSize: 16,
-                        ),
+                        )),
                       ),
                       for (int i = 0;
                           i < min(verbatasticUsernames!.length, 5);
@@ -160,26 +161,29 @@ class Verbatastic extends StatelessWidget {
                                   : i < verbatasticUsernames!.length - 1
                                       ? ' and '
                                       : ''),
-                          style: const TextStyle(
+                          style: GoogleFonts.poppins(
+                              textStyle: const TextStyle(
                             color: Colors.black,
                             fontSize: 16,
-                          ),
+                          )),
                         ),
                       TextSpan(
                         text:
                             '${verbatasticUsernames!.length == 1 ? ' both ' : ' all '}said ',
-                        style: const TextStyle(
+                        style: GoogleFonts.poppins(
+                            textStyle: const TextStyle(
                           color: Colors.black,
                           fontSize: 16,
-                        ),
+                        )),
                       ),
                       TextSpan(
                         text: verbatimedWord,
-                        style: const TextStyle(
+                        style: GoogleFonts.poppins(
+                            textStyle: const TextStyle(
                           color: Colors.black,
                           fontSize: 17,
                           fontWeight: FontWeight.bold,
-                        ),
+                        )),
                       ),
                     ],
             ),
@@ -189,10 +193,11 @@ class Verbatastic extends StatelessWidget {
         const SizedBox(height: 10),
         Text(
           inviteText,
-          style: const TextStyle(
+          style: GoogleFonts.poppins(
+              textStyle: const TextStyle(
             color: Colors.black,
             fontSize: 16,
-          ),
+          )),
         ),
         const SizedBox(height: 25),
         MyButtonWithSvg(
@@ -208,10 +213,12 @@ class Verbatastic extends StatelessWidget {
           child: Center(
             child: Text(
               'New Challenge in $formattedTimeUntilMidnight',
-              style: const TextStyle(
+              style: GoogleFonts.poppins(
+                  textStyle: GoogleFonts.poppins(
+                      textStyle: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-              ),
+              ))),
             ),
           ),
         ),

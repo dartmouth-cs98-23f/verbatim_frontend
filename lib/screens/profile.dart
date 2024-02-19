@@ -310,7 +310,7 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    print(" In profile Shared prefs: "+ SharedPrefs().getUserName()!);
+    print(" In profile Shared prefs: " + SharedPrefs().getUserName()!);
     return SafeArea(
       child: Theme(
         data: ThemeData(
@@ -386,15 +386,23 @@ class _ProfileState extends State<Profile> {
                                       const SizedBox(width: 10),
                                       Column(
                                         children: [
-                                          Text(
-                                            softWrap: true,
-                                            displayName,
-                                            style: GoogleFonts.poppins(
+                                          SizedBox(
+                                            width: 160,
+                                            child: Text(
+                                              displayName,
+                                              softWrap:
+                                                  true, // Wrap text across multiple lines if needed
+                                              style: GoogleFonts.poppins(
                                                 textStyle: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 29,
-                                              fontFamily: 'Poppins',
-                                            )),
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 29,
+                                                ),
+                                              ),
+                                              overflow: TextOverflow
+                                                  .ellipsis, // Use ellipsis to indicate text overflow
+                                              maxLines:
+                                                  2, // Example: Limit text to 2 lines; adjust as needed
+                                            ),
                                           ),
                                           const SizedBox(
                                             height: 10,
@@ -558,26 +566,34 @@ class _ProfileState extends State<Profile> {
                                                                           true
                                                                       ? friendshipStatusDescription
                                                                       : "Add Friend",
-                                                              style: GoogleFonts
-                                                                  .poppins(
-                                                                      textStyle: widget.user ==
-                                                                              null
-                                                                          ? const TextStyle(
-                                                                              color: Colors.white,
-                                                                              fontSize: 12,
-                                                                              fontWeight: FontWeight.w600,
-                                                                              height: 0.12,
-                                                                              letterSpacing: 0.20,
-                                                                              fontFamily: 'Poppins',
-                                                                            )
-                                                                          : const TextStyle(
-                                                                              color: Colors.white,
-                                                                              fontSize: 10,
-                                                                              fontWeight: FontWeight.w600,
-                                                                              height: 0.12,
-                                                                              letterSpacing: 0.20,
-                                                                              fontFamily: 'Poppins',
-                                                                            )),
+                                                              style: GoogleFonts.poppins(
+                                                                  textStyle: widget.user == null
+                                                                      ? GoogleFonts.poppins(
+                                                                          textStyle: const TextStyle(
+                                                                          color:
+                                                                              Colors.white,
+                                                                          fontSize:
+                                                                              12,
+                                                                          fontWeight:
+                                                                              FontWeight.w600,
+                                                                          height:
+                                                                              0.12,
+                                                                          letterSpacing:
+                                                                              0.20,
+                                                                        ))
+                                                                      : GoogleFonts.poppins(
+                                                                          textStyle: const TextStyle(
+                                                                          color:
+                                                                              Colors.white,
+                                                                          fontSize:
+                                                                              10,
+                                                                          fontWeight:
+                                                                              FontWeight.w600,
+                                                                          height:
+                                                                              0.12,
+                                                                          letterSpacing:
+                                                                              0.20,
+                                                                        ))),
                                                             ),
                                                           ),
                                                         )
@@ -601,12 +617,12 @@ class _ProfileState extends State<Profile> {
                                     bio ?? "Bio goes here",
                                     softWrap: true,
                                     style: GoogleFonts.poppins(
+                                        textStyle: GoogleFonts.poppins(
                                       textStyle: const TextStyle(
                                         color: Colors.black,
                                         fontSize: 16,
-                                        fontFamily: 'Poppins',
                                       ),
-                                    ),
+                                    )),
                                   ),
                                 ],
                               ),
@@ -642,7 +658,6 @@ class _ProfileState extends State<Profile> {
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
-                                        fontFamily: 'Poppins',
                                       ),
                                     ),
                                   ),
@@ -767,7 +782,6 @@ class _ProfileState extends State<Profile> {
                                               color: Colors.black,
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold,
-                                              fontFamily: 'Poppins',
                                             ),
                                           ),
                                         ),
@@ -779,7 +793,6 @@ class _ProfileState extends State<Profile> {
                                                     255, 231, 111, 81),
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.bold,
-                                                fontFamily: 'Poppins',
                                               ),
                                             )),
                                         TextSpan(
@@ -789,7 +802,6 @@ class _ProfileState extends State<Profile> {
                                                 color: Colors.black,
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.bold,
-                                                fontFamily: 'Poppins',
                                               ),
                                             )),
                                       ],
@@ -803,25 +815,26 @@ class _ProfileState extends State<Profile> {
                                           child: Text.rich(TextSpan(
                                             children: [
                                               TextSpan(
-                                                text: (verbaMatchScore != -1
-                                                        ? verbaMatchScore
-                                                        : 0)
-                                                    .toString(),
-                                                style: const TextStyle(
+                                                  text: (verbaMatchScore != -1
+                                                          ? verbaMatchScore
+                                                          : 0)
+                                                      .toString(),
+                                                  style: GoogleFonts.poppins(
+                                                    textStyle: const TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: Colors.black,
+                                                    ),
+                                                  )),
+                                              TextSpan(
+                                                text: "% similarity",
+                                                style: GoogleFonts.poppins(
+                                                    textStyle: const TextStyle(
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w500,
                                                   color: Colors.black,
-                                                  fontFamily: 'Poppins',
-                                                ),
-                                              ),
-                                              const TextSpan(
-                                                text: " power rating",
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Colors.black,
-                                                  fontFamily: 'Poppins',
-                                                ),
+                                                )),
                                               )
                                             ],
                                           )),
@@ -924,156 +937,139 @@ class _ProfileState extends State<Profile> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Align(
-                                        widthFactor: .5,
-                                        child: (widget.user != null &&
-                                                friendshipDate
-                                                    .isEmpty) // When you are on a stranger's profile, the first oval should contain their profile picture
-                                            ? SizedBox(
-                                                width: 91,
-                                                child: Text(
-                                                    widget.user!.username
-                                                        .replaceFirstMapped(
-                                                      RegExp(r'^\w'),
-                                                      (match) => match
-                                                          .group(0)!
-                                                          .toUpperCase(), // Ensures the first letter of first name is capitalized.
-                                                    ),
-                                                    textAlign: TextAlign.center,
-                                                    style: const TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 18,
-                                                      fontFamily: 'Poppins',
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      height: 0.07,
-                                                      letterSpacing: 0.10,
-                                                    )),
-                                              )
-                                            : SizedBox(
-                                                width: 91,
-                                                // When you are on your own profile or a friend's profile, the first oval should always contain your profile picture
-                                                child: Text(
-                                                    (SharedPrefs().getUserName()
-                                                            as String)
-                                                        .replaceFirstMapped(
-                                                      RegExp(r'^\w'),
-                                                      (match) => match
-                                                          .group(0)!
-                                                          .toUpperCase(), // Ensures the first letter of first name is capitalized.
-                                                    ),
-                                                    textAlign: TextAlign.center,
-                                                    style: const TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 18,
-                                                      fontFamily: 'Poppins',
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      height: 0.07,
-                                                      letterSpacing: 0.10,
-                                                    ))),
+                                      // Removed Align and widthFactor as they conflict with the approach of allowing text to wrap.
+                                      Flexible(
+                                        // Allow the text to expand within the limits of the row.
+                                        child: SizedBox(
+                                          width:
+                                              91, // You can maintain a width for the container if needed for layout.
+                                          child: (widget.user != null &&
+                                                  friendshipDate.isEmpty)
+                                              ? Text(
+                                                  widget.user!.username
+                                                      .replaceFirstMapped(
+                                                    RegExp(r'^\w'),
+                                                    (match) => match
+                                                        .group(0)!
+                                                        .toUpperCase(), // Capitalize the first letter
+                                                  ),
+                                                  textAlign: TextAlign.center,
+                                                  style: GoogleFonts.poppins(
+                                                      textStyle:
+                                                          const TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w700,
+                                                  )),
+                                                  overflow: TextOverflow
+                                                      .ellipsis, // Prevent overflow with ellipsis
+                                                )
+                                              : Text(
+                                                  (SharedPrefs().getUserName()
+                                                          as String)
+                                                      .replaceFirstMapped(
+                                                    RegExp(r'^\w'),
+                                                    (match) => match
+                                                        .group(0)!
+                                                        .toUpperCase(), // Capitalize the first letter
+                                                  ),
+                                                  textAlign: TextAlign.center,
+                                                  style: GoogleFonts.poppins(
+                                                      textStyle:
+                                                          const TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w700,
+                                                  )),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  // Prevent overflow with ellipsis
+                                                ),
+                                        ),
                                       ),
                                       const SizedBox(
+                                          width: 5), // Spacing between elements
+                                      Flexible(
+                                        // Repeat the Flexible widget for the second text
+                                        child: SizedBox(
                                           width:
-                                              25), // Add spacing between the profile pictures
-                                      Align(
-                                        widthFactor: .5,
-                                        child: (widget.user != null &&
-                                                friendshipDate
-                                                    .isNotEmpty) // When you are on a friend's profile, the second oval should contain their profile picture
-                                            ? SizedBox(
-                                                width: 91,
-                                                child: Text(
-                                                    "& ${widget.user!.username.replaceFirstMapped(
-                                                      RegExp(r'^\w'),
-                                                      (match) => match
-                                                          .group(0)!
-                                                          .toUpperCase(), // Ensures the first letter of first name is capitalized.
-                                                    )}",
-                                                    textAlign: TextAlign.center,
-                                                    style: const TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 18,
-                                                      fontFamily: 'Poppins',
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      height: 0.07,
-                                                      letterSpacing: 0.10,
-                                                    )),
-                                              )
-                                            : (widget.user != null &&
-                                                    friendshipDate.isEmpty &&
-                                                    match !=
-                                                        null) // When you are on a stranger's profile and they have a verbaMatch, the second profile should be their verbaMatch's profile picture
-                                                ? SizedBox(
-                                                    width: 91,
-                                                    child: Text(
-                                                        "& ${match!.username.replaceFirstMapped(
-                                                          RegExp(r'^\w'),
-                                                          (match) => match
-                                                              .group(0)!
-                                                              .toUpperCase(), // Ensures the first letter of first name is capitalized.
-                                                        )}",
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style: const TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 18,
-                                                          fontFamily: 'Poppins',
-                                                          fontWeight:
-                                                              FontWeight.w700,
-                                                          height: 0.07,
-                                                          letterSpacing: 0.10,
-                                                        )),
-                                                  )
-                                                : (widget.user == null &&
-                                                        match !=
-                                                            null) // When you are on your own profile and you have a verbaMatch, the second profile should be your verbaMatch's profile picture
-                                                    ? SizedBox(
-                                                        width: 91,
-                                                        child: Text(
-                                                            "& ${match!.username.replaceFirstMapped(
-                                                              RegExp(r'^\w'),
-                                                              (match) => match
-                                                                  .group(0)!
-                                                                  .toUpperCase(), // Ensures the first letter of first name is capitalized.
-                                                            )}",
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            style: const TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontSize: 18,
-                                                              fontFamily:
-                                                                  'Poppins',
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700,
-                                                              height: 0.07,
-                                                              letterSpacing:
-                                                                  0.10,
-                                                            )),
-                                                      )
-                                                    : const SizedBox(
-                                                        width: 91,
-                                                        child: Text(' ',
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontSize: 18,
-                                                              fontFamily:
-                                                                  'Poppins',
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700,
-                                                              height: 0.07,
-                                                              letterSpacing:
-                                                                  0.10,
-                                                            )),
-                                                      ),
+                                              100, // Maintain width for consistency
+                                          child: (widget.user != null &&
+                                                  friendshipDate.isNotEmpty)
+                                              ? Text(
+                                                  "& ${widget.user!.username.replaceFirstMapped(
+                                                    RegExp(r'^\w'),
+                                                    (match) => match
+                                                        .group(0)!
+                                                        .toUpperCase(), // Capitalize the first letter
+                                                  )}",
+                                                  textAlign: TextAlign.center,
+                                                  style: GoogleFonts.poppins(
+                                                      textStyle:
+                                                          const TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w700,
+                                                  )),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  // Use ellipsis for overflow
+                                                )
+                                              : (widget.user != null &&
+                                                      friendshipDate.isEmpty &&
+                                                      match != null)
+                                                  ? Text(
+                                                      "& ${match!.username.replaceFirstMapped(
+                                                        RegExp(r'^\w'),
+                                                        (match) => match
+                                                            .group(0)!
+                                                            .toUpperCase(), // Capitalize the first letter
+                                                      )}",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                              textStyle:
+                                                                  const TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                      )),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      // Use ellipsis for overflow
+                                                    )
+                                                  : (widget.user == null &&
+                                                          match != null)
+                                                      ? Text(
+                                                          "& ${match!.username.replaceFirstMapped(
+                                                            RegExp(r'^\w'),
+                                                            (match) => match
+                                                                .group(0)!
+                                                                .toUpperCase(), // Capitalize the first letter
+                                                          )}",
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: GoogleFonts
+                                                              .poppins(
+                                                                  textStyle:
+                                                                      const TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 18,
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                          )),
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          // Use ellipsis for overflow
+                                                        )
+                                                      : const SizedBox
+                                                          .shrink(), // Use SizedBox.shrink() for cases where no text should be shown
+                                        ),
                                       ),
+
+                                      // Add other Flexible widgets for additional text elements as needed.
                                     ],
                                   ),
                                 ],

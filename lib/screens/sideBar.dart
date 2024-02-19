@@ -1,6 +1,7 @@
 import 'dart:math';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:url_launcher/url_launcher.dart';
 import 'package:verbatim_frontend/BackendService.dart';
@@ -11,7 +12,6 @@ import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'package:verbatim_frontend/screens/profile.dart';
 import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 import 'package:confetti/confetti.dart';
-import 'package:verbatim_frontend/screens/User.dart';
 
 class UserGroup {
   int id = 0;
@@ -315,15 +315,16 @@ class _SideBarState extends State<SideBar> {
                         child: Center(
                           child: ListTile(
                             title: Text(
-                              (SharedPrefs().getLastName() ?? "Name").isNotEmpty
-                                  ? '$firstName $lastNameInitial.'
-                                  : firstName,
-                              style: const TextStyle(
-                                  color: Colors.white,
-                                  fontSize: 20,
-                                  fontFamily: 'Poppins',
-                                  fontWeight: FontWeight.bold),
-                            ),
+                                (SharedPrefs().getLastName() ?? "Name")
+                                        .isNotEmpty
+                                    ? '$firstName $lastNameInitial.'
+                                    : firstName,
+                                style: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(
+                                      color: Colors.white,
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold),
+                                )),
                             leading: FirebaseStorageImage(
                               profileUrl:
                                   SharedPrefs().getProfileUrl() as String,
@@ -358,11 +359,11 @@ class _SideBarState extends State<SideBar> {
                       ),
                       child: ListTile(
                         title: Text('Global Challenge',
-                            style: TextStyle(
-                                color: primary,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Poppins',
-                                fontSize: 17)),
+                            style: GoogleFonts.poppins(
+                                textStyle: const TextStyle(
+                                    // color: primary,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 17))),
                         leading: Icon(Icons.home, color: primary),
                         onTap: () {
                           handleTap(context, 0);
@@ -372,12 +373,12 @@ class _SideBarState extends State<SideBar> {
                   ),
                   const SizedBox(height: 20.0),
                   ExpansionTile(
-                    title: const Text('Friends',
-                        style: TextStyle(
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Poppins',
-                            fontSize: 18)),
+                    title: Text('Friends',
+                        style: GoogleFonts.poppins(
+                            textStyle: const TextStyle(
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold,
+                                fontSize: 18))),
 
                     // takes you to the addFriend page
                     trailing: GestureDetector(
@@ -419,12 +420,12 @@ class _SideBarState extends State<SideBar> {
                                           .group(0)!
                                           .toUpperCase(), // Ensures the first letter of first name is capitalized.
                                     ),
-                                    style: const TextStyle(
+                                    style: GoogleFonts.poppins(
+                                        textStyle: const TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold,
-                                      fontFamily: 'Poppins',
                                       fontSize: 15,
-                                    ),
+                                    )),
                                   ),
                                 ),
                                 leading: Container(
@@ -471,13 +472,13 @@ class _SideBarState extends State<SideBar> {
                   ),
                   const SizedBox(height: 20.0),
                   ExpansionTile(
-                    title: const Text(
+                    title: Text(
                       'Groups',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Poppins',
-                          fontSize: 18),
+                      style: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18)),
                     ),
 
                     // takes you to the add groups page
@@ -542,12 +543,12 @@ class _SideBarState extends State<SideBar> {
                                 Expanded(
                                   child: Text(
                                     groupname,
-                                    style: const TextStyle(
+                                    style: GoogleFonts.poppins(
+                                        textStyle: const TextStyle(
                                       color: Colors.black,
                                       fontWeight: FontWeight.bold,
-                                      fontFamily: 'Poppins',
                                       fontSize: 15,
-                                    ),
+                                    )),
                                     overflow: TextOverflow.ellipsis,
                                   ),
                                 ),
@@ -565,14 +566,13 @@ class _SideBarState extends State<SideBar> {
                   const SizedBox(height: 20.0),
                   ExpansionTile(
                     initiallyExpanded: true,
-                    title: const Text(
-                      'Friend Requests',
-                      style: TextStyle(
-                          color: Colors.black,
-                          fontWeight: FontWeight.bold,
-                          fontFamily: 'Poppins',
-                          fontSize: 18),
-                    ),
+                    title: Text('Friend Requests',
+                        style: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold,
+                              fontSize: 18),
+                        )),
                     //   trailing: FriendRequestsIcon(iconColor: trailingIconColor),
 
                     trailing: trailingIconColor == Colors.orange
@@ -612,12 +612,12 @@ class _SideBarState extends State<SideBar> {
                                         .group(0)!
                                         .toUpperCase(), // Ensures the first letter of first name is capitalized.
                                   ),
-                                  style: const TextStyle(
+                                  style: GoogleFonts.poppins(
+                                      textStyle: const TextStyle(
                                     color: Colors.black,
                                     fontWeight: FontWeight.bold,
-                                    fontFamily: 'Poppins',
                                     fontSize: 15,
-                                  ),
+                                  )),
                                 ),
                               ),
                               leading: FirebaseStorageImage(
@@ -738,12 +738,12 @@ class _SideBarState extends State<SideBar> {
                       padding: const EdgeInsets.symmetric(
                           horizontal: 0.0, vertical: .1),
                       child: ListTile(
-                        title: const Text('Logout',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Poppins',
-                                fontSize: 18)),
+                        title: Text('Logout',
+                            style: GoogleFonts.poppins(
+                                textStyle: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.bold,
+                                    fontSize: 18))),
                         onTap: () {
                           Navigator.pushNamed(context, '/logout');
                         },
@@ -753,15 +753,15 @@ class _SideBarState extends State<SideBar> {
                   const SizedBox(height: 30),
                   Container(
                     child: ListTile(
-                      title: const Text(
+                      title: Text(
                         'Questions? Feedback? Click Here!',
                         textAlign: TextAlign.center,
-                        style: TextStyle(
+                        style: GoogleFonts.poppins(
+                            textStyle: const TextStyle(
                           color: Colors.black,
                           fontWeight: FontWeight.bold,
-                          fontFamily: 'Poppins',
                           fontSize: 15,
-                        ),
+                        )),
                       ),
                       onTap: () {
                         _launchURL(formUri);
@@ -774,18 +774,17 @@ class _SideBarState extends State<SideBar> {
                     padding: const EdgeInsets.symmetric(
                       horizontal: 5,
                     ),
-                    child: const Center(
+                    child: Center(
                       child: ListTile(
-                        title: Text(
-                          'Made with love, by the Verbatim team.',
-                          textAlign: TextAlign.center,
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontStyle: FontStyle.italic,
-                              fontWeight: FontWeight.w700,
-                              fontFamily: 'Poppins',
-                              fontSize: 15),
-                        ),
+                        title: Text('Made with love, by the Verbatim team.',
+                            textAlign: TextAlign.center,
+                            style: GoogleFonts.poppins(
+                              textStyle: const TextStyle(
+                                  color: Colors.black,
+                                  fontStyle: FontStyle.italic,
+                                  fontWeight: FontWeight.w700,
+                                  fontSize: 15),
+                            )),
                         leading: Icon(Icons.favorite,
                             color: Colors.red, size: 17 // Set the color to red
                             ),

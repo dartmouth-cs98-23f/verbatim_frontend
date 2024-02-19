@@ -630,7 +630,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                       ],
                                     );
                                   } else if (responded == false) {
-                                    return const Column(
+                                    return Column(
                                       children: [
                                         SizedBox(height: 20.0),
                                         Column(
