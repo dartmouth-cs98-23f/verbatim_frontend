@@ -78,19 +78,22 @@ class _LandingPageState extends State<LandingPage> {
                 )),
             const SizedBox(height: 30),
             Padding(
-                padding: EdgeInsets.only(right: 50, left: 50),
-                child: Align(
+              padding: EdgeInsets.only(right: 50, left: 50),
+              child: Align(
                   alignment: Alignment.center,
-                  child: Text(
-                    "Give your juicy answers to our juicy questions and compare scores with our Verbafam.",
-                    style: GoogleFonts.poppins(
-                      textStyle: const TextStyle(
-                        color: Colors.black,
-                        fontSize: 16,
+                  child: Center(
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      "Give your juicy answers to our juicy questions and compare scores with our Verbafam.",
+                      style: GoogleFonts.poppins(
+                        textStyle: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                        ),
                       ),
                     ),
-                  ),
-                )),
+                  )),
+            ),
             const SizedBox(height: 20),
             MyButtonNoImage(buttonText: "Play Now!", onTap: onTap),
             const SizedBox(height: 20),
