@@ -459,39 +459,21 @@ class _AddFriendState extends State<addFriend> {
                                         user: currentUser,
                                       ),
                                       const SizedBox(width: 8),
-                                      GestureDetector(
-                                        onTap: () {
-                                          currentUser.bio ??= '';
-                                          currentUser.profilePicture ??= '';
-
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => Profile(
-                                                user: currentUser,
-                                              ),
-                                            ),
-                                          );
-                                          // Navigator.pushNamed(
-                                          //     context, '/profile',
-                                          //     arguments: currentUser);
-                                        },
-                                        child: Flexible(
-                                          child: Text(
-                                            name.replaceFirstMapped(
-                                              RegExp(r'^\w'),
-                                              (match) => match
-                                                  .group(0)!
-                                                  .toUpperCase(), // Ensures the first letter of first name is capitalized.
-                                            ),
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black,
-                                                fontFamily:
-                                                    'Poppins' // Optional: Change text color to blue for clickable effect
-                                                ),
-                                            overflow: TextOverflow.ellipsis,
+                                      Flexible(
+                                        child: Text(
+                                          name.replaceFirstMapped(
+                                            RegExp(r'^\w'),
+                                            (match) => match
+                                                .group(0)!
+                                                .toUpperCase(), // Ensures the first letter of first name is capitalized.
                                           ),
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black,
+                                              fontFamily:
+                                                  'Poppins' // Optional: Change text color to blue for clickable effect
+                                              ),
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
                                     ],
@@ -538,32 +520,21 @@ class _AddFriendState extends State<addFriend> {
                                         user: currentUser,
                                       ),
                                       const SizedBox(width: 8),
-                                      GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) => Profile(
-                                                      user: currentUser,
-                                                    )),
-                                          );
-                                        },
-                                        child: Flexible(
-                                          child: Text(
-                                            name.replaceFirstMapped(
-                                              RegExp(r'^\w'),
-                                              (match) => match
-                                                  .group(0)!
-                                                  .toUpperCase(), // Ensures the first letter of first name is capitalized.
-                                            ),
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black,
-                                                fontFamily:
-                                                    'Poppins' // Optional: Change text color to blue for clickable effect
-                                                ),
-                                            overflow: TextOverflow.ellipsis,
+                                      Flexible(
+                                        child: Text(
+                                          name.replaceFirstMapped(
+                                            RegExp(r'^\w'),
+                                            (match) => match
+                                                .group(0)!
+                                                .toUpperCase(), // Ensures the first letter of first name is capitalized.
                                           ),
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black,
+                                              fontFamily:
+                                                  'Poppins' // Optional: Change text color to blue for clickable effect
+                                              ),
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
                                     ],
