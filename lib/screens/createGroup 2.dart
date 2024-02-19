@@ -7,6 +7,8 @@ import 'sideBar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:verbatim_frontend/widgets/create_group_app_bar.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -280,11 +282,16 @@ class _CreateGroupState extends State<createGroup> {
                                                   const SizedBox(width: 8),
                                                   Text(
                                                     name,
-                                                    style: const TextStyle(
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontFamily: 'Poppins'),
-                                                  ),
+                                                    style: GoogleFonts.poppins(
+                                                      textStyle:
+                                                          const TextStyle(
+                                                              fontWeight:
+                                                                  FontWeight
+                                                                      .bold,
+                                                              fontFamily:
+                                                                  'Poppins'),
+                                                    ),
+                                                  )
                                                 ],
                                               ),
                                               trailing: IconButton(
@@ -322,17 +329,18 @@ class _CreateGroupState extends State<createGroup> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         children: [
-                                            const Padding(
-                                                padding: EdgeInsets.only(
-                                                    left: 12.0, top: 14.0),
-                                                child: Text(
-                                                  "All Friends",
-                                                  style: TextStyle(
-                                                      fontSize: 15,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      fontFamily: 'Poppins'),
-                                                )),
+                                            Padding(
+                                              padding: EdgeInsets.only(
+                                                  left: 12.0, top: 14.0),
+                                              child: Text("All Friends",
+                                                  style: GoogleFonts.poppins(
+                                                    textStyle: const TextStyle(
+                                                        fontSize: 15,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        fontFamily: 'Poppins'),
+                                                  )),
+                                            ),
                                             Expanded(
                                               child: ListView.builder(
                                                 itemCount:
@@ -355,12 +363,15 @@ class _CreateGroupState extends State<createGroup> {
                                                             width: 8),
                                                         Text(
                                                           name,
-                                                          style: const TextStyle(
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontFamily:
-                                                                  'Poppins'),
+                                                          style: GoogleFonts
+                                                              .poppins(
+                                                            textStyle: const TextStyle(
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                fontFamily:
+                                                                    'Poppins'),
+                                                          ),
                                                         ),
                                                       ],
                                                     ),
@@ -393,14 +404,16 @@ class _CreateGroupState extends State<createGroup> {
                             // if it is created then you are making your group!
                             Column(children: [
                               const SizedBox(height: 30),
-                              const Padding(
+                              Padding(
                                 padding: EdgeInsets.symmetric(horizontal: 16.0),
                                 child: Text(
                                   'Word! Give your group a name!',
-                                  style: TextStyle(
-                                      fontSize: 22,
-                                      fontWeight: FontWeight.bold,
-                                      fontFamily: 'Poppins'),
+                                  style: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(
+                                        fontSize: 22,
+                                        fontWeight: FontWeight.bold,
+                                        fontFamily: 'Poppins'),
+                                  ),
                                 ),
                               ),
                               const SizedBox(height: 30.0),
@@ -422,8 +435,10 @@ class _CreateGroupState extends State<createGroup> {
                               const SizedBox(height: 30.0),
                               Text(
                                 'Added Usernames: $addedUsernames ',
-                                style: const TextStyle(
-                                    fontSize: 16, fontFamily: 'Poppins'),
+                                style: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(
+                                      fontSize: 16, fontFamily: 'Poppins'),
+                                ),
                               ),
                             ]),
                         ],
@@ -459,10 +474,12 @@ class _CreateGroupState extends State<createGroup> {
                       // display different text based on which 'stage' we're in
                       child: Text(
                         isCreated ? 'Back' : 'Cancel',
-                        style: const TextStyle(
-                            color: Color(0xFFE76F51),
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Poppins'),
+                        style: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
+                              color: Color(0xFFE76F51),
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Poppins'),
+                        ),
                       ),
                     ),
                     const SizedBox(width: 16.0),
@@ -489,12 +506,14 @@ class _CreateGroupState extends State<createGroup> {
                         ),
                         minimumSize: const Size(100, 50),
                       ),
-                      child: const Text(
+                      child: Text(
                         'Next',
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontFamily: 'Poppins'),
+                        style: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
+                              color: Colors.white,
+                              fontWeight: FontWeight.bold,
+                              fontFamily: 'Poppins'),
+                        ),
                       ),
                     ),
                   ],

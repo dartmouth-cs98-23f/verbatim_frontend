@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/gameObject.dart';
 import 'sideBar.dart';
@@ -229,14 +230,14 @@ class _GuestGlobalState extends State<guestGlobal> {
                                           children: [
                                             SizedBox(
                                               child: RichText(
-                                                text: const TextSpan(
+                                                text: TextSpan(
                                                   //TODO:
                                                   children: [
                                                     TextSpan(
                                                       text: 'TBD\n',
                                                       style: TextStyle(
                                                           fontWeight:
-                                                              FontWeight.bold,
+                                                              FontWeight.w700,
                                                           color: Colors.black,
                                                           fontSize: 13,
                                                           fontFamily:
@@ -245,11 +246,13 @@ class _GuestGlobalState extends State<guestGlobal> {
                                                     TextSpan(
                                                         text:
                                                             " users have played today",
-                                                        style: TextStyle(
-                                                            fontSize: 14,
-                                                            color: Colors.black,
-                                                            fontFamily:
-                                                                'Poppins')),
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                                textStyle:
+                                                                    TextStyle(
+                                                          fontSize: 14,
+                                                          color: Colors.black,
+                                                        ))),
                                                   ],
                                                 ),
                                               ),
