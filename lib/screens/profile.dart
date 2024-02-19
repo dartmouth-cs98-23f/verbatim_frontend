@@ -815,6 +815,15 @@ class _ProfileState extends State<Profile> {
                                           child: Text.rich(TextSpan(
                                             children: [
                                               TextSpan(
+                                                text: "Power Rating: ",
+                                                style: GoogleFonts.poppins(
+                                                    textStyle: const TextStyle(
+                                                  fontSize: 16,
+                                                  fontWeight: FontWeight.w500,
+                                                  color: Colors.black,
+                                                )),
+                                              ),
+                                              TextSpan(
                                                   text: (verbaMatchScore != -1
                                                           ? verbaMatchScore
                                                           : 0)
@@ -827,15 +836,6 @@ class _ProfileState extends State<Profile> {
                                                       color: Colors.black,
                                                     ),
                                                   )),
-                                              TextSpan(
-                                                text: "% similarity",
-                                                style: GoogleFonts.poppins(
-                                                    textStyle: const TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Colors.black,
-                                                )),
-                                              )
                                             ],
                                           )),
                                         )
@@ -997,7 +997,7 @@ class _ProfileState extends State<Profile> {
                                           child: (widget.user != null &&
                                                   friendshipDate.isNotEmpty)
                                               ? Text(
-                                                  "& ${widget.user!.username.replaceFirstMapped(
+                                                  "${widget.user!.username.replaceFirstMapped(
                                                     RegExp(r'^\w'),
                                                     (match) => match
                                                         .group(0)!
@@ -1019,7 +1019,7 @@ class _ProfileState extends State<Profile> {
                                                       friendshipDate.isEmpty &&
                                                       match != null)
                                                   ? Text(
-                                                      "& ${match!.username.replaceFirstMapped(
+                                                      "${match!.username.replaceFirstMapped(
                                                         RegExp(r'^\w'),
                                                         (match) => match
                                                             .group(0)!
@@ -1043,7 +1043,7 @@ class _ProfileState extends State<Profile> {
                                                   : (widget.user == null &&
                                                           match != null)
                                                       ? Text(
-                                                          "& ${match!.username.replaceFirstMapped(
+                                                          "${match!.username.replaceFirstMapped(
                                                             RegExp(r'^\w'),
                                                             (match) => match
                                                                 .group(0)!

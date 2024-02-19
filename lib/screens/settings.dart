@@ -551,7 +551,6 @@ class _settingsState extends State<settings> {
                 ],
               )),
         )),
-        drawer: const SideBar(),
       ),
     );
   }
