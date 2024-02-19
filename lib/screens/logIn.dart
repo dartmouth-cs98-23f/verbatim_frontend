@@ -160,6 +160,8 @@ class _LogInState extends State<LogIn> {
           SharedPrefs().setProfileUrl(
               responseData['profilePicture'] ?? 'assets/profile_pic.png');
 
+       
+
           Navigator.pushNamed(context, '/global_challenge');
         }
       } else {

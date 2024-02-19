@@ -4,6 +4,8 @@ import 'package:verbatim_frontend/statsGameObject.dart';
 import 'package:verbatim_frontend/widgets/stats.dart';
 
 class globalSubmittedResponse extends StatelessWidget {
+  const globalSubmittedResponse({super.key});
+
 
 
   @override

@@ -63,6 +63,24 @@ android {
             signingConfig signingConfigs.debug
         }
     }
+
+    flavorDimensions "flavors"
+
+    // productFlavors{
+    //     dev{
+    //         dimension "flavors"
+    //         applicationIdSuffix ".dev"
+    //         versionNameSuffix "-dev"
+    //         manifestPlaceholders = [appName: "Verbatim"]
+    //         resValue "string", "app_name", "Verbatim Dev"
+    //     }
+    //     prod{
+    //         dimension "flavors"
+    //         applicationId "com.verbatim"
+    //         manifestPlaceholders = [app_name, "Verbatim"]
+    //         resValue "string", "app_name", "Verbatim"
+    //     }
+    // }
 }
 
 android {

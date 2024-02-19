@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MyTextFieldSettings extends StatefulWidget {
   final TextEditingController controller;
@@ -58,13 +59,15 @@ class _MyTextFieldSettingsState extends State<MyTextFieldSettings> {
             decoration: InputDecoration(
               border: InputBorder.none,
               hintText: widget.hintText,
-              hintStyle: TextStyle(
-                color: Theme.of(context).hintColor,
-                fontSize: 14,
-                fontFamily: 'Poppins',
-                fontWeight: FontWeight.w400,
-                height: 0.10,
-                letterSpacing: 0.20,
+              hintStyle: GoogleFonts.poppins(
+                textStyle: TextStyle(
+                  color: Theme.of(context).hintColor,
+                  fontSize: 14,
+                  fontFamily: 'Poppins',
+                  fontWeight: FontWeight.w400,
+                  height: 0.10,
+                  letterSpacing: 0.20,
+                ),
               ),
             ),
           ),

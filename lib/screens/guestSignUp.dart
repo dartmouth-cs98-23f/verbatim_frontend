@@ -9,7 +9,6 @@ import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/signupErrorMessage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:verbatim_frontend/gameObject.dart';
 import 'package:verbatim_frontend/statsGameObject.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -59,7 +58,6 @@ class _GuestSignUpState extends State<GuestSignUp> {
       }),
     );
     if (response.statusCode == 200) {
-      //TODO: Set shared prefs
       final Map<String, dynamic>? data = json.decode(response.body);
       setState(() {
         responded = true;
