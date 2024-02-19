@@ -212,6 +212,7 @@ class Verbatastic extends StatelessWidget {
           width: 220,
           child: Center(
             child: Text(
+              textAlign: TextAlign.center,
               'New Challenge in $formattedTimeUntilMidnight',
               style: GoogleFonts.poppins(
                   textStyle: GoogleFonts.poppins(

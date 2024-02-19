@@ -283,7 +283,7 @@ class _GuestGlobalState extends State<guestGlobal> {
                         clipBehavior: Clip.hardEdge,
                         margin: EdgeInsets.only(top: 10.v),
                         //    padding: EdgeInsets.symmetric(horizontal: 10),
-                        width: 300,
+                        width: 330,
                         height: 400,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
