@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class OnBoardingPage2 extends StatelessWidget {
   const OnBoardingPage2({super.key});
@@ -51,13 +52,13 @@ class OnBoardingPage2 extends StatelessWidget {
                           child: Text(
                             'Do you have a shared vocabulary with your friends? Find out if you think what your friend thinks you think.',
                             style: GoogleFonts.poppins(
-                                textStyle: const TextStyle(
-                              color: Colors.black,
-                              fontSize: 15,
-                              // fontWeight: FontWeight.w700,
-                              height: 1.5,
-                              letterSpacing: 0.30,
-                            )),
+                              textStyle: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 15,
+                                height: 1.5,
+                                letterSpacing: 0.30,
+                              ),
+                            ),
                           ),
                         ),
                       ),

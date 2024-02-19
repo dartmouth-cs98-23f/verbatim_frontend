@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'size.dart';
 
 class centerAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -21,15 +22,15 @@ class centerAppBar extends StatelessWidget implements PreferredSizeWidget {
       iconTheme: const IconThemeData(color: Colors.white),
       elevation: 0,
       scrolledUnderElevation: 0.0,
-      title: Text(
-        title,
-        style: const TextStyle(
-          fontSize: 29,
-          color: Colors.white,
-          fontWeight: FontWeight.w900,
-          fontFamily: 'Poppins',
-        ),
-      ),
+      title: Text(title,
+          style: GoogleFonts.poppins(
+            textStyle: const TextStyle(
+              fontSize: 29,
+              color: Colors.white,
+              fontWeight: FontWeight.w900,
+              fontFamily: 'Poppins',
+            ),
+          )),
       centerTitle: true,
     );
   }

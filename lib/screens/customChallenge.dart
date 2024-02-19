@@ -6,6 +6,8 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+import 'package:google_fonts/google_fonts.dart';
+
 import 'package:verbatim_frontend/widgets/custom_app_bar.dart';
 import 'package:verbatim_frontend/screens/myGroup.dart';
 import 'package:verbatim_frontend/screens/friendship.dart';
@@ -99,13 +101,15 @@ class _CustomChallengeState extends State<customChallenge>
                           Container(
                               margin: EdgeInsets.only(top: 100.v),
                               child: Column(children: [
-                                const Text(
+                                Text(
                                   'Custom Challenge',
-                                  style: TextStyle(
+                                  style: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(
                                       fontSize: 27,
                                       color: Colors.white,
                                       fontWeight: FontWeight.w900,
-                                      fontFamily: 'Poppins'),
+                                    ),
+                                  ),
                                 ),
                                 SizedBox(height: 10.v),
                               ]))
@@ -124,7 +128,7 @@ class _CustomChallengeState extends State<customChallenge>
                           bird.add(false);
                         });
                       },
-                      child: const Row(
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
                           SizedBox(width: 10),
@@ -136,11 +140,13 @@ class _CustomChallengeState extends State<customChallenge>
                           SizedBox(width: 5),
                           Text(
                             'Add Prompt',
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
+                              textStyle: const TextStyle(
                                 fontSize: 18,
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xFFE76F51),
-                                fontFamily: 'Poppins'),
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -192,12 +198,14 @@ class _CustomChallengeState extends State<customChallenge>
                           });
                         }
                       }, //send prompts to backend
-                      child: const Text(
+                      child: Text(
                         'Send Challenge!',
-                        style: TextStyle(
+                        style: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
                             fontWeight: FontWeight.bold,
                             fontSize: 18,
-                            fontFamily: 'Poppins'),
+                          ),
+                        ),
                       ),
                     ),
                     const SizedBox(height: 25),
@@ -280,11 +288,13 @@ class _CustomChallengeState extends State<customChallenge>
                       onChanged: (editedText) {
                         prompts[index] = editedText;
                       },
-                      style: const TextStyle(
+                      style: GoogleFonts.poppins(
+                        textStyle: const TextStyle(
                           fontSize: 16,
                           fontWeight: FontWeight.bold,
                           overflow: TextOverflow.ellipsis,
-                          fontFamily: 'Poppins'),
+                        ),
+                      ),
                     ),
                   )
                 ]),
@@ -315,17 +325,19 @@ class _CustomChallengeState extends State<customChallenge>
                       child: Text(
                         prompts[index],
                         style: prompts[index] == hintText
-                            ? TextStyle(
+                            ? GoogleFonts.poppins(
+                                textStyle: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                                 color: Colors.grey[600],
                                 overflow: TextOverflow.ellipsis,
-                                fontFamily: 'Poppins')
-                            : const TextStyle(
+                              ))
+                            : GoogleFonts.poppins(
+                                textStyle: TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                                 overflow: TextOverflow.ellipsis,
-                                fontFamily: 'Poppins'),
+                              )),
                       ),
                     ),
                   ],
@@ -359,10 +371,13 @@ class _CustomChallengeState extends State<customChallenge>
                           bird.removeAt(index);
                         });
                       },
-                      child: const Text('Delete',
-                          style: TextStyle(
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Poppins')),
+                      child: Text(
+                        'Delete',
+                        style: GoogleFonts.poppins(
+                            textStyle: const TextStyle(
+                          fontWeight: FontWeight.bold,
+                        )),
+                      ),
                     ),
                     const SizedBox(width: 10),
                     if (!editingStates[index])
@@ -382,10 +397,13 @@ class _CustomChallengeState extends State<customChallenge>
                             prompts[index] = editingController.text;
                           });
                         },
-                        child: const Text('Edit',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Poppins')),
+                        child: Text(
+                          'Edit',
+                          style: GoogleFonts.poppins(
+                              textStyle: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          )),
+                        ),
                       ),
                     if (editingStates[index])
                       ElevatedButton(
@@ -406,10 +424,13 @@ class _CustomChallengeState extends State<customChallenge>
                             bird[index] = true;
                           });
                         },
-                        child: const Text('Save',
-                            style: TextStyle(
-                                fontWeight: FontWeight.bold,
-                                fontFamily: 'Poppins')),
+                        child: Text(
+                          'Save',
+                          style: GoogleFonts.poppins(
+                              textStyle: const TextStyle(
+                            fontWeight: FontWeight.bold,
+                          )),
+                        ),
                       ),
                     const SizedBox(width: 5),
                   ],

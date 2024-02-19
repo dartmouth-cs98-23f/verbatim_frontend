@@ -61,34 +61,39 @@ class _LandingPageState extends State<LandingPage> {
                 ),
               ),
             ),
-            const Padding(
+            Padding(
                 padding: EdgeInsets.only(right: 20, left: 20),
                 child: Align(
                   alignment: Alignment.center,
                   child: Text(
                     "Just in Time\nFor Our Global\nChallenge!",
-                    style: TextStyle(
-                      color: Color.fromARGB(255, 231, 111, 81),
-                      fontWeight: FontWeight.bold,
-                      fontSize: 32,
-                      fontFamily: 'Poppins',
+                    style: GoogleFonts.poppins(
+                      textStyle: const TextStyle(
+                        color: Color.fromARGB(255, 231, 111, 81),
+                        fontWeight: FontWeight.bold,
+                        fontSize: 32,
+                      ),
                     ),
                   ),
                 )),
             const SizedBox(height: 30),
-            const Padding(
-                padding: EdgeInsets.only(right: 50, left: 50),
-                child: Align(
+            Padding(
+              padding: EdgeInsets.only(right: 50, left: 50),
+              child: Align(
                   alignment: Alignment.center,
-                  child: Text(
-                    "Give your juicy answers to our juicy questions and compare scores with our Verbafam.",
-                    style: TextStyle(
-                      color: Colors.black,
-                      fontSize: 16,
-                      fontFamily: 'Poppins',
+                  child: Center(
+                    child: Text(
+                      textAlign: TextAlign.center,
+                      "Give your juicy answers to our juicy questions and compare scores with our Verbafam.",
+                      style: GoogleFonts.poppins(
+                        textStyle: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 16,
+                        ),
+                      ),
                     ),
-                  ),
-                )),
+                  )),
+            ),
             const SizedBox(height: 20),
             MyButtonNoImage(buttonText: "Play Now!", onTap: onTap),
             const SizedBox(height: 20),
@@ -103,7 +108,6 @@ class _LandingPageState extends State<LandingPage> {
                           color: Colors.black,
                           fontWeight: FontWeight.w700,
                           fontSize: 16,
-                          fontFamily: 'Poppins',
                         ),
                       ),
                     ),
@@ -114,7 +118,6 @@ class _LandingPageState extends State<LandingPage> {
                           color: Color(0xFF3C64B1),
                           fontWeight: FontWeight.w800,
                           fontSize: 16,
-                          fontFamily: 'Poppins',
                         ),
                       ),
                       recognizer: TapGestureRecognizer()

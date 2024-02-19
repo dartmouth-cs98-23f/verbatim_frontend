@@ -6,6 +6,8 @@ import 'package:verbatim_frontend/screens/customChallenge.dart';
 import 'package:verbatim_frontend/screens/groupChallenge.dart';
 import 'sideBar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 import 'package:verbatim_frontend/widgets/size.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -76,21 +78,25 @@ class _FriendshipState extends State<friendship>
                       textAlign: TextAlign.center,
                       text: TextSpan(
                         children: [
-                          const TextSpan(
+                          TextSpan(
                             text: 'New Challenge with ',
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
+                              textStyle: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 22,
                                 fontWeight: FontWeight.bold,
-                                fontFamily: 'Poppins'),
+                              ),
+                            ),
                           ),
                           TextSpan(
                             text: groupName,
-                            style: const TextStyle(
+                            style: GoogleFonts.poppins(
+                              textStyle: const TextStyle(
                                 color: Colors.orange,
                                 fontSize: 24,
                                 fontWeight: FontWeight.w900,
-                                fontFamily: 'Poppins'),
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -195,11 +201,13 @@ class _FriendshipState extends State<friendship>
               const SizedBox(height: 5),
               Text(
                 title,
-                style: const TextStyle(
+                style: GoogleFonts.poppins(
+                  textStyle: const TextStyle(
                     color: Color(0xFFFFF7EE),
                     fontSize: 16,
                     fontWeight: FontWeight.w700,
-                    fontFamily: 'Poppins'),
+                  ),
+                ),
               ),
               const SizedBox(height: 5),
               SizedBox(
@@ -207,11 +215,13 @@ class _FriendshipState extends State<friendship>
                 child: Text(
                   description,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
+                  style: GoogleFonts.poppins(
+                    textStyle: const TextStyle(
                       color: Color(0xFFFFF7EE),
                       fontSize: 12,
                       fontWeight: FontWeight.w600,
-                      fontFamily: 'Poppins'),
+                    ),
+                  ),
                 ),
               ),
             ],
@@ -468,11 +478,13 @@ class _FriendshipState extends State<friendship>
                                               .group(0)!
                                               .toUpperCase(), // Ensures the first letter of first name is capitalized.
                                         )}',
-                                        style: const TextStyle(
+                                        style: GoogleFonts.poppins(
+                                          textStyle: const TextStyle(
                                             fontSize: 27,
                                             color: Colors.white,
                                             fontWeight: FontWeight.w900,
-                                            fontFamily: 'Poppins'),
+                                          ),
+                                        ),
                                       ),
                                     ])))
                           ],
@@ -510,16 +522,18 @@ class _FriendshipState extends State<friendship>
                                         indicatorPadding: EdgeInsets.zero,
                                         indicatorSize:
                                             TabBarIndicatorSize.label,
-                                        tabs: const [
+                                        tabs: [
                                           Tab(
                                             child: Align(
                                               alignment: Alignment.center,
                                               child: Text(
                                                 "Play",
-                                                style: TextStyle(
+                                                style: GoogleFonts.poppins(
+                                                  textStyle: const TextStyle(
                                                     fontSize: 16,
                                                     fontWeight: FontWeight.bold,
-                                                    fontFamily: 'Poppins'),
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -528,10 +542,12 @@ class _FriendshipState extends State<friendship>
                                               alignment: Alignment.center,
                                               child: Text(
                                                 "Group Stats",
-                                                style: TextStyle(
+                                                style: GoogleFonts.poppins(
+                                                  textStyle: const TextStyle(
                                                     fontSize: 16,
                                                     fontWeight: FontWeight.bold,
-                                                    fontFamily: 'Poppins'),
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                           ),
@@ -571,26 +587,29 @@ class _FriendshipState extends State<friendship>
                                                             widget
                                                                 .friendUsername);
                                                       },
-                                                      child: const Row(
+                                                      child: Row(
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
                                                                 .end,
                                                         children: [
                                                           Text(
                                                             'New Challenge',
-                                                            style: TextStyle(
-                                                              fontSize: 18,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontFamily:
-                                                                  'Poppins',
-                                                              color:
-                                                                  Colors.black,
+                                                            style: GoogleFonts
+                                                                .poppins(
+                                                              textStyle:
+                                                                  const TextStyle(
+                                                                fontSize: 18,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: Colors
+                                                                    .black,
+                                                              ),
                                                             ),
                                                           ),
-                                                          SizedBox(width: 5),
-                                                          Icon(
+                                                          const SizedBox(
+                                                              width: 5),
+                                                          const Icon(
                                                             Icons.add,
                                                             size: 20,
                                                             color: Colors.black,
@@ -798,16 +817,18 @@ class _FriendshipState extends State<friendship>
                                                                 children: [
                                                                   Text(
                                                                     title,
-                                                                    style: const TextStyle(
+                                                                    style: GoogleFonts
+                                                                        .poppins(
+                                                                      textStyle:
+                                                                          const TextStyle(
                                                                         color: Colors
                                                                             .white,
                                                                         fontSize:
                                                                             14,
                                                                         fontWeight:
-                                                                            FontWeight
-                                                                                .bold,
-                                                                        fontFamily:
-                                                                            'Poppins'),
+                                                                            FontWeight.bold,
+                                                                      ),
+                                                                    ),
                                                                   ),
                                                                   const Icon(
                                                                     Icons
@@ -831,26 +852,29 @@ class _FriendshipState extends State<friendship>
                                                             widget
                                                                 .friendUsername);
                                                       },
-                                                      child: const Row(
+                                                      child: Row(
                                                         mainAxisAlignment:
                                                             MainAxisAlignment
                                                                 .end,
                                                         children: [
                                                           Text(
                                                             'New Challenge',
-                                                            style: TextStyle(
-                                                              fontSize: 18,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontFamily:
-                                                                  'Poppins',
-                                                              color:
-                                                                  Colors.black,
+                                                            style: GoogleFonts
+                                                                .poppins(
+                                                              textStyle:
+                                                                  const TextStyle(
+                                                                fontSize: 18,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                                color: Colors
+                                                                    .black,
+                                                              ),
                                                             ),
                                                           ),
-                                                          SizedBox(width: 5),
-                                                          Icon(
+                                                          const SizedBox(
+                                                              width: 5),
+                                                          const Icon(
                                                             Icons.add,
                                                             size: 20,
                                                             color: Colors.black,
@@ -1131,25 +1155,29 @@ class _DonutChartState extends State<DonutChart> {
                     padding: const EdgeInsets.all(6),
                     child: RichText(
                       textAlign: TextAlign.center,
-                      text: const TextSpan(
+                      text: TextSpan(
                         children: [
                           TextSpan(
                             text: 'Your score increases when you:\n',
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
+                              textStyle: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 19,
                                 fontWeight: FontWeight.bold,
-                                fontFamily: 'Poppins'),
+                              ),
+                            ),
                           ),
                           // if groupname is a certain length, make it a new line
                           TextSpan(
                             text:
                                 'Verbatim, Build Streaks, and Play Challenges!',
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
+                              textStyle: const TextStyle(
                                 color: Colors.orange,
                                 fontSize: 21,
                                 fontWeight: FontWeight.w900,
-                                fontFamily: 'Poppins'),
+                              ),
+                            ),
                           ),
                         ],
                       ),
@@ -1185,10 +1213,12 @@ class _DonutChartState extends State<DonutChart> {
           Row(mainAxisAlignment: MainAxisAlignment.center, children: [
             Text(
               widget.title,
-              style: const TextStyle(
+              style: GoogleFonts.poppins(
+                textStyle: const TextStyle(
                   fontSize: 18,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'Poppins'),
+                ),
+              ),
             ),
             const SizedBox(width: 8),
             InkWell(
@@ -1253,17 +1283,21 @@ class _DonutChartState extends State<DonutChart> {
                             children: [
                               Text(
                                 widget.groupSimilarity.toStringAsFixed(2),
-                                style: const TextStyle(
+                                style: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(
                                     fontSize: 10,
                                     fontWeight: FontWeight.bold,
-                                    fontFamily: 'Poppins'),
+                                  ),
+                                ),
                               ),
-                              const Text(
+                              Text(
                                 "Rating",
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(
                                     fontSize: 10,
                                     fontWeight: FontWeight.bold,
-                                    fontFamily: 'Poppins'),
+                                  ),
+                                ),
                               ),
                             ],
                           ),

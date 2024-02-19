@@ -10,6 +10,7 @@ import 'package:verbatim_frontend/screens/signupErrorMessage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:verbatim_frontend/statsGameObject.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class GuestSignUp extends StatefulWidget {
   //TODO: figure out how to not need the
@@ -57,13 +58,12 @@ class _GuestSignUpState extends State<GuestSignUp> {
       }),
     );
     if (response.statusCode == 200) {
-      //TODO: Set shared prefs
       final Map<String, dynamic>? data = json.decode(response.body);
       setState(() {
-         responded = true;
-         isGuest = true;
+        responded = true;
+        isGuest = true;
       });
-     
+
       question1 = data!['q1'];
       question2 = data['q2'];
       question3 = data['q3'];
@@ -233,7 +233,9 @@ class _GuestSignUpState extends State<GuestSignUp> {
     setState(() {
       validationErrors[field] = Text(
         message,
-        style: const TextStyle(color: Colors.red, fontFamily: 'Poppins'),
+        style: GoogleFonts.poppins(
+          textStyle: const TextStyle(color: Colors.red),
+        ),
       );
     });
   }
@@ -265,19 +267,20 @@ class _GuestSignUpState extends State<GuestSignUp> {
                   ),
                 ),
                 const SizedBox(height: 50),
-                const Padding(
+                Padding(
                   padding: EdgeInsets.only(left: 30.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'Create an account',
-                      style: TextStyle(
-                        color: Colors.black,
-                        fontSize: 20,
-                        fontFamily: 'Poppins',
-                        fontWeight: FontWeight.w700,
-                        height: 0.04,
-                        letterSpacing: 0.30,
+                      style: GoogleFonts.poppins(
+                        textStyle: const TextStyle(
+                          color: Colors.black,
+                          fontSize: 20,
+                          fontWeight: FontWeight.w700,
+                          height: 0.04,
+                          letterSpacing: 0.30,
+                        ),
                       ),
                     ),
                   ),
@@ -373,21 +376,24 @@ class _GuestSignUpState extends State<GuestSignUp> {
                         child: RichText(
                           text: TextSpan(
                             children: [
-                              const TextSpan(
+                              TextSpan(
                                 text: 'Already have an account? ',
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w700,
-                                  fontFamily: 'Poppins',
+                                style: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w700,
+                                  ),
                                 ),
                               ),
                               TextSpan(
                                 text: 'Sign in',
-                                style: const TextStyle(
-                                  color: Color(0xFF3C64B1),
-                                  fontWeight: FontWeight.w800,
-                                  fontFamily: 'Poppins',
+                                style: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(
+                                    color: Color(0xFF3C64B1),
+                                    fontWeight: FontWeight.w800,
+
 // Blue color for the link
+                                  ),
                                 ),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {

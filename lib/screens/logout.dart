@@ -2,8 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/screens/logIn.dart';
 import 'package:verbatim_frontend/widgets/guest_utility.dart';
 import '../Components/shared_prefs.dart';
-
-
+import 'package:google_fonts/google_fonts.dart';
 
 class LogoutPage extends StatefulWidget {
   const LogoutPage({super.key});
@@ -31,7 +30,6 @@ class _LogoutPageState extends State<LogoutPage> {
     guestUtility.clearStats();
     guestUtility.clearGameObject();
 
-
     // Navigate to the login page after logout
     Navigator.push(
       context,
@@ -40,8 +38,6 @@ class _LogoutPageState extends State<LogoutPage> {
       ),
     );
   }
-
-
 
   @override
   Widget build(BuildContext context) {
@@ -64,22 +60,23 @@ class _LogoutPageState extends State<LogoutPage> {
                   ),
                 ),
                 const SizedBox(height: 160),
-                const Center(
+                Center(
                   child: Text(
                     'Log out from your account',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
-                      color: Color(0xFFE76F51),
-                      fontSize: 32,
-                      fontFamily: 'Poppins',
-                      fontWeight: FontWeight.w700,
-                      height: 1.5,
-                      letterSpacing: 0.30,
+                    style: GoogleFonts.poppins(
+                      textStyle: const TextStyle(
+                        color: Color(0xFFE76F51),
+                        fontSize: 32,
+                        fontWeight: FontWeight.w700,
+                        height: 1.5,
+                        letterSpacing: 0.30,
+                      ),
                     ),
                   ),
                 ),
                 const SizedBox(height: 30),
-                const Padding(
+                Padding(
                   padding: EdgeInsets.only(left: 15.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
@@ -87,13 +84,14 @@ class _LogoutPageState extends State<LogoutPage> {
                       SizedBox(height: 20),
                       Text(
                         'Are you sure you want to log out?',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontSize: 16,
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w400,
-                          height: 1.5,
-                          letterSpacing: 0.30,
+                        style: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w400,
+                            height: 1.5,
+                            letterSpacing: 0.30,
+                          ),
                         ),
                       ),
                     ],
@@ -116,11 +114,12 @@ class _LogoutPageState extends State<LogoutPage> {
                               BorderRadius.circular(13.0), // Rectangular shape
                         ),
                       ),
-                      child: const Text(
+                      child: Text(
                         'Go Back',
-                        style: TextStyle(
-                          color: Colors.white,
-                          fontFamily: 'Poppins',
+                        style: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
+                            color: Colors.white,
+                          ),
                         ),
                       ),
                     ),
@@ -138,11 +137,12 @@ class _LogoutPageState extends State<LogoutPage> {
                               BorderRadius.circular(13.0), // Rectangular shape
                         ),
                       ),
-                      child: const Text(
+                      child: Text(
                         'Log Out',
-                        style: TextStyle(
-                          color: Colors.black,
-                          fontFamily: 'Poppins',
+                        style: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
+                            color: Colors.black,
+                          ),
                         ),
                       ),
                     ),

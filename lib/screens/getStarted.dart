@@ -2,6 +2,7 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/screens/signUp.dart';
 import 'logIn.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class GetStarted extends StatelessWidget {
   const GetStarted({super.key});
@@ -13,7 +14,7 @@ class GetStarted extends StatelessWidget {
       body: SafeArea(
         child: Column(
           children: [
-            const Expanded(
+            Expanded(
               child: SingleChildScrollView(
                 child: Center(
                   child: Column(
@@ -24,13 +25,14 @@ class GetStarted extends StatelessWidget {
                           alignment: Alignment.center,
                           child: Text(
                             'Verbatim',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 32,
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.w700,
-                              height: 0.04,
-                              letterSpacing: 0.10,
+                            style: GoogleFonts.poppins(
+                              textStyle: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 32,
+                                fontWeight: FontWeight.w700,
+                                height: 0.04,
+                                letterSpacing: 0.10,
+                              ),
                             ),
                           ),
                         ),
@@ -49,23 +51,23 @@ class GetStarted extends StatelessWidget {
                     onPressed: () {
                       // Navigate to the 'Sign Up' page
 
-
-                      Navigator.of(context).push(MaterialPageRoute(builder: (context) => const SignUp()));
-
-
+                      Navigator.of(context).push(MaterialPageRoute(
+                          builder: (context) => const SignUp()));
                     },
                     style: ElevatedButton.styleFrom(
-                      backgroundColor: const Color(0xFFE76F51), // Background color
+                      backgroundColor:
+                          const Color(0xFFE76F51), // Background color
                       shape: RoundedRectangleBorder(
                         borderRadius:
                             BorderRadius.circular(0.0), // Rectangular shape
                       ),
                     ),
-                    child: const Text(
+                    child: Text(
                       'Sign Up!',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'Poppins'
+                      style: GoogleFonts.poppins(
+                        textStyle: const TextStyle(
+                          color: Colors.white,
+                        ),
                       ),
                     ),
                   ),
@@ -73,14 +75,19 @@ class GetStarted extends StatelessWidget {
                   RichText(
                     text: TextSpan(
                       text: 'Already have an account? ',
-                      style: const TextStyle(color: Colors.black, fontFamily: 'Poppins'),
+                      style: GoogleFonts.poppins(
+                        textStyle: const TextStyle(
+                          color: Colors.black,
+                        ),
+                      ),
                       children: [
                         TextSpan(
                           text: 'Sign-in',
-                          style: const TextStyle(
-                            color: Color(0xFF1E4693),
-                            fontFamily: 'Poppins',
-                            decoration: TextDecoration.underline,
+                          style: GoogleFonts.poppins(
+                            textStyle: const TextStyle(
+                              color: Color(0xFF1E4693),
+                              decoration: TextDecoration.underline,
+                            ),
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
