@@ -9,7 +9,6 @@ import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/signupErrorMessage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-import 'package:verbatim_frontend/gameObject.dart';
 import 'package:verbatim_frontend/statsGameObject.dart';
 
 class GuestSignUp extends StatefulWidget {

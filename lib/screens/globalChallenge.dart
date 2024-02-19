@@ -373,7 +373,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
 
   @override
   Widget build(BuildContext context) {
-    print("Responded in global is: " + responded.toString());
+    print("Responded in global is: $responded");
     String idString = id.toString();
 
     //TODO: check that this here works
@@ -619,7 +619,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                       ],
                                     );
                                   } else if (responded == false) {
-                                    return Column(
+                                    return const Column(
                                       children: [
                                         SizedBox(height: 20.0),
                                         Column(
@@ -693,7 +693,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                   } else if (!snapshot.data! &&
                                       responded == true &&
                                       isGuest) {
-                                    return globalSubmittedResponse();
+                                    return const globalSubmittedResponse();
                                   }
                                   //NEED TO CHANGE THIS SNIPPET OF CODE TO HAVE THE CARD AND A SIGN UP
                                   else {

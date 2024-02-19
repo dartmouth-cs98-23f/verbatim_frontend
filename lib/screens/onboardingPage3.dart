@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 import 'package:verbatim_frontend/widgets/size.dart';
 
@@ -30,18 +31,18 @@ class OnBoardingPage3 extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const Center(
+                      Center(
                         child: Text(
                           'Compare & \nCompete',
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: GoogleFonts.poppins(
+                              textStyle: const TextStyle(
                             color: Color(0xFFE76F51),
                             fontSize: 32,
-                            fontFamily: 'Poppins',
                             fontWeight: FontWeight.w700,
                             height: 1.5,
                             letterSpacing: 0.30,
-                          ),
+                          )),
                         ),
                       ),
                       SizedBox(height: 30.v),
@@ -50,14 +51,14 @@ class OnBoardingPage3 extends StatelessWidget {
                         child: Align(
                           alignment: Alignment.center,
                           child: RichText(
-                            text: const TextSpan(
-                              style: TextStyle(
+                            text: TextSpan(
+                              style: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 15,
-                                fontFamily: 'Poppins',
                                 height: 1.5,
                                 letterSpacing: 0.30,
-                              ),
+                              )),
                               children: <TextSpan>[
                                 TextSpan(
                                   text:
@@ -65,18 +66,18 @@ class OnBoardingPage3 extends StatelessWidget {
                                 ),
                                 TextSpan(
                                   text: 'Verba',
-                                  style: TextStyle(
+                                  style: GoogleFonts.poppins(
+                                      textStyle: const TextStyle(
                                     fontWeight: FontWeight.bold,
                                     color: Color(0xFFE76F51),
-                                    fontFamily: 'Poppins',
-                                  ),
+                                  )),
                                 ),
                                 TextSpan(
                                   text: 'world.',
-                                  style: TextStyle(
+                                  style: GoogleFonts.poppins(
+                                      textStyle: const TextStyle(
                                     fontWeight: FontWeight.normal,
-                                    fontFamily: 'Poppins',
-                                  ),
+                                  )),
                                 ),
                               ],
                             ),
@@ -106,12 +107,12 @@ class OnBoardingPage3 extends StatelessWidget {
                             BorderRadius.circular(13.0), // Rectangular shape
                       ),
                     ),
-                    child: const Text(
+                    child: Text(
                       'Skip',
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
                         color: Colors.black,
-                        fontFamily: 'Poppins',
-                      ),
+                      )),
                     ),
                   ),
                   ElevatedButton(
@@ -127,12 +128,12 @@ class OnBoardingPage3 extends StatelessWidget {
                             BorderRadius.circular(13.0), // Rectangular shape
                       ),
                     ),
-                    child: const Text(
+                    child: Text(
                       'Next',
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
                         color: Colors.white,
-                        fontFamily: 'Poppins',
-                      ),
+                      )),
                     ),
                   ),
                 ],

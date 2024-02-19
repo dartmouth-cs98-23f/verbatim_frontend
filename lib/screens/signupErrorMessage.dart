@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import '../widgets/my_button_no_image.dart';
 import 'logIn.dart';
 
@@ -38,18 +39,18 @@ class SignupErrorMessage extends StatelessWidget {
                   ),
                 ),
                 const SizedBox(height: 230),
-                const Center(
+                Center(
                   child: Text(
                     'Oops, something went wrong!',
                     textAlign: TextAlign.center,
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
+                        textStyle: const TextStyle(
                       color: Color(0xFFE76F51),
                       fontSize: 32,
-                      fontFamily: 'Poppins',
                       fontWeight: FontWeight.w700,
                       height: 1.5,
                       letterSpacing: 0.30,
-                    ),
+                    )),
                   ),
                 ),
                 Padding(
@@ -60,14 +61,14 @@ class SignupErrorMessage extends StatelessWidget {
                       const SizedBox(height: 20),
                       Text(
                         getErrorMessage(), // Use the error message based on the pageName
-                        style: const TextStyle(
+                        style: GoogleFonts.poppins(
+                            textStyle: const TextStyle(
                           color: Colors.black,
                           fontSize: 16,
-                          fontFamily: 'Poppins',
                           fontWeight: FontWeight.w400,
                           height: 1.5,
                           letterSpacing: 0.30,
-                        ),
+                        )),
                       ),
                     ],
                   ),

@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:verbatim_frontend/gameObject.dart';
 import 'package:verbatim_frontend/screens/logIn.dart';
 import 'package:verbatim_frontend/widgets/guest_utility.dart';
 import '../Components/shared_prefs.dart';
@@ -28,7 +27,7 @@ class _LogoutPageState extends State<LogoutPage> {
     SharedPrefs().setCurrentPage('/login');
 
     //TODO:clear stats, clear guest stuff
-    final GuestUtility guestUtility= new GuestUtility();
+    final GuestUtility guestUtility= GuestUtility();
     guestUtility.clearStats();
     guestUtility.clearGameObject();
 

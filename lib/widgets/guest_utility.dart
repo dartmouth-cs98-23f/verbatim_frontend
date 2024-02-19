@@ -1,6 +1,4 @@
-import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/gameObject.dart';
-import 'package:verbatim_frontend/statsGameObject.dart';
 
 class GuestUtility {
 

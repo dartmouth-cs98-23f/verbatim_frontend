@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/gameObject.dart';
-import 'sideBar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:verbatim_frontend/widgets/custom_app_bar.dart';
@@ -167,10 +166,7 @@ class _GuestGlobalState extends State<guestGlobal> {
       showText = !showText;
     }
 
-    print("In Guest Global, username: " +
-        username +
-        " ,responded: " +
-        responded.toString());
+    print("In Guest Global, username: $username ,responded: $responded");
     return SafeArea(
       child: Scaffold(
         resizeToAvoidBottomInset: true,

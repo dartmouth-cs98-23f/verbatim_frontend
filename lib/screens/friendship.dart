@@ -549,7 +549,7 @@ class _FriendshipState extends State<friendship>
                                         children: [
                                           Visibility(
                                               visible:
-                                                  mappedChallenges.length == 0,
+                                                  mappedChallenges.isEmpty,
                                               child: Container(
                                                 padding: const EdgeInsets.only(
                                                     top: 10,
@@ -558,12 +558,12 @@ class _FriendshipState extends State<friendship>
                                                     bottom: 20),
                                                 child: Column(
                                                   children: [
-                                                    SizedBox(height: 40),
+                                                    const SizedBox(height: 40),
                                                     Image.asset(
                                                       'assets/bird3.png',
                                                       width: 240,
                                                     ),
-                                                    SizedBox(height: 35),
+                                                    const SizedBox(height: 35),
                                                     GestureDetector(
                                                       onTap: () {
                                                         _showChallengeOptions(
@@ -603,7 +603,7 @@ class _FriendshipState extends State<friendship>
                                               )),
                                           Visibility(
                                               visible:
-                                                  mappedChallenges.length > 0,
+                                                  mappedChallenges.isNotEmpty,
                                               child: Container(
                                                 height: 400,
                                                 width: 330,

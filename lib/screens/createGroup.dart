@@ -332,7 +332,7 @@ class _CreateGroupState extends State<createGroup> {
                                                           .group(0)!
                                                           .toUpperCase(), // Ensures the first letter of first name is capitalized.
                                                     ),
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                         fontWeight:
                                                             FontWeight.bold,
                                                         fontFamily: 'Poppins'),
