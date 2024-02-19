@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class NewNavBar extends StatelessWidget {
   const NewNavBar({super.key});
@@ -62,24 +63,23 @@ class NewNavBar extends StatelessWidget {
                       width: 16,
                       height: 16,
                       clipBehavior: Clip.antiAlias,
-
                       decoration: const BoxDecoration(),
                       child: const Stack(),
-
                     ),
                     const SizedBox(width: 10),
-                    const SizedBox(
+                    SizedBox(
                       width: 310,
                       height: 5,
                       child: Text(
                         'Search Users',
-                        style: TextStyle(
-                          color: Color(0xFF252323),
-                          fontSize: 12,
-                          fontFamily: 'Poppins',
-                          fontWeight: FontWeight.w600,
-                          height: 0.11,
-                          letterSpacing: 0.20,
+                        style: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
+                            color: Color(0xFF252323),
+                            fontSize: 12,
+                            fontWeight: FontWeight.w600,
+                            height: 0.11,
+                            letterSpacing: 0.20,
+                          ),
                         ),
                       ),
                     ),

@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:verbatim_frontend/screens/friendship.dart';
 
 class CustomChallengeButton extends StatelessWidget {
@@ -40,16 +41,16 @@ class CustomChallengeButton extends StatelessWidget {
         width: 280,
         height: 50,
         alignment: Alignment.center,
-        child: const Text(
+        child:  Text(
           'Go to our Challenges',
           textAlign: TextAlign.center,
-          style: TextStyle(
+          style:GoogleFonts.poppins(textStyle: const TextStyle(
             color: Colors.white,
             fontSize: 18,
             fontFamily: 'Poppins',
             fontWeight: FontWeight.w700,
             letterSpacing: 0.30,
-          ),
+          ),),
         ),
       ),
     );

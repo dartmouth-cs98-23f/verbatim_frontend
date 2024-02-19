@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
 
 class DonutChart extends StatefulWidget {
@@ -48,25 +49,28 @@ class _DonutChartState extends State<DonutChart> {
                     padding: const EdgeInsets.all(6),
                     child: RichText(
                       textAlign: TextAlign.center,
-                      text: const TextSpan(
+                      text: TextSpan(
                         children: [
                           TextSpan(
                             text: 'Your score increases when you:\n\n',
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
+                              textStyle: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 19,
                                 fontWeight: FontWeight.bold,
-                                fontFamily: 'Poppins'),
+                              ),
+                            ),
                           ),
                           // if groupname is a certain length, make it a new line
                           TextSpan(
                             text:
                                 'Verbatim, Build Streaks, and Play Challenges!',
-                            style: TextStyle(
-                              color: Colors.orange,
-                              fontSize: 21,
-                              fontWeight: FontWeight.w900,
-                              fontFamily: 'Poppins',
+                            style: GoogleFonts.poppins(
+                              textStyle: const TextStyle(
+                                color: Colors.orange,
+                                fontSize: 21,
+                                fontWeight: FontWeight.w900,
+                              ),
                             ),
                           ),
                         ],

@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MyStatsTile extends StatelessWidget {
   final String stat;
@@ -18,20 +19,22 @@ class MyStatsTile extends StatelessWidget {
         Container(
           child: Column(
             children: [
-              const Padding(padding: EdgeInsets.only(top: 10.0, left:15.0)),
+              const Padding(padding: EdgeInsets.only(top: 10.0, left: 15.0)),
               Text.rich(TextSpan(children: [
                 TextSpan(
                     text: '$stat\n',
-                    style: const TextStyle(
-                        color: Colors.white,
-                        height: 1.2,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 20)),
+                    style: GoogleFonts.poppins(
+                        textStyle: const TextStyle(
+                            color: Colors.white,
+                            height: 1.2,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 20))),
                 TextSpan(
-                  text: field,
-                  style: const TextStyle(
-                      height: 1.2, color: Colors.white, fontSize: 12),
-                )
+                    text: field,
+                    style: GoogleFonts.poppins(
+                      textStyle: const TextStyle(
+                          height: 1.2, color: Colors.white, fontSize: 12),
+                    ))
               ])),
             ],
           ),

@@ -166,7 +166,7 @@ class _GuestGlobalState extends State<guestGlobal> {
       _streamController.sink.add(!showText);
       showText = !showText;
     }
-    print("In Guest Global, username: "+ username +" ,responded: " +responded.toString());
+    print("In Guest Global, username: $username ,responded: $responded");
     return SafeArea(
     
       child: Scaffold(

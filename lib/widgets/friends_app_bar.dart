@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'size.dart';
 
 class FriendsAppBar extends StatelessWidget implements PreferredSizeWidget {
@@ -26,14 +27,14 @@ class FriendsAppBar extends StatelessWidget implements PreferredSizeWidget {
           color: Colors.transparent,
           borderRadius: BorderRadius.circular(10),
         ),
-        child: const Center(
+        child: Center(
           child: Text(
             'Add Friends',
-            style: TextStyle(
+            style: GoogleFonts.poppins(textStyle: const TextStyle(
               fontSize: 24,
               color: Colors.white,
               fontWeight: FontWeight.w900,
-            ),
+            ),),
           ),
         ),
       ),

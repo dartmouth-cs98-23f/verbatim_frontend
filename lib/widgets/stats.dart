@@ -1,5 +1,6 @@
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
 
 class Friend {
@@ -292,22 +293,26 @@ class Stats extends StatelessWidget {
                               children: [
                                 Text(
                                   "You Said: '$yourAnswer1'",
-                                  style: const TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
+                                  style: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          const SizedBox(
+                          SizedBox(
                               width: 200,
                               child: Center(
                                 child: Text(
                                   "Friends' Answers",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
+                                  style: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                               )),
@@ -316,15 +321,17 @@ class Stats extends StatelessWidget {
                             width: 300,
                             height: 250,
                             child: friends.isEmpty
-                                ? const Padding(
+                                ? Padding(
                                     padding: EdgeInsets.only(top: 20.0),
                                     child: Text(
                                       "None of your friends have played today. Add friends to see their answers!",
                                       textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 25,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.orange,
+                                      style: GoogleFonts.poppins(
+                                        textStyle: const TextStyle(
+                                          fontSize: 25,
+                                          fontWeight: FontWeight.bold,
+                                          color: Colors.orange,
+                                        ),
                                       ),
                                     ))
                                 : Column(
@@ -366,20 +373,28 @@ class Stats extends StatelessWidget {
                                                                 text:
                                                                     '$friendName: ',
                                                                 style:
-                                                                    const TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .bold,
+                                                                    GoogleFonts
+                                                                        .poppins(
+                                                                  textStyle:
+                                                                      const TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .bold,
+                                                                  ),
                                                                 ),
                                                               ),
                                                               TextSpan(
                                                                 text:
                                                                     friendAnswer1,
                                                                 style:
-                                                                    const TextStyle(
-                                                                  fontWeight:
-                                                                      FontWeight
-                                                                          .normal,
+                                                                    GoogleFonts
+                                                                        .poppins(
+                                                                  textStyle:
+                                                                      const TextStyle(
+                                                                    fontWeight:
+                                                                        FontWeight
+                                                                            .normal,
+                                                                  ),
                                                                 ),
                                                               ),
                                                             ],
@@ -406,21 +421,25 @@ class Stats extends StatelessWidget {
                                                                   TextSpan(
                                                                     text:
                                                                         '$nextFriendName: ',
-                                                                    style:
-                                                                        const TextStyle(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
+                                                                    style: GoogleFonts
+                                                                        .poppins(
+                                                                      textStyle:
+                                                                          const TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight.bold,
+                                                                      ),
                                                                     ),
                                                                   ),
                                                                   TextSpan(
                                                                     text:
                                                                         nextAnswer,
-                                                                    style:
-                                                                        const TextStyle(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .normal,
+                                                                    style: GoogleFonts
+                                                                        .poppins(
+                                                                      textStyle:
+                                                                          const TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight.normal,
+                                                                      ),
                                                                     ),
                                                                   ),
                                                                 ],
@@ -525,22 +544,26 @@ class Stats extends StatelessWidget {
                               children: [
                                 Text(
                                   "You Said: '$yourAnswer2'",
-                                  style: const TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
+                                  style: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          const SizedBox(
+                          SizedBox(
                               width: 200,
                               child: Center(
                                 child: Text(
                                   "Friends' Answers",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
+                                  style: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                               )),
@@ -549,15 +572,17 @@ class Stats extends StatelessWidget {
                               width: 300,
                               height: 250,
                               child: friends.isEmpty
-                                  ? const Padding(
+                                  ? Padding(
                                       padding: EdgeInsets.only(top: 20.0),
                                       child: Text(
                                         "None of your friends have played today. Add friends to see their answers!",
                                         textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 25,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.orange,
+                                        style: GoogleFonts.poppins(
+                                          textStyle: const TextStyle(
+                                            fontSize: 25,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.orange,
+                                          ),
                                         ),
                                       ))
                                   : Column(
@@ -598,21 +623,27 @@ class Stats extends StatelessWidget {
                                                                 TextSpan(
                                                                   text:
                                                                       '$friendName: ',
-                                                                  style:
-                                                                      const TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
+                                                                  style: GoogleFonts
+                                                                      .poppins(
+                                                                    textStyle:
+                                                                        const TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                    ),
                                                                   ),
                                                                 ),
                                                                 TextSpan(
                                                                   text:
                                                                       friendAnswer2,
-                                                                  style:
-                                                                      const TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .normal,
+                                                                  style: GoogleFonts
+                                                                      .poppins(
+                                                                    textStyle:
+                                                                        const TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .normal,
+                                                                    ),
                                                                   ),
                                                                 ),
                                                               ],
@@ -639,19 +670,25 @@ class Stats extends StatelessWidget {
                                                                     TextSpan(
                                                                       text:
                                                                           '$nextFriendName: ',
-                                                                      style:
-                                                                          const TextStyle(
-                                                                        fontWeight:
-                                                                            FontWeight.bold,
+                                                                      style: GoogleFonts
+                                                                          .poppins(
+                                                                        textStyle:
+                                                                            const TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                        ),
                                                                       ),
                                                                     ),
                                                                     TextSpan(
                                                                       text:
                                                                           nextAnswer,
-                                                                      style:
-                                                                          const TextStyle(
-                                                                        fontWeight:
-                                                                            FontWeight.normal,
+                                                                      style: GoogleFonts
+                                                                          .poppins(
+                                                                        textStyle:
+                                                                            const TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.normal,
+                                                                        ),
                                                                       ),
                                                                     ),
                                                                   ],
@@ -683,9 +720,11 @@ class Stats extends StatelessWidget {
                                 const EdgeInsets.symmetric(horizontal: 16.0),
                             child: Text(
                               questions[2],
-                              style: const TextStyle(
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.bold,
+                              style: GoogleFonts.poppins(
+                                textStyle: const TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),
@@ -754,22 +793,26 @@ class Stats extends StatelessWidget {
                               children: [
                                 Text(
                                   "You Said: '$yourAnswer3'",
-                                  style: const TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
+                                  style: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          const SizedBox(
+                          SizedBox(
                               width: 200,
                               child: Center(
                                 child: Text(
                                   "Friends' Answers",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
+                                  style: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                               )),
@@ -778,17 +821,18 @@ class Stats extends StatelessWidget {
                             width: 300,
                             height: 250,
                             child: friends.isEmpty
-                                ? const Padding(
+                                ? Padding(
                                     padding: EdgeInsets.only(top: 20.0),
                                     child: Text(
-                                      "None of your friends have played today. Add friends to see their answers!",
-                                      textAlign: TextAlign.center,
-                                      style: TextStyle(
-                                        fontSize: 25,
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.orange,
-                                      ),
-                                    ))
+                                        "None of your friends have played today. Add friends to see their answers!",
+                                        textAlign: TextAlign.center,
+                                        style: GoogleFonts.poppins(
+                                          textStyle: const TextStyle(
+                                            fontSize: 25,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.orange,
+                                          ),
+                                        )))
                                 : Column(
                                     children: friends.asMap().entries.map(
                                       (entry) {
@@ -827,21 +871,27 @@ class Stats extends StatelessWidget {
                                                                 TextSpan(
                                                                   text:
                                                                       '$friendName: ',
-                                                                  style:
-                                                                      const TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
+                                                                  style: GoogleFonts
+                                                                      .poppins(
+                                                                    textStyle:
+                                                                        const TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                    ),
                                                                   ),
                                                                 ),
                                                                 TextSpan(
                                                                   text:
                                                                       friendAnswer3,
-                                                                  style:
-                                                                      const TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .normal,
+                                                                  style: GoogleFonts
+                                                                      .poppins(
+                                                                    textStyle:
+                                                                        const TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .normal,
+                                                                    ),
                                                                   ),
                                                                 ),
                                                               ],
@@ -869,21 +919,25 @@ class Stats extends StatelessWidget {
                                                                   TextSpan(
                                                                     text:
                                                                         '$nextFriendName: ',
-                                                                    style:
-                                                                        const TextStyle(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .bold,
+                                                                    style: GoogleFonts
+                                                                        .poppins(
+                                                                      textStyle:
+                                                                          const TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight.bold,
+                                                                      ),
                                                                     ),
                                                                   ),
                                                                   TextSpan(
                                                                     text:
                                                                         nextAnswer,
-                                                                    style:
-                                                                        const TextStyle(
-                                                                      fontWeight:
-                                                                          FontWeight
-                                                                              .normal,
+                                                                    style: GoogleFonts
+                                                                        .poppins(
+                                                                      textStyle:
+                                                                          const TextStyle(
+                                                                        fontWeight:
+                                                                            FontWeight.normal,
+                                                                      ),
                                                                     ),
                                                                   ),
                                                                 ],
@@ -917,9 +971,11 @@ class Stats extends StatelessWidget {
                                 const EdgeInsets.symmetric(horizontal: 16.0),
                             child: Text(
                               questions[3],
-                              style: const TextStyle(
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.bold,
+                              style: GoogleFonts.poppins(
+                                textStyle: const TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),
@@ -989,22 +1045,26 @@ class Stats extends StatelessWidget {
                               children: [
                                 Text(
                                   "You Said: '$yourAnswer4'",
-                                  style: const TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
+                                  style: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          const SizedBox(
+                          SizedBox(
                               width: 200,
                               child: Center(
                                 child: Text(
                                   "Friends' Answers",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
+                                  style: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                               )),
@@ -1013,15 +1073,17 @@ class Stats extends StatelessWidget {
                               width: 300,
                               height: 250,
                               child: friends.isEmpty
-                                  ? const Padding(
+                                  ? Padding(
                                       padding: EdgeInsets.only(top: 20.0),
                                       child: Text(
                                         "None of your friends have played today. Add friends to see their answers!",
                                         textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 25,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.orange,
+                                        style: GoogleFonts.poppins(
+                                          textStyle: const TextStyle(
+                                            fontSize: 25,
+                                            fontWeight: FontWeight.bold,
+                                            color: Colors.orange,
+                                          ),
                                         ),
                                       ))
                                   : Column(
@@ -1062,21 +1124,27 @@ class Stats extends StatelessWidget {
                                                                 TextSpan(
                                                                   text:
                                                                       '$friendName: ',
-                                                                  style:
-                                                                      const TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
+                                                                  style: GoogleFonts
+                                                                      .poppins(
+                                                                    textStyle:
+                                                                        const TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                    ),
                                                                   ),
                                                                 ),
                                                                 TextSpan(
                                                                   text:
                                                                       friendAnswer4,
-                                                                  style:
-                                                                      const TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .normal,
+                                                                  style: GoogleFonts
+                                                                      .poppins(
+                                                                    textStyle:
+                                                                        const TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .normal,
+                                                                    ),
                                                                   ),
                                                                 ),
                                                               ],
@@ -1103,19 +1171,25 @@ class Stats extends StatelessWidget {
                                                                     TextSpan(
                                                                       text:
                                                                           '$nextFriendName: ',
-                                                                      style:
-                                                                          const TextStyle(
-                                                                        fontWeight:
-                                                                            FontWeight.bold,
+                                                                      style: GoogleFonts
+                                                                          .poppins(
+                                                                        textStyle:
+                                                                            const TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                        ),
                                                                       ),
                                                                     ),
                                                                     TextSpan(
                                                                       text:
                                                                           nextAnswer,
-                                                                      style:
-                                                                          const TextStyle(
-                                                                        fontWeight:
-                                                                            FontWeight.normal,
+                                                                      style: GoogleFonts
+                                                                          .poppins(
+                                                                        textStyle:
+                                                                            const TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.normal,
+                                                                        ),
                                                                       ),
                                                                     ),
                                                                   ],
@@ -1147,9 +1221,11 @@ class Stats extends StatelessWidget {
                                 const EdgeInsets.symmetric(horizontal: 16.0),
                             child: Text(
                               questions[4],
-                              style: const TextStyle(
-                                fontSize: 16.0,
-                                fontWeight: FontWeight.bold,
+                              style: GoogleFonts.poppins(
+                                textStyle: const TextStyle(
+                                  fontSize: 16.0,
+                                  fontWeight: FontWeight.bold,
+                                ),
                               ),
                             ),
                           ),
@@ -1219,22 +1295,26 @@ class Stats extends StatelessWidget {
                               children: [
                                 Text(
                                   "You Said: '$yourAnswer5'",
-                                  style: const TextStyle(
-                                    fontSize: 16.0,
-                                    fontWeight: FontWeight.bold,
+                                  style: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(
+                                      fontSize: 16.0,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                               ],
                             ),
                           ),
-                          const SizedBox(
+                          SizedBox(
                               width: 200,
                               child: Center(
                                 child: Text(
                                   "Friends' Answers",
-                                  style: TextStyle(
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.bold,
+                                  style: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(
+                                      fontSize: 20,
+                                      fontWeight: FontWeight.bold,
+                                    ),
                                   ),
                                 ),
                               )),
@@ -1243,17 +1323,18 @@ class Stats extends StatelessWidget {
                               width: 300,
                               height: 250,
                               child: friends.isEmpty
-                                  ? const Padding(
+                                  ? Padding(
                                       padding: EdgeInsets.only(top: 20.0),
                                       child: Text(
-                                        "None of your friends have played today. Add friends to see their answers!",
-                                        textAlign: TextAlign.center,
-                                        style: TextStyle(
-                                          fontSize: 25,
-                                          fontWeight: FontWeight.bold,
-                                          color: Colors.orange,
-                                        ),
-                                      ))
+                                          "None of your friends have played today. Add friends to see their answers!",
+                                          textAlign: TextAlign.center,
+                                          style: GoogleFonts.poppins(
+                                            textStyle: const TextStyle(
+                                              fontSize: 25,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.orange,
+                                            ),
+                                          )))
                                   : Column(
                                       children: friends.asMap().entries.map(
                                         (entry) {
@@ -1292,21 +1373,27 @@ class Stats extends StatelessWidget {
                                                                 TextSpan(
                                                                   text:
                                                                       '$friendName: ',
-                                                                  style:
-                                                                      const TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .bold,
+                                                                  style: GoogleFonts
+                                                                      .poppins(
+                                                                    textStyle:
+                                                                        const TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .bold,
+                                                                    ),
                                                                   ),
                                                                 ),
                                                                 TextSpan(
                                                                   text:
                                                                       friendAnswer5,
-                                                                  style:
-                                                                      const TextStyle(
-                                                                    fontWeight:
-                                                                        FontWeight
-                                                                            .normal,
+                                                                  style: GoogleFonts
+                                                                      .poppins(
+                                                                    textStyle:
+                                                                        const TextStyle(
+                                                                      fontWeight:
+                                                                          FontWeight
+                                                                              .normal,
+                                                                    ),
                                                                   ),
                                                                 ),
                                                               ],
@@ -1333,19 +1420,25 @@ class Stats extends StatelessWidget {
                                                                     TextSpan(
                                                                       text:
                                                                           '$nextFriendName: ',
-                                                                      style:
-                                                                          const TextStyle(
-                                                                        fontWeight:
-                                                                            FontWeight.bold,
+                                                                      style: GoogleFonts
+                                                                          .poppins(
+                                                                        textStyle:
+                                                                            const TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.bold,
+                                                                        ),
                                                                       ),
                                                                     ),
                                                                     TextSpan(
                                                                       text:
                                                                           nextAnswer,
-                                                                      style:
-                                                                          const TextStyle(
-                                                                        fontWeight:
-                                                                            FontWeight.normal,
+                                                                      style: GoogleFonts
+                                                                          .poppins(
+                                                                        textStyle:
+                                                                            const TextStyle(
+                                                                          fontWeight:
+                                                                              FontWeight.normal,
+                                                                        ),
                                                                       ),
                                                                     ),
                                                                   ],
