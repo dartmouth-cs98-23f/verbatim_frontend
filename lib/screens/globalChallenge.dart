@@ -479,8 +479,10 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                                         text:
                                                             " users have played today",
                                                         style: TextStyle(
-                                                            fontSize: 15,
+                                                            fontSize: 14,
                                                             color: Colors.black,
+                                                            fontWeight:
+                                                                FontWeight.w400,
                                                             fontFamily:
                                                                 'Poppins')),
                                                   ],
@@ -688,7 +690,6 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                               questions: questions,
                                               responses: responses123))
                                     ]);
-
                                   } else if (!snapshot.data! &&
                                       responded == true &&
                                       isGuest) {
@@ -696,7 +697,6 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                   }
                                   //NEED TO CHANGE THIS SNIPPET OF CODE TO HAVE THE CARD AND A SIGN UP
                                   else {
-
                                     return FutureBuilder<void>(
                                       future: _fetchData(username),
                                       builder: (context, snapshot) {

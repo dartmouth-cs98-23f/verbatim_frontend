@@ -1108,7 +1108,7 @@ class _DonutChartState extends State<DonutChart> {
           contentPadding: EdgeInsets.zero,
           content: Container(
               width: 160,
-              height: 180,
+              height: 200,
               clipBehavior: Clip.antiAlias,
               decoration: BoxDecoration(
                 color: Colors.white,
@@ -1134,7 +1134,7 @@ class _DonutChartState extends State<DonutChart> {
                       text: const TextSpan(
                         children: [
                           TextSpan(
-                            text: 'Your score increases when you:\n\n',
+                            text: 'Your score increases when you:\n',
                             style: TextStyle(
                                 color: Colors.black,
                                 fontSize: 19,

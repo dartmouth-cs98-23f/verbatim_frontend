@@ -28,11 +28,9 @@ class _LandingPageState extends State<LandingPage> {
 
     Map<String, dynamic>? arguments = uri.queryParameters;
     String referer = arguments['referer'] ?? '';
-  
+
     //Navigator.pushNamed(context, '/guest_global');
     Navigator.pushNamed(context, '/guest_global?referer=$referer');
-
-
   }
 
 // will this make shared preferences clear on opening?
@@ -59,7 +57,7 @@ class _LandingPageState extends State<LandingPage> {
                 child: Image.asset(
                   'assets/Logo.png', // Replace with the path to your image asset
                   width: 250, // Set the width and height to your preference
-                  height: 300,
+                  height: 180,
                 ),
               ),
             ),
