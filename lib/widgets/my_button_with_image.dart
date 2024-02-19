@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class MyButtonWithImage extends StatelessWidget {
   final String buttonText;
@@ -54,14 +55,15 @@ class MyButtonWithImage extends StatelessWidget {
                     child: Center(
                       child: Text(
                         buttonText,
-                        style: const TextStyle(
-                          color: Colors.white,
-                          fontSize: 14,
-                          fontFamily: 'Mulish',
-                          fontWeight: FontWeight.w700,
-                          height: 1.0,
-                          letterSpacing: 0.30,
-                        ),
+                           style: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
+                            color: Colors.white,
+                            fontSize: 14,
+                            fontFamily: 'Mulish',
+                            fontWeight: FontWeight.w700,
+                            height: 1.0,
+                            letterSpacing: 0.30,
+                          ),),
                       ),
                     ),
                   )

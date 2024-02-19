@@ -207,7 +207,7 @@ class _ProfileState extends State<Profile> {
 
   void getFriendshipDate(String currentUsername, String friendUsername) async {
     final String url =
-        "${BackendService.getBackendUrl()}${currentUsername}/${friendUsername}/getUserStats";
+        "${BackendService.getBackendUrl()}$currentUsername/$friendUsername/getUserStats";
 
     try {
       final http.Response response = await http.get(Uri.parse(url));
@@ -237,7 +237,7 @@ class _ProfileState extends State<Profile> {
       }
 
       if (friendshipDate.isNotEmpty) {
-        friendshipStatusDescription = "Friends Since ${friendshipDate}";
+        friendshipStatusDescription = "Friends Since $friendshipDate";
       }
     } catch (error) {
       print('\nError getting friendship data: $error\n');
@@ -255,7 +255,7 @@ class _ProfileState extends State<Profile> {
         friendRequestStates[widget.user!.username] = widget.user!.isRequested;
       }
       drawButton = friendRequestStates[widget.user!.username] as bool;
-      groupName = '${widget.user!.username}';
+      groupName = widget.user!.username;
     }
 
     // Initialize username from SharedPrefs if not provided through the widget
@@ -310,6 +310,7 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
+    print(" In profile Shared prefs: "+ SharedPrefs().getUserName()!);
     return SafeArea(
       child: Theme(
         data: ThemeData(
@@ -814,7 +815,7 @@ class _ProfileState extends State<Profile> {
                                                 ),
                                               ),
                                               const TextSpan(
-                                                text: "% similarity",
+                                                text: " power rating",
                                                 style: TextStyle(
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w500,
@@ -939,7 +940,7 @@ class _ProfileState extends State<Profile> {
                                                           .toUpperCase(), // Ensures the first letter of first name is capitalized.
                                                     ),
                                                     textAlign: TextAlign.center,
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                       color: Colors.black,
                                                       fontSize: 18,
                                                       fontFamily: 'Poppins',
@@ -962,7 +963,7 @@ class _ProfileState extends State<Profile> {
                                                           .toUpperCase(), // Ensures the first letter of first name is capitalized.
                                                     ),
                                                     textAlign: TextAlign.center,
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                       color: Colors.black,
                                                       fontSize: 18,
                                                       fontFamily: 'Poppins',
@@ -990,7 +991,7 @@ class _ProfileState extends State<Profile> {
                                                           .toUpperCase(), // Ensures the first letter of first name is capitalized.
                                                     )}",
                                                     textAlign: TextAlign.center,
-                                                    style: TextStyle(
+                                                    style: const TextStyle(
                                                       color: Colors.black,
                                                       fontSize: 18,
                                                       fontFamily: 'Poppins',
@@ -1015,7 +1016,7 @@ class _ProfileState extends State<Profile> {
                                                         )}",
                                                         textAlign:
                                                             TextAlign.center,
-                                                        style: TextStyle(
+                                                        style: const TextStyle(
                                                           color: Colors.black,
                                                           fontSize: 18,
                                                           fontFamily: 'Poppins',
@@ -1039,7 +1040,7 @@ class _ProfileState extends State<Profile> {
                                                             )}",
                                                             textAlign: TextAlign
                                                                 .center,
-                                                            style: TextStyle(
+                                                            style: const TextStyle(
                                                               color:
                                                                   Colors.black,
                                                               fontSize: 18,
@@ -1053,7 +1054,7 @@ class _ProfileState extends State<Profile> {
                                                                   0.10,
                                                             )),
                                                       )
-                                                    : SizedBox(
+                                                    : const SizedBox(
                                                         width: 91,
                                                         child: Text(' ',
                                                             textAlign: TextAlign

@@ -1,6 +1,7 @@
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 import 'size.dart';
@@ -12,7 +13,8 @@ class CustomAppBarSettings extends StatelessWidget
   final String title;
   final bool showBackButton;
 
-  const CustomAppBarSettings({super.key, 
+  const CustomAppBarSettings({
+    super.key,
     required this.title,
     this.showBackButton = false,
   });
@@ -160,24 +162,26 @@ class SearchBarTextField extends StatelessWidget {
                   controller: _searchController,
                   onChanged: handleSearch,
                   onSubmitted: handleSubmit,
-                  style: const TextStyle(
-                    color: Colors.black,
-                    fontSize: 12,
-                    fontFamily: 'Poppins',
-                    fontWeight: FontWeight.w600,
-                    height: 0.11,
-                    letterSpacing: 0.20,
-                  ),
-                  cursorColor: Colors.black,
-                  decoration: const InputDecoration(
-                    hintText: 'Search Users',
-                    hintStyle: TextStyle(
+                  style: GoogleFonts.poppins(
+                    textStyle: const TextStyle(
                       color: Colors.black,
                       fontSize: 12,
-                      fontFamily: 'Poppins',
                       fontWeight: FontWeight.w600,
                       height: 0.11,
                       letterSpacing: 0.20,
+                    ),
+                  ),
+                  cursorColor: Colors.black,
+                  decoration: InputDecoration(
+                    hintText: 'Search Users',
+                    hintStyle: GoogleFonts.poppins(
+                      textStyle: const TextStyle(
+                        color: Colors.black,
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600,
+                        height: 0.11,
+                        letterSpacing: 0.20,
+                      ),
                     ),
                     border: InputBorder.none,
                   ),
@@ -195,7 +199,8 @@ class TitleFrame extends StatelessWidget {
   final String title;
   final bool showBackArrow;
 
-  const TitleFrame({super.key, required this.title, this.showBackArrow = false});
+  const TitleFrame(
+      {super.key, required this.title, this.showBackArrow = false});
 
   @override
   Widget build(BuildContext context) {
@@ -212,7 +217,8 @@ class TitleFrame extends StatelessWidget {
             Padding(
               padding: const EdgeInsets.only(bottom: 10),
               child: IconButton(
-                icon: const Icon(Icons.arrow_back_ios_new, color: Color(0xFFFFF7EE)),
+                icon: const Icon(Icons.arrow_back_ios_new,
+                    color: Color(0xFFFFF7EE)),
                 onPressed: () {
                   // Handle back arrow press
                   Navigator.pop(context);
