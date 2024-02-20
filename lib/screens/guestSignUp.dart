@@ -109,13 +109,13 @@ class _GuestSignUpState extends State<GuestSignUp> {
           print("verbatasticUsers is empty");
         }
       }
-      SharedPrefs().setEmail(email);
-      SharedPrefs().setFirstName(firstName);
-      SharedPrefs().setLastName(lastName);
-      SharedPrefs().setPassword(password);
-      SharedPrefs().setUserName(username);
-      SharedPrefs().setBio("");
-      SharedPrefs().setProfileUrl("assets/profile_pic.png");
+      SharedPrefs.setEmail(email);
+        SharedPrefs.setFirstName(firstName);
+        SharedPrefs.setLastName(lastName);
+      SharedPrefs.setPassword(password);
+      SharedPrefs.setUserName(username);
+      SharedPrefs.setBio("");
+      SharedPrefs.setProfileUrl("assets/profile_pic.png");
       Navigator.pushNamed(context,
           '/global_challenge'); //push them to the stats page if we have one
     } else {

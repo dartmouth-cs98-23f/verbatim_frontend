@@ -82,13 +82,13 @@ class _SignUpState extends State<SignUp> {
 
       if (response.statusCode == 200) {
         // Save the user's info in the shared prefs
-        SharedPrefs().setEmail(email);
-        SharedPrefs().setFirstName(firstName);
-        SharedPrefs().setLastName(lastName);
-        SharedPrefs().setPassword(password);
-        SharedPrefs().setUserName(username);
-        SharedPrefs().setBio("");
-        SharedPrefs().setProfileUrl("assets/profile_pic.png");
+        SharedPrefs.setEmail(email);
+        SharedPrefs.setFirstName(firstName);
+        SharedPrefs.setLastName(lastName);
+        SharedPrefs.setPassword(password);
+        SharedPrefs.setUserName(username);
+        SharedPrefs.setBio("");
+        SharedPrefs.setProfileUrl("assets/profile_pic.png");
 
         // Successful sign-up: Navigate to the 'OnBoardingPage1' page
         Navigator.pushNamed(context, '/onboarding_page1');

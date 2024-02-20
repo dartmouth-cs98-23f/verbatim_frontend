@@ -52,12 +52,12 @@ void edits(
     if (response.statusCode == 200) {
       print("\nprofile pic url: $profilePic");
       //get the account info to display as dummy text
-      SharedPrefs().setFirstName(firstName);
-      SharedPrefs().setLastName(lastName);
-      SharedPrefs().setBio(bio);
-      SharedPrefs().setEmail(email);
-      SharedPrefs().setUserName(newUsername);
-      SharedPrefs().setProfileUrl(profilePic);
+      SharedPrefs.setFirstName(firstName);
+      SharedPrefs.setLastName(lastName);
+      SharedPrefs.setBio(bio);
+      SharedPrefs.setEmail(email);
+      SharedPrefs.setUserName(newUsername);
+      SharedPrefs.setProfileUrl(profilePic);
 
       SuccessDialog.show(context, 'Your changes have been recorded!');
     }
@@ -172,7 +172,7 @@ class _settingsState extends State<settings> {
           ''; // Get previous profile picture URL
 
       // Update profile picture URL in SharedPrefs
-      SharedPrefs().setProfileUrl(newProfileUrl);
+      SharedPrefs.setProfileUrl(newProfileUrl);
 
       // Delete previous profile picture if URL is not empty and different from new URL
       if (prevProfileUrl.isNotEmpty && prevProfileUrl != newProfileUrl) {
@@ -182,7 +182,7 @@ class _settingsState extends State<settings> {
 
       setState(() {
         selectedImage = MemoryImage(bytes);
-        SharedPrefs().setProfileUrl(newProfileUrl);
+        SharedPrefs.setProfileUrl(newProfileUrl);
       });
 
       Navigator.pop(context);
@@ -244,7 +244,7 @@ class _settingsState extends State<settings> {
 
     setState(() {
       selectedImage = const AssetImage('assets/profile_pic.png');
-      SharedPrefs().setProfileUrl(newProfileUrl);
+      SharedPrefs.setProfileUrl(newProfileUrl);
 
       // Close the pop-up
       Navigator.pop(context);

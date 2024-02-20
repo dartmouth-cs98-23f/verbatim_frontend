@@ -154,13 +154,13 @@ class _LogInState extends State<LogIn> {
 
         if (responseData != null) {
           // Authentication successful: Save the user info to the disk so that they can persist to other pages
-          SharedPrefs().setEmail(responseData['email']);
-          SharedPrefs().setUserName(responseData['username']);
-          SharedPrefs().setPassword(responseData['password']);
-          SharedPrefs().setFirstName(responseData['firstName'] ?? '');
-          SharedPrefs().setLastName(responseData['lastName'] ?? '');
-          SharedPrefs().setBio(responseData['bio'] ?? '');
-          SharedPrefs().setProfileUrl(
+          SharedPrefs.setEmail(responseData['email']);
+          SharedPrefs.setUserName(responseData['username']);
+          SharedPrefs.setPassword(responseData['password']);
+          SharedPrefs.setFirstName(responseData['firstName'] ?? '');
+          SharedPrefs.setLastName(responseData['lastName'] ?? '');
+          SharedPrefs.setBio(responseData['bio'] ?? '');
+          SharedPrefs.setProfileUrl(
               responseData['profilePicture'] ?? 'assets/profile_pic.png');
 
        

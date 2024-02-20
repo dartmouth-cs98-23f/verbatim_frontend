@@ -14,12 +14,12 @@ class LandingPage extends StatefulWidget {
 class _LandingPageState extends State<LandingPage> {
   void clearSharedPrefs() async {
     await SharedPrefs().init();
-    SharedPrefs().setEmail('');
-    SharedPrefs().setUserName('');
-    SharedPrefs().setPassword('');
-    SharedPrefs().setFirstName('');
-    SharedPrefs().setLastName('');
-    SharedPrefs().setBio('');
+    SharedPrefs.setEmail('');
+    SharedPrefs.setUserName('');
+    SharedPrefs.setPassword('');
+    SharedPrefs.setFirstName('');
+    SharedPrefs.setLastName('');
+    SharedPrefs.setBio('');
   }
 
   void onTap() {

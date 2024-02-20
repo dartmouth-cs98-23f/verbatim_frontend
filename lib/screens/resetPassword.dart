@@ -42,7 +42,7 @@ class _ResetPasswordState extends State<ResetPassword> {
       if (response.statusCode == 200) {
         print("\nHere after completing the new password.\n");
         // get the account info to display as dummy text
-        SharedPrefs().setPassword(newPassword);
+        SharedPrefs.setPassword(newPassword);
         SuccessDialog.show(context, 'Your password has been updated!');
       } else {
         print("\nPas de succes!\n");
