@@ -25,7 +25,7 @@ class _ResetPasswordState extends State<ResetPassword> {
   final confirmPassword = TextEditingController();
 
   void reset(
-      BuildContext context, String newPassword, String oldPassword) async {
+      BuildContext context, String oldPassword, String newPassword) async {
     try {
       final response = await http.post(
         //need a reset password endpoint
@@ -41,12 +41,11 @@ class _ResetPasswordState extends State<ResetPassword> {
       );
       // do something to verify the response,
       if (response.statusCode == 200) {
-        print("\nHere after completing the new password.\n");
         // get the account info to display as dummy text
         SharedPrefs().setPassword(newPassword);
         SuccessDialog.show(context, 'Your password has been updated!');
       } else {
-        print("\nPas de succes!\n");
+        print("\nSomething went wrong - Status code ${response.statusCode}\n");
       }
     } catch (error) {
       print('\nSorry, cannot edit account settings: $error');
