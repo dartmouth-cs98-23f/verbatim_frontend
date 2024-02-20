@@ -1,4 +1,5 @@
 import 'dart:math';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -93,10 +94,9 @@ class Verbatastic extends StatelessWidget {
                         Positioned(
                           top: 0,
                           left: 30.0,
-                          child: Image.asset(
-                            'assets/Ellipse ${41}.png',
-                            height: 48,
-                          ),
+                          child: FirebaseStorageImage(
+                              profileUrl:
+                                  SharedPrefs().getProfileUrl() as String),
                         ),
                       ],
                     ),
@@ -155,7 +155,12 @@ class Verbatastic extends StatelessWidget {
                           i < min(verbatasticUsernames!.length, 5);
                           i++)
                         TextSpan(
-                          text: verbatasticUsernames![i] +
+                          text: verbatasticUsernames![i].replaceFirstMapped(
+                                RegExp(r'^\w'),
+                                (match) => match
+                                    .group(0)!
+                                    .toUpperCase(), // Ensures the first letter of first name is capitalized.
+                              ) +
                               (i < verbatasticUsernames!.length - 2
                                   ? ', '
                                   : i < verbatasticUsernames!.length - 1
