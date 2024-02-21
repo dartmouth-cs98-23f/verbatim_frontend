@@ -45,6 +45,10 @@ class Verbatastic extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     preloadImages(context);
+    print("\n Verbanames before: ${verbatasticUsernames} \n");
+    verbatasticUsernames!.remove(SharedPrefs().getUserName() as String);
+    print("\n Verbanames after: ${verbatasticUsernames} \n");
+
     String copyIcon = 'assets/copy.svg';
     String sendIcon = 'assets/send.svg';
     String inviteText = "\n See how your friends would compare!";
