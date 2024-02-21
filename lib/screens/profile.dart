@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
+import 'package:provider/provider.dart';
+import 'package:verbatim_frontend/UserData.dart';
 import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'package:verbatim_frontend/screens/sideBar.dart';
 import 'package:verbatim_frontend/widgets/center_custom_app_bar.dart';
@@ -67,6 +69,8 @@ class _ProfileState extends State<Profile> {
   String initial = '';
 
   String displayName = '';
+  //TODO:
+
   String username = '';
 
   String bio = '';
@@ -100,54 +104,39 @@ class _ProfileState extends State<Profile> {
       streaks = stats.streaks;
       verbaMatchScore = stats.verbaMatchScore;
 
-      print("this is verbamatch score $verbaMatchScore");
-
       if (verbaMatchScore == -1) {
         verbaMatchScore = 0;
       }
 
       final Map<String, dynamic> matchDeets = stats.match;
 
-      print("this is match deets $matchDeets");
-      // Remove the current user's details from matchDeets
-
-      print("\nthis is match deets after remove where $matchDeets");
-
       // Set match to null if matchDeets still contains elements
-      User? newMatch =
-          matchDeets["username"] == SharedPrefs().getUserName() as String
-              ? null
-              : User(
-                  username: matchDeets["username"],
-                  bio: matchDeets['bio'],
-                  id: matchDeets['id'],
-                  email: matchDeets['email'],
-                  lastName: matchDeets['lastName'],
-                  firstName: matchDeets['firstName'],
-                  profilePicture: matchDeets['profilePicture'],
-                  numGlobalChallengesCompleted:
-                      matchDeets['numGlobalChallengesCompleted'],
-                  numCustomChallengesCompleted:
-                      matchDeets['numCustomChallengesCompleted'],
-                  streak: matchDeets['streak'],
-                  hasCompletedDailyChallenge:
-                      matchDeets['hasCompletedDailyChallenge'],
-                );
-      print("newmatch username: ");
-      print(newMatch?.username);
+      // SharedPrefs().getUserName()
+
+      User? newMatch = matchDeets["username"] == username
+          ? null
+          : User(
+              username: matchDeets["username"],
+              bio: matchDeets['bio'],
+              id: matchDeets['id'],
+              email: matchDeets['email'],
+              lastName: matchDeets['lastName'],
+              firstName: matchDeets['firstName'],
+              profilePicture: matchDeets['profilePicture'],
+              numGlobalChallengesCompleted:
+                  matchDeets['numGlobalChallengesCompleted'],
+              numCustomChallengesCompleted:
+                  matchDeets['numCustomChallengesCompleted'],
+              streak: matchDeets['streak'],
+              hasCompletedDailyChallenge:
+                  matchDeets['hasCompletedDailyChallenge'],
+            );
 
       newMatch?.profilePicture ??= 'assets/profile_pic.png';
 
-      print(newMatch?.profilePicture);
       setState(() {
         match = newMatch;
       });
-
-      // Print statements for debugging (can be removed in production)
-      print("\nVerba match score: $verbaMatchScore\n");
-      print("\nMatch user: $match\n");
-      print("\nMatchDeets : $matchDeets\n");
-      print("\nStats.match is : ${stats.match}\n");
     } else {
       print(
           'Error: Could not fetch user stats. Status code: ${getStats.statusCode}');
@@ -187,11 +176,10 @@ class _ProfileState extends State<Profile> {
     final response = await http.post(url, headers: headers, body: username);
 
     dynamic responsedecode = json.decode(response.body);
-    print("this is responsedecode $responsedecode");
+
     if (response.statusCode == 200) {
-      print("im in =200");
       List<dynamic> myfriendRequests = json.decode(response.body);
-      print("these are myfriendreqeusts $myfriendRequests");
+
       if (myfriendRequests.isNotEmpty) {
         for (var request in myfriendRequests) {
           String requestedUsername = request['username'];
@@ -225,8 +213,6 @@ class _ProfileState extends State<Profile> {
 
           // Format the date in the desired format
           friendshipDate = DateFormat("MM/dd/yy").format(dateTime);
-
-          print('\nFriendship Date: $friendshipDate\n');
         } else {
           print(
               '\nError: "friendsSince" is null or not found in JSON response\n');
@@ -245,10 +231,18 @@ class _ProfileState extends State<Profile> {
   }
 
   final String field = "Friend";
+
   @override
   void initState() {
     super.initState();
-    getUsersIHaveRequested(SharedPrefs().getUserName() as String);
+
+    final userData = Provider.of<UserData>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback((_) {userData.loadValues();});
+
+    username = SharedPrefs().getUserName()!;
+   
+    getUsersIHaveRequested(username);
+
 // if this is someone else's page then draw the ''requested'' button as such
     if (widget.user != null) {
       if (!friendRequestStates.containsKey(widget.user!.username)) {
@@ -258,22 +252,20 @@ class _ProfileState extends State<Profile> {
       groupName = widget.user!.username;
     }
 
-    // Initialize username from SharedPrefs if not provided through the widget
-    username = widget.user?.username ?? SharedPrefs().getUserName() ?? " ";
+ 
+    username = widget.user?.username ?? username;
+  
 
     // Initialize bio, ensuring it's never null
-    bio = widget.user?.bio ?? SharedPrefs().getBio() ?? " ";
-
+    bio = widget.user?.bio ?? SharedPrefs().getBio() ?? "Thats what she said ";
     // Initialize profileUrl, ensuring a default is used if null
     profileUrl = widget.user?.profilePicture ??
-        SharedPrefs().getProfileUrl() ??
-        'assets/profile_pic.png';
+        SharedPrefs().getProfileUrl()!;
+        
 
-    print("\nprofileURl $profileUrl");
     // Populate the initial values for other user details
-    firstName =
-        (widget.user?.firstName ?? SharedPrefs().getFirstName() ?? "User")
-            .replaceFirstMapped(
+    firstName = (widget.user?.firstName ?? SharedPrefs().getFirstName()?? "User")
+        .replaceFirstMapped(
       RegExp(r'^\w'),
       (match) => match
           .group(0)!
@@ -281,36 +273,53 @@ class _ProfileState extends State<Profile> {
     );
 
     lastName = widget.user?.lastName ?? SharedPrefs().getLastName() ?? "Name";
+
     initial = lastName.isNotEmpty ? lastName.substring(0, 1).toUpperCase() : "";
 
+    // if (widget.user != null) {
+    //   getFriendshipDate(
+    //       SharedPrefs().getUserName() as String, widget.user!.username);
+    // }
+
     if (widget.user != null) {
-      getFriendshipDate(
-          SharedPrefs().getUserName() as String, widget.user!.username);
+      // final userData = Provider.of<UserData>(context, listen: false);
+      // String userName = userData.userName;
+      // print("In widget user tryna see about this notify stuff username:" + username);
+      getFriendshipDate(username, widget.user!.username);
     }
 
     // Format displayName using firstName and initial
     displayName = lastName.isNotEmpty ? '$firstName $initial.' : firstName;
-
-    // Get the current user stats
-    _getStats(username).then((_) {
-      setState(() {
-        stats = [friends, streaks, globals, customs];
-      });
-    });
-
-    if (widget.user != null) {
-      // Get the other user stats if we are on a friend's or stranger's profile
+    WidgetsBinding.instance.addPostFrameCallback((_) {
       _getStats(username).then((_) {
+        //stats = [friends, streaks, globals, customs];
         setState(() {
           stats = [friends, streaks, globals, customs];
         });
       });
-    }
+      // Add Your Code here.
+    });
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      // Add Your Code here.
+      if (widget.user != null) {
+        // Get the other user stats if we are on a friend's or stranger's profile
+        _getStats(username).then((_) {
+          setState(() {
+            stats = [friends, streaks, globals, customs];
+          });
+        });
+      }
+    });
+    // Get the current user stats
   }
 
   @override
   Widget build(BuildContext context) {
-    print(" In profile Shared prefs: "+ SharedPrefs().getUserName()!);
+
+ 
+
+    print(" In profile Shared prefs not really: " + username);
     return SafeArea(
       child: Theme(
         data: ThemeData(
@@ -409,10 +418,11 @@ class _ProfileState extends State<Profile> {
                                                   if (friendRequestStates[widget
                                                           .user!.username] ==
                                                       false) {
+                                                    //SharedPrefs()
+                                                    //SharedPrefs().getUserName()
+                                                    //as String
                                                     await sendFriendRequest(
-                                                        SharedPrefs()
-                                                                .getUserName()
-                                                            as String,
+                                                        username,
                                                         widget.user!.username);
                                                   } else {
                                                     print(
@@ -461,9 +471,7 @@ class _ProfileState extends State<Profile> {
                                                                     .username] ==
                                                             false) {
                                                           sendFriendRequest(
-                                                              SharedPrefs()
-                                                                      .getUserName()
-                                                                  as String,
+                                                              username,
                                                               widget.user!
                                                                   .username);
                                                         } else {
@@ -598,7 +606,7 @@ class _ProfileState extends State<Profile> {
                                   // Bio
 
                                   Text(
-                                    bio ?? "Bio goes here",
+                                    bio ?? "Verbatim: That's what she said :)",
                                     softWrap: true,
                                     style: GoogleFonts.poppins(
                                       textStyle: const TextStyle(
@@ -852,9 +860,10 @@ class _ProfileState extends State<Profile> {
                                                     width: 100,
                                                     height: 100,
                                                     child: FirebaseStorageImage(
+                                                      //SharedPrefs().getProfileUrl()
+                                                      //as String
                                                       profileUrl: SharedPrefs()
-                                                              .getProfileUrl()
-                                                          as String,
+                                                          .getProfileUrl()!,
                                                     ),
                                                   )),
                                       ),
@@ -954,8 +963,9 @@ class _ProfileState extends State<Profile> {
                                                 width: 91,
                                                 // When you are on your own profile or a friend's profile, the first oval should always contain your profile picture
                                                 child: Text(
-                                                    (SharedPrefs().getUserName()
-                                                            as String)
+                                                    //SharedPrefs().getUserName()
+                                                    //as String
+                                                    (SharedPrefs.UserName)
                                                         .replaceFirstMapped(
                                                       RegExp(r'^\w'),
                                                       (match) => match
@@ -1040,7 +1050,8 @@ class _ProfileState extends State<Profile> {
                                                             )}",
                                                             textAlign: TextAlign
                                                                 .center,
-                                                            style: const TextStyle(
+                                                            style:
+                                                                const TextStyle(
                                                               color:
                                                                   Colors.black,
                                                               fontSize: 18,

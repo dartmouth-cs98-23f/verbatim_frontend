@@ -1,11 +1,14 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:verbatim_frontend/UserData.dart';
 import 'package:verbatim_frontend/screens/landingPage.dart';
 import 'BackendService.dart';
 import 'Components/defineRoutes.dart';
 import 'Components/shared_prefs.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter_dotenv/flutter_dotenv.dart';
+ import 'package:get_it/get_it.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
@@ -32,7 +35,21 @@ Future<void> main() async {
     print('\n\nError initializing Firebase: $e\n\n');
   }
 
-  runApp(const MyApp());
+ 
+
+
+
+  runApp(
+    RestorationScope(
+      restorationId: 'rootRestorationScope',
+      child: ChangeNotifierProvider(
+        create: (context) => UserData(),
+        child: MyApp(),
+      ),
+    ),
+  );
+
+
 
   defineRoutes();
 }

@@ -1,8 +1,10 @@
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 // import 'package:google_sign_in/google_sign_in.dart';
 import 'package:verbatim_frontend/BackendService.dart';
+import 'package:verbatim_frontend/UserData.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
@@ -89,6 +91,15 @@ class _SignUpState extends State<SignUp> {
         SharedPrefs.setUserName(username);
         SharedPrefs.setBio("");
         SharedPrefs.setProfileUrl("assets/profile_pic.png");
+
+        final userData = Provider.of<UserData>(context, listen: false);
+        userData.setBio('That\'s what she said!');
+        userData.setEmail(email);
+        userData.setFirstName(firstName);
+        userData.setLastName(lastName);
+        userData.setUserName(username);
+        userData.setProfileUrl('assets/profile_pic.png');
+        userData.setPassword(password);
 
         // Successful sign-up: Navigate to the 'OnBoardingPage1' page
         Navigator.pushNamed(context, '/onboarding_page1');

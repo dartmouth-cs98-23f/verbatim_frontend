@@ -93,7 +93,7 @@ class SharedPrefs {
   
     } else {
       await _sharedPrefs!.setString("profileUrl", 'assets/profile_pic.png');
-     
+      
     }
   }
 

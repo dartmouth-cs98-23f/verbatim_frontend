@@ -52,7 +52,7 @@ void defineRoutes() {
     handler: signUpHandler,
   );
 
-  Application.router.define(
+  Application.router.define(         
     '/landingPage',
     handler: landingPageHandler,
   );
@@ -176,6 +176,7 @@ var friendshipHandler = Handler(handlerFunc: (context, parameters) {
   if (SharedPrefs().getEmail() == '' ||
       SharedPrefs().getUserName() == '' ||
       SharedPrefs().getPassword() == '') {
+      SharedPrefs.setCurrentPage('/landingPage');
     return const LandingPage();
   } else {
     // Update the current page in the shared prefs
@@ -191,6 +192,7 @@ var settingsHandler = Handler(handlerFunc: (context, parameters) {
   if (SharedPrefs().getEmail() == '' ||
       SharedPrefs().getUserName() == '' ||
       SharedPrefs().getPassword() == '') {
+      SharedPrefs.setCurrentPage('/login');
     return const LogIn();
   } else {
     // Update the current page in the shared prefs
@@ -201,11 +203,11 @@ var settingsHandler = Handler(handlerFunc: (context, parameters) {
 
 //TODO: 
 var guestGlobalHandler = Handler(handlerFunc: (context, parameters){
-  print("Just cleaning up mu house");
+
   if (SharedPrefs().getEmail() == '' ||
         SharedPrefs().getUserName() == '' ||
         SharedPrefs().getPassword() == '') {
-          print("Ok lets see");
+        SharedPrefs.setCurrentPage('/guestGlobal');
       return const guestGlobal();
   } else {
       // Update the current page in the shared prefs
@@ -230,6 +232,7 @@ Handler onBoardingPage1Handler = Handler(
     if (SharedPrefs().getEmail() == '' ||
         SharedPrefs().getUserName() == '' ||
         SharedPrefs().getPassword() == '') {
+        SharedPrefs.setCurrentPage('/login');
       return const LogIn();
     } else {
       // Update the current page in the shared prefs
@@ -243,6 +246,8 @@ var profileHandler = Handler(handlerFunc: (context, parameters) {
   if (SharedPrefs().getEmail() == '' ||
       SharedPrefs().getUserName() == '' ||
       SharedPrefs().getPassword() == '') {
+      SharedPrefs.setCurrentPage('/login');
+      print("Yop refresh has got me going crazzzyyyy");
     return const LogIn();
   } else {
     // Update the current page in the shared prefs
@@ -256,6 +261,7 @@ var onBoardingPage2Handler = Handler(
     if (SharedPrefs().getEmail() == '' ||
         SharedPrefs().getUserName() == '' ||
         SharedPrefs().getPassword() == '') {
+        SharedPrefs.setCurrentPage('/login');
       return const LogIn();
     } else {
       // Update the current page in the shared prefs
@@ -270,6 +276,7 @@ var onBoardingPage3Handler = Handler(
     if (SharedPrefs().getEmail() == '' ||
         SharedPrefs().getUserName() == '' ||
         SharedPrefs().getPassword() == '') {
+           SharedPrefs.setCurrentPage('/login');
       return const LogIn();
     } else {
       // Update the current page in the shared prefs
@@ -284,6 +291,7 @@ var onBoardingPage4Handler = Handler(
     if (SharedPrefs().getEmail() == '' ||
         SharedPrefs().getUserName() == '' ||
         SharedPrefs().getPassword() == '') {
+           SharedPrefs.setCurrentPage('/login');
       return const LogIn();
     } else {
       // Update the current page in the shared prefs
@@ -323,6 +331,7 @@ Handler addFriendHandler = Handler(
     if (SharedPrefs().getEmail() == '' ||
         SharedPrefs().getUserName() == '' ||
         SharedPrefs().getPassword() == '') {
+           SharedPrefs.setCurrentPage('/login');
       return const LogIn();
     } else {
       // Update the current page in the shared prefs
@@ -337,6 +346,7 @@ Handler createGroupHandler = Handler(
     if (SharedPrefs().getEmail() == '' ||
         SharedPrefs().getUserName() == '' ||
         SharedPrefs().getPassword() == '') {
+           SharedPrefs.setCurrentPage('/login');
       return const LogIn();
     } else {
       // Update the current page in the shared prefs

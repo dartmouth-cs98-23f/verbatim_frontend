@@ -30,6 +30,7 @@ class _LogoutPageState extends State<LogoutPage> {
     final GuestUtility guestUtility= GuestUtility();
     guestUtility.clearStats();
     guestUtility.clearGameObject();
+    guestUtility.clearUserInfo();
 
 
     // Navigate to the login page after logout

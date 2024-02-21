@@ -1,10 +1,13 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 // import 'package:google_sign_in/google_sign_in.dart';
 import 'package:verbatim_frontend/BackendService.dart';
+
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'package:verbatim_frontend/screens/signupErrorMessage.dart';
 import '../Components/shared_prefs.dart';
+import '../UserData.dart';
 import '../widgets/my_button_no_image.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -154,16 +157,17 @@ class _LogInState extends State<LogIn> {
 
         if (responseData != null) {
           // Authentication successful: Save the user info to the disk so that they can persist to other pages
-          SharedPrefs.setEmail(responseData['email']);
-          SharedPrefs.setUserName(responseData['username']);
-          SharedPrefs.setPassword(responseData['password']);
-          SharedPrefs.setFirstName(responseData['firstName'] ?? '');
-          SharedPrefs.setLastName(responseData['lastName'] ?? '');
-          SharedPrefs.setBio(responseData['bio'] ?? '');
-          SharedPrefs.setProfileUrl(
-              responseData['profilePicture'] ?? 'assets/profile_pic.png');
+          final userData = Provider.of<UserData>(context, listen: false);
+          userData.setBio(responseData['bio'] ?? 'That\'s what she said!');
+          userData.setEmail(responseData['email']);
+          userData.setFirstName(responseData['firstName'] ?? '');
+          userData.setLastName(responseData['lastName'] ?? '');
+          userData.setUserName(responseData['username']);
+          userData.setProfileUrl(responseData['profilePicture'] ?? 'assets/profile_pic.png');
+          userData.setPassword(responseData['password']);
 
-       
+          print("In login and the user data stuff is:" + userData.firstName);
+        
 
           Navigator.pushNamed(context, '/global_challenge');
         }
