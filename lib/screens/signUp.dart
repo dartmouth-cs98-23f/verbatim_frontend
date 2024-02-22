@@ -1,10 +1,13 @@
 import 'package:email_validator/email_validator.dart';
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-// import 'package:google_sign_in/google_sign_in.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
+import 'package:verbatim_frontend/widgets/my_button_with_image.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/signupErrorMessage.dart';
@@ -45,10 +48,10 @@ class _SignUpState extends State<SignUp> {
 
 //TODO: gets widget data
 
-  // final GoogleSignIn _googleSignIn = GoogleSignIn(
-  //     scopes: ['email'],
-  //     clientId:
-  //         '297398575103-o3engamrir3bf4pupurvj8lm4mn0iuqt.apps.googleusercontent.com');
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+      scopes: ['email'],
+      clientId:
+          '1052195157201-9d7dskf4jihdd8b3ad6bmidnkoilu9ht.apps.googleusercontent.com');
 
   void signUp(BuildContext context, String firstName, String lastName,
       String username, String email, String password, String confirmPassword) {
@@ -108,17 +111,45 @@ class _SignUpState extends State<SignUp> {
     }
   }
 
-  // Function to sign up with Google
-  // Future<void> signUpWithGoogle() async {
-  //   final GoogleSignInAccount? account = await _googleSignIn.signIn();
+  // Function to sign up with Googles
+  Future<void> signUpWithGoogle() async {
+    if (kIsWeb) {
+      final GoogleSignInAccount? account = await _googleSignIn.signIn();
+      try {
+        if (account != null) {
+          print("\nSigning with google: \n");
+          print("\nEmail: ${account.email}\n");
+          print("\nName: ${account.displayName} \n");
 
-  //   if (account != null) {
-  //     saveUsersInfo(context, '<unavailable>', '<unavailable>', '<unavailable>',
-  //         account.email, 'unavailable', 'unavailable');
-  //   } else {
-  //     print('\nThe google account is not found.');
-  //   }
-  // }
+          Map<String, String> nameMap =
+              getFirstAndLastName(account.displayName as String);
+
+          String firstName = nameMap['firstName'] ?? '';
+          String lastName = nameMap['lastName'] ?? '';
+
+          saveUsersInfo(context, firstName, lastName, firstName,
+              account.email as String, ' ', ' ');
+        } else {
+          print('\nThe google account is not found.');
+        }
+      } catch (e) {
+        debugPrint('error on web signin: $e');
+        rethrow;
+      }
+    }
+  }
+
+  Map<String, String> getFirstAndLastName(String fullName) {
+    // Split the full name by whitespace
+    List<String> nameParts = fullName.trim().split(' ');
+
+    // Extract the first name and last name
+    String firstName = nameParts.isNotEmpty ? nameParts.first : '';
+    String lastName = nameParts.length > 1 ? nameParts.last : '';
+
+    // Return the first name and last name as a map
+    return {'firstName': firstName, 'lastName': lastName};
+  }
 
   void validateUserInfo(
       BuildContext context,
@@ -374,17 +405,15 @@ class _SignUpState extends State<SignUp> {
                           );
                         },
                       ),
-                      /*
                       const SizedBox(height: 10),
                       MyButtonWithImage(
-                        buttonText: "Sign in with Google",
+                        buttonText: "Sign up with Google",
                         hasButtonImage: true,
                         onTap: () {
-                          // print(this.data);
-                          // signUpWithGoogle();
+                          print("\nRegistering using google\n");
+                          signUpWithGoogle();
                         },
                       ),
-                      */
                       const SizedBox(height: 10),
                       Center(
                         child: RichText(

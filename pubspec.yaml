@@ -66,6 +66,8 @@ dependencies:
   confetti: ^0.7.0
   firebase_remote_config: ^4.3.8
   flutter_dotenv: ^5.1.0
+  google_sign_in_web: ^0.12.2+1
+  firebase_auth: ^4.16.0
 
 dev_dependencies:
   flutter_test:
