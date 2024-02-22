@@ -389,7 +389,7 @@ class _SideBarState extends State<SideBar> {
                           const Icon(Icons.add, color: Colors.black, size: 25),
                     ),
 
-                    initiallyExpanded: true, //showFriends,
+                    initiallyExpanded: false, //showFriends,
 
                     shape:
                         const Border(), // this will expand all of them - need to make a custom expansion tile at some point to fix this (i think)
