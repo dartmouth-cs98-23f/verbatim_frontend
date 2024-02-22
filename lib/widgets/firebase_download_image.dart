@@ -14,47 +14,23 @@ class FirebaseStorageImage extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return FutureBuilder<Uint8List>(
-      future: downloadImage(profileUrl),
-      builder: (context, snapshot) {
-        if (snapshot.connectionState == ConnectionState.done &&
-            snapshot.hasData) {
-          return GestureDetector(
-            onTap: () {
-              if (user != null) {
-                Navigator.push(
-                  context,
-                  MaterialPageRoute(
-                    builder: (context) => Profile(
-                      user: user,
-                    ),
-                  ),
-                );
-              } else {
-                Navigator.pushNamed(context, '/profile');
-              }
-            },
-            child: Container(
-              width: 40,
-              height: 40.45,
-              decoration: ShapeDecoration(
-                image: DecorationImage(
-                  image: MemoryImage(snapshot.data!),
-                  fit: BoxFit.fill,
-                ),
-                shape: const CircleBorder(),
-              ),
-            ),
-          );
-        } else {
-          return GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(
+    if (profileUrl == "assets/profile_pic.png") {
+      return GestureDetector(
+          onTap: () {
+            if (user != null) {
+              Navigator.push(
                 context,
-                '/profile',
+                MaterialPageRoute(
+                  builder: (context) => Profile(
+                    user: user,
+                  ),
+                ),
               );
-            },
-            child: Container(
+            } else {
+              Navigator.pushNamed(context, '/profile');
+            }
+          },
+          child: Container(
               width: 40,
               height: 40.45,
               decoration: const BoxDecoration(
@@ -63,12 +39,71 @@ class FirebaseStorageImage extends StatelessWidget {
                   fit: BoxFit.cover,
                   image: AssetImage('assets/profile_pic.png'),
                 ),
-              ),
-            ),
-          ); // Placeholder widget while image is loading
-        }
-      },
-    );
+              )));
+    } else {
+      return FutureBuilder<Uint8List>(
+        future: downloadImage(profileUrl),
+        builder: (context, snapshot) {
+          if (snapshot.connectionState == ConnectionState.done &&
+              snapshot.hasData) {
+            return GestureDetector(
+                onTap: () {
+                  if (user != null) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Profile(
+                          user: user,
+                        ),
+                      ),
+                    );
+                  } else {
+                    Navigator.pushNamed(context, '/profile');
+                  }
+                },
+                child: Container(
+                  width: 40,
+                  height: 40.45,
+                  decoration: ShapeDecoration(
+                    image: DecorationImage(
+                      image: MemoryImage(snapshot.data!),
+                      fit: BoxFit.fill,
+                    ),
+                    shape: const CircleBorder(),
+                  ),
+                ));
+          } else {
+            return GestureDetector(
+                onTap: () {
+                  if (user != null) {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                        builder: (context) => Profile(
+                          user: user,
+                        ),
+                      ),
+                    );
+                  } else {
+                    Navigator.pushNamed(context, '/profile');
+                  }
+                },
+                child: Container(
+                  width: 40,
+                  height: 40.45,
+                  decoration: const BoxDecoration(
+                    shape: BoxShape.circle,
+                    image: DecorationImage(
+                      fit: BoxFit.cover,
+                      image: AssetImage('assets/profile_pic.png'),
+                    ),
+                  ),
+                ));
+            // Placeholder widget while image is loading
+          }
+        },
+      );
+    }
   }
 
   Future<Uint8List> downloadImage(String url) async {
