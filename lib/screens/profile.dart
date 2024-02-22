@@ -231,7 +231,9 @@ class _ProfileState extends State<Profile> {
           DateTime dateTime = DateFormat("MM-dd-yyyy").parse(friendsSince);
 
           // Format the date in the desired format
-          friendshipDate = DateFormat("MM/dd/yy").format(dateTime);
+          setState(() {
+            friendshipDate = DateFormat("MM/dd/yy").format(dateTime);
+          });
 
           print(
               '\nFriendship Date between users ${currentUsername} and ${friendUsername} is $friendshipDate\n');
@@ -246,6 +248,8 @@ class _ProfileState extends State<Profile> {
 
       if (friendshipDate.isNotEmpty) {
         friendshipStatusDescription = "Friends Since $friendshipDate";
+
+        print("\nFrndship description is: $friendshipStatusDescription\n");
       }
     } catch (error) {
       print('\nError getting friendship data: $error\n');
@@ -286,7 +290,8 @@ class _ProfileState extends State<Profile> {
     lastName = widget.user?.lastName ?? SharedPrefs().getLastName() ?? "Name";
     initial = lastName.isNotEmpty ? lastName.substring(0, 1).toUpperCase() : "";
 
-    if (widget.user != null) {
+    if (widget.user != null &&
+        (widget.user!.username != SharedPrefs().getUserName() as String)) {
       getFriendshipDate(
           SharedPrefs().getUserName() as String, widget.user!.username);
     }
@@ -582,20 +587,36 @@ class _ProfileState extends State<Profile> {
                                                           child: Center(
                                                             child: Text(
                                                               // On your own profile, edit profile
+                                                              // (widget.user ==
+                                                              //             null ||
+                                                              //         widget.user!
+                                                              //                 .username ==
+                                                              //             (SharedPrefs().getUserName()
+                                                              //                 as String))
+                                                              //     ? "Edit Profile"
+                                                              //     // On another user's profile, show the right description
+                                                              //     : (widget.user !=
+                                                              //                 null &&
+                                                              //             widget.user!.username !=
+                                                              //                 (SharedPrefs().getUserName() as String))
+                                                              //         ? friendshipStatusDescription // It is 'friendship request pending' if a request was sent, else if they are friends, it is 'friends since <date>'
+                                                              //         : "Add Friend",
+                                                              // Determine button text
                                                               (widget.user ==
                                                                           null ||
                                                                       widget.user!
                                                                               .username ==
                                                                           (SharedPrefs().getUserName()
                                                                               as String))
-                                                                  ? "Edit Profile"
-                                                                  // On another user's profile, show the right description
-                                                                  : (widget.user!.isRequested ==
-                                                                              true ||
-                                                                          friendshipDate
-                                                                              .isNotEmpty)
-                                                                      ? friendshipStatusDescription // It is 'friendship request pending' if a request was sent, else if they are friends, it is 'friends since <date>'
-                                                                      : "Add Friend",
+                                                                  ? "Edit Profile" // User is viewing their own profile
+                                                                  : friendshipDate
+                                                                          .isNotEmpty
+                                                                      ? "Friends Since $friendshipDate" // Users are friends, display friendship date
+                                                                      : widget.user!
+                                                                              .isRequested
+                                                                          ? "Friend Request Pending" // Friend request has been sent but not yet friends
+                                                                          : "Add Friend", // No friend request sent, prompt to add friend
+
                                                               style: GoogleFonts.poppins(
                                                                   textStyle: (widget.user == null || widget.user!.username == (SharedPrefs().getUserName() as String))
                                                                       ? GoogleFonts.poppins(
