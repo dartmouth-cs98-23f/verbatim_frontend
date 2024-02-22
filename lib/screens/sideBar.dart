@@ -76,7 +76,7 @@ class _SideBarState extends State<SideBar> {
   late ConfettiController _confettiController;
 
   final String firstName =
-      (SharedPrefs().getUserName() as String).replaceFirstMapped(
+      (SharedPrefs().getFirstName() as String).replaceFirstMapped(
     RegExp(r'^\w'),
     (match) => match
         .group(0)!

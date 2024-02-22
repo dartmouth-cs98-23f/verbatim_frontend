@@ -45,6 +45,9 @@ class Verbatastic extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     preloadImages(context);
+    // Ensure the current user's username is not included in verbatasticUsernames
+    verbatasticUsernames!.remove(SharedPrefs().getUserName() as String);
+
     String copyIcon = 'assets/copy.svg';
     String sendIcon = 'assets/send.svg';
     String inviteText = "\n See how your friends would compare!";
