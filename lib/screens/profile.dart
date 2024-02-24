@@ -71,7 +71,6 @@ class _ProfileState extends State<Profile> {
 
   String bio = '';
   String profileUrl = '';
-  Map<String, bool> friendRequestStates = {};
   bool drawButton = false;
   String groupName = '';
   User? toBeDisplayedUser;
@@ -169,8 +168,8 @@ class _ProfileState extends State<Profile> {
     if (response.statusCode == 200) {
       SuccessDialog.show(context, 'Your friend request has been sent!');
       setState(() {
-        friendRequestStates[requestedUsername] = true;
-        drawButton = true;
+        widget.user!.isRequested = true;
+        getUsersIHaveRequested(requestingUsername);
       });
     } else {
       print('Failed to send responses. Status code: ${response.statusCode}');
@@ -186,19 +185,27 @@ class _ProfileState extends State<Profile> {
 
     final response = await http.post(url, headers: headers, body: username);
 
-    dynamic responsedecode = json.decode(response.body);
-    print("this is responsedecode $responsedecode");
     if (response.statusCode == 200) {
-      print("im in =200");
-      List<dynamic> myfriendRequests = json.decode(response.body);
-      print("these are myfriendreqeusts $myfriendRequests");
-      if (myfriendRequests.isNotEmpty) {
-        for (var request in myfriendRequests) {
-          String requestedUsername = request['username'];
-          // Set the friend request state to true for each user requested
-          friendRequestStates[requestedUsername] = true;
-        }
+      List<dynamic> myFriendRequests = json.decode(response.body);
+
+      List<User> friendRequestsList =
+          myFriendRequests.map((item) => User.fromJson(item)).toList();
+
+      print("\nfriendreqests: \n");
+      for (int i = 0; i < friendRequestsList.length; i++) {
+        print(friendRequestsList[i].username);
       }
+
+      print("\nEnd of friend requests lists\n");
+
+      if (friendRequestsList
+          .any((user) => user.username == widget.user!.username)) {
+        setState(() {
+          widget.user!.isRequested = true;
+        });
+      }
+
+      print("\n The user's is reqeusted: ${widget.user!.isRequested}\n");
     } else {
       print(
           '\nIn addFriends getUsersIHaveRequested: Failed to send responses. Status code: ${response.statusCode}\n');
@@ -224,9 +231,12 @@ class _ProfileState extends State<Profile> {
           DateTime dateTime = DateFormat("MM-dd-yyyy").parse(friendsSince);
 
           // Format the date in the desired format
-          friendshipDate = DateFormat("MM/dd/yy").format(dateTime);
+          setState(() {
+            friendshipDate = DateFormat("MM/dd/yy").format(dateTime);
+          });
 
-          print('\nFriendship Date: $friendshipDate\n');
+          print(
+              '\nFriendship Date between users ${currentUsername} and ${friendUsername} is $friendshipDate\n');
         } else {
           print(
               '\nError: "friendsSince" is null or not found in JSON response\n');
@@ -238,6 +248,8 @@ class _ProfileState extends State<Profile> {
 
       if (friendshipDate.isNotEmpty) {
         friendshipStatusDescription = "Friends Since $friendshipDate";
+
+        print("\nFrndship description is: $friendshipStatusDescription\n");
       }
     } catch (error) {
       print('\nError getting friendship data: $error\n');
@@ -249,12 +261,7 @@ class _ProfileState extends State<Profile> {
   void initState() {
     super.initState();
     getUsersIHaveRequested(SharedPrefs().getUserName() as String);
-// if this is someone else's page then draw the ''requested'' button as such
     if (widget.user != null) {
-      if (!friendRequestStates.containsKey(widget.user!.username)) {
-        friendRequestStates[widget.user!.username] = widget.user!.isRequested;
-      }
-      drawButton = friendRequestStates[widget.user!.username] as bool;
       groupName = widget.user!.username;
     }
 
@@ -283,7 +290,8 @@ class _ProfileState extends State<Profile> {
     lastName = widget.user?.lastName ?? SharedPrefs().getLastName() ?? "Name";
     initial = lastName.isNotEmpty ? lastName.substring(0, 1).toUpperCase() : "";
 
-    if (widget.user != null) {
+    if (widget.user != null &&
+        (widget.user!.username != SharedPrefs().getUserName() as String)) {
       getFriendshipDate(
           SharedPrefs().getUserName() as String, widget.user!.username);
     }
@@ -410,23 +418,31 @@ class _ProfileState extends State<Profile> {
                                           SafeArea(
                                             child: GestureDetector(
                                               onTap: () async {
-                                                if (widget.user == null) {
+                                                // If you are on your own profile, go to settings page
+                                                if ((widget.user == null ||
+                                                    widget.user!.username ==
+                                                        (SharedPrefs()
+                                                                .getUserName()
+                                                            as String))) {
                                                   Navigator.pushNamed(
                                                       context, '/settings');
                                                 } else {
-                                                  if (friendRequestStates[widget
-                                                          .user!.username] ==
-                                                      false) {
+                                                  // If you are on another user's profile and they are not a friend plus you haven't sent them a friend request, send a friend request
+                                                  if (widget.user!
+                                                              .isRequested ==
+                                                          false &&
+                                                      friendshipDate.isEmpty) {
                                                     await sendFriendRequest(
                                                         SharedPrefs()
                                                                 .getUserName()
                                                             as String,
                                                         widget.user!.username);
+
+                                                    setState(() {
+                                                      widget.user!.isRequested =
+                                                          true;
+                                                    });
                                                   } else {
-                                                    print(
-                                                        "\n\n Map is $friendRequestStates");
-                                                    print(
-                                                        "\n33 User's username is ${widget.user!.username}");
                                                     print(
                                                         "\nImplement the method to handle when the user is already a friend or the FR has been sent!\n");
                                                   }
@@ -458,16 +474,24 @@ class _ProfileState extends State<Profile> {
                                                       .transparent, // Make it transparent to prevent background color overlay
                                                   child: InkWell(
                                                     onTap: () {
-                                                      if (widget.user == null) {
+                                                      if ((widget.user ==
+                                                              null ||
+                                                          widget.user!
+                                                                  .username ==
+                                                              (SharedPrefs()
+                                                                      .getUserName()
+                                                                  as String))) {
                                                         // Navigate to settings
                                                         Navigator.pushNamed(
                                                             context,
                                                             '/settings');
                                                       } else {
-                                                        if (friendRequestStates[
-                                                                widget.user!
-                                                                    .username] ==
-                                                            false) {
+                                                        // If they are not
+                                                        if (widget.user!
+                                                                    .isRequested ==
+                                                                false &&
+                                                            friendshipDate
+                                                                .isEmpty) {
                                                           sendFriendRequest(
                                                               SharedPrefs()
                                                                       .getUserName()
@@ -475,11 +499,6 @@ class _ProfileState extends State<Profile> {
                                                               widget.user!
                                                                   .username);
                                                         } else {
-                                                          print(
-                                                              "\n\n Map is $friendRequestStates");
-                                                          print(
-                                                              "\n33 User's username is ${widget.user!.username}");
-
                                                           print(
                                                               "\nImplement the method to handle when the user is already a friend or the FR has been sent!\n");
                                                         }
@@ -507,13 +526,19 @@ class _ProfileState extends State<Profile> {
                                                               const BoxDecoration(),
                                                           child: Stack(
                                                             children: [
-                                                              // Display person_outlined icon when there is a user and friend request is accepted
+                                                              // Display person_outlined icon when there is a user and friend request is accepted or requested
                                                               if (widget.user !=
                                                                       null &&
-                                                                  friendRequestStates[widget
-                                                                          .user!
-                                                                          .username] ==
-                                                                      true)
+                                                                  (widget.user!
+                                                                              .isRequested ==
+                                                                          true ||
+                                                                      friendshipDate
+                                                                          .isNotEmpty) &&
+                                                                  (widget.user!
+                                                                          .username !=
+                                                                      (SharedPrefs()
+                                                                              .getUserName()
+                                                                          as String)))
                                                                 const Icon(
                                                                   Icons
                                                                       .person_outlined,
@@ -525,10 +550,16 @@ class _ProfileState extends State<Profile> {
                                                               // Display person_add_alt_outlined icon when there is a user and friend request is not sent/accepted
                                                               if (widget.user !=
                                                                       null &&
-                                                                  friendRequestStates[widget
-                                                                          .user!
-                                                                          .username] ==
-                                                                      false)
+                                                                  (widget.user!
+                                                                              .isRequested ==
+                                                                          false &&
+                                                                      friendshipDate
+                                                                          .isEmpty) &&
+                                                                  widget.user!
+                                                                          .username !=
+                                                                      (SharedPrefs()
+                                                                              .getUserName()
+                                                                          as String))
                                                                 const Icon(
                                                                   Icons
                                                                       .person_add_alt_outlined,
@@ -537,16 +568,14 @@ class _ProfileState extends State<Profile> {
                                                                   size: 20,
                                                                 ),
 
-                                                              // Display create_outlined icon when there is no user object (i.e., widget.user is null)
-                                                              if (widget.user ==
-                                                                  null)
-                                                                const Icon(
-                                                                  Icons
-                                                                      .create_outlined,
-                                                                  color: Colors
-                                                                      .white,
-                                                                  size: 20,
-                                                                ),
+                                                              // if ((widget.user ==
+                                                              //         null ||
+                                                              //     widget.user!
+                                                              //             .username ==
+                                                              //         (SharedPrefs()
+                                                              //                 .getUserName()
+                                                              //             as String)))
+                                                              //   Container(),
                                                             ],
                                                           ),
                                                         ),
@@ -557,17 +586,39 @@ class _ProfileState extends State<Profile> {
                                                               Alignment.center,
                                                           child: Center(
                                                             child: Text(
-                                                              widget.user ==
-                                                                      null
-                                                                  ? "Edit Profile"
-                                                                  : friendRequestStates[widget
-                                                                              .user!
-                                                                              .username] ==
-                                                                          true
-                                                                      ? friendshipStatusDescription
-                                                                      : "Add Friend",
+                                                              // On your own profile, edit profile
+                                                              // (widget.user ==
+                                                              //             null ||
+                                                              //         widget.user!
+                                                              //                 .username ==
+                                                              //             (SharedPrefs().getUserName()
+                                                              //                 as String))
+                                                              //     ? "Edit Profile"
+                                                              //     // On another user's profile, show the right description
+                                                              //     : (widget.user !=
+                                                              //                 null &&
+                                                              //             widget.user!.username !=
+                                                              //                 (SharedPrefs().getUserName() as String))
+                                                              //         ? friendshipStatusDescription // It is 'friendship request pending' if a request was sent, else if they are friends, it is 'friends since <date>'
+                                                              //         : "Add Friend",
+                                                              // Determine button text
+                                                              (widget.user ==
+                                                                          null ||
+                                                                      widget.user!
+                                                                              .username ==
+                                                                          (SharedPrefs().getUserName()
+                                                                              as String))
+                                                                  ? "Edit Profile" // User is viewing their own profile
+                                                                  : friendshipDate
+                                                                          .isNotEmpty
+                                                                      ? "Friends Since $friendshipDate" // Users are friends, display friendship date
+                                                                      : widget.user!
+                                                                              .isRequested
+                                                                          ? "Friend Request Pending" // Friend request has been sent but not yet friends
+                                                                          : "Add Friend", // No friend request sent, prompt to add friend
+
                                                               style: GoogleFonts.poppins(
-                                                                  textStyle: widget.user == null
+                                                                  textStyle: (widget.user == null || widget.user!.username == (SharedPrefs().getUserName() as String))
                                                                       ? GoogleFonts.poppins(
                                                                           textStyle: const TextStyle(
                                                                           color:
@@ -770,11 +821,15 @@ class _ProfileState extends State<Profile> {
                                     child: Text.rich(TextSpan(
                                       children: [
                                         TextSpan(
-                                          text: widget.user == null
+                                          text: (widget.user == null ||
+                                                  widget.user!.username ==
+                                                      (SharedPrefs()
+                                                              .getUserName()
+                                                          as String))
                                               ? 'Highest '
-                                              : (friendRequestStates[widget
-                                                          .user!.username] ==
-                                                      true
+                                              : ((widget.user!.isRequested ==
+                                                          true ||
+                                                      friendshipDate.isNotEmpty)
                                                   ? 'Your '
                                                   : 'Highest '),
                                           style: GoogleFonts.poppins(
@@ -903,7 +958,12 @@ class _ProfileState extends State<Profile> {
                                                         user: match,
                                                       ),
                                                     )
-                                                  : (widget.user == null &&
+                                                  : ((widget.user == null ||
+                                                              widget.user!
+                                                                      .username ==
+                                                                  (SharedPrefs()
+                                                                          .getUserName()
+                                                                      as String)) &&
                                                           match !=
                                                               null) // When you are on your own profile and you have a verbaMatch, the second profile should be your verbaMatch's profile picture
                                                       ? SizedBox(
@@ -1040,7 +1100,12 @@ class _ProfileState extends State<Profile> {
                                                           TextOverflow.ellipsis,
                                                       // Use ellipsis for overflow
                                                     )
-                                                  : (widget.user == null &&
+                                                  : ((widget.user == null ||
+                                                              widget.user!
+                                                                      .username ==
+                                                                  (SharedPrefs()
+                                                                          .getUserName()
+                                                                      as String)) &&
                                                           match != null)
                                                       ? Text(
                                                           "${match!.username.replaceFirstMapped(
