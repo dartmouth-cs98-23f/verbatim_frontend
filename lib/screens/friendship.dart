@@ -252,6 +252,24 @@ class _FriendshipState extends State<friendship>
     }
   }
 
+  Future<void> removeFriend(
+      String baseUsername, String usernameToRemove) async {
+    final url = Uri.parse('${BackendService.getBackendUrl()}removeFriend');
+    final headers = <String, String>{'Content-Type': 'application/json'};
+
+    final response = await http.post(url,
+        headers: headers,
+        body: json.encode(({
+          'baseUsername': baseUsername,
+          'usernameToRemove': usernameToRemove
+        })));
+    if (response.statusCode == 200) {
+      print("success");
+    } else {
+      print("failure");
+    }
+  }
+
 //active challenge variables
   List<Map<String, dynamic>> activeChallenges = [];
   Map<int, Map<String, dynamic>> challengeStats = {};
@@ -438,6 +456,7 @@ class _FriendshipState extends State<friendship>
   @override
   Widget build(BuildContext context) {
     const String assetName = 'assets/img1.svg';
+    String username = SharedPrefs().getUserName() ?? "";
 
     return SafeArea(
         child: Scaffold(
@@ -497,7 +516,8 @@ class _FriendshipState extends State<friendship>
                                           children: [
                                             ElevatedButton(
                                               onPressed: () {
-                                                //    leaveGroup(groupID, username);
+                                                removeFriend(username,
+                                                    widget.friendUsername);
                                                 Navigator.pushNamed(context,
                                                     '/global_challenge');
                                               },
@@ -508,7 +528,8 @@ class _FriendshipState extends State<friendship>
                                                         horizontal: 8,
                                                         vertical: 4),
                                               ),
-                                              child: Text("Un-Friend",
+                                              child: Text(
+                                                  "Unfriend ${widget.friendUsername}",
                                                   style: GoogleFonts.poppins(
                                                       textStyle:
                                                           const TextStyle(
@@ -1160,6 +1181,10 @@ class _DonutChartState extends State<DonutChart> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(
+                20.0), //  this will fix weird looking border?
+          ),
           contentPadding: EdgeInsets.zero,
           content: Container(
               width: 160,
