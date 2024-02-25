@@ -14,7 +14,7 @@ final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await SharedPrefs().init();
+  //await SharedPrefs().init();
 
   const String environment =
       String.fromEnvironment('FLUTTER_BACKEND_ENV', defaultValue: 'prod');

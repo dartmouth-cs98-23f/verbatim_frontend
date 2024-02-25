@@ -16,84 +16,9 @@ import 'dart:convert';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:verbatim_frontend/widgets/showSuccessDialog.dart';
 import 'dart:async';
-import 'package:verbatim_frontend/Components/shared_prefs.dart';
+//import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/resetPassword.dart';
 import 'package:verbatim_frontend/widgets/center_custom_app_bar.dart';
-
-void edits(
-  BuildContext context,
-  String fullName,
-  String username,
-  String newUsername,
-  String bio,
-  String email,
-  String profilePic,
-) async {
-  try {
-    Map<String, String> nameMap = getFirstAndLastName(fullName);
-
-    String firstName = nameMap['firstName'] ?? '';
-    String lastName = nameMap['lastName'] ?? '';
-
-    final response = await http.post(
-      Uri.parse('${BackendService.getBackendUrl()}accountSettings'),
-      headers: <String, String>{
-        'Content-Type': 'application/json',
-      },
-      body: jsonEncode({
-        'firstName': firstName,
-        'lastName': lastName,
-        'username': username,
-        'newUsername': newUsername,
-        'email': email,
-        'bio': bio,
-        'profilePic': profilePic,
-      }),
-    );
-
-    //do sth to verify the response,
-    if (response.statusCode == 200) {
-      print("\nprofile pic url: $profilePic");
-      //get the account info to display as dummy text
-      SharedPrefs.setFirstName(firstName);
-      SharedPrefs.setLastName(lastName);
-      SharedPrefs.setBio(bio);
-      SharedPrefs.setEmail(email);
-      SharedPrefs.setUserName(newUsername);
-      SharedPrefs.setProfileUrl(profilePic);
-
-        //               window.sessionStorage['UserName'] = new;
-        // window.sessionStorage['FirstName'] = firstName;
-        // window.sessionStorage['LastName'] = lastName;
-        // window.sessionStorage['Bio'] = "That's what she said!";
-        // window.sessionStorage['Email'] = email;
-     
-        // window.sessionStorage['ProfileUrl'] = profilePic;
-
-      SuccessDialog.show(context, 'Your changes have been recorded!');
-    }
-  } catch (error) {
-    print('Sorry cannot edit account settings:$error');
-  }
-}
-
-Map<String, String> getFirstAndLastName(String fullName) {
-  // Split the full name by whitespace
-  List<String> nameParts = fullName.trim().split(' ');
-
-  // Extract the first name and last name
-  String firstName = nameParts.isNotEmpty ? nameParts.first : '';
-  String lastName = nameParts.length > 1 ? nameParts.last : '';
-
-  // Return the first name and last name as a map
-  return {'firstName': firstName, 'lastName': lastName};
-}
-
-String getVal(String? fieldval, String currentval) {
-  String finalVal;
-  fieldval!.isEmpty ? finalVal = currentval : finalVal = fieldval;
-  return finalVal;
-}
 
 class settings extends StatefulWidget {
   const settings({super.key});
@@ -114,7 +39,7 @@ class _settingsState extends State<settings> {
 
   final String imagePath = 'assets/profile_pic.png';
   late String _currentProfileUrl =
-      SharedPrefs.ProfileUrl ?? 'assets/profile_pic.png';
+      window.sessionStorage['ProfileUrl'] ?? 'assets/profile_pic.png';
 
   final ImagePicker picker = ImagePicker();
 
@@ -129,8 +54,83 @@ class _settingsState extends State<settings> {
     _loadProfileImage();
   }
 
+  void edits(
+    BuildContext context,
+    String fullName,
+    String username,
+    String newUsername,
+    String bio,
+    String email,
+    String profilePic,
+  ) async {
+    try {
+      Map<String, String> nameMap = getFirstAndLastName(fullName);
+
+      String firstName = nameMap['firstName'] ?? '';
+      String lastName = nameMap['lastName'] ?? '';
+
+      final response = await http.post(
+        Uri.parse('${BackendService.getBackendUrl()}accountSettings'),
+        headers: <String, String>{
+          'Content-Type': 'application/json',
+        },
+        body: jsonEncode({
+          'firstName': firstName,
+          'lastName': lastName,
+          'username': username,
+          'newUsername': newUsername,
+          'email': email,
+          'bio': bio,
+          'profilePic': profilePic,
+        }),
+      );
+
+      //do sth to verify the response,
+      if (response.statusCode == 200) {
+        print("\nprofile pic url: $profilePic");
+        //get the account info to display as dummy text
+        // SharedPrefs.setFirstName(firstName);
+        // SharedPrefs.setLastName(lastName);
+        // SharedPrefs.setBio(bio);
+        // SharedPrefs.setEmail(email);
+        // SharedPrefs.setUserName(newUsername);
+        // SharedPrefs.setProfileUrl(profilePic);
+        setState(() {
+          window.sessionStorage['FirstName'] = firstName;
+          window.sessionStorage['LastName'] = lastName;
+          window.sessionStorage['Bio'] = bio;
+          window.sessionStorage['Email'] = email;
+          window.sessionStorage['ProfileUrl'] = profilePic;
+          window.sessionStorage['UserName'] = newUsername;
+        });
+
+        SuccessDialog.show(context, 'Your changes have been recorded!');
+      }
+    } catch (error) {
+      print('Sorry cannot edit account settings:$error');
+    }
+  }
+
+  Map<String, String> getFirstAndLastName(String fullName) {
+    // Split the full name by whitespace
+    List<String> nameParts = fullName.trim().split(' ');
+
+    // Extract the first name and last name
+    String firstName = nameParts.isNotEmpty ? nameParts.first : '';
+    String lastName = nameParts.length > 1 ? nameParts.last : '';
+
+    // Return the first name and last name as a map
+    return {'firstName': firstName, 'lastName': lastName};
+  }
+
+  String getVal(String? fieldval, String currentval) {
+    String finalVal;
+    fieldval!.isEmpty ? finalVal = currentval : finalVal = fieldval;
+    return finalVal;
+  }
+
   Future<void> _loadProfileImage() async {
-    String profileUrl = SharedPrefs().getProfileUrl() as String;
+    String profileUrl = window.sessionStorage['ProfileUrl']!;
     // Download the image bytes
     Uint8List imageBytes = await downloadImage(profileUrl);
     // Update the selectedImage with the loaded image bytes
@@ -179,11 +179,12 @@ class _settingsState extends State<settings> {
       var bytes = await image.readAsBytes();
       String newProfileUrl =
           await uploadFileToFirebase(bytes); // Get new profile picture URL
-      String prevProfileUrl = SharedPrefs().getProfileUrl() ??
+      String prevProfileUrl = window.sessionStorage['ProfileUrl'] ??
           ''; // Get previous profile picture URL
 
       // Update profile picture URL in SharedPrefs
-      SharedPrefs.setProfileUrl(newProfileUrl);
+      //SharedPrefs.setProfileUrl(newProfileUrl);
+      window.sessionStorage['ProfileUrl'] = newProfileUrl;
 
       // Delete previous profile picture if URL is not empty and different from new URL
       if (prevProfileUrl.isNotEmpty && prevProfileUrl != newProfileUrl) {
@@ -193,19 +194,20 @@ class _settingsState extends State<settings> {
 
       setState(() {
         selectedImage = MemoryImage(bytes);
-        SharedPrefs.setProfileUrl(newProfileUrl);
+        window.sessionStorage['ProfileUrl'] = newProfileUrl;
+        // SharedPrefs.setProfileUrl(newProfileUrl);
       });
 
       Navigator.pop(context);
 
       edits(
         context,
-        SharedPrefs().getFirstName() ??
-            '' " " + (SharedPrefs().getLastName() ?? ''),
-        SharedPrefs().getUserName() as String,
-        SharedPrefs().getUserName() as String,
-        SharedPrefs().getBio() as String,
-        SharedPrefs().getEmail() as String,
+        window.sessionStorage['FirstName'] ??
+            '' " " + (window.sessionStorage['LastName'] ?? ''),
+        window.sessionStorage['UserName'] as String,
+        window.sessionStorage['UserName'] as String,
+        window.sessionStorage['Bio'] as String,
+        window.sessionStorage['Email'] as String,
         newProfileUrl,
       );
     } else {
@@ -250,12 +252,13 @@ class _settingsState extends State<settings> {
   }
 
   Future<void> _removeCurrentPicture() async {
-    String prevProfileUrl = SharedPrefs().getProfileUrl() ?? '';
+    String prevProfileUrl = window.sessionStorage['ProfileUrl'] ?? "";
     String newProfileUrl = 'assets/profile_pic.png';
 
     setState(() {
       selectedImage = const AssetImage('assets/profile_pic.png');
-      SharedPrefs.setProfileUrl(newProfileUrl);
+      // SharedPrefs.setProfileUrl(newProfileUrl);
+      window.sessionStorage['ProfileUrl'] = newProfileUrl;
 
       // Close the pop-up
       Navigator.pop(context);
@@ -444,7 +447,7 @@ class _settingsState extends State<settings> {
                   MyTextFieldSettings(
                       controller: fullNameSettings,
                       hintText:
-                          "${SharedPrefs().getFirstName() ?? ""} ${SharedPrefs().getLastName() ?? ""}",
+                          "${window.sessionStorage['FirstName'] ?? ""} ${window.sessionStorage['LastName'] ?? ""}",
                       obscureText: false),
 
                   //username
@@ -469,7 +472,7 @@ class _settingsState extends State<settings> {
                   const SizedBox(height: 20),
                   MyTextFieldSettings(
                       controller: usernameSettings,
-                      hintText: SharedPrefs().getUserName() ?? "",
+                      hintText: window.sessionStorage['UserName'] ?? "",
                       obscureText: false),
 
                   //bio
@@ -495,7 +498,8 @@ class _settingsState extends State<settings> {
                   const SizedBox(height: 20),
                   MyTextFieldSettings(
                       controller: bioSettings,
-                      hintText: SharedPrefs().getBio() ?? "Enter your bio",
+                      hintText:
+                          window.sessionStorage['Bio'] ?? "Enter your bio",
                       obscureText: false),
 
                   //email
@@ -522,7 +526,7 @@ class _settingsState extends State<settings> {
                   const SizedBox(height: 20),
                   MyTextFieldSettings(
                       controller: emailSettings,
-                      hintText: SharedPrefs().getEmail() ?? "",
+                      hintText: window.sessionStorage['Email'] ?? "",
                       obscureText: false),
 
                   Center(
@@ -540,17 +544,17 @@ class _settingsState extends State<settings> {
                               edits(
                                   context,
                                   getVal(fullNameSettings.text,
-                                      SharedPrefs().getFirstName() ?? ""),
-                                  SharedPrefs().getUserName() ?? "",
+                                      window.sessionStorage['FirstName'] ?? ""),
+                                  window.sessionStorage['UserName'] ?? "",
                                   getVal(
                                     usernameSettings.text,
-                                    SharedPrefs().getUserName() ?? "",
+                                    window.sessionStorage['UserName'] ?? "",
                                   ),
                                   getVal(bioSettings.text,
-                                      SharedPrefs().getBio() ?? ""),
+                                      window.sessionStorage['Bio'] ?? ""),
                                   getVal(emailSettings.text,
-                                      SharedPrefs().getEmail() ?? ""),
-                                  SharedPrefs().getProfileUrl() as String);
+                                      window.sessionStorage['Email'] ?? ""),
+                                  window.sessionStorage['ProfileUrl']!);
                             },
                           ),
                         ),

@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:verbatim_frontend/BackendService.dart';
@@ -23,7 +25,7 @@ class guestGlobal extends StatefulWidget {
 }
 
 class _GuestGlobalState extends State<guestGlobal> {
-  String username = SharedPrefs().getUserName() ?? "";
+  String username = '';
   List<String> userResponses = ['', '', '', '', ''];
   String userResponse = '';
   List<String> responses123 = [];
@@ -83,6 +85,8 @@ class _GuestGlobalState extends State<guestGlobal> {
   @override
   void initState() {
     super.initState();
+    username = window.sessionStorage['UserName']?? "";
+    print("In guest an usename is:" + username);
     if (username == '') {
       _fecthNoSignInData().then((_) {
         setState(() {
@@ -140,7 +144,7 @@ class _GuestGlobalState extends State<guestGlobal> {
   @override
   Widget build(BuildContext context) {
     String idString = id.toString();
-    username = SharedPrefs().getUserName() ?? "";
+    username = window.sessionStorage['UserName']?? "";
 
     //get time and format
     DateTime now = DateTime.now();
@@ -167,8 +171,6 @@ class _GuestGlobalState extends State<guestGlobal> {
       showText = !showText;
     }
 
-    print("In Guest Global, username: $username ,responded: $responded");
-    print("In Guest Global, username: $username ,responded: $responded");
 
     return SafeArea(
       child: Scaffold(

@@ -166,6 +166,7 @@ var landingPageHandler = Handler(handlerFunc: (context, parameters) {
   
     // Update the current page in the shared prefs
     SharedPrefs.setCurrentPage('/landingPage');
+        return const LandingPage();
 });
 
 var friendshipHandler = Handler(handlerFunc: (context, parameters) {
@@ -207,7 +208,7 @@ var guestGlobalHandler = Handler(handlerFunc: (context, parameters){
       return const guestGlobal();
   } else {
       // Update the current page in the shared prefs
-        print("Whattt anomaly");
+       
       SharedPrefs.setCurrentPage('/globalChallenge');
       return const globalChallenge();
 }
@@ -242,8 +243,8 @@ var profileHandler = Handler(handlerFunc: (context, parameters) {
   if ((window.sessionStorage['UserName'] ?? "" ).isEmpty||
        (window.sessionStorage['Email'] ?? "" ).isEmpty||
         (window.sessionStorage['Password'] ?? "" ).isEmpty) {
+          print("WTH:::" +( window.sessionStorage['UserName']?? ""));
       SharedPrefs.setCurrentPage('/login');
-      print("Yop refresh has got me going crazzzyyyy");
     return const LogIn();
   } else {
     // Update the current page in the shared prefs

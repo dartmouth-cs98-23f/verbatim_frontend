@@ -23,7 +23,8 @@ class _LandingPageState extends State<LandingPage> {
     // SharedPrefs.setFirstName('');
     // SharedPrefs.setLastName('');
     // SharedPrefs.setBio('');
-   // window.sessionStorage.clear();
+    //window.sessionStorage.clear();
+
   
   }
 
@@ -47,8 +48,6 @@ class _LandingPageState extends State<LandingPage> {
 
   @override
   Widget build(BuildContext context) {
-    //clearSharedPrefs();
-    clearSharedPrefs();
     return Scaffold(
       backgroundColor: const Color(0xFFFFF3EE),
       body: Center(

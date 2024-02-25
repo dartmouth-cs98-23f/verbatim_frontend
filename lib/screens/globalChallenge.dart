@@ -262,9 +262,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
         print("data in ressponse q1 is null");
       }
     } else {
-      print(
-          "This is a guest sequence hopefully we alreay have stats eg numVerbatimQ1: ");
-      print(numVerbatimQ1);
+      
     }
   }
 
@@ -380,13 +378,8 @@ class _GlobalChallengeState extends State<globalChallenge> {
 
   @override
   Widget build(BuildContext context) {
-    print("Responded in global is: $responded");
+
     String idString = id.toString();
-
-    //TODO: check that this here works
-
-    // username = window.sessionStorage['UserName'] ?? "" ;
-    // print("Username in global challenge: " + username);
     DateTime now = DateTime.now();
     DateTime midnight =
         DateTime(now.year, now.month, now.day + 1); // Set to next midnight

@@ -4,7 +4,7 @@ import 'package:firebase_core/firebase_core.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-import 'package:verbatim_frontend/Components/shared_prefs.dart';
+//import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 import 'package:verbatim_frontend/widgets/my_button_with_svg.dart';
@@ -47,7 +47,7 @@ class Verbatastic extends StatelessWidget {
   Widget build(BuildContext context) {
     preloadImages(context);
     // Ensure the current user's username is not included in verbatasticUsernames
-    verbatasticUsernames!.remove(SharedPrefs().getUserName() as String);
+    verbatasticUsernames!.remove(window.sessionStorage['UserName']!);
 
     String copyIcon = 'assets/copy.svg';
     String sendIcon = 'assets/send.svg';
@@ -100,7 +100,7 @@ class Verbatastic extends StatelessWidget {
                           left: 30.0,
                           child: FirebaseStorageImage(
                               profileUrl:
-                                  SharedPrefs().getProfileUrl() as String),
+                                  window.sessionStorage['ProfileUrl']?? 'assets/profile_pic.png'),
                         ),
                       ],
                     ),
