@@ -785,10 +785,10 @@ class _SideBarState extends State<SideBar> {
                                   fontWeight: FontWeight.w700,
                                   fontSize: 15),
                             )),
-                        leading: Icon(Icons.favorite,
+                        leading: const Icon(Icons.favorite,
                             color: Colors.red, size: 17 // Set the color to red
                             ),
-                        trailing: Icon(Icons.favorite,
+                        trailing: const Icon(Icons.favorite,
                             color: Colors.red, size: 17 // Set the color to red
                             ),
                       ),

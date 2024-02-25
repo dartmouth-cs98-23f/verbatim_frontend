@@ -60,7 +60,7 @@ class OnBoardingPage3 extends StatelessWidget {
                                 letterSpacing: 0.30,
                               )),
                               children: <TextSpan>[
-                                TextSpan(
+                                const TextSpan(
                                   text:
                                       'Most outrageous, funniest, most thoughtful? Play the global daily challenge and see how you measure up to the rest of the ',
                                 ),

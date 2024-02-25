@@ -6,7 +6,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
-import 'package:verbatim_frontend/screens/profile.dart';
 import 'package:verbatim_frontend/screens/sideBar.dart';
 import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 import 'package:verbatim_frontend/widgets/friends_app_bar.dart';

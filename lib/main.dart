@@ -21,6 +21,7 @@ Future<void> main() async {
   try {
     await Firebase.initializeApp(
       options: FirebaseOptions(
+        authDomain: "verbatim-b4c2c.firebaseapp.com",
         apiKey: dotenv.env['apiKey']!,
         appId: dotenv.env['appId']!,
         messagingSenderId: dotenv.env['messagingSenderId']!,

@@ -1,5 +1,4 @@
 import 'package:email_validator/email_validator.dart';
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -127,8 +126,11 @@ class _SignUpState extends State<SignUp> {
           String firstName = nameMap['firstName'] ?? '';
           String lastName = nameMap['lastName'] ?? '';
 
-          saveUsersInfo(context, firstName, lastName, firstName,
-              account.email as String, ' ', ' ');
+          print("\n firstName: ${firstName}\n");
+          print("\n lastName: ${lastName} \n");
+
+          saveUsersInfo(
+              context, firstName, lastName, firstName, account.email, ' ', ' ');
         } else {
           print('\nThe google account is not found.');
         }
@@ -303,7 +305,7 @@ class _SignUpState extends State<SignUp> {
                 ),
                 const SizedBox(height: 50),
                 Padding(
-                  padding: EdgeInsets.only(left: 30.0),
+                  padding: const EdgeInsets.only(left: 30.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(

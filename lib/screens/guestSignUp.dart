@@ -268,7 +268,7 @@ class _GuestSignUpState extends State<GuestSignUp> {
                 ),
                 const SizedBox(height: 50),
                 Padding(
-                  padding: EdgeInsets.only(left: 30.0),
+                  padding: const EdgeInsets.only(left: 30.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(

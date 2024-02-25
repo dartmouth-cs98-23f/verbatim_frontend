@@ -20,7 +20,7 @@ class GetStarted extends StatelessWidget {
                   child: Column(
                     children: [
                       Padding(
-                        padding: EdgeInsets.only(top: 70.0),
+                        padding: const EdgeInsets.only(top: 70.0),
                         child: Align(
                           alignment: Alignment.center,
                           child: Text(
@@ -37,7 +37,7 @@ class GetStarted extends StatelessWidget {
                           ),
                         ),
                       ),
-                      SizedBox(height: 40),
+                      const SizedBox(height: 40),
                     ],
                   ),
                 ),

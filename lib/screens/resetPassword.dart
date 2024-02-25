@@ -126,7 +126,7 @@ class _ResetPasswordState extends State<ResetPassword> {
 
                       const SizedBox(height: 42),
                       Padding(
-                        padding: EdgeInsets.only(left: 30.0),
+                        padding: const EdgeInsets.only(left: 30.0),
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
@@ -151,7 +151,7 @@ class _ResetPasswordState extends State<ResetPassword> {
 
                       const SizedBox(height: 42),
                       Padding(
-                        padding: EdgeInsets.only(left: 30.0),
+                        padding: const EdgeInsets.only(left: 30.0),
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(

@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/screens/logIn.dart';
 import 'package:verbatim_frontend/widgets/guest_utility.dart';
@@ -24,19 +25,18 @@ class _LogoutPageState extends State<LogoutPage> {
     SharedPrefs().setLastName('');
     SharedPrefs().setBio('');
     SharedPrefs().setCurrentPage('/login');
+    SharedPrefs().setProfileUrl('');
 
     //TODO:clear stats, clear guest stuff
-    final GuestUtility guestUtility= GuestUtility();
+    final GuestUtility guestUtility = GuestUtility();
     guestUtility.clearStats();
     guestUtility.clearGameObject();
 
+    // Sign out for users who signed in using google
+    await FirebaseAuth.instance.signOut();
+
     // Navigate to the login page after logout
-    Navigator.push(
-      context,
-      MaterialPageRoute(
-        builder: (context) => const LogIn(),
-      ),
-    );
+    Navigator.pushNamed(context, '/login');
   }
 
   @override
@@ -77,11 +77,11 @@ class _LogoutPageState extends State<LogoutPage> {
                 ),
                 const SizedBox(height: 30),
                 Padding(
-                  padding: EdgeInsets.only(left: 15.0),
+                  padding: const EdgeInsets.only(left: 15.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       Text(
                         'Are you sure you want to log out?',
                         style: GoogleFonts.poppins(

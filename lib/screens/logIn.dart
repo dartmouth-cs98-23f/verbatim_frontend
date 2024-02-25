@@ -1,5 +1,8 @@
+import 'package:firebase_auth/firebase_auth.dart';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_dotenv/flutter_dotenv.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 //import 'package:google_sign_in/google_sign_in.dart';
 import 'package:verbatim_frontend/BackendService.dart';
@@ -26,7 +29,8 @@ class _LogInState extends State<LogIn> {
   Map<String, Text> validationErrors = {};
   final usernameEmailController = TextEditingController();
   final passwordController = TextEditingController();
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
+
+  final GoogleSignIn googleSignIn = GoogleSignIn(
     scopes: ['email'],
     clientId:
         '1052195157201-9d7dskf4jihdd8b3ad6bmidnkoilu9ht.apps.googleusercontent.com',
@@ -178,19 +182,44 @@ class _LogInState extends State<LogIn> {
     }
   }
 
-  // Sign in with Google functionality
-  Future<void> signInWithGoogle() async {
-    try {
-      final GoogleSignInAccount? account = await _googleSignIn.signIn();
+  Map<String, String> getFirstAndLastName(String fullName) {
+    // Split the full name by whitespace
+    List<String> nameParts = fullName.trim().split(' ');
 
-      if (account != null) {
-        print("\naccount email: ${account.email}\n");
-        saveUsersInfo(account.email, 'unavailable');
-      }
-    } catch (error) {
-      // Handle any errors that occur during the Google Sign-In process.
-      print('Error during Google Sign-In: $error');
+    // Extract the first name and last name
+    String firstName = nameParts.isNotEmpty ? nameParts.first : '';
+    String lastName = nameParts.length > 1 ? nameParts.last : '';
+
+    // Return the first name and last name as a map
+    return {'firstName': firstName, 'lastName': lastName};
+  }
+
+  Future<User?> signInWithGoogle() async {
+    User? user;
+    FirebaseAuth auth = FirebaseAuth.instance;
+    // The `GoogleAuthProvider` can only be
+    // used while running on the web
+    GoogleAuthProvider authProvider = GoogleAuthProvider();
+    String? name, userEmail, uid;
+
+    try {
+      final UserCredential userCredential =
+          await auth.signInWithPopup(authProvider);
+      user = userCredential.user;
+    } catch (e) {
+      print(e);
     }
+
+    if (user != null) {
+      uid = user.uid;
+      userEmail = user.email;
+
+      logIn(context, user.email as String, " ");
+
+      print("\nname: ${user.displayName as String}");
+      print("\nuserEmail: $userEmail");
+    }
+    return user;
   }
 
   bool isValidEmail(String email) {

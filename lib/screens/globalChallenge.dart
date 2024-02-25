@@ -632,10 +632,10 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                   } else if (responded == false) {
                                     return Column(
                                       children: [
-                                        SizedBox(height: 20.0),
+                                        const SizedBox(height: 20.0),
                                         Column(
                                           children: [
-                                            SizedBox(height: 50),
+                                            const SizedBox(height: 50),
                                             Center(
                                               child: Text(
                                                 'Play the',

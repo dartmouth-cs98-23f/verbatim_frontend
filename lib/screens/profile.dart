@@ -236,7 +236,7 @@ class _ProfileState extends State<Profile> {
           });
 
           print(
-              '\nFriendship Date between users ${currentUsername} and ${friendUsername} is $friendshipDate\n');
+              '\nFriendship Date between users $currentUsername and $friendUsername is $friendshipDate\n');
         } else {
           print(
               '\nError: "friendsSince" is null or not found in JSON response\n');
@@ -318,7 +318,7 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    print(" In profile Shared prefs: " + SharedPrefs().getUserName()!);
+    print(" In profile Shared prefs: ${SharedPrefs().getUserName()!}");
     return SafeArea(
       child: Theme(
         data: ThemeData(
@@ -1057,12 +1057,12 @@ class _ProfileState extends State<Profile> {
                                           child: (widget.user != null &&
                                                   friendshipDate.isNotEmpty)
                                               ? Text(
-                                                  "${widget.user!.username.replaceFirstMapped(
+                                                  widget.user!.username.replaceFirstMapped(
                                                     RegExp(r'^\w'),
                                                     (match) => match
                                                         .group(0)!
                                                         .toUpperCase(), // Capitalize the first letter
-                                                  )}",
+                                                  ),
                                                   textAlign: TextAlign.center,
                                                   style: GoogleFonts.poppins(
                                                       textStyle:
@@ -1079,12 +1079,12 @@ class _ProfileState extends State<Profile> {
                                                       friendshipDate.isEmpty &&
                                                       match != null)
                                                   ? Text(
-                                                      "${match!.username.replaceFirstMapped(
+                                                      match!.username.replaceFirstMapped(
                                                         RegExp(r'^\w'),
                                                         (match) => match
                                                             .group(0)!
                                                             .toUpperCase(), // Capitalize the first letter
-                                                      )}",
+                                                      ),
                                                       textAlign:
                                                           TextAlign.center,
                                                       style:
@@ -1108,12 +1108,12 @@ class _ProfileState extends State<Profile> {
                                                                       as String)) &&
                                                           match != null)
                                                       ? Text(
-                                                          "${match!.username.replaceFirstMapped(
+                                                          match!.username.replaceFirstMapped(
                                                             RegExp(r'^\w'),
                                                             (match) => match
                                                                 .group(0)!
                                                                 .toUpperCase(), // Capitalize the first letter
-                                                          )}",
+                                                          ),
                                                           textAlign:
                                                               TextAlign.center,
                                                           style: GoogleFonts

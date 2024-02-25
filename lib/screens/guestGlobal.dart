@@ -252,7 +252,7 @@ class _GuestGlobalState extends State<guestGlobal> {
                                                         style:
                                                             GoogleFonts.poppins(
                                                                 textStyle:
-                                                                    TextStyle(
+                                                                    const TextStyle(
                                                           fontSize: 14,
                                                           color: Colors.black,
                                                         ))),
@@ -391,10 +391,10 @@ class _GuestGlobalState extends State<guestGlobal> {
                                   } else if (responded == false) {
                                     return Column(
                                       children: [
-                                        SizedBox(height: 20.0),
+                                        const SizedBox(height: 20.0),
                                         Column(
                                           children: [
-                                            SizedBox(height: 50),
+                                            const SizedBox(height: 50),
                                             Center(
                                               child: Text(
                                                 'Play the',
