@@ -1,14 +1,18 @@
+import 'dart:html';
 import 'dart:math';
 
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
+import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/Components/defineRoutes.dart';
 import 'dart:convert';
-import 'package:verbatim_frontend/Components/shared_prefs.dart';
+import 'package:verbatim_frontend/UserData.dart';
+
 import 'package:verbatim_frontend/screens/addFriend.dart';
+
 import 'package:verbatim_frontend/screens/profile.dart';
 import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 import 'package:confetti/confetti.dart';
@@ -72,23 +76,11 @@ class SideBar extends StatefulWidget {
 
 class _SideBarState extends State<SideBar> {
   Color trailingIconColor = Colors.black;
-  String username = SharedPrefs().getUserName() as String;
+  String username = '';
+
   late ConfettiController _confettiController;
-
-  final String firstName =
-      (SharedPrefs().getFirstName() as String).replaceFirstMapped(
-    RegExp(r'^\w'),
-    (match) => match
-        .group(0)!
-        .toUpperCase(), // Ensures the first letter of first name is capitalized.
-  );
-
-  String lastNameInitial = (SharedPrefs().getLastName() ?? "Name").isNotEmpty
-      ? (SharedPrefs().getLastName() ?? "Name").substring(0, 1).toUpperCase()
-      : "";
-
-  // String displayName = (SharedPrefs().getLastName() ?? "Name").isNotEmpty ? '$firstName $lastNameInitial.' : '$firstName';
-
+  String firstName = '';
+  String lastNameInitial = '';
   final Color primary = const Color.fromARGB(255, 231, 111, 81);
   bool showFriends = false;
   bool showGroups = false;
@@ -270,6 +262,25 @@ class _SideBarState extends State<SideBar> {
   @override
   void initState() {
     super.initState();
+
+
+
+    username = window.sessionStorage['UserName']?? "";
+    String FirstName = window.sessionStorage['FirstName']?? "";
+    String LastName = window.sessionStorage['LastName']?? "";
+
+    firstName = FirstName.replaceFirstMapped(
+      RegExp(r'^\w'),
+      (match) => match
+          .group(0)!
+          .toUpperCase(), // Ensures the first letter of first name is capitalized.
+    );
+
+    // NOTE
+    lastNameInitial =
+        LastName!.isNotEmpty ? LastName.substring(0, 1).toUpperCase() : "";
+    print("Checking out lastName: " + LastName);
+
     _confettiController =
         ConfettiController(duration: const Duration(seconds: 3));
   }
@@ -283,8 +294,7 @@ class _SideBarState extends State<SideBar> {
   @override
   Widget build(BuildContext context) {
     BuildContext context1 = context;
-
-    username = SharedPrefs().getUserName() ?? "";
+    //username = SharedPrefs().getUserName() ?? "";
     // laod content first - get friends, requests and groups
     return FutureBuilder<void>(
         future: Future.wait([
@@ -315,20 +325,18 @@ class _SideBarState extends State<SideBar> {
                         child: Center(
                           child: ListTile(
                             title: Text(
-                                (SharedPrefs().getLastName() ?? "Name")
-                                        .isNotEmpty
-                                    ? '$firstName $lastNameInitial.'
-                                    : firstName,
-                                style: GoogleFonts.poppins(
-                                  textStyle: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.bold),
-                                )),
-                            leading: FirebaseStorageImage(
-                              profileUrl:
-                                  SharedPrefs().getProfileUrl() as String,
+                              (window.sessionStorage['LastName']?? " ").isNotEmpty
+                                  ? '$firstName $lastNameInitial.'
+                                  : firstName,
+                              style: const TextStyle(
+                                  color: Colors.white,
+                                  fontSize: 20,
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.bold),
                             ),
+                            leading: FirebaseStorageImage(
+                                profileUrl:
+                                    window.sessionStorage['ProfileUrl']?? ""),
                             trailing: const Icon(Icons.settings,
                                 color: Colors.white, size: 26),
                             onTap: () {

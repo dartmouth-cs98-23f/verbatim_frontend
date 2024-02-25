@@ -1,6 +1,8 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/BackendService.dart';
-import 'package:verbatim_frontend/Components/shared_prefs.dart';
+//import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'sideBar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
@@ -167,7 +169,7 @@ class _CustomChallengeState extends State<customChallenge>
                         if (widget.friendship) {
                           int groupID = widget.groupId!;
                           String name = widget.groupName;
-                          String username = SharedPrefs().getUserName() ?? "";
+                          String username = window.sessionStorage['UserName']?? "";
                           Navigator.pop(context);
                           createCustomChallenge(username, prompts, groupID)
                               .then((_) {
@@ -182,7 +184,7 @@ class _CustomChallengeState extends State<customChallenge>
                           });
                         } else {
                           int groupID = widget.groupId!;
-                          String username = SharedPrefs().getUserName() ?? "";
+                          String username = window.sessionStorage['UserName']?? "";
                           Navigator.pop(context);
                           createCustomChallenge(username, prompts, groupID)
                               .then((_) {

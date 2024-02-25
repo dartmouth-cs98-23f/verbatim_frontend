@@ -1,7 +1,11 @@
+import 'dart:html';
+
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:verbatim_frontend/BackendService.dart';
+import 'package:verbatim_frontend/UserData.dart';
 import 'package:verbatim_frontend/gameObject.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
@@ -110,13 +114,30 @@ class _GuestSignUpState extends State<GuestSignUp> {
           print("verbatasticUsers is empty");
         }
       }
-      SharedPrefs().setEmail(email);
-      SharedPrefs().setFirstName(firstName);
-      SharedPrefs().setLastName(lastName);
-      SharedPrefs().setPassword(password);
-      SharedPrefs().setUserName(username);
-      SharedPrefs().setBio("");
-      SharedPrefs().setProfileUrl("assets/profile_pic.png");
+        // final userData = Provider.of<UserData>(context, listen: false);
+        // userData.setBio('That\'s what she said!');
+        // userData.setEmail(email);
+        // userData.setFirstName(firstName);
+        // userData.setLastName(lastName);
+        // userData.setUserName(username);
+        // userData.setProfileUrl('assets/profile_pic.png');
+        // userData.setPassword(password);
+
+                window.sessionStorage['UserName'] = username;
+        window.sessionStorage['FirstName'] = firstName;
+        window.sessionStorage['LastName'] = lastName;
+        window.sessionStorage['Bio'] = "That's what she said!";
+        window.sessionStorage['Email'] = email;
+        window.sessionStorage['Password'] = password;
+        window.sessionStorage['ProfileUrl'] = 'assets/profile_pic.png';
+
+      // SharedPrefs.setEmail(email);
+      //   SharedPrefs.setFirstName(firstName);
+      //   SharedPrefs.setLastName(lastName);
+      // SharedPrefs.setPassword(password);
+      // SharedPrefs.setUserName(username);
+      // SharedPrefs.setBio("");
+      // SharedPrefs.setProfileUrl("assets/profile_pic.png");
       Navigator.pushNamed(context,
           '/global_challenge'); //push them to the stats page if we have one
     } else {

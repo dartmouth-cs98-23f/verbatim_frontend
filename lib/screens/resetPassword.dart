@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:verbatim_frontend/BackendService.dart';
@@ -34,7 +36,7 @@ class _ResetPasswordState extends State<ResetPassword> {
           'Content-Type': 'application/json',
         },
         body: jsonEncode({
-          'username': SharedPrefs().getUserName(),
+          'username': window.sessionStorage['UserName']?? "",
           'oldPassword': oldPassword,
           'newPassword': newPassword,
         }),
@@ -42,7 +44,8 @@ class _ResetPasswordState extends State<ResetPassword> {
       // do something to verify the response,
       if (response.statusCode == 200) {
         // get the account info to display as dummy text
-        SharedPrefs().setPassword(newPassword);
+        // SharedPrefs.setPassword(newPassword);
+        window.sessionStorage['Password']= newPassword;
         SuccessDialog.show(context, 'Your password has been updated!');
       } else {
         print("\nSomething went wrong - Status code ${response.statusCode}\n");
@@ -64,7 +67,7 @@ class _ResetPasswordState extends State<ResetPassword> {
       setValidationError("passwordMismatch", "Passwords do not match.");
       return false;
     }
-    if (SharedPrefs().getPassword() != oldPassword) {
+    if (window.sessionStorage['Password']! != oldPassword) {
       setValidationError(
           "incorrectPassword", "Incorrect value for currrent password");
       return false;

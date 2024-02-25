@@ -21,23 +21,24 @@ class SharedPrefs {
   
   }
 
-  void setUserName(String username) {
-    _sharedPrefs!.setString("username", username);
-     _sharedPrefs?.commit();
+  static Future <void> setUserName (String username)async {
+    await _sharedPrefs!.setString("username", username);
+  }
+
+  static Future <void> setLastName(String lastName)async {
+    await _sharedPrefs!.setString("lastname", lastName);
+     
   }
 
   String? getUserName() {
     return _sharedPrefs!.getString("username");
   }
 
-  void setLastName(String lastName) {
-    _sharedPrefs!.setString("lastname", lastName);
-     _sharedPrefs?.commit();
-  }
 
-  void setCurrentPage(String currentPage) {
-    _sharedPrefs!.setString("currentPage", currentPage);
-     _sharedPrefs?.commit();
+
+  static Future <void> setCurrentPage(String currentPage) async{
+   await  _sharedPrefs!.setString("currentPage", currentPage);
+  
   }
   String? getCurrentPage() {
     return _sharedPrefs!.getString("currentPage");
@@ -48,27 +49,27 @@ class SharedPrefs {
 
   }
 
-  void setFirstName(String firstName) {
-    _sharedPrefs!.setString("firstname", firstName);
-     _sharedPrefs?.commit();
+  static Future <void> setFirstName(String firstName) async{
+   await  _sharedPrefs!.setString("firstname", firstName);
+     
   }
 
   String? getFirstName() {
     return _sharedPrefs!.getString("firstname");
   }
 
-  void setBio(String bio) {
-    _sharedPrefs!.setString("bio", bio);
-     _sharedPrefs?.commit();
+  static Future <void> setBio(String bio) async{
+   await  _sharedPrefs!.setString("bio", bio);
+    
   }
 
   String? getBio() {
     return _sharedPrefs!.getString("bio");
   }
 
-  void setEmail(String email) {
-    _sharedPrefs!.setString("email", email);
-     _sharedPrefs?.commit();
+  static Future <void> setEmail(String email)async {
+    await _sharedPrefs!.setString("email", email);
+   
   }
 
 
@@ -77,22 +78,22 @@ class SharedPrefs {
   }
 
 
-  void setPassword(String password) {
-    _sharedPrefs!.setString("password", password);
-     _sharedPrefs?.commit();
+  static Future <void> setPassword(String password) async{
+    await _sharedPrefs!.setString("password", password);
+  
   }
 
   String? getPassword() {
     return _sharedPrefs!.getString("password");
   }
 
-  void setProfileUrl(String profileUrl) {
+  static Future <void> setProfileUrl(String profileUrl) async{
     if (profileUrl.isNotEmpty) {
-      _sharedPrefs!.setString("profileUrl", profileUrl);
-      _sharedPrefs?.commit();
+      await _sharedPrefs!.setString("profileUrl", profileUrl);
+  
     } else {
-      _sharedPrefs!.setString("profileUrl", 'assets/profile_pic.png');
-      _sharedPrefs?.commit();
+      await _sharedPrefs!.setString("profileUrl", 'assets/profile_pic.png');
+      
     }
   }
 

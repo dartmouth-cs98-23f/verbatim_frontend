@@ -1,6 +1,10 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:verbatim_frontend/BackendService.dart';
-import 'package:verbatim_frontend/Components/shared_prefs.dart';
+// import 'package:verbatim_frontend/Components/shared_prefs.dart';
+import 'package:verbatim_frontend/UserData.dart';
 import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 import 'sideBar.dart';
@@ -22,7 +26,7 @@ class createGroup extends StatefulWidget {
 }
 
 class _CreateGroupState extends State<createGroup> {
-  String username = SharedPrefs().getUserName() ?? "";
+  String username = window.sessionStorage['UserName']?? "";
   bool isCreated = false; // in the beginning, the group isn't created
   TextEditingController responseController = TextEditingController();
   String userResponse = '';
@@ -114,7 +118,11 @@ class _CreateGroupState extends State<createGroup> {
   @override
   void initState() {
     super.initState();
+    
+    final userData = Provider.of<UserData>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback((_) {userData.loadValues();});
 
+    username = window.sessionStorage['UserName']?? "";
     _searchController.addListener(() {
       setState(() {
         _searchText = _searchController.text;
@@ -148,13 +156,16 @@ class _CreateGroupState extends State<createGroup> {
     return searchResults
         .where((item) =>
             item.username.toLowerCase().contains(_searchText.toLowerCase()) &&
-            item.username != SharedPrefs().getUserName())
+            item.username != window.sessionStorage['UserName']!)
         .toList();
   }
 
   @override
   Widget build(BuildContext context) {
-    String username = SharedPrefs().getUserName() ?? "";
+    final userData = Provider.of<UserData>(context, listen: false);
+    WidgetsBinding.instance.addPostFrameCallback((_) {userData.loadValues();});
+
+    //String username = SharedPrefs().getUserName() ?? "";
 
     const String assetName = 'assets/img1.svg'; // orange (top) background
 

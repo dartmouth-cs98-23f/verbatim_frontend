@@ -1,3 +1,4 @@
+import 'dart:html';
 import 'dart:typed_data';
 
 import 'package:flutter/material.dart';
@@ -55,8 +56,9 @@ class NewNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String profileUrl =
-        SharedPrefs().getProfileUrl() ?? 'assets/profile_pic.png';
+    final String profileUrl = window.sessionStorage['ProfileUrl']?? "assets/profile_pic.png"
+        ;
+
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -82,7 +84,7 @@ class NewNavBar extends StatelessWidget {
           // SearchBarTextField(),
           const SizedBox(width: 80),
           FirebaseStorageImage(
-            profileUrl: SharedPrefs().getProfileUrl() as String,
+            profileUrl: window.sessionStorage['ProfileUrl']?? "",
           ),
         ],
       ),

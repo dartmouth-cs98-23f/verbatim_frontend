@@ -1,7 +1,9 @@
+import 'dart:html';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:verbatim_frontend/Components/shared_prefs.dart';
+// import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
 
 class LandingPage extends StatefulWidget {
@@ -12,14 +14,18 @@ class LandingPage extends StatefulWidget {
 }
 
 class _LandingPageState extends State<LandingPage> {
-  void clearSharedPrefs() async {
-    await SharedPrefs().init();
-    SharedPrefs().setEmail('');
-    SharedPrefs().setUserName('');
-    SharedPrefs().setPassword('');
-    SharedPrefs().setFirstName('');
-    SharedPrefs().setLastName('');
-    SharedPrefs().setBio('');
+  
+  void clearSharedPrefs() {
+    // await SharedPrefs().init();
+    // SharedPrefs.setEmail('');
+    // SharedPrefs.setUserName('');
+    // SharedPrefs.setPassword('');
+    // SharedPrefs.setFirstName('');
+    // SharedPrefs.setLastName('');
+    // SharedPrefs.setBio('');
+    //window.sessionStorage.clear();
+
+  
   }
 
   void onTap() {
@@ -42,8 +48,6 @@ class _LandingPageState extends State<LandingPage> {
 
   @override
   Widget build(BuildContext context) {
-    //clearSharedPrefs();
-    clearSharedPrefs();
     return Scaffold(
       backgroundColor: const Color(0xFFFFF3EE),
       body: Center(

@@ -16,19 +16,20 @@ class _LogoutPageState extends State<LogoutPage> {
 
   Future<void> logout(BuildContext context) async {
     // Clear out all the user information
-    await SharedPrefs().init();
-    SharedPrefs().setEmail('');
-    SharedPrefs().setUserName('');
-    SharedPrefs().setPassword('');
-    SharedPrefs().setFirstName('');
-    SharedPrefs().setLastName('');
-    SharedPrefs().setBio('');
-    SharedPrefs().setCurrentPage('/login');
+    // await SharedPrefs().init();
+    // SharedPrefs.setEmail('');
+    // SharedPrefs.setUserName('');
+    // SharedPrefs.setPassword('');
+    // SharedPrefs.setFirstName('');
+    // SharedPrefs.setLastName('');
+    // SharedPrefs.setBio('');
+    // SharedPrefs.setCurrentPage('/login');
 
     //TODO:clear stats, clear guest stuff
     final GuestUtility guestUtility= GuestUtility();
     guestUtility.clearStats();
     guestUtility.clearGameObject();
+    guestUtility.clearUserInfo();
 
     // Navigate to the login page after logout
     Navigator.push(

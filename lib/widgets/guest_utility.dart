@@ -1,7 +1,6 @@
 import 'package:verbatim_frontend/gameObject.dart';
 
 class GuestUtility {
-
   void clearGameObject() {
     responseQ1 = '';
     responseQ2 = '';
@@ -89,9 +88,15 @@ class GuestUtility {
     List<String>? verbatasticUsernames = [];
   }
 
+  void updateStats() {}
 
-
-   void updateStats(){
-    
-   }
+  void clearUserInfo() {
+    String EMAIL = '';
+    String FIRSTNAME = '';
+    String LASTNAME = '';
+    String USERNAME = '';
+    String BIO = '';
+    String PROFILEURL = '';
+    String PASSWORD = '';
+  }
 }
