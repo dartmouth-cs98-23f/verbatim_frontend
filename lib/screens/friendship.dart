@@ -467,26 +467,58 @@ class _FriendshipState extends State<friendship>
                               ),
                             ),
                             const CustomAppBar(),
-                            Center(
-                                child: Container(
-                                    padding: const EdgeInsets.only(top: 100),
-                                    child: Column(children: [
-                                      Text(
-                                        'You and ${widget.friendUsername.replaceFirstMapped(
-                                          RegExp(r'^\w'),
-                                          (match) => match
-                                              .group(0)!
-                                              .toUpperCase(), // Ensures the first letter of first name is capitalized.
-                                        )}',
-                                        style: GoogleFonts.poppins(
-                                          textStyle: const TextStyle(
-                                            fontSize: 27,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w900,
+                            Column(children: [
+                              Center(
+                                  child: Container(
+                                      padding: const EdgeInsets.only(top: 100),
+                                      child: Column(children: [
+                                        Text(
+                                          'You and ${widget.friendUsername.replaceFirstMapped(
+                                            RegExp(r'^\w'),
+                                            (match) => match
+                                                .group(0)!
+                                                .toUpperCase(), // Ensures the first letter of first name is capitalized.
+                                          )}',
+                                          style: GoogleFonts.poppins(
+                                            textStyle: const TextStyle(
+                                              fontSize: 27,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w900,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ])))
+                                      ]))),
+                              Center(
+                                  child: Container(
+                                      margin: const EdgeInsets.only(top: 13),
+                                      child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            ElevatedButton(
+                                              onPressed: () {
+                                                //    leaveGroup(groupID, username);
+                                                Navigator.pushNamed(context,
+                                                    '/global_challenge');
+                                              },
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: Colors.white,
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 8,
+                                                        vertical: 4),
+                                              ),
+                                              child: Text("Un-Friend",
+                                                  style: GoogleFonts.poppins(
+                                                      textStyle:
+                                                          const TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Color(0xFFE76F51),
+                                                  ))),
+                                            ),
+                                          ])))
+                            ])
                           ],
                         ),
                       ),
@@ -564,8 +596,7 @@ class _FriendshipState extends State<friendship>
                                       Column(
                                         children: [
                                           Visibility(
-                                              visible:
-                                                  mappedChallenges.isEmpty,
+                                              visible: mappedChallenges.isEmpty,
                                               child: Container(
                                                 padding: const EdgeInsets.only(
                                                     top: 10,
