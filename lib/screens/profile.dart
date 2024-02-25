@@ -240,12 +240,8 @@ class _ProfileState extends State<Profile> {
 
 
 
-    //TODO: 
+  
     username = window.sessionStorage['UserName']?? "";
-    print("Ok username in profile is!!!: " + username);
-
-  //  username = SharedPrefs().getUserName()!;
-   
     getUsersIHaveRequested(username);
 
 // if this is someone else's page then draw the ''requested'' button as such

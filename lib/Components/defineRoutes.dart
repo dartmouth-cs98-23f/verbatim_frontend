@@ -1,4 +1,6 @@
 
+import 'dart:html';
+
 import 'package:fluro/fluro.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/addFriend.dart';
@@ -161,15 +163,9 @@ var myGroupHandler = Handler(
 );
 
 var landingPageHandler = Handler(handlerFunc: (context, parameters) {
-  if (SharedPrefs().getEmail() == '' ||
-      SharedPrefs().getUserName() == '' ||
-      SharedPrefs().getPassword() == '') {
-    return const LandingPage();
-  } else {
+  
     // Update the current page in the shared prefs
     SharedPrefs.setCurrentPage('/landingPage');
-    return const LandingPage();
-  }
 });
 
 var friendshipHandler = Handler(handlerFunc: (context, parameters) {
@@ -189,9 +185,9 @@ var friendshipHandler = Handler(handlerFunc: (context, parameters) {
 });
 
 var settingsHandler = Handler(handlerFunc: (context, parameters) {
-  if (SharedPrefs().getEmail() == '' ||
-      SharedPrefs().getUserName() == '' ||
-      SharedPrefs().getPassword() == '') {
+  if (window.sessionStorage['UserName']!.isEmpty ||
+        window.sessionStorage['Email']!.isEmpty ||
+        window.sessionStorage['Password']!.isEmpty) {
       SharedPrefs.setCurrentPage('/login');
     return const LogIn();
   } else {
@@ -204,9 +200,9 @@ var settingsHandler = Handler(handlerFunc: (context, parameters) {
 //TODO: 
 var guestGlobalHandler = Handler(handlerFunc: (context, parameters){
 
-  if (SharedPrefs().getEmail() == '' ||
-        SharedPrefs().getUserName() == '' ||
-        SharedPrefs().getPassword() == '') {
+  if (window.sessionStorage['UserName']!.isEmpty ||
+        window.sessionStorage['Email']!.isEmpty ||
+        window.sessionStorage['Password']!.isEmpty) {
         SharedPrefs.setCurrentPage('/guestGlobal');
       return const guestGlobal();
   } else {
@@ -229,9 +225,9 @@ var guestSignUpHandler = Handler(handlerFunc: (context, parameters){
 
 Handler onBoardingPage1Handler = Handler(
   handlerFunc: (context, parameters) {
-    if (SharedPrefs().getEmail() == '' ||
-        SharedPrefs().getUserName() == '' ||
-        SharedPrefs().getPassword() == '') {
+    if (window.sessionStorage['UserName']!.isEmpty ||
+        window.sessionStorage['Email']!.isEmpty ||
+        window.sessionStorage['Password']!.isEmpty) {
         SharedPrefs.setCurrentPage('/login');
       return const LogIn();
     } else {
@@ -243,9 +239,9 @@ Handler onBoardingPage1Handler = Handler(
 );
 
 var profileHandler = Handler(handlerFunc: (context, parameters) {
-  if (SharedPrefs().getEmail() == '' ||
-      SharedPrefs().getUserName() == '' ||
-      SharedPrefs().getPassword() == '') {
+  if (window.sessionStorage['UserName']!.isEmpty ||
+        window.sessionStorage['Email']!.isEmpty ||
+        window.sessionStorage['Password']!.isEmpty) {
       SharedPrefs.setCurrentPage('/login');
       print("Yop refresh has got me going crazzzyyyy");
     return const LogIn();
@@ -258,9 +254,9 @@ var profileHandler = Handler(handlerFunc: (context, parameters) {
 
 var onBoardingPage2Handler = Handler(
   handlerFunc: (context, parameters) {
-    if (SharedPrefs().getEmail() == '' ||
-        SharedPrefs().getUserName() == '' ||
-        SharedPrefs().getPassword() == '') {
+    if (window.sessionStorage['UserName']!.isEmpty ||
+        window.sessionStorage['Email']!.isEmpty ||
+        window.sessionStorage['Password']!.isEmpty) {
         SharedPrefs.setCurrentPage('/login');
       return const LogIn();
     } else {
@@ -273,9 +269,9 @@ var onBoardingPage2Handler = Handler(
 
 var onBoardingPage3Handler = Handler(
   handlerFunc: (context, parameters) {
-    if (SharedPrefs().getEmail() == '' ||
-        SharedPrefs().getUserName() == '' ||
-        SharedPrefs().getPassword() == '') {
+    if (window.sessionStorage['UserName']!.isEmpty ||
+        window.sessionStorage['Email']!.isEmpty ||
+        window.sessionStorage['Password']!.isEmpty) {
            SharedPrefs.setCurrentPage('/login');
       return const LogIn();
     } else {
@@ -288,9 +284,9 @@ var onBoardingPage3Handler = Handler(
 
 var onBoardingPage4Handler = Handler(
   handlerFunc: (context, parameters) {
-    if (SharedPrefs().getEmail() == '' ||
-        SharedPrefs().getUserName() == '' ||
-        SharedPrefs().getPassword() == '') {
+    if (window.sessionStorage['UserName']!.isEmpty ||
+        window.sessionStorage['Email']!.isEmpty ||
+        window.sessionStorage['Password']!.isEmpty) {
            SharedPrefs.setCurrentPage('/login');
       return const LogIn();
     } else {
@@ -366,9 +362,9 @@ Handler forgotPasswordHandler = Handler(
 
 Handler signupErrorMessageHandler = Handler(
   handlerFunc: (context, parameters) {
-    if (SharedPrefs().getEmail() == '' ||
-        SharedPrefs().getUserName() == '' ||
-        SharedPrefs().getPassword() == '') {
+    if (window.sessionStorage['UserName']!.isEmpty ||
+        window.sessionStorage['Email']!.isEmpty ||
+        window.sessionStorage['Password']!.isEmpty) {
       return const LogIn();
     } else {
       // Update the current page in the shared prefs

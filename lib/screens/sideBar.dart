@@ -9,7 +9,7 @@ import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/Components/defineRoutes.dart';
 import 'dart:convert';
 import 'package:verbatim_frontend/UserData.dart';
-import 'package:verbatim_frontend/UserDataObj.dart';
+
 import 'package:verbatim_frontend/screens/addFriend.dart';
 
 import 'package:verbatim_frontend/screens/profile.dart';
