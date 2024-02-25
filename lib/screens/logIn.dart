@@ -1,8 +1,12 @@
+import 'dart:html';
+
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 // import 'package:google_sign_in/google_sign_in.dart';
 import 'package:verbatim_frontend/BackendService.dart';
+import 'package:verbatim_frontend/UserDataObj.dart';
+
 
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'package:verbatim_frontend/screens/signupErrorMessage.dart';
@@ -157,16 +161,43 @@ class _LogInState extends State<LogIn> {
 
         if (responseData != null) {
           // Authentication successful: Save the user info to the disk so that they can persist to other pages
-          final userData = Provider.of<UserData>(context, listen: false);
-          userData.setBio(responseData['bio'] ?? 'That\'s what she said!');
-          userData.setEmail(responseData['email']);
-          userData.setFirstName(responseData['firstName'] ?? '');
-          userData.setLastName(responseData['lastName'] ?? '');
-          userData.setUserName(responseData['username']);
-          userData.setProfileUrl(responseData['profilePicture'] ?? 'assets/profile_pic.png');
-          userData.setPassword(responseData['password']);
+          // final userData = Provider.of<UserData>(context, listen: false);
+          // userData.setBio(responseData['bio'] ?? 'That\'s what she said!');
+          // userData.setEmail(responseData['email']);
+          // userData.setFirstName(responseData['firstName'] ?? '');
+          // userData.setLastName(responseData['lastName'] ?? '');
+          // userData.setUserName(responseData['username']);
+          // userData.setProfileUrl(responseData['profilePicture'] ?? 'assets/profile_pic.png');
+          // userData.setPassword(responseData['password']);
 
-          print("In login and the user data stuff is:" + userData.firstName);
+
+       
+          window.sessionStorage['UserName'] = responseData['username'];
+          window.sessionStorage['LastName'] = responseData['lastName'];
+          window.sessionStorage['FirstName'] = responseData['firstName'];
+          window.sessionStorage['Bio'] = responseData['bio']?? "That's what she said!";
+          window.sessionStorage['Email'] = responseData['email'];
+          window.sessionStorage['Password'] = responseData['password'];
+          window.sessionStorage['ProfileUrl'] = responseData['profilePicture'] ?? 'assets/profile_pic.png';
+
+
+
+// if (user != null) {
+//     for (final providerProfile in user.providerData) {
+//         // ID of the provider (google.com, apple.com, etc.)
+//         final provider = providerProfile.providerId;
+
+//         // UID specific to the provider
+//         final uid = providerProfile.uid;
+
+//         // Name, email address, and profile photo URL
+//         final name = providerProfile.displayName;
+//         final emailAddress = providerProfile.email;
+//         final profilePhoto = providerProfile.photoURL;
+//     }
+// }
+          
+
         
 
           Navigator.pushNamed(context, '/global_challenge');

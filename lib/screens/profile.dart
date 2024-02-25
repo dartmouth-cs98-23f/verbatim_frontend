@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
@@ -9,7 +11,6 @@ import 'package:verbatim_frontend/widgets/center_custom_app_bar.dart';
 import 'package:verbatim_frontend/widgets/custom_challenge_button.dart';
 import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 import 'package:verbatim_frontend/widgets/showSuccessDialog.dart';
-import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/widgets/stats_tile.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:http/http.dart' as http;
@@ -236,10 +237,14 @@ class _ProfileState extends State<Profile> {
   void initState() {
     super.initState();
 
-    final userData = Provider.of<UserData>(context, listen: false);
-    WidgetsBinding.instance.addPostFrameCallback((_) {userData.loadValues();});
 
-    username = SharedPrefs().getUserName()!;
+
+
+    //TODO: 
+    username = window.sessionStorage['UserName']?? "";
+    print("Ok username in profile is!!!: " + username);
+
+  //  username = SharedPrefs().getUserName()!;
    
     getUsersIHaveRequested(username);
 
@@ -257,14 +262,14 @@ class _ProfileState extends State<Profile> {
   
 
     // Initialize bio, ensuring it's never null
-    bio = widget.user?.bio ?? SharedPrefs().getBio() ?? "Thats what she said ";
+    bio = widget.user?.bio ??          window.sessionStorage['Bio']!;
     // Initialize profileUrl, ensuring a default is used if null
     profileUrl = widget.user?.profilePicture ??
-        SharedPrefs().getProfileUrl()!;
+                window.sessionStorage['ProfileUrl'] !;
         
 
     // Populate the initial values for other user details
-    firstName = (widget.user?.firstName ?? SharedPrefs().getFirstName()?? "User")
+    firstName = (widget.user?.firstName ??  window.sessionStorage['FirstName']!)
         .replaceFirstMapped(
       RegExp(r'^\w'),
       (match) => match
@@ -272,19 +277,12 @@ class _ProfileState extends State<Profile> {
           .toUpperCase(), // Ensures the first letter of first name is capitalized.
     );
 
-    lastName = widget.user?.lastName ?? SharedPrefs().getLastName() ?? "Name";
+    lastName = widget.user?.lastName ??   window.sessionStorage['LastName'] ?? "Name";
 
     initial = lastName.isNotEmpty ? lastName.substring(0, 1).toUpperCase() : "";
 
-    // if (widget.user != null) {
-    //   getFriendshipDate(
-    //       SharedPrefs().getUserName() as String, widget.user!.username);
-    // }
 
     if (widget.user != null) {
-      // final userData = Provider.of<UserData>(context, listen: false);
-      // String userName = userData.userName;
-      // print("In widget user tryna see about this notify stuff username:" + username);
       getFriendshipDate(username, widget.user!.username);
     }
 
@@ -292,18 +290,15 @@ class _ProfileState extends State<Profile> {
     displayName = lastName.isNotEmpty ? '$firstName $initial.' : firstName;
     WidgetsBinding.instance.addPostFrameCallback((_) {
       _getStats(username).then((_) {
-        //stats = [friends, streaks, globals, customs];
         setState(() {
           stats = [friends, streaks, globals, customs];
         });
       });
-      // Add Your Code here.
+    
     });
 
     WidgetsBinding.instance.addPostFrameCallback((_) {
-      // Add Your Code here.
       if (widget.user != null) {
-        // Get the other user stats if we are on a friend's or stranger's profile
         _getStats(username).then((_) {
           setState(() {
             stats = [friends, streaks, globals, customs];
@@ -317,9 +312,7 @@ class _ProfileState extends State<Profile> {
   @override
   Widget build(BuildContext context) {
 
- 
-
-    print(" In profile Shared prefs not really: " + username);
+  
     return SafeArea(
       child: Theme(
         data: ThemeData(
@@ -862,8 +855,7 @@ class _ProfileState extends State<Profile> {
                                                     child: FirebaseStorageImage(
                                                       //SharedPrefs().getProfileUrl()
                                                       //as String
-                                                      profileUrl: SharedPrefs()
-                                                          .getProfileUrl()!,
+                                                      profileUrl:   window.sessionStorage['ProfileUrl']!,
                                                     ),
                                                   )),
                                       ),
@@ -965,7 +957,8 @@ class _ProfileState extends State<Profile> {
                                                 child: Text(
                                                     //SharedPrefs().getUserName()
                                                     //as String
-                                                    (SharedPrefs.UserName)
+                                                    //TODO: 
+                                                      username
                                                         .replaceFirstMapped(
                                                       RegExp(r'^\w'),
                                                       (match) => match
