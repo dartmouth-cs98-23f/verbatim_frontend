@@ -130,7 +130,7 @@ class _SignUpState extends State<SignUp> {
           print("\n lastName: ${lastName} \n");
 
           saveUsersInfo(
-              context, firstName, lastName, firstName, account.email, ' ', ' ');
+              context, firstName, lastName, firstName, account.email, " ", " ");
         } else {
           print('\nThe google account is not found.');
         }

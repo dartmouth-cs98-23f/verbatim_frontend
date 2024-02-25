@@ -71,7 +71,6 @@ class _ProfileState extends State<Profile> {
 
   String bio = '';
   String profileUrl = '';
-  bool drawButton = false;
   String groupName = '';
   User? toBeDisplayedUser;
   String friendshipDate = '';
@@ -1057,7 +1056,8 @@ class _ProfileState extends State<Profile> {
                                           child: (widget.user != null &&
                                                   friendshipDate.isNotEmpty)
                                               ? Text(
-                                                  widget.user!.username.replaceFirstMapped(
+                                                  widget.user!.username
+                                                      .replaceFirstMapped(
                                                     RegExp(r'^\w'),
                                                     (match) => match
                                                         .group(0)!
@@ -1079,7 +1079,8 @@ class _ProfileState extends State<Profile> {
                                                       friendshipDate.isEmpty &&
                                                       match != null)
                                                   ? Text(
-                                                      match!.username.replaceFirstMapped(
+                                                      match!.username
+                                                          .replaceFirstMapped(
                                                         RegExp(r'^\w'),
                                                         (match) => match
                                                             .group(0)!
@@ -1108,7 +1109,8 @@ class _ProfileState extends State<Profile> {
                                                                       as String)) &&
                                                           match != null)
                                                       ? Text(
-                                                          match!.username.replaceFirstMapped(
+                                                          match!.username
+                                                              .replaceFirstMapped(
                                                             RegExp(r'^\w'),
                                                             (match) => match
                                                                 .group(0)!
@@ -1146,7 +1148,7 @@ class _ProfileState extends State<Profile> {
                           // Only allow the user to create custom challenge with a friend.
                           (friendshipDate.isNotEmpty)
                               ? CustomChallengeButton(
-                                  drawButton: drawButton,
+                                  drawButton: friendshipDate.isNotEmpty,
                                   groupName: groupName,
                                 )
                               : Container(),
