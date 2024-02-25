@@ -1,7 +1,8 @@
 import 'dart:async';
+import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/BackendService.dart';
-import 'package:verbatim_frontend/Components/shared_prefs.dart';
+//import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/customChallenge.dart';
 import 'package:verbatim_frontend/screens/groupChallenge.dart';
 import 'sideBar.dart';
@@ -150,7 +151,7 @@ class _FriendshipState extends State<friendship>
             // some bool that can automatically call set state from other widget?
 
             if (title == 'Standard') {
-              String username = SharedPrefs().getUserName() ?? "";
+              String username = window.sessionStorage['UserName'] ?? "" ;
 
               Navigator.pop(context);
               createStandardChallenge(username, groupId).then((_) {
@@ -407,7 +408,7 @@ class _FriendshipState extends State<friendship>
 
   List<String> verbaMatchGroup = [];
   Future<void> _loadChallenges() async {
-    String username = SharedPrefs().getUserName() ?? "";
+    String username = window.sessionStorage['UserName'] ?? "" ;
 
     getFriendStats(username, widget.friendUsername);
     verbaMatchGroup = [username, widget.friendUsername];

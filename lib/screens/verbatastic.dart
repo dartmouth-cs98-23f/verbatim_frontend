@@ -1,3 +1,4 @@
+import 'dart:html';
 import 'dart:math';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
@@ -25,7 +26,7 @@ class Verbatastic extends StatelessWidget {
   void copyInvite() {
     //TODO:
 
-    String username = SharedPrefs().getUserName() ?? "";
+    String username = window.sessionStorage['UserName']!;
     String inviteLink = 'http://localhost:3000/#/landingPage?referer=$username';
     Clipboard.setData(ClipboardData(text: inviteLink));
   }

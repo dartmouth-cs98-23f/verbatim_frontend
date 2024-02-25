@@ -1,8 +1,9 @@
 import 'dart:async';
+import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/BackendService.dart';
-import 'package:verbatim_frontend/Components/shared_prefs.dart';
+//import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'package:verbatim_frontend/screens/customChallenge.dart';
 import 'package:verbatim_frontend/screens/groupChallenge.dart';
@@ -41,6 +42,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
   List<User> verbaMatchStatsUsers = [];
   List<String> groupMembers = [];
   dynamic groupMemberObjects = [];
+  String username = '';
 
   Future<void> getGroupStats(int groupId) async {
     final url = Uri.parse('${BackendService.getBackendUrl()}group/$groupId');
@@ -381,7 +383,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
               //   activeChallengesHard.add('New Standard Challenge');
 
               Navigator.pop(context);
-              String username = SharedPrefs().getUserName() ?? "";
+              String username = window.sessionStorage['UserName']?? "";
 
               createStandardChallenge(username, groupID).then((_) {
                 // re-initiate to load
@@ -453,6 +455,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
+    username = window.sessionStorage['UserName']?? "";
     _tabController = TabController(length: 2, vsync: this);
     _loadChallenges();
   }
@@ -466,7 +469,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
     await getGroupStats(widget.groupId ?? 0);
     await getActiveChallenges(widget.groupId ?? 0);
 
-    String username = SharedPrefs().getUserName() ?? "";
+    // String username = window.sessionStorage['UserName']?? "";
 
     for (var challengeId in activeChallengeIds) {
       await getChallenge(
@@ -484,7 +487,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
     const String assetName = 'assets/img1.svg';
     List<String>? addedUsernames = widget.addedUsernames;
     int groupID = widget.groupId!;
-    String username = SharedPrefs().getUserName() ?? "";
+    // String username = SharedPrefs().getUserName() ?? "";
 
     return SafeArea(
         child: Scaffold(

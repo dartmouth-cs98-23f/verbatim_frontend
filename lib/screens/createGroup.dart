@@ -1,6 +1,8 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/BackendService.dart';
-import 'package:verbatim_frontend/Components/shared_prefs.dart';
+//import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 import 'sideBar.dart';
@@ -19,7 +21,7 @@ class createGroup extends StatefulWidget {
 }
 
 class _CreateGroupState extends State<createGroup> {
-  String username = SharedPrefs().getUserName() ?? "";
+  String username = '';
   bool error = false;
   bool error2 = false;
   bool isCreated = false; // in the beginning, the group isn't created
@@ -114,7 +116,7 @@ class _CreateGroupState extends State<createGroup> {
   @override
   void initState() {
     super.initState();
-
+    username = window.sessionStorage['UserName']?? "";
     _searchController.addListener(() {
       setState(() {
         _searchText = _searchController.text;
@@ -144,7 +146,7 @@ class _CreateGroupState extends State<createGroup> {
     List<User> filteredResults = searchResults
         .where((item) =>
             item.username.toLowerCase().contains(_searchText.toLowerCase()) &&
-            item.username != SharedPrefs().getUserName())
+            item.username != username)
         .toList();
 
     for (var member in filteredResults) {
@@ -156,7 +158,7 @@ class _CreateGroupState extends State<createGroup> {
 
   @override
   Widget build(BuildContext context) {
-    String username = SharedPrefs().getUserName() ?? "";
+
 
     const String assetName = 'assets/img1.svg'; // orange (top) background
 

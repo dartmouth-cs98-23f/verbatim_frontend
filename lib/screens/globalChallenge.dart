@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/screens/addFriend.dart';
@@ -11,7 +13,7 @@ import 'package:verbatim_frontend/widgets/size.dart';
 import 'package:verbatim_frontend/widgets/custom_tab.dart';
 import 'dart:async';
 import 'package:verbatim_frontend/widgets/stats.dart';
-import 'package:verbatim_frontend/Components/shared_prefs.dart';
+//import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:intl/intl.dart';
 import 'verbatastic.dart';
 import 'package:verbatim_frontend/gameObject.dart';
@@ -25,11 +27,14 @@ class globalChallenge extends StatefulWidget {
   _GlobalChallengeState createState() => _GlobalChallengeState();
 }
 
-String email = SharedPrefs().getEmail() ?? "";
-String password = SharedPrefs().getPassword() ?? "";
+String email = window.sessionStorage['Email'] ?? "" ;
+String password = window.sessionStorage['Password'] ?? "" ;
 
 class _GlobalChallengeState extends State<globalChallenge> {
-  String username = SharedPrefs().getUserName() ?? "";
+  //TODO: 
+  String username = '';
+
+
   String userResponse = '';
   List<String> userResponses = [];
   TextEditingController responseController = TextEditingController();
@@ -147,7 +152,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
       print("\nUserList is of length: ${userList.length}\n");
 
       List<String> neededUserNames = verbatasticUsernames;
-      neededUserNames.add(SharedPrefs().getUserName() as String);
+      neededUserNames.add(window.sessionStorage['UserName']?? "");
 
       // Users who are verba matches
       verbatasticUserObjects = userList
@@ -265,7 +270,8 @@ class _GlobalChallengeState extends State<globalChallenge> {
   @override
   void initState() {
     super.initState();
-
+    username = window.sessionStorage['UserName'] ?? "" ;
+    print("Username in global challenge: " + username);
     _fetchData(username).then((_) {
       setState(() {
         questions = [question1, question2, question3, question4, question5];
@@ -378,7 +384,8 @@ class _GlobalChallengeState extends State<globalChallenge> {
 
     //TODO: check that this here works
 
-    username = SharedPrefs().getUserName() ?? "";
+    // username = window.sessionStorage['UserName'] ?? "" ;
+    // print("Username in global challenge: " + username);
     DateTime now = DateTime.now();
     DateTime midnight =
         DateTime(now.year, now.month, now.day + 1); // Set to next midnight

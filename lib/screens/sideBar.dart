@@ -265,9 +265,9 @@ class _SideBarState extends State<SideBar> {
 
 
 
-    username = window.sessionStorage['UserName']!;
-    String FirstName = window.sessionStorage['FirstName']!;
-    String LastName = window.sessionStorage['LastName']!;
+    username = window.sessionStorage['UserName']?? "";
+    String FirstName = window.sessionStorage['FirstName']?? "";
+    String LastName = window.sessionStorage['LastName']?? "";
 
     firstName = FirstName.replaceFirstMapped(
       RegExp(r'^\w'),
@@ -325,7 +325,7 @@ class _SideBarState extends State<SideBar> {
                         child: Center(
                           child: ListTile(
                             title: Text(
-                              (window.sessionStorage['LastName']!).isNotEmpty
+                              (window.sessionStorage['LastName']?? " ").isNotEmpty
                                   ? '$firstName $lastNameInitial.'
                                   : firstName,
                               style: const TextStyle(
@@ -336,7 +336,7 @@ class _SideBarState extends State<SideBar> {
                             ),
                             leading: FirebaseStorageImage(
                                 profileUrl:
-                                    window.sessionStorage['ProfileUrl']!),
+                                    window.sessionStorage['ProfileUrl']?? ""),
                             trailing: const Icon(Icons.settings,
                                 color: Colors.white, size: 26),
                             onTap: () {
