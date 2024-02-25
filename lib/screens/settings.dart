@@ -3,6 +3,7 @@ import 'dart:html';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 import 'package:verbatim_frontend/BackendService.dart';
@@ -401,18 +402,18 @@ class _settingsState extends State<settings> {
                                 ));
                               },
                               borderRadius: BorderRadius.circular(8),
-                              child: const Padding(
-                                padding: EdgeInsets.all(8.0),
+                              child: Padding(
+                                padding: const EdgeInsets.all(8.0),
                                 child: Text(
                                   'Reset Password',
-                                  style: TextStyle(
+                                  style: GoogleFonts.poppins(
+                                      textStyle: const TextStyle(
                                     color: Color(0xFF3C64B1),
                                     fontWeight: FontWeight.w400,
-                                    fontFamily: 'Poppins',
                                     fontSize: 16, // Adjust font size as needed
                                     height: 0.06,
                                     letterSpacing: 0.30,
-                                  ),
+                                  )),
                                 ),
                               ),
                             ),
@@ -421,20 +422,20 @@ class _settingsState extends State<settings> {
                   ),
 
                   const SizedBox(height: 38),
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.only(left: 30.0),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Name',
-                        style: TextStyle(
+                        style: GoogleFonts.poppins(
+                            textStyle: const TextStyle(
                           color: Colors.black,
                           fontSize: 20,
-                          fontFamily: 'Poppins',
                           fontWeight: FontWeight.w700,
                           height: 0.04,
                           letterSpacing: 0.30,
-                        ),
+                        )),
                       ),
                     ),
                   ),
@@ -448,20 +449,20 @@ class _settingsState extends State<settings> {
 
                   //username
                   const SizedBox(height: 38),
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.only(left: 30.0),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Username',
-                        style: TextStyle(
+                        style: GoogleFonts.poppins(
+                            textStyle: const TextStyle(
                           color: Colors.black,
                           fontSize: 20,
-                          fontFamily: 'Poppins',
                           fontWeight: FontWeight.w700,
                           height: 0.04,
                           letterSpacing: 0.30,
-                        ),
+                        )),
                       ),
                     ),
                   ),
@@ -474,20 +475,20 @@ class _settingsState extends State<settings> {
                   //bio
 
                   const SizedBox(height: 38),
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.only(left: 30.0),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Bio',
-                        style: TextStyle(
+                        style: GoogleFonts.poppins(
+                            textStyle: const TextStyle(
                           color: Colors.black,
                           fontSize: 20,
-                          fontFamily: 'Poppins',
                           fontWeight: FontWeight.w700,
                           height: 0.04,
                           letterSpacing: 0.30,
-                        ),
+                        )),
                       ),
                     ),
                   ),
@@ -501,20 +502,20 @@ class _settingsState extends State<settings> {
                   //bio
 
                   const SizedBox(height: 38),
-                  const Padding(
+                  Padding(
                     padding: EdgeInsets.only(left: 30.0),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Email',
-                        style: TextStyle(
+                        style: GoogleFonts.poppins(
+                            textStyle: const TextStyle(
                           color: Colors.black,
                           fontSize: 20,
-                          fontFamily: 'Poppins',
                           fontWeight: FontWeight.w700,
                           height: 0.04,
                           letterSpacing: 0.30,
-                        ),
+                        )),
                       ),
                     ),
                   ),
@@ -560,7 +561,6 @@ class _settingsState extends State<settings> {
                 ],
               )),
         )),
-        drawer: const SideBar(),
       ),
     );
   }

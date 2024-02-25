@@ -16,6 +16,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:verbatim_frontend/widgets/custom_app_bar.dart';
 import 'dart:math';
+import 'package:google_fonts/google_fonts.dart';
 
 class myGroup extends StatefulWidget {
   final String groupName;
@@ -300,23 +301,25 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                       textAlign: TextAlign.center,
                       text: TextSpan(
                         children: [
-                          const TextSpan(
+                          TextSpan(
                             text: 'New Challenge with ',
-                            style: TextStyle(
-                              color: Colors.black,
-                              fontSize: 22,
-                              fontWeight: FontWeight.bold,
-                              fontFamily: 'Poppins',
+                            style: GoogleFonts.poppins(
+                              textStyle: const TextStyle(
+                                color: Colors.black,
+                                fontSize: 22,
+                                fontWeight: FontWeight.bold,
+                              ),
                             ),
                           ),
                           // if groupname is a certain length, make it a new line
                           TextSpan(
                             text: groupName,
-                            style: const TextStyle(
-                              color: Colors.orange,
-                              fontSize: 24,
-                              fontWeight: FontWeight.w900,
-                              fontFamily: 'Poppins',
+                            style: GoogleFonts.poppins(
+                              textStyle: const TextStyle(
+                                color: Colors.orange,
+                                fontSize: 24,
+                                fontWeight: FontWeight.w900,
+                              ),
                             ),
                           ),
                         ],
@@ -426,11 +429,12 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
               const SizedBox(height: 5),
               Text(
                 title,
-                style: const TextStyle(
-                  color: Color(0xFFFFF7EE),
-                  fontSize: 16,
-                  fontWeight: FontWeight.w700,
-                  fontFamily: 'Poppins',
+                style: GoogleFonts.poppins(
+                  textStyle: const TextStyle(
+                    color: Color(0xFFFFF7EE),
+                    fontSize: 16,
+                    fontWeight: FontWeight.w700,
+                  ),
                 ),
               ),
               const SizedBox(height: 5),
@@ -439,11 +443,12 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                 child: Text(
                   description,
                   textAlign: TextAlign.center,
-                  style: const TextStyle(
-                    color: Color(0xFFFFF7EE),
-                    fontSize: 12,
-                    fontWeight: FontWeight.w600,
-                    fontFamily: 'Poppins',
+                  style: GoogleFonts.poppins(
+                    textStyle: const TextStyle(
+                      color: Color(0xFFFFF7EE),
+                      fontSize: 12,
+                      fontWeight: FontWeight.w600,
+                    ),
                   ),
                 ),
               ),
@@ -522,11 +527,12 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                               children: [
                                 Text(
                                   widget.groupName,
-                                  style: const TextStyle(
-                                    fontSize: 30,
-                                    color: Colors.white,
-                                    fontWeight: FontWeight.w900,
-                                    fontFamily: 'Poppins',
+                                  style: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(
+                                      fontSize: 30,
+                                      color: Colors.white,
+                                      fontWeight: FontWeight.w900,
+                                    ),
                                   ),
                                 ),
                                 SizedBox(height: 10.v),
@@ -563,31 +569,28 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                                 MainAxisAlignment.spaceAround,
                                             children: [
                                               ElevatedButton(
-                                                  onPressed: () {
-                                                    leaveGroup(
-                                                        groupID, username);
-                                                    Navigator.pushNamed(context,
-                                                        '/global_challenge');
-                                                  },
-                                                  style:
-                                                      ElevatedButton.styleFrom(
-                                                    backgroundColor:
-                                                        Colors.white,
-                                                    padding: const EdgeInsets
-                                                        .symmetric(
-                                                        horizontal: 8,
-                                                        vertical: 4),
-                                                  ),
-                                                  child: const Text(
-                                                      "Leave Group",
-                                                      style: TextStyle(
-                                                        fontSize: 12,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontFamily: 'Poppins',
-                                                        color:
-                                                            Color(0xFFE76F51),
-                                                      ))),
+                                                onPressed: () {
+                                                  leaveGroup(groupID, username);
+                                                  Navigator.pushNamed(context,
+                                                      '/global_challenge');
+                                                },
+                                                style: ElevatedButton.styleFrom(
+                                                  backgroundColor: Colors.white,
+                                                  padding: const EdgeInsets
+                                                      .symmetric(
+                                                      horizontal: 8,
+                                                      vertical: 4),
+                                                ),
+                                                child: Text("Leave Group",
+                                                    style: GoogleFonts.poppins(
+                                                        textStyle:
+                                                            const TextStyle(
+                                                      fontSize: 12,
+                                                      fontWeight:
+                                                          FontWeight.bold,
+                                                      color: Color(0xFFE76F51),
+                                                    ))),
+                                              ),
                                             ])))
                               ],
                             ),
@@ -624,16 +627,17 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                   labelColor: const Color(0xFFE76F51),
                                   indicatorPadding: EdgeInsets.zero,
                                   indicatorSize: TabBarIndicatorSize.label,
-                                  tabs: const [
+                                  tabs: [
                                     Tab(
                                       child: Align(
                                         alignment: Alignment.center,
                                         child: Text(
                                           "Play",
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'Poppins',
+                                          style: GoogleFonts.poppins(
+                                            textStyle: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -643,10 +647,11 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                         alignment: Alignment.center,
                                         child: Text(
                                           "Group Stats",
-                                          style: TextStyle(
-                                            fontSize: 16,
-                                            fontWeight: FontWeight.bold,
-                                            fontFamily: 'Poppins',
+                                          style: GoogleFonts.poppins(
+                                            textStyle: const TextStyle(
+                                              fontSize: 16,
+                                              fontWeight: FontWeight.bold,
+                                            ),
                                           ),
                                         ),
                                       ),
@@ -664,7 +669,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                 Column(
                                   children: [
                                     Visibility(
-                                        visible: mappedChallenges.length == 0,
+                                        visible: mappedChallenges.isEmpty,
                                         child: Container(
                                           padding: const EdgeInsets.only(
                                               top: 10,
@@ -673,12 +678,12 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                               bottom: 20),
                                           child: Column(
                                             children: [
-                                              SizedBox(height: 40),
+                                              const SizedBox(height: 40),
                                               Image.asset(
                                                 'assets/bird3.png',
                                                 width: 240,
                                               ),
-                                              SizedBox(height: 35),
+                                              const SizedBox(height: 35),
                                               GestureDetector(
                                                 onTap: () {
                                                   _showChallengeOptions(
@@ -686,22 +691,25 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                                       widget.groupName,
                                                       widget.groupId);
                                                 },
-                                                child: const Row(
+                                                child: Row(
                                                   mainAxisAlignment:
                                                       MainAxisAlignment.end,
                                                   children: [
                                                     Text(
                                                       'Make Group Challenge',
-                                                      style: TextStyle(
-                                                        fontSize: 18,
-                                                        fontWeight:
-                                                            FontWeight.bold,
-                                                        fontFamily: 'Poppins',
-                                                        color: Colors.black,
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                        textStyle:
+                                                            const TextStyle(
+                                                          fontSize: 18,
+                                                          fontWeight:
+                                                              FontWeight.bold,
+                                                          color: Colors.black,
+                                                        ),
                                                       ),
                                                     ),
-                                                    SizedBox(width: 5),
-                                                    Icon(
+                                                    const SizedBox(width: 5),
+                                                    const Icon(
                                                       Icons.add,
                                                       size: 20,
                                                       color: Colors.black,
@@ -713,7 +721,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                           ),
                                         )),
                                     Visibility(
-                                      visible: mappedChallenges.length > 0,
+                                      visible: mappedChallenges.isNotEmpty,
                                       child: Container(
                                         height: 400,
                                         width: 330,
@@ -867,16 +875,17 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                                         children: [
                                                           Text(
                                                             title,
-                                                            style:
-                                                                const TextStyle(
-                                                              color:
-                                                                  Colors.white,
-                                                              fontSize: 14,
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .bold,
-                                                              fontFamily:
-                                                                  'Poppins',
+                                                            style: GoogleFonts
+                                                                .poppins(
+                                                              textStyle:
+                                                                  const TextStyle(
+                                                                color: Colors
+                                                                    .white,
+                                                                fontSize: 14,
+                                                                fontWeight:
+                                                                    FontWeight
+                                                                        .bold,
+                                                              ),
                                                             ),
                                                           ),
                                                           const Icon(
@@ -900,22 +909,24 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
                                                     widget.groupName,
                                                     widget.groupId);
                                               },
-                                              child: const Row(
+                                              child: Row(
                                                 mainAxisAlignment:
                                                     MainAxisAlignment.end,
                                                 children: [
                                                   Text(
                                                     'Make Group Challenge',
-                                                    style: TextStyle(
-                                                      fontSize: 18,
-                                                      fontWeight:
-                                                          FontWeight.bold,
-                                                      color: Colors.black,
-                                                      fontFamily: 'Poppins',
+                                                    style: GoogleFonts.poppins(
+                                                      textStyle:
+                                                          const TextStyle(
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.bold,
+                                                        color: Colors.black,
+                                                      ),
                                                     ),
                                                   ),
-                                                  SizedBox(width: 5),
-                                                  Icon(
+                                                  const SizedBox(width: 5),
+                                                  const Icon(
                                                     Icons.add,
                                                     size: 20,
                                                     color: Color(0xFFE76F51),

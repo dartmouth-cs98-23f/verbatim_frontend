@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/widgets/button_settings.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
@@ -24,7 +25,7 @@ class _ResetPasswordState extends State<ResetPassword> {
   final confirmPassword = TextEditingController();
 
   void reset(
-      BuildContext context, String newPassword, String oldPassword) async {
+      BuildContext context, String oldPassword, String newPassword) async {
     try {
       final response = await http.post(
         //need a reset password endpoint
@@ -40,12 +41,11 @@ class _ResetPasswordState extends State<ResetPassword> {
       );
       // do something to verify the response,
       if (response.statusCode == 200) {
-        print("\nHere after completing the new password.\n");
         // get the account info to display as dummy text
         SharedPrefs.setPassword(newPassword);
         SuccessDialog.show(context, 'Your password has been updated!');
       } else {
-        print("\nPas de succes!\n");
+        print("\nSomething went wrong - Status code ${response.statusCode}\n");
       }
     } catch (error) {
       print('\nSorry, cannot edit account settings: $error');
@@ -76,10 +76,10 @@ class _ResetPasswordState extends State<ResetPassword> {
     setState(() {
       validationErrors[field] = Text(
         message,
-        style: const TextStyle(
+        style: GoogleFonts.poppins(
+            textStyle: const TextStyle(
           color: Colors.red,
-          fontFamily: 'Poppins',
-        ),
+        )),
       );
     });
   }
@@ -125,20 +125,20 @@ class _ResetPasswordState extends State<ResetPassword> {
                       // field form boxes
 
                       const SizedBox(height: 42),
-                      const Padding(
+                      Padding(
                         padding: EdgeInsets.only(left: 30.0),
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
                             'Current password',
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
+                                textStyle: const TextStyle(
                               color: Colors.black,
                               fontSize: 20,
-                              fontFamily: 'Poppins',
                               fontWeight: FontWeight.w700,
                               height: 0.04,
                               letterSpacing: 0.30,
-                            ),
+                            )),
                           ),
                         ),
                       ),
@@ -150,20 +150,20 @@ class _ResetPasswordState extends State<ResetPassword> {
                       ),
 
                       const SizedBox(height: 42),
-                      const Padding(
+                      Padding(
                         padding: EdgeInsets.only(left: 30.0),
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
                             'New password',
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
+                                textStyle: const TextStyle(
                               color: Colors.black,
                               fontSize: 20,
-                              fontFamily: 'Poppins',
                               fontWeight: FontWeight.w700,
                               height: 0.04,
                               letterSpacing: 0.30,
-                            ),
+                            )),
                           ),
                         ),
                       ),
@@ -175,20 +175,20 @@ class _ResetPasswordState extends State<ResetPassword> {
                       ),
 
                       const SizedBox(height: 42),
-                      const Padding(
-                        padding: EdgeInsets.only(left: 30.0),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 30.0),
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
                             'Confirm password',
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
+                                textStyle: const TextStyle(
                               color: Colors.black,
                               fontSize: 20,
-                              fontFamily: 'Poppins',
                               fontWeight: FontWeight.w700,
                               height: 0.04,
                               letterSpacing: 0.30,
-                            ),
+                            )),
                           ),
                         ),
                       ),

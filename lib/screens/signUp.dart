@@ -3,6 +3,7 @@ import 'dart:html';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:provider/provider.dart';
 // import 'package:google_sign_in/google_sign_in.dart';
 import 'package:verbatim_frontend/BackendService.dart';
@@ -11,7 +12,6 @@ import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/signupErrorMessage.dart';
-import '../widgets/my_button_with_image.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -258,10 +258,10 @@ class _SignUpState extends State<SignUp> {
     setState(() {
       validationErrors[field] = Text(
         message,
-        style: const TextStyle(
+        style: GoogleFonts.poppins(
+            textStyle: const TextStyle(
           color: Colors.red,
-          fontFamily: 'Poppins',
-        ),
+        )),
       );
     });
   }
@@ -292,20 +292,20 @@ class _SignUpState extends State<SignUp> {
                   ),
                 ),
                 const SizedBox(height: 50),
-                const Padding(
+                Padding(
                   padding: EdgeInsets.only(left: 30.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(
                       'Create an account',
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
                         color: Colors.black,
                         fontSize: 20,
-                        fontFamily: 'Poppins',
                         fontWeight: FontWeight.w700,
                         height: 0.04,
                         letterSpacing: 0.30,
-                      ),
+                      )),
                     ),
                   ),
                 ),
@@ -411,22 +411,22 @@ class _SignUpState extends State<SignUp> {
                         child: RichText(
                           text: TextSpan(
                             children: [
-                              const TextSpan(
+                              TextSpan(
                                 text: 'Already have an account? ',
-                                style: TextStyle(
+                                style: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(
                                   color: Colors.black,
                                   fontWeight: FontWeight.w700,
-                                  fontFamily: 'Poppins',
-                                ),
+                                )),
                               ),
                               TextSpan(
                                 text: 'Sign in',
-                                style: const TextStyle(
+                                style: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(
                                   color: Color(0xFF3C64B1),
                                   fontWeight: FontWeight.w800,
-                                  fontFamily: 'Poppins',
 // Blue color for the link
-                                ),
+                                )),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {
                                     // Navigate to the sign-in page

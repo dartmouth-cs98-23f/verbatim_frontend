@@ -2,8 +2,7 @@ import 'dart:html';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
-// import 'package:google_sign_in/google_sign_in.dart';
+//import 'package:google_sign_in/google_sign_in.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 
 
@@ -18,6 +17,7 @@ import 'dart:convert';
 import 'package:verbatim_frontend/widgets/size.dart';
 import 'package:verbatim_frontend/gameObject.dart';
 import 'package:verbatim_frontend/statsGameObject.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class LogIn extends StatefulWidget {
   const LogIn({Key? key}) : super(key: key);
@@ -43,8 +43,7 @@ class _LogInState extends State<LogIn> {
   }
 
   void logInGuest(
-    BuildContext context, String usernameOrEmail, String password) async {
-    
+      BuildContext context, String usernameOrEmail, String password) async {
     final response = await http.post(
       Uri.parse(
           '${BackendService.getBackendUrl()}submitResponseAfterLoginOrRegister'),
@@ -64,7 +63,7 @@ class _LogInState extends State<LogIn> {
         'firstName': '',
         'lastName': '',
         'email': '',
-        'withReferral':referer != '',
+        'withReferral': referer != '',
         'referringUsername': referer,
       }),
     );
@@ -72,13 +71,13 @@ class _LogInState extends State<LogIn> {
     if (response.statusCode == 200) {
       //save user SharedPrefs
       print("So the sign up actually works:");
-    
+
       final Map<String, dynamic>? data = json.decode(response.body);
       setState(() {
-         responded = true;
-         isGuest = true;
+        responded = true;
+        isGuest = true;
       });
-     
+
       question1 = data!['q1'];
       question2 = data['q2'];
       question3 = data['q3'];
@@ -133,10 +132,7 @@ class _LogInState extends State<LogIn> {
       // SharedPrefs().setBio("");
       // SharedPrefs().setProfileUrl("assets/profile_pic.png");
       saveUsersInfo(usernameOrEmail, password);
-     
-     
-      
-    }else{
+    } else {
       print("Records show that user already played Challenge!");
       logIn(context, usernameOrEmail, password);
     }
@@ -241,9 +237,10 @@ class _LogInState extends State<LogIn> {
     setState(() {
       validationErrors[field] = Text(
         message,
-        style: const TextStyle(
-          color: Colors.red,
-          fontFamily: 'Poppins',
+        style: GoogleFonts.poppins(
+          textStyle: const TextStyle(
+            color: Colors.red,
+          ),
         ),
       );
     });
@@ -270,10 +267,9 @@ class _LogInState extends State<LogIn> {
       //user not played
       print("Logging in guest, does not work with globals");
       logIn(context, email, password);
-
-    } 
+    }
     //in case theres data to carry over
-    else if (responseQ1!= '') {
+    else if (responseQ1 != '') {
       logInGuest(context, email, password);
     }
   }
@@ -337,10 +333,11 @@ class _LogInState extends State<LogIn> {
                       children: [
                         TextSpan(
                           text: 'Forgot password?',
-                          style: const TextStyle(
-                            color: Color(0xFF3C64B1),
-                            fontWeight: FontWeight.w700,
-                            fontFamily: 'Poppins',
+                          style: GoogleFonts.poppins(
+                            textStyle: const TextStyle(
+                              color: Color(0xFF3C64B1),
+                              fontWeight: FontWeight.w700,
+                            ),
                           ),
                           recognizer: TapGestureRecognizer()
                             ..onTap = () {
@@ -384,21 +381,24 @@ class _LogInState extends State<LogIn> {
                         child: RichText(
                           text: TextSpan(
                             children: [
-                              const TextSpan(
+                              TextSpan(
                                 text: "Don't have an account? ",
-                                style: TextStyle(
-                                  color: Colors.black,
-                                  fontWeight: FontWeight.w700,
-                                  fontFamily: 'Poppins',
+                                style: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(
+                                    color: Colors.black,
+                                    fontWeight: FontWeight.w700,
+                                  ),
                                 ),
                               ),
                               TextSpan(
                                 text: 'Register',
-                                style: const TextStyle(
-                                  color: Color(0xFF3C64B1),
-                                  fontWeight: FontWeight.w700,
-                                  fontFamily: 'Poppins',
+                                style: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(
+                                    color: Color(0xFF3C64B1),
+                                    fontWeight: FontWeight.w700,
+
 // Blue color for the link
+                                  ),
                                 ),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {

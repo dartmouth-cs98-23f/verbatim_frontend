@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class OnBoardingPage2 extends StatelessWidget {
   const OnBoardingPage2({super.key});
@@ -29,18 +30,18 @@ class OnBoardingPage2 extends StatelessWidget {
                           ),
                         ),
                       ),
-                      const Center(
+                      Center(
                         child: Text(
                           'Discover \nShared Vocabulary',
                           textAlign: TextAlign.center,
-                          style: TextStyle(
+                          style: GoogleFonts.poppins(
+                              textStyle: const TextStyle(
                             color: Color(0xFFE76F51),
                             fontSize: 32,
-                            fontFamily: 'Poppins',
                             fontWeight: FontWeight.w700,
                             height: 1.5,
                             letterSpacing: 0.30,
-                          ),
+                          )),
                         ),
                       ),
                       SizedBox(height: 30.v),
@@ -50,8 +51,8 @@ class OnBoardingPage2 extends StatelessWidget {
                           alignment: Alignment.center,
                           child: Text(
                             'Do you have a shared vocabulary with your friends? Find out if you think what your friend thinks you think.',
-                            style: GoogleFonts.poppins( textStyle:
-                              const TextStyle(
+                            style: GoogleFonts.poppins(
+                              textStyle: const TextStyle(
                                 color: Colors.black,
                                 fontSize: 15,
                                 height: 1.5,
@@ -84,12 +85,12 @@ class OnBoardingPage2 extends StatelessWidget {
                             BorderRadius.circular(13.0), // Rectangular shape
                       ),
                     ),
-                    child: const Text(
+                    child: Text(
                       'Skip',
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
                         color: Colors.black,
-                        fontFamily: 'Poppins',
-                      ),
+                      )),
                     ),
                   ),
                   ElevatedButton(
@@ -105,13 +106,12 @@ class OnBoardingPage2 extends StatelessWidget {
                             BorderRadius.circular(13.0), // Rectangular shape
                       ),
                     ),
-                    child: const Text(
-                      'Next',
-                      style: TextStyle(
-                        color: Colors.white,
-                        fontFamily: 'Poppins',
-                      ),
-                    ),
+                    child: Text('Next',
+                        style: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
+                            color: Colors.white,
+                          ),
+                        )),
                   ),
                 ],
               ),

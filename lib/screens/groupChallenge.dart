@@ -12,6 +12,7 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:verbatim_frontend/screens/myGroup.dart';
 import 'package:verbatim_frontend/widgets/custom_app_bar.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 // submit challenge
 
@@ -250,11 +251,13 @@ class _GroupChallengeState extends State<groupChallenge> {
                                   responded
                                       ? 'Verba-Tastical!'
                                       : 'Group Challenge',
-                                  style: const TextStyle(
+                                  style: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(
                                       fontSize: 27,
                                       color: Colors.white,
                                       fontWeight: FontWeight.w900,
-                                      fontFamily: 'Poppins'),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
@@ -290,10 +293,12 @@ class _GroupChallengeState extends State<groupChallenge> {
                                   const EdgeInsets.symmetric(horizontal: 16.0),
                               child: Text(
                                 questions[currentQuestionIndex],
-                                style: const TextStyle(
+                                style: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(
                                     fontSize: 18,
                                     fontWeight: FontWeight.bold,
-                                    fontFamily: 'Poppins'),
+                                  ),
+                                ),
                               ),
                             ),
                             const SizedBox(height: 30.0),
@@ -316,7 +321,7 @@ class _GroupChallengeState extends State<groupChallenge> {
                             ElevatedButton(
                               style: ElevatedButton.styleFrom(
                                 elevation: 0,
-                                backgroundColor: Color(0xFFE76F51),
+                                backgroundColor: const Color(0xFFE76F51),
                                 foregroundColor: Colors.white,
                                 shape: RoundedRectangleBorder(
                                   borderRadius: BorderRadius.circular(30),
@@ -424,12 +429,14 @@ class _GroupChallengeState extends State<groupChallenge> {
                             );
                     }, //send prompts to backend
 
-                    child: const Text(
+                    child: Text(
                       'Back to Challenge Feed',
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
+                        textStyle: const TextStyle(
                           fontWeight: FontWeight.bold,
                           fontSize: 18,
-                          fontFamily: 'Poppins'),
+                        ),
+                      ),
                     ),
                   ),
                 ),
@@ -483,10 +490,12 @@ class _GroupChallengeState extends State<groupChallenge> {
                           Expanded(
                             child: Text(
                               prompts[index],
-                              style: const TextStyle(
+                              style: GoogleFonts.poppins(
+                                textStyle: const TextStyle(
                                   fontSize: 16,
                                   fontWeight: FontWeight.bold,
-                                  fontFamily: 'Poppins'),
+                                ),
+                              ),
                             ),
                           ),
                           const Icon(Icons.arrow_upward),
@@ -522,12 +531,14 @@ class _GroupChallengeState extends State<groupChallenge> {
                                       alignment: Alignment.center,
                                       child: Text(
                                         usersList[indexB],
-                                        style: const TextStyle(
+                                        style: GoogleFonts.poppins(
+                                          textStyle: const TextStyle(
                                             fontSize: 14,
                                             overflow: TextOverflow.ellipsis,
                                             fontWeight: FontWeight.bold,
                                             color: Colors.white,
-                                            fontFamily: 'Poppins'),
+                                          ),
+                                        ),
                                       ),
                                     ),
                                   ),
@@ -549,12 +560,14 @@ class _GroupChallengeState extends State<groupChallenge> {
                                                   ? answersMap[prompts[index]]![
                                                       usersList[indexB]]
                                                   : 'No response found',
-                                              style: const TextStyle(
+                                              style: GoogleFonts.poppins(
+                                                textStyle: const TextStyle(
                                                   fontSize: 12,
                                                   overflow:
                                                       TextOverflow.ellipsis,
                                                   color: Colors.white,
-                                                  fontFamily: 'Poppins'),
+                                                ),
+                                              ),
                                             ))))
                               ])));
                         },
@@ -571,11 +584,13 @@ class _GroupChallengeState extends State<groupChallenge> {
                       Flexible(
                         child: Text(
                           prompts[index],
-                          style: const TextStyle(
+                          style: GoogleFonts.poppins(
+                            textStyle: const TextStyle(
                               fontSize: 16,
                               fontWeight: FontWeight.bold,
                               overflow: TextOverflow.ellipsis,
-                              fontFamily: 'Poppins'),
+                            ),
+                          ),
                         ),
                       ),
                       const Icon(Icons.arrow_downward),
@@ -620,31 +635,37 @@ Widget _verbaMatch(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     RichText(
-                      text: const TextSpan(
+                      text: TextSpan(
                         children: [
                           TextSpan(
                             text: 'No',
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
+                              textStyle: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Colors.black,
                                 fontSize: 21,
-                                fontFamily: 'Poppins'),
+                              ),
+                            ),
                           ),
                           TextSpan(
                             text: 'Verba',
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
+                              textStyle: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xFFE76F51),
                                 fontSize: 22,
-                                fontFamily: 'Poppins'),
+                              ),
+                            ),
                           ),
                           TextSpan(
-                              text: "Match",
-                              style: TextStyle(
-                                  fontSize: 21,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                  fontFamily: 'Poppins')),
+                            text: "Match",
+                            style: GoogleFonts.poppins(
+                                textStyle: const TextStyle(
+                              fontSize: 21,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            )),
+                          ),
                         ],
                       ),
                       textAlign: TextAlign.left,
@@ -655,12 +676,14 @@ Widget _verbaMatch(
                       Icon(Icons.help_outline, size: 50),
                     ]),
                     const SizedBox(height: 10),
-                    const Text(
+                    Text(
                       '...yet!',
-                      style: TextStyle(
+                      style: GoogleFonts.poppins(
+                        textStyle: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          fontFamily: 'Poppins'),
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -671,23 +694,27 @@ Widget _verbaMatch(
                   mainAxisAlignment: MainAxisAlignment.start,
                   children: [
                     RichText(
-                      text: const TextSpan(
+                      text: TextSpan(
                         children: [
                           TextSpan(
                             text: 'Verba',
-                            style: TextStyle(
+                            style: GoogleFonts.poppins(
+                              textStyle: const TextStyle(
                                 fontWeight: FontWeight.bold,
                                 color: Color(0xFFE76F51),
                                 fontSize: 23,
-                                fontFamily: 'Poppins'),
+                              ),
+                            ),
                           ),
                           TextSpan(
-                              text: "Match!",
-                              style: TextStyle(
-                                  fontSize: 23,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                  fontFamily: 'Poppins')),
+                            text: "Match!",
+                            style: GoogleFonts.poppins(
+                                textStyle: const TextStyle(
+                              fontSize: 23,
+                              fontWeight: FontWeight.bold,
+                              color: Colors.black,
+                            )),
+                          ),
                         ],
                       ),
                       textAlign: TextAlign.left,
@@ -702,10 +729,12 @@ Widget _verbaMatch(
                     const SizedBox(height: 10),
                     Text(
                       '$verb1 and $verb2',
-                      style: const TextStyle(
+                      style: GoogleFonts.poppins(
+                        textStyle: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
-                          fontFamily: 'Poppins'),
+                        ),
+                      ),
                     ),
                   ],
                 ),
@@ -820,17 +849,21 @@ class _DonutChartState extends State<DonutChart> {
                                     children: [
                                       Text(
                                         "${widget.groupSimilarity.toStringAsFixed(2)}%",
-                                        style: const TextStyle(
+                                        style: GoogleFonts.poppins(
+                                          textStyle: const TextStyle(
                                             fontSize: 13,
                                             fontWeight: FontWeight.bold,
-                                            fontFamily: 'Poppins'),
+                                          ),
+                                        ),
                                       ),
-                                      const Text(
+                                      Text(
                                         "Similarity",
-                                        style: TextStyle(
+                                        style: GoogleFonts.poppins(
+                                          textStyle: const TextStyle(
                                             fontSize: 10,
                                             fontWeight: FontWeight.bold,
-                                            fontFamily: 'Poppins'),
+                                          ),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -852,17 +885,19 @@ class _DonutChartState extends State<DonutChart> {
                                   color: Color.fromARGB(255, 255, 243, 238),
                                   shape: BoxShape.circle,
                                 ),
-                                child: const Align(
+                                child: Align(
                                   alignment: Alignment.center,
                                   child: Column(
                                     mainAxisSize: MainAxisSize.min,
                                     children: [
                                       Text(
                                         "?",
-                                        style: TextStyle(
+                                        style: GoogleFonts.poppins(
+                                          textStyle: const TextStyle(
                                             fontSize: 17,
                                             fontWeight: FontWeight.bold,
-                                            fontFamily: 'Poppins'),
+                                          ),
+                                        ),
                                       ),
                                     ],
                                   ),
@@ -913,7 +948,11 @@ class _HorizontalScrollDropdownState extends State<HorizontalScrollDropdown> {
                 },
                 child: Text(
                   selectedValue,
-                  style: const TextStyle(fontSize: 16, fontFamily: 'Poppins'),
+                  style: GoogleFonts.poppins(
+                    textStyle: const TextStyle(
+                      fontSize: 16,
+                    ),
+                  ),
                 ),
               ),
               const Icon(Icons.arrow_drop_down),
@@ -960,8 +999,11 @@ class _HorizontalScrollDropdownState extends State<HorizontalScrollDropdown> {
                       ),
                       child: Text(
                         items[index],
-                        style: const TextStyle(
-                            fontSize: 16, fontFamily: 'Poppins'),
+                        style: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
+                            fontSize: 16,
+                          ),
+                        ),
                       ),
                     ),
                   );

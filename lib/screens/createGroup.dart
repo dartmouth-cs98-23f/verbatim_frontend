@@ -8,6 +8,8 @@ import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 import 'sideBar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:verbatim_frontend/widgets/create_group_app_bar.dart';
+import 'package:google_fonts/google_fonts.dart';
+
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -216,12 +218,14 @@ class _CreateGroupState extends State<createGroup> {
                                         Expanded(
                                           child: TextField(
                                             controller: _searchController,
-                                            decoration: const InputDecoration(
-                                              hintStyle: TextStyle(
+                                            decoration: InputDecoration(
+                                              hintStyle: GoogleFonts.poppins(
+                                                textStyle: const TextStyle(
                                                   fontSize: 14.0,
                                                   color: Color.fromARGB(
                                                       255, 6, 5, 5),
-                                                  fontFamily: 'Poppins'),
+                                                ),
+                                              ),
                                               border: InputBorder.none,
                                             ),
                                             textAlign: TextAlign.left,
@@ -240,17 +244,18 @@ class _CreateGroupState extends State<createGroup> {
                     child: Center(
                       child: SizedBox(
                         child: RichText(
-                          text: const TextSpan(
+                          text: TextSpan(
                             children: [
                               TextSpan(
-                                text:
-                                    "Add at least two friends to make a group",
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'Poppins'),
-                              )
+                                  text:
+                                      "Add at least two friends to make a group",
+                                  style: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  )),
                             ],
                           ),
                         ),
@@ -261,17 +266,18 @@ class _CreateGroupState extends State<createGroup> {
                     child: Center(
                       child: SizedBox(
                         child: RichText(
-                          text: const TextSpan(
+                          text: TextSpan(
                             children: [
                               TextSpan(
-                                text:
-                                    "Error creating duplicate group - do you already have a group with these users?",
-                                style: TextStyle(
-                                    fontSize: 15,
-                                    color: Colors.red,
-                                    fontWeight: FontWeight.bold,
-                                    fontFamily: 'Poppins'),
-                              )
+                                  text:
+                                      "Error creating duplicate group - do you already have a group with these users?",
+                                  style: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(
+                                      fontSize: 15,
+                                      color: Colors.red,
+                                      fontWeight: FontWeight.bold,
+                                    ),
+                                  ))
                             ],
                           ),
                         ),
@@ -334,10 +340,13 @@ class _CreateGroupState extends State<createGroup> {
                                                           .group(0)!
                                                           .toUpperCase(), // Ensures the first letter of first name is capitalized.
                                                     ),
-                                                    style: TextStyle(
+                                                    style: GoogleFonts.poppins(
+                                                      textStyle:
+                                                          const TextStyle(
                                                         fontWeight:
                                                             FontWeight.bold,
-                                                        fontFamily: 'Poppins'),
+                                                      ),
+                                                    ),
                                                     overflow:
                                                         TextOverflow.ellipsis,
                                                   )),
@@ -380,17 +389,18 @@ class _CreateGroupState extends State<createGroup> {
                                         mainAxisAlignment:
                                             MainAxisAlignment.start,
                                         children: [
-                                            const Padding(
-                                                padding: EdgeInsets.only(
-                                                    left: 12.0, top: 14.0),
-                                                child: Text(
-                                                  "All Friends",
-                                                  style: TextStyle(
+                                            Padding(
+                                              padding: const EdgeInsets.only(
+                                                  left: 12.0, top: 14.0),
+                                              child: Text("All Friends",
+                                                  style: GoogleFonts.poppins(
+                                                    textStyle: const TextStyle(
                                                       fontSize: 15,
                                                       fontWeight:
                                                           FontWeight.bold,
-                                                      fontFamily: 'Poppins'),
-                                                )),
+                                                    ),
+                                                  )),
+                                            ),
                                             Expanded(
                                               child: ListView.builder(
                                                 itemCount:
@@ -422,12 +432,15 @@ class _CreateGroupState extends State<createGroup> {
                                                                   .group(0)!
                                                                   .toUpperCase(), // Ensures the first letter of first name is capitalized.
                                                             ),
-                                                            style: const TextStyle(
+                                                            style: GoogleFonts
+                                                                .poppins(
+                                                              textStyle:
+                                                                  const TextStyle(
                                                                 fontWeight:
                                                                     FontWeight
                                                                         .bold,
-                                                                fontFamily:
-                                                                    'Poppins'),
+                                                              ),
+                                                            ),
                                                             overflow:
                                                                 TextOverflow
                                                                     .ellipsis,
@@ -464,14 +477,17 @@ class _CreateGroupState extends State<createGroup> {
                             // if it is created then you are making your group!
                             Column(children: [
                               const SizedBox(height: 30),
-                              const Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                              Padding(
+                                padding: const EdgeInsets.symmetric(
+                                    horizontal: 16.0),
                                 child: Text(
                                   'Word! Give your group a name!',
-                                  style: TextStyle(
+                                  style: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(
                                       fontSize: 22,
                                       fontWeight: FontWeight.bold,
-                                      fontFamily: 'Poppins'),
+                                    ),
+                                  ),
                                 ),
                               ),
                               const SizedBox(height: 30.0),
@@ -529,10 +545,12 @@ class _CreateGroupState extends State<createGroup> {
                       // display different text based on which 'stage' we're in
                       child: Text(
                         isCreated ? 'Back' : 'Cancel',
-                        style: const TextStyle(
+                        style: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
                             color: Color(0xFFE76F51),
                             fontWeight: FontWeight.bold,
-                            fontFamily: 'Poppins'),
+                          ),
+                        ),
                       ),
                     ),
                     const SizedBox(width: 16.0),
@@ -588,12 +606,14 @@ class _CreateGroupState extends State<createGroup> {
                         ),
                         minimumSize: const Size(100, 50),
                       ),
-                      child: const Text(
+                      child: Text(
                         'Next',
-                        style: TextStyle(
+                        style: GoogleFonts.poppins(
+                          textStyle: const TextStyle(
                             color: Colors.white,
                             fontWeight: FontWeight.bold,
-                            fontFamily: 'Poppins'),
+                          ),
+                        ),
                       ),
                     ),
                   ],

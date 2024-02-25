@@ -17,6 +17,7 @@ import 'package:verbatim_frontend/widgets/stats.dart';
 import 'package:intl/intl.dart';
 import 'verbatastic.dart';
 import 'package:verbatim_frontend/gameObject.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class globalChallenge extends StatefulWidget {
   const globalChallenge({
@@ -450,11 +451,13 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                 padding: const EdgeInsets.only(top: 20),
                                 child: Text(
                                   'Global Challenge #$idString',
-                                  style: const TextStyle(
+                                  style: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(
                                       fontSize: 27,
                                       color: Colors.white,
                                       fontWeight: FontWeight.w900,
-                                      fontFamily: 'Poppins'),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
@@ -474,24 +477,30 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                                   children: [
                                                     TextSpan(
                                                       text: '$totalResponses',
-                                                      style: const TextStyle(
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                        textStyle:
+                                                            const TextStyle(
                                                           fontWeight:
                                                               FontWeight.bold,
                                                           color: Colors.black,
                                                           fontSize: 15,
-                                                          fontFamily:
-                                                              'Poppins'),
+                                                        ),
+                                                      ),
                                                     ),
-                                                    const TextSpan(
-                                                        text:
-                                                            " users have played today",
-                                                        style: TextStyle(
-                                                            fontSize: 14,
-                                                            color: Colors.black,
-                                                            fontWeight:
-                                                                FontWeight.w400,
-                                                            fontFamily:
-                                                                'Poppins')),
+                                                    TextSpan(
+                                                      text:
+                                                          " users have played today",
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                              textStyle:
+                                                                  const TextStyle(
+                                                        fontSize: 14,
+                                                        color: Colors.black,
+                                                        fontWeight:
+                                                            FontWeight.w400,
+                                                      )),
+                                                    ),
                                                   ],
                                                 ),
                                               ),
@@ -549,10 +558,12 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                               horizontal: 16.0),
                                           child: Text(
                                             questions[currentQuestionIndex],
-                                            style: const TextStyle(
+                                            style: GoogleFonts.poppins(
+                                              textStyle: const TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.bold,
-                                                fontFamily: 'Poppins'),
+                                              ),
+                                            ),
                                           ),
                                         ),
                                         const SizedBox(height: 30.0),
@@ -626,7 +637,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                       ],
                                     );
                                   } else if (responded == false) {
-                                    return const Column(
+                                    return Column(
                                       children: [
                                         SizedBox(height: 20.0),
                                         Column(
@@ -635,41 +646,49 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                             Center(
                                               child: Text(
                                                 'Play the',
-                                                style: TextStyle(
+                                                style: GoogleFonts.poppins(
+                                                  textStyle: const TextStyle(
                                                     fontSize: 30,
                                                     fontWeight: FontWeight.bold,
                                                     color: Color(0xFFE76F51),
-                                                    fontFamily: 'Poppins'),
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                             Center(
                                               child: Text(
                                                 'challenge',
-                                                style: TextStyle(
+                                                style: GoogleFonts.poppins(
+                                                  textStyle: const TextStyle(
                                                     fontSize: 30,
                                                     fontWeight: FontWeight.bold,
                                                     color: Color(0xFFE76F51),
-                                                    fontFamily: 'Poppins'),
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                             Center(
                                               child: Text(
                                                 'to see ',
-                                                style: TextStyle(
+                                                style: GoogleFonts.poppins(
+                                                  textStyle: const TextStyle(
                                                     fontSize: 30,
                                                     fontWeight: FontWeight.bold,
                                                     color: Color(0xFFE76F51),
-                                                    fontFamily: 'Poppins'),
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                             Center(
                                               child: Text(
                                                 'Global Stats!',
-                                                style: TextStyle(
+                                                style: GoogleFonts.poppins(
+                                                  textStyle: const TextStyle(
                                                     fontSize: 30,
                                                     fontWeight: FontWeight.bold,
                                                     color: Color(0xFFE76F51),
-                                                    fontFamily: 'Poppins'),
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                           ],

@@ -3,6 +3,7 @@ import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:verbatim_frontend/BackendService.dart';
 //import 'package:verbatim_frontend/Components/shared_prefs.dart';
@@ -332,7 +333,7 @@ class _AddFriendState extends State<addFriend> {
                     child: Column(
                       children: [
                         SizedBox(
-                          height: 240,
+                          height: 240.v,
                           width: double.maxFinite,
                           child:
                               Stack(alignment: Alignment.topCenter, children: [
@@ -377,12 +378,14 @@ class _AddFriendState extends State<addFriend> {
                                         Expanded(
                                           child: TextField(
                                             controller: _searchController,
-                                            decoration: const InputDecoration(
-                                              hintStyle: TextStyle(
+                                            decoration: InputDecoration(
+                                              hintStyle: GoogleFonts.poppins(
+                                                textStyle: const TextStyle(
                                                   fontSize: 14.0,
                                                   color: Color.fromARGB(
                                                       255, 6, 5, 5),
-                                                  fontFamily: 'Poppins'),
+                                                ),
+                                              ),
                                               border: InputBorder.none,
                                             ),
                                             textAlign: TextAlign.left,
@@ -405,13 +408,14 @@ class _AddFriendState extends State<addFriend> {
                                   ? 'People you may know'
                                   : 'Search Results',
                               textAlign: TextAlign.left,
-                              style: const TextStyle(
-                                color: Colors.black,
-                                fontSize: 16,
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w600,
-                                height: 0.09,
-                                letterSpacing: 0.10,
+                              style: GoogleFonts.poppins(
+                                textStyle: const TextStyle(
+                                  color: Colors.black,
+                                  fontSize: 16,
+                                  fontWeight: FontWeight.w600,
+                                  height: 0.09,
+                                  letterSpacing: 0.10,
+                                ),
                               ),
                             ),
                           ),
@@ -426,7 +430,7 @@ class _AddFriendState extends State<addFriend> {
                       clipBehavior: Clip.hardEdge,
                       margin: const EdgeInsets.only(top: 10),
                       width: 335,
-                      height: 450,
+                      height: 508,
                       decoration: BoxDecoration(
                         borderRadius: BorderRadius.circular(30),
                         boxShadow: [
@@ -461,45 +465,25 @@ class _AddFriendState extends State<addFriend> {
                                         user: currentUser,
                                       ),
                                       const SizedBox(width: 8),
-                                      GestureDetector(
-                                        onTap: () {
-                                          currentUser.bio ??= '';
-                                          currentUser.profilePicture ??= '';
-
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                              builder: (context) => Profile(
-                                                user: currentUser,
-                                              ),
-                                            ),
-                                          );
-                                          // Navigator.pushNamed(
-                                          //     context, '/profile',
-                                          //     arguments: currentUser);
-                                        },
-                                        child: Flexible(
-                                          child: Text(
-                                            name.replaceFirstMapped(
-                                              RegExp(r'^\w'),
-                                              (match) => match
-                                                  .group(0)!
-                                                  .toUpperCase(), // Ensures the first letter of first name is capitalized.
-                                            ),
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black,
-                                                fontFamily:
-                                                    'Poppins' // Optional: Change text color to blue for clickable effect
-                                                ),
-                                            overflow: TextOverflow.ellipsis,
+                                      Flexible(
+                                        child: Text(
+                                          name.replaceFirstMapped(
+                                            RegExp(r'^\w'),
+                                            (match) => match
+                                                .group(0)!
+                                                .toUpperCase(), // Ensures the first letter of first name is capitalized.
                                           ),
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black,
+                                              fontFamily:
+                                                  'Poppins' // Optional: Change text color to blue for clickable effect
+                                              ),
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
                                     ],
                                   ),
-
-                                  // icon displayed is dependent on whether you have requested this user.
                                   trailing: IconButton(
                                     icon: currentUser.isRequested
                                         ? const Icon(Icons.pending)
@@ -540,32 +524,21 @@ class _AddFriendState extends State<addFriend> {
                                         user: currentUser,
                                       ),
                                       const SizedBox(width: 8),
-                                      GestureDetector(
-                                        onTap: () {
-                                          Navigator.push(
-                                            context,
-                                            MaterialPageRoute(
-                                                builder: (context) => Profile(
-                                                      user: currentUser,
-                                                    )),
-                                          );
-                                        },
-                                        child: Flexible(
-                                          child: Text(
-                                            name.replaceFirstMapped(
-                                              RegExp(r'^\w'),
-                                              (match) => match
-                                                  .group(0)!
-                                                  .toUpperCase(), // Ensures the first letter of first name is capitalized.
-                                            ),
-                                            style: const TextStyle(
-                                                fontWeight: FontWeight.bold,
-                                                color: Colors.black,
-                                                fontFamily:
-                                                    'Poppins' // Optional: Change text color to blue for clickable effect
-                                                ),
-                                            overflow: TextOverflow.ellipsis,
+                                      Flexible(
+                                        child: Text(
+                                          name.replaceFirstMapped(
+                                            RegExp(r'^\w'),
+                                            (match) => match
+                                                .group(0)!
+                                                .toUpperCase(), // Ensures the first letter of first name is capitalized.
                                           ),
+                                          style: const TextStyle(
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.black,
+                                              fontFamily:
+                                                  'Poppins' // Optional: Change text color to blue for clickable effect
+                                              ),
+                                          overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
                                     ],

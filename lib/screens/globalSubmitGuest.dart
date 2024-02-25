@@ -4,6 +4,8 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
 import 'package:verbatim_frontend/gameObject.dart';
 
+import 'package:google_fonts/google_fonts.dart';
+
 class Guest extends StatelessWidget {
   final String formattedTimeUntilMidnight;
 
@@ -40,23 +42,27 @@ class Guest extends StatelessWidget {
           // padding: const EdgeInsets.only(left: 25, right: 25.0),
 
           child: RichText(
-            text: const TextSpan(
+            text: TextSpan(
               children: [
                 TextSpan(
                   text: 'Verba',
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
+                    textStyle: const TextStyle(
                       color: Color(0xFFE76F51),
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'Poppins'),
+                    ),
+                  ),
                 ),
                 TextSpan(
                   text: '-tastic!',
-                  style: TextStyle(
+                  style: GoogleFonts.poppins(
+                    textStyle: const TextStyle(
                       color: Colors.black,
                       fontSize: 24,
                       fontWeight: FontWeight.bold,
-                      fontFamily: 'Poppins'),
+                    ),
+                  ),
                 ),
               ],
             ),
@@ -69,8 +75,12 @@ class Guest extends StatelessWidget {
           padding: const EdgeInsets.only(left: 25, right: 25),
           child: Text(
             inviteText,
-            style: const TextStyle(
-                color: Colors.black, fontSize: 16, fontFamily: 'Poppins'),
+            style: GoogleFonts.poppins(
+              textStyle: const TextStyle(
+                color: Colors.black,
+                fontSize: 16,
+              ),
+            ),
           ),
         )),
         const SizedBox(height: 20),
@@ -79,10 +89,12 @@ class Guest extends StatelessWidget {
           child: Center(
             child: Text(
               'New Challenge in $formattedTimeUntilMidnight',
-              style: const TextStyle(
+              style: GoogleFonts.poppins(
+                textStyle: const TextStyle(
                   fontSize: 13,
                   fontWeight: FontWeight.bold,
-                  fontFamily: 'Poppins'),
+                ),
+              ),
             ),
           ),
         ),
@@ -102,7 +114,6 @@ class Guest extends StatelessWidget {
                     textStyle: const TextStyle(
                       color: Colors.black,
                       fontWeight: FontWeight.w500,
-                      fontFamily: 'Poppins',
                       fontSize: 16,
                     ),
                   ),
@@ -111,10 +122,10 @@ class Guest extends StatelessWidget {
                   text: 'Sign in',
                   style: GoogleFonts.poppins(
                     textStyle: const TextStyle(
-                        color: Color(0xFF3C64B1),
-                        fontWeight: FontWeight.w700,
-                        fontSize: 16,
-                        fontFamily: 'Poppins'),
+                      color: Color(0xFF3C64B1),
+                      fontWeight: FontWeight.w700,
+                      fontSize: 16,
+                    ),
                   ),
                   recognizer: TapGestureRecognizer()
                     ..onTap = () {

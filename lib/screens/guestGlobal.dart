@@ -1,7 +1,7 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/gameObject.dart';
-import 'sideBar.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:verbatim_frontend/widgets/custom_app_bar.dart';
@@ -168,6 +168,7 @@ class _GuestGlobalState extends State<guestGlobal> {
     }
 
     print("In Guest Global, username: $username ,responded: $responded");
+    print("In Guest Global, username: $username ,responded: $responded");
 
     return SafeArea(
       child: Scaffold(
@@ -207,11 +208,13 @@ class _GuestGlobalState extends State<guestGlobal> {
                                 padding: const EdgeInsets.only(top: 20),
                                 child: Text(
                                   'Global Challenge #$idString',
-                                  style: const TextStyle(
+                                  style: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(
                                       fontSize: 27,
                                       color: Colors.white,
                                       fontWeight: FontWeight.w900,
-                                      fontFamily: 'Poppins'),
+                                    ),
+                                  ),
                                 ),
                               ),
                             ),
@@ -227,27 +230,32 @@ class _GuestGlobalState extends State<guestGlobal> {
                                           children: [
                                             SizedBox(
                                               child: RichText(
-                                                text: const TextSpan(
+                                                text: TextSpan(
                                                   //TODO:
                                                   children: [
                                                     TextSpan(
                                                       text: 'TBD\n',
-                                                      style: TextStyle(
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                        textStyle:
+                                                            const TextStyle(
                                                           fontWeight:
-                                                              FontWeight.bold,
+                                                              FontWeight.w700,
                                                           color: Colors.black,
                                                           fontSize: 13,
-                                                          fontFamily:
-                                                              'Poppins'),
+                                                        ),
+                                                      ),
                                                     ),
                                                     TextSpan(
                                                         text:
                                                             " users have played today",
-                                                        style: TextStyle(
-                                                            fontSize: 14,
-                                                            color: Colors.black,
-                                                            fontFamily:
-                                                                'Poppins')),
+                                                        style:
+                                                            GoogleFonts.poppins(
+                                                                textStyle:
+                                                                    TextStyle(
+                                                          fontSize: 14,
+                                                          color: Colors.black,
+                                                        ))),
                                                   ],
                                                 ),
                                               ),
@@ -275,7 +283,7 @@ class _GuestGlobalState extends State<guestGlobal> {
                         clipBehavior: Clip.hardEdge,
                         margin: EdgeInsets.only(top: 10.v),
                         //    padding: EdgeInsets.symmetric(horizontal: 10),
-                        width: 300,
+                        width: 330,
                         height: 400,
                         decoration: BoxDecoration(
                           borderRadius: BorderRadius.circular(50),
@@ -305,10 +313,12 @@ class _GuestGlobalState extends State<guestGlobal> {
                                               horizontal: 16.0),
                                           child: Text(
                                             questions[currQIdx],
-                                            style: const TextStyle(
+                                            style: GoogleFonts.poppins(
+                                              textStyle: const TextStyle(
                                                 fontSize: 18,
                                                 fontWeight: FontWeight.bold,
-                                                fontFamily: 'Poppins'),
+                                              ),
+                                            ),
                                           ),
                                         ),
                                         const SizedBox(height: 30.0),
@@ -379,7 +389,7 @@ class _GuestGlobalState extends State<guestGlobal> {
                                       ],
                                     );
                                   } else if (responded == false) {
-                                    return const Column(
+                                    return Column(
                                       children: [
                                         SizedBox(height: 20.0),
                                         Column(
@@ -388,41 +398,49 @@ class _GuestGlobalState extends State<guestGlobal> {
                                             Center(
                                               child: Text(
                                                 'Play the',
-                                                style: TextStyle(
+                                                style: GoogleFonts.poppins(
+                                                  textStyle: const TextStyle(
                                                     fontSize: 30,
                                                     fontWeight: FontWeight.bold,
                                                     color: Color(0xFFE76F51),
-                                                    fontFamily: 'Poppins'),
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                             Center(
                                               child: Text(
                                                 'challenge',
-                                                style: TextStyle(
+                                                style: GoogleFonts.poppins(
+                                                  textStyle: const TextStyle(
                                                     fontSize: 30,
                                                     fontWeight: FontWeight.bold,
                                                     color: Color(0xFFE76F51),
-                                                    fontFamily: 'Poppins'),
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                             Center(
                                               child: Text(
                                                 'to see ',
-                                                style: TextStyle(
+                                                style: GoogleFonts.poppins(
+                                                  textStyle: const TextStyle(
                                                     fontSize: 30,
                                                     fontWeight: FontWeight.bold,
                                                     color: Color(0xFFE76F51),
-                                                    fontFamily: 'Poppins'),
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                             Center(
                                               child: Text(
                                                 'Global Stats!',
-                                                style: TextStyle(
+                                                style: GoogleFonts.poppins(
+                                                  textStyle: const TextStyle(
                                                     fontSize: 30,
                                                     fontWeight: FontWeight.bold,
                                                     color: Color(0xFFE76F51),
-                                                    fontFamily: 'Poppins'),
+                                                  ),
+                                                ),
                                               ),
                                             ),
                                           ],

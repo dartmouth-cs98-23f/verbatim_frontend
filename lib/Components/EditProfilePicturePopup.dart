@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_fonts/google_fonts.dart';
 
 class EditProfilePicturePopup extends StatefulWidget {
   final String imagePath;
@@ -37,20 +38,20 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
           Row(
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
-              const Padding(
+              Padding(
                 padding: EdgeInsets.only(left: 12.0),
                 child: Align(
                   alignment: Alignment.topCenter,
                   child: Text(
                     'Edit Profile Picture',
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
+                        textStyle: const TextStyle(
                       color: Color(0xFF3C63B0),
                       fontSize: 16,
-                      fontFamily: 'Poppins',
                       fontWeight: FontWeight.w400,
                       height: 0.09,
                       letterSpacing: 0.30,
-                    ),
+                    )),
                   ),
                 ),
               ),
@@ -75,7 +76,7 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
           ),
           const SizedBox(height: 20),
           Container(
-              padding: EdgeInsets.all(0),
+              padding: const EdgeInsets.all(0),
               child: Center(
                 child: ListTile(
                   leading: const Icon(
@@ -84,31 +85,31 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
                   ),
                   title: Text(
                     'Take a photo',
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
+                        textStyle: const TextStyle(
                       color: Colors.black,
                       fontSize: 16,
-                      fontFamily: 'Poppins',
                       fontWeight: FontWeight.w600,
                       //   height: 0.09,
                       //  letterSpacing: 0.10,
-                    ),
+                    )),
                   ),
                   onTap: widget.onChangeImageCamera,
                 ),
               )),
           const SizedBox(height: 10),
           Container(
-              padding: EdgeInsets.all(0),
+              padding: const EdgeInsets.all(0),
               child: Center(
                 child: ListTile(
-                  title: const Text(
+                  title: Text(
                     'Choose from gallery',
-                    style: TextStyle(
+                    style: GoogleFonts.poppins(
+                        textStyle: const TextStyle(
                       color: Colors.black,
                       fontSize: 16,
-                      fontFamily: 'Poppins',
                       fontWeight: FontWeight.w600,
-                    ),
+                    )),
                   ),
                   leading: const Icon(
                     Icons.photo_outlined,
@@ -125,15 +126,14 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
                 Icons.delete_outline,
                 color: Color(0xFFDE674A),
               ),
-              title: const Text(
-                'Remove current picture',
-                style: TextStyle(
-                  color: Colors.black,
-                  fontSize: 16,
-                  fontFamily: 'Poppins',
-                  fontWeight: FontWeight.w600,
-                ),
-              ),
+              title: Text('Remove current picture',
+                  style: GoogleFonts.poppins(
+                    textStyle: const TextStyle(
+                      color: Colors.black,
+                      fontSize: 16,
+                      fontWeight: FontWeight.w600,
+                    ),
+                  )),
               onTap: widget.onRemoveCurrentPicture,
             ),
           )),

@@ -1,5 +1,6 @@
 import 'dart:html';
 import 'dart:math';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -45,6 +46,9 @@ class Verbatastic extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     preloadImages(context);
+    // Ensure the current user's username is not included in verbatasticUsernames
+    verbatasticUsernames!.remove(SharedPrefs().getUserName() as String);
+
     String copyIcon = 'assets/copy.svg';
     String sendIcon = 'assets/send.svg';
     String inviteText = "\n See how your friends would compare!";
@@ -94,10 +98,9 @@ class Verbatastic extends StatelessWidget {
                         Positioned(
                           top: 0,
                           left: 30.0,
-                          child: Image.asset(
-                            'assets/Ellipse ${41}.png',
-                            height: 48,
-                          ),
+                          child: FirebaseStorageImage(
+                              profileUrl:
+                                  SharedPrefs().getProfileUrl() as String),
                         ),
                       ],
                     ),
@@ -146,41 +149,50 @@ class Verbatastic extends StatelessWidget {
                       TextSpan(
                         text:
                             'You${verbatasticUsernames!.length == 1 ? ' and ' : ', '}',
-                        style: const TextStyle(
+                        style: GoogleFonts.poppins(
+                            textStyle: const TextStyle(
                           color: Colors.black,
                           fontSize: 16,
-                        ),
+                        )),
                       ),
                       for (int i = 0;
                           i < min(verbatasticUsernames!.length, 5);
                           i++)
                         TextSpan(
-                          text: verbatasticUsernames![i] +
+                          text: verbatasticUsernames![i].replaceFirstMapped(
+                                RegExp(r'^\w'),
+                                (match) => match
+                                    .group(0)!
+                                    .toUpperCase(), // Ensures the first letter of first name is capitalized.
+                              ) +
                               (i < verbatasticUsernames!.length - 2
                                   ? ', '
                                   : i < verbatasticUsernames!.length - 1
                                       ? ' and '
                                       : ''),
-                          style: const TextStyle(
+                          style: GoogleFonts.poppins(
+                              textStyle: const TextStyle(
                             color: Colors.black,
                             fontSize: 16,
-                          ),
+                          )),
                         ),
                       TextSpan(
                         text:
                             '${verbatasticUsernames!.length == 1 ? ' both ' : ' all '}said ',
-                        style: const TextStyle(
+                        style: GoogleFonts.poppins(
+                            textStyle: const TextStyle(
                           color: Colors.black,
                           fontSize: 16,
-                        ),
+                        )),
                       ),
                       TextSpan(
                         text: verbatimedWord,
-                        style: const TextStyle(
+                        style: GoogleFonts.poppins(
+                            textStyle: const TextStyle(
                           color: Colors.black,
                           fontSize: 17,
                           fontWeight: FontWeight.bold,
-                        ),
+                        )),
                       ),
                     ],
             ),
@@ -190,10 +202,11 @@ class Verbatastic extends StatelessWidget {
         const SizedBox(height: 10),
         Text(
           inviteText,
-          style: const TextStyle(
+          style: GoogleFonts.poppins(
+              textStyle: const TextStyle(
             color: Colors.black,
             fontSize: 16,
-          ),
+          )),
         ),
         const SizedBox(height: 25),
         MyButtonWithSvg(
@@ -208,11 +221,14 @@ class Verbatastic extends StatelessWidget {
           width: 220,
           child: Center(
             child: Text(
+              textAlign: TextAlign.center,
               'New Challenge in $formattedTimeUntilMidnight',
-              style: const TextStyle(
+              style: GoogleFonts.poppins(
+                  textStyle: GoogleFonts.poppins(
+                      textStyle: const TextStyle(
                 fontSize: 16,
                 fontWeight: FontWeight.bold,
-              ),
+              ))),
             ),
           ),
         ),

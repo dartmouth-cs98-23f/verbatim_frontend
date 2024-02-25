@@ -76,7 +76,6 @@ class _ProfileState extends State<Profile> {
 
   String bio = '';
   String profileUrl = '';
-  Map<String, bool> friendRequestStates = {};
   bool drawButton = false;
   String groupName = '';
   User? toBeDisplayedUser;
@@ -159,8 +158,8 @@ class _ProfileState extends State<Profile> {
     if (response.statusCode == 200) {
       SuccessDialog.show(context, 'Your friend request has been sent!');
       setState(() {
-        friendRequestStates[requestedUsername] = true;
-        drawButton = true;
+        widget.user!.isRequested = true;
+        getUsersIHaveRequested(requestingUsername);
       });
     } else {
       print('Failed to send responses. Status code: ${response.statusCode}');
@@ -176,18 +175,27 @@ class _ProfileState extends State<Profile> {
 
     final response = await http.post(url, headers: headers, body: username);
 
-    dynamic responsedecode = json.decode(response.body);
-
     if (response.statusCode == 200) {
-      List<dynamic> myfriendRequests = json.decode(response.body);
+      List<dynamic> myFriendRequests = json.decode(response.body);
 
-      if (myfriendRequests.isNotEmpty) {
-        for (var request in myfriendRequests) {
-          String requestedUsername = request['username'];
-          // Set the friend request state to true for each user requested
-          friendRequestStates[requestedUsername] = true;
-        }
+      List<User> friendRequestsList =
+          myFriendRequests.map((item) => User.fromJson(item)).toList();
+
+      print("\nfriendreqests: \n");
+      for (int i = 0; i < friendRequestsList.length; i++) {
+        print(friendRequestsList[i].username);
       }
+
+      print("\nEnd of friend requests lists\n");
+
+      if (friendRequestsList
+          .any((user) => user.username == widget.user!.username)) {
+        setState(() {
+          widget.user!.isRequested = true;
+        });
+      }
+
+      print("\n The user's is reqeusted: ${widget.user!.isRequested}\n");
     } else {
       print(
           '\nIn addFriends getUsersIHaveRequested: Failed to send responses. Status code: ${response.statusCode}\n');
@@ -213,7 +221,12 @@ class _ProfileState extends State<Profile> {
           DateTime dateTime = DateFormat("MM-dd-yyyy").parse(friendsSince);
 
           // Format the date in the desired format
-          friendshipDate = DateFormat("MM/dd/yy").format(dateTime);
+          setState(() {
+            friendshipDate = DateFormat("MM/dd/yy").format(dateTime);
+          });
+
+          print(
+              '\nFriendship Date between users ${currentUsername} and ${friendUsername} is $friendshipDate\n');
         } else {
           print(
               '\nError: "friendsSince" is null or not found in JSON response\n');
@@ -225,6 +238,8 @@ class _ProfileState extends State<Profile> {
 
       if (friendshipDate.isNotEmpty) {
         friendshipStatusDescription = "Friends Since $friendshipDate";
+
+        print("\nFrndship description is: $friendshipStatusDescription\n");
       }
     } catch (error) {
       print('\nError getting friendship data: $error\n');
@@ -236,6 +251,7 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     super.initState();
+    getUsersIHaveRequested(SharedPrefs().getUserName() as String);
 
 
 
@@ -246,10 +262,6 @@ class _ProfileState extends State<Profile> {
 
 // if this is someone else's page then draw the ''requested'' button as such
     if (widget.user != null) {
-      if (!friendRequestStates.containsKey(widget.user!.username)) {
-        friendRequestStates[widget.user!.username] = widget.user!.isRequested;
-      }
-      drawButton = friendRequestStates[widget.user!.username] as bool;
       groupName = widget.user!.username;
     }
 
@@ -384,15 +396,23 @@ class _ProfileState extends State<Profile> {
                                       const SizedBox(width: 10),
                                       Column(
                                         children: [
-                                          Text(
-                                            softWrap: true,
-                                            displayName,
-                                            style: GoogleFonts.poppins(
+                                          SizedBox(
+                                            width: 160,
+                                            child: Text(
+                                              displayName,
+                                              softWrap:
+                                                  true, // Wrap text across multiple lines if needed
+                                              style: GoogleFonts.poppins(
                                                 textStyle: const TextStyle(
-                                              fontWeight: FontWeight.bold,
-                                              fontSize: 29,
-                                              fontFamily: 'Poppins',
-                                            )),
+                                                  fontWeight: FontWeight.bold,
+                                                  fontSize: 29,
+                                                ),
+                                              ),
+                                              overflow: TextOverflow
+                                                  .ellipsis, // Use ellipsis to indicate text overflow
+                                              maxLines:
+                                                  2, // Example: Limit text to 2 lines; adjust as needed
+                                            ),
                                           ),
                                           const SizedBox(
                                             height: 10,
@@ -400,7 +420,12 @@ class _ProfileState extends State<Profile> {
                                           SafeArea(
                                             child: GestureDetector(
                                               onTap: () async {
-                                                if (widget.user == null) {
+                                                // If you are on your own profile, go to settings page
+                                                if ((widget.user == null ||
+                                                    widget.user!.username ==
+                                                        (SharedPrefs()
+                                                                .getUserName()
+                                                            as String))) {
                                                   Navigator.pushNamed(
                                                       context, '/settings');
                                                 } else {
@@ -413,11 +438,12 @@ class _ProfileState extends State<Profile> {
                                                     await sendFriendRequest(
                                                         username,
                                                         widget.user!.username);
+
+                                                    setState(() {
+                                                      widget.user!.isRequested =
+                                                          true;
+                                                    });
                                                   } else {
-                                                    print(
-                                                        "\n\n Map is $friendRequestStates");
-                                                    print(
-                                                        "\n33 User's username is ${widget.user!.username}");
                                                     print(
                                                         "\nImplement the method to handle when the user is already a friend or the FR has been sent!\n");
                                                   }
@@ -449,26 +475,29 @@ class _ProfileState extends State<Profile> {
                                                       .transparent, // Make it transparent to prevent background color overlay
                                                   child: InkWell(
                                                     onTap: () {
-                                                      if (widget.user == null) {
+                                                      if ((widget.user ==
+                                                              null ||
+                                                          widget.user!
+                                                                  .username ==
+                                                              (SharedPrefs()
+                                                                      .getUserName()
+                                                                  as String))) {
                                                         // Navigate to settings
                                                         Navigator.pushNamed(
                                                             context,
                                                             '/settings');
                                                       } else {
-                                                        if (friendRequestStates[
-                                                                widget.user!
-                                                                    .username] ==
-                                                            false) {
+                                                        // If they are not
+                                                        if (widget.user!
+                                                                    .isRequested ==
+                                                                false &&
+                                                            friendshipDate
+                                                                .isEmpty) {
                                                           sendFriendRequest(
                                                               username,
                                                               widget.user!
                                                                   .username);
                                                         } else {
-                                                          print(
-                                                              "\n\n Map is $friendRequestStates");
-                                                          print(
-                                                              "\n33 User's username is ${widget.user!.username}");
-
                                                           print(
                                                               "\nImplement the method to handle when the user is already a friend or the FR has been sent!\n");
                                                         }
@@ -496,13 +525,19 @@ class _ProfileState extends State<Profile> {
                                                               const BoxDecoration(),
                                                           child: Stack(
                                                             children: [
-                                                              // Display person_outlined icon when there is a user and friend request is accepted
+                                                              // Display person_outlined icon when there is a user and friend request is accepted or requested
                                                               if (widget.user !=
                                                                       null &&
-                                                                  friendRequestStates[widget
-                                                                          .user!
-                                                                          .username] ==
-                                                                      true)
+                                                                  (widget.user!
+                                                                              .isRequested ==
+                                                                          true ||
+                                                                      friendshipDate
+                                                                          .isNotEmpty) &&
+                                                                  (widget.user!
+                                                                          .username !=
+                                                                      (SharedPrefs()
+                                                                              .getUserName()
+                                                                          as String)))
                                                                 const Icon(
                                                                   Icons
                                                                       .person_outlined,
@@ -514,10 +549,16 @@ class _ProfileState extends State<Profile> {
                                                               // Display person_add_alt_outlined icon when there is a user and friend request is not sent/accepted
                                                               if (widget.user !=
                                                                       null &&
-                                                                  friendRequestStates[widget
-                                                                          .user!
-                                                                          .username] ==
-                                                                      false)
+                                                                  (widget.user!
+                                                                              .isRequested ==
+                                                                          false &&
+                                                                      friendshipDate
+                                                                          .isEmpty) &&
+                                                                  widget.user!
+                                                                          .username !=
+                                                                      (SharedPrefs()
+                                                                              .getUserName()
+                                                                          as String))
                                                                 const Icon(
                                                                   Icons
                                                                       .person_add_alt_outlined,
@@ -526,16 +567,14 @@ class _ProfileState extends State<Profile> {
                                                                   size: 20,
                                                                 ),
 
-                                                              // Display create_outlined icon when there is no user object (i.e., widget.user is null)
-                                                              if (widget.user ==
-                                                                  null)
-                                                                const Icon(
-                                                                  Icons
-                                                                      .create_outlined,
-                                                                  color: Colors
-                                                                      .white,
-                                                                  size: 20,
-                                                                ),
+                                                              // if ((widget.user ==
+                                                              //         null ||
+                                                              //     widget.user!
+                                                              //             .username ==
+                                                              //         (SharedPrefs()
+                                                              //                 .getUserName()
+                                                              //             as String)))
+                                                              //   Container(),
                                                             ],
                                                           ),
                                                         ),
@@ -546,35 +585,65 @@ class _ProfileState extends State<Profile> {
                                                               Alignment.center,
                                                           child: Center(
                                                             child: Text(
-                                                              widget.user ==
-                                                                      null
-                                                                  ? "Edit Profile"
-                                                                  : friendRequestStates[widget
-                                                                              .user!
-                                                                              .username] ==
-                                                                          true
-                                                                      ? friendshipStatusDescription
-                                                                      : "Add Friend",
-                                                              style: GoogleFonts
-                                                                  .poppins(
-                                                                      textStyle: widget.user ==
-                                                                              null
-                                                                          ? const TextStyle(
-                                                                              color: Colors.white,
-                                                                              fontSize: 12,
-                                                                              fontWeight: FontWeight.w600,
-                                                                              height: 0.12,
-                                                                              letterSpacing: 0.20,
-                                                                              fontFamily: 'Poppins',
-                                                                            )
-                                                                          : const TextStyle(
-                                                                              color: Colors.white,
-                                                                              fontSize: 10,
-                                                                              fontWeight: FontWeight.w600,
-                                                                              height: 0.12,
-                                                                              letterSpacing: 0.20,
-                                                                              fontFamily: 'Poppins',
-                                                                            )),
+                                                              // On your own profile, edit profile
+                                                              // (widget.user ==
+                                                              //             null ||
+                                                              //         widget.user!
+                                                              //                 .username ==
+                                                              //             (SharedPrefs().getUserName()
+                                                              //                 as String))
+                                                              //     ? "Edit Profile"
+                                                              //     // On another user's profile, show the right description
+                                                              //     : (widget.user !=
+                                                              //                 null &&
+                                                              //             widget.user!.username !=
+                                                              //                 (SharedPrefs().getUserName() as String))
+                                                              //         ? friendshipStatusDescription // It is 'friendship request pending' if a request was sent, else if they are friends, it is 'friends since <date>'
+                                                              //         : "Add Friend",
+                                                              // Determine button text
+                                                              (widget.user ==
+                                                                          null ||
+                                                                      widget.user!
+                                                                              .username ==
+                                                                          (SharedPrefs().getUserName()
+                                                                              as String))
+                                                                  ? "Edit Profile" // User is viewing their own profile
+                                                                  : friendshipDate
+                                                                          .isNotEmpty
+                                                                      ? "Friends Since $friendshipDate" // Users are friends, display friendship date
+                                                                      : widget.user!
+                                                                              .isRequested
+                                                                          ? "Friend Request Pending" // Friend request has been sent but not yet friends
+                                                                          : "Add Friend", // No friend request sent, prompt to add friend
+
+                                                              style: GoogleFonts.poppins(
+                                                                  textStyle: (widget.user == null || widget.user!.username == (SharedPrefs().getUserName() as String))
+                                                                      ? GoogleFonts.poppins(
+                                                                          textStyle: const TextStyle(
+                                                                          color:
+                                                                              Colors.white,
+                                                                          fontSize:
+                                                                              12,
+                                                                          fontWeight:
+                                                                              FontWeight.w600,
+                                                                          height:
+                                                                              0.12,
+                                                                          letterSpacing:
+                                                                              0.20,
+                                                                        ))
+                                                                      : GoogleFonts.poppins(
+                                                                          textStyle: const TextStyle(
+                                                                          color:
+                                                                              Colors.white,
+                                                                          fontSize:
+                                                                              10,
+                                                                          fontWeight:
+                                                                              FontWeight.w600,
+                                                                          height:
+                                                                              0.12,
+                                                                          letterSpacing:
+                                                                              0.20,
+                                                                        ))),
                                                             ),
                                                           ),
                                                         )
@@ -598,12 +667,12 @@ class _ProfileState extends State<Profile> {
                                     bio ?? "Verbatim: That's what she said :)",
                                     softWrap: true,
                                     style: GoogleFonts.poppins(
+                                        textStyle: GoogleFonts.poppins(
                                       textStyle: const TextStyle(
                                         color: Colors.black,
                                         fontSize: 16,
-                                        fontFamily: 'Poppins',
                                       ),
-                                    ),
+                                    )),
                                   ),
                                 ],
                               ),
@@ -639,7 +708,6 @@ class _ProfileState extends State<Profile> {
                                         color: Colors.black,
                                         fontWeight: FontWeight.bold,
                                         fontSize: 20,
-                                        fontFamily: 'Poppins',
                                       ),
                                     ),
                                   ),
@@ -752,11 +820,15 @@ class _ProfileState extends State<Profile> {
                                     child: Text.rich(TextSpan(
                                       children: [
                                         TextSpan(
-                                          text: widget.user == null
+                                          text: (widget.user == null ||
+                                                  widget.user!.username ==
+                                                      (SharedPrefs()
+                                                              .getUserName()
+                                                          as String))
                                               ? 'Highest '
-                                              : (friendRequestStates[widget
-                                                          .user!.username] ==
-                                                      true
+                                              : ((widget.user!.isRequested ==
+                                                          true ||
+                                                      friendshipDate.isNotEmpty)
                                                   ? 'Your '
                                                   : 'Highest '),
                                           style: GoogleFonts.poppins(
@@ -764,7 +836,6 @@ class _ProfileState extends State<Profile> {
                                               color: Colors.black,
                                               fontSize: 20,
                                               fontWeight: FontWeight.bold,
-                                              fontFamily: 'Poppins',
                                             ),
                                           ),
                                         ),
@@ -776,7 +847,6 @@ class _ProfileState extends State<Profile> {
                                                     255, 231, 111, 81),
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.bold,
-                                                fontFamily: 'Poppins',
                                               ),
                                             )),
                                         TextSpan(
@@ -786,7 +856,6 @@ class _ProfileState extends State<Profile> {
                                                 color: Colors.black,
                                                 fontSize: 20,
                                                 fontWeight: FontWeight.bold,
-                                                fontFamily: 'Poppins',
                                               ),
                                             )),
                                       ],
@@ -800,26 +869,27 @@ class _ProfileState extends State<Profile> {
                                           child: Text.rich(TextSpan(
                                             children: [
                                               TextSpan(
-                                                text: (verbaMatchScore != -1
-                                                        ? verbaMatchScore
-                                                        : 0)
-                                                    .toString(),
-                                                style: const TextStyle(
+                                                text: "Power Rating: ",
+                                                style: GoogleFonts.poppins(
+                                                    textStyle: const TextStyle(
                                                   fontSize: 16,
                                                   fontWeight: FontWeight.w500,
                                                   color: Colors.black,
-                                                  fontFamily: 'Poppins',
-                                                ),
+                                                )),
                                               ),
-                                              const TextSpan(
-                                                text: " power rating",
-                                                style: TextStyle(
-                                                  fontSize: 16,
-                                                  fontWeight: FontWeight.w500,
-                                                  color: Colors.black,
-                                                  fontFamily: 'Poppins',
-                                                ),
-                                              )
+                                              TextSpan(
+                                                  text: (verbaMatchScore != -1
+                                                          ? verbaMatchScore
+                                                          : 0)
+                                                      .toString(),
+                                                  style: GoogleFonts.poppins(
+                                                    textStyle: const TextStyle(
+                                                      fontSize: 16,
+                                                      fontWeight:
+                                                          FontWeight.w500,
+                                                      color: Colors.black,
+                                                    ),
+                                                  )),
                                             ],
                                           )),
                                         )
@@ -887,7 +957,12 @@ class _ProfileState extends State<Profile> {
                                                         user: match,
                                                       ),
                                                     )
-                                                  : (widget.user == null &&
+                                                  : ((widget.user == null ||
+                                                              widget.user!
+                                                                      .username ==
+                                                                  (SharedPrefs()
+                                                                          .getUserName()
+                                                                      as String)) &&
                                                           match !=
                                                               null) // When you are on your own profile and you have a verbaMatch, the second profile should be your verbaMatch's profile picture
                                                       ? SizedBox(
@@ -921,159 +996,144 @@ class _ProfileState extends State<Profile> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      Align(
-                                        widthFactor: .5,
-                                        child: (widget.user != null &&
-                                                friendshipDate
-                                                    .isEmpty) // When you are on a stranger's profile, the first oval should contain their profile picture
-                                            ? SizedBox(
-                                                width: 91,
-                                                child: Text(
-                                                    widget.user!.username
-                                                        .replaceFirstMapped(
-                                                      RegExp(r'^\w'),
-                                                      (match) => match
-                                                          .group(0)!
-                                                          .toUpperCase(), // Ensures the first letter of first name is capitalized.
-                                                    ),
-                                                    textAlign: TextAlign.center,
-                                                    style: const TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 18,
-                                                      fontFamily: 'Poppins',
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      height: 0.07,
-                                                      letterSpacing: 0.10,
-                                                    )),
-                                              )
-                                            : SizedBox(
-                                                width: 91,
-                                                // When you are on your own profile or a friend's profile, the first oval should always contain your profile picture
-                                                child: Text(
-                                                    //SharedPrefs().getUserName()
-                                                    //as String
-                                                    //TODO: 
-                                                      username
-                                                        .replaceFirstMapped(
-                                                      RegExp(r'^\w'),
-                                                      (match) => match
-                                                          .group(0)!
-                                                          .toUpperCase(), // Ensures the first letter of first name is capitalized.
-                                                    ),
-                                                    textAlign: TextAlign.center,
-                                                    style: const TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 18,
-                                                      fontFamily: 'Poppins',
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      height: 0.07,
-                                                      letterSpacing: 0.10,
-                                                    ))),
+                                      // Removed Align and widthFactor as they conflict with the approach of allowing text to wrap.
+                                      Flexible(
+                                        // Allow the text to expand within the limits of the row.
+                                        child: SizedBox(
+                                          width:
+                                              91, // You can maintain a width for the container if needed for layout.
+                                          child: (widget.user != null &&
+                                                  friendshipDate.isEmpty)
+                                              ? Text(
+                                                  widget.user!.username
+                                                      .replaceFirstMapped(
+                                                    RegExp(r'^\w'),
+                                                    (match) => match
+                                                        .group(0)!
+                                                        .toUpperCase(), // Capitalize the first letter
+                                                  ),
+                                                  textAlign: TextAlign.center,
+                                                  style: GoogleFonts.poppins(
+                                                      textStyle:
+                                                          const TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w700,
+                                                  )),
+                                                  overflow: TextOverflow
+                                                      .ellipsis, // Prevent overflow with ellipsis
+                                                )
+                                              : Text(
+                                                  (SharedPrefs().getUserName()
+                                                          as String)
+                                                      .replaceFirstMapped(
+                                                    RegExp(r'^\w'),
+                                                    (match) => match
+                                                        .group(0)!
+                                                        .toUpperCase(), // Capitalize the first letter
+                                                  ),
+                                                  textAlign: TextAlign.center,
+                                                  style: GoogleFonts.poppins(
+                                                      textStyle:
+                                                          const TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w700,
+                                                  )),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  // Prevent overflow with ellipsis
+                                                ),
+                                        ),
                                       ),
                                       const SizedBox(
+                                          width: 5), // Spacing between elements
+                                      Flexible(
+                                        // Repeat the Flexible widget for the second text
+                                        child: SizedBox(
                                           width:
-                                              25), // Add spacing between the profile pictures
-                                      Align(
-                                        widthFactor: .5,
-                                        child: (widget.user != null &&
-                                                friendshipDate
-                                                    .isNotEmpty) // When you are on a friend's profile, the second oval should contain their profile picture
-                                            ? SizedBox(
-                                                width: 91,
-                                                child: Text(
-                                                    "& ${widget.user!.username.replaceFirstMapped(
-                                                      RegExp(r'^\w'),
-                                                      (match) => match
-                                                          .group(0)!
-                                                          .toUpperCase(), // Ensures the first letter of first name is capitalized.
-                                                    )}",
-                                                    textAlign: TextAlign.center,
-                                                    style: const TextStyle(
-                                                      color: Colors.black,
-                                                      fontSize: 18,
-                                                      fontFamily: 'Poppins',
-                                                      fontWeight:
-                                                          FontWeight.w700,
-                                                      height: 0.07,
-                                                      letterSpacing: 0.10,
-                                                    )),
-                                              )
-                                            : (widget.user != null &&
-                                                    friendshipDate.isEmpty &&
-                                                    match !=
-                                                        null) // When you are on a stranger's profile and they have a verbaMatch, the second profile should be their verbaMatch's profile picture
-                                                ? SizedBox(
-                                                    width: 91,
-                                                    child: Text(
-                                                        "& ${match!.username.replaceFirstMapped(
-                                                          RegExp(r'^\w'),
-                                                          (match) => match
-                                                              .group(0)!
-                                                              .toUpperCase(), // Ensures the first letter of first name is capitalized.
-                                                        )}",
-                                                        textAlign:
-                                                            TextAlign.center,
-                                                        style: const TextStyle(
-                                                          color: Colors.black,
-                                                          fontSize: 18,
-                                                          fontFamily: 'Poppins',
-                                                          fontWeight:
-                                                              FontWeight.w700,
-                                                          height: 0.07,
-                                                          letterSpacing: 0.10,
-                                                        )),
-                                                  )
-                                                : (widget.user == null &&
-                                                        match !=
-                                                            null) // When you are on your own profile and you have a verbaMatch, the second profile should be your verbaMatch's profile picture
-                                                    ? SizedBox(
-                                                        width: 91,
-                                                        child: Text(
-                                                            "& ${match!.username.replaceFirstMapped(
-                                                              RegExp(r'^\w'),
-                                                              (match) => match
-                                                                  .group(0)!
-                                                                  .toUpperCase(), // Ensures the first letter of first name is capitalized.
-                                                            )}",
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            style:
-                                                                const TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontSize: 18,
-                                                              fontFamily:
-                                                                  'Poppins',
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700,
-                                                              height: 0.07,
-                                                              letterSpacing:
-                                                                  0.10,
-                                                            )),
-                                                      )
-                                                    : const SizedBox(
-                                                        width: 91,
-                                                        child: Text(' ',
-                                                            textAlign: TextAlign
-                                                                .center,
-                                                            style: TextStyle(
-                                                              color:
-                                                                  Colors.black,
-                                                              fontSize: 18,
-                                                              fontFamily:
-                                                                  'Poppins',
-                                                              fontWeight:
-                                                                  FontWeight
-                                                                      .w700,
-                                                              height: 0.07,
-                                                              letterSpacing:
-                                                                  0.10,
-                                                            )),
-                                                      ),
+                                              100, // Maintain width for consistency
+                                          child: (widget.user != null &&
+                                                  friendshipDate.isNotEmpty)
+                                              ? Text(
+                                                  "${widget.user!.username.replaceFirstMapped(
+                                                    RegExp(r'^\w'),
+                                                    (match) => match
+                                                        .group(0)!
+                                                        .toUpperCase(), // Capitalize the first letter
+                                                  )}",
+                                                  textAlign: TextAlign.center,
+                                                  style: GoogleFonts.poppins(
+                                                      textStyle:
+                                                          const TextStyle(
+                                                    color: Colors.black,
+                                                    fontSize: 18,
+                                                    fontWeight: FontWeight.w700,
+                                                  )),
+                                                  overflow:
+                                                      TextOverflow.ellipsis,
+                                                  // Use ellipsis for overflow
+                                                )
+                                              : (widget.user != null &&
+                                                      friendshipDate.isEmpty &&
+                                                      match != null)
+                                                  ? Text(
+                                                      "${match!.username.replaceFirstMapped(
+                                                        RegExp(r'^\w'),
+                                                        (match) => match
+                                                            .group(0)!
+                                                            .toUpperCase(), // Capitalize the first letter
+                                                      )}",
+                                                      textAlign:
+                                                          TextAlign.center,
+                                                      style:
+                                                          GoogleFonts.poppins(
+                                                              textStyle:
+                                                                  const TextStyle(
+                                                        color: Colors.black,
+                                                        fontSize: 18,
+                                                        fontWeight:
+                                                            FontWeight.w700,
+                                                      )),
+                                                      overflow:
+                                                          TextOverflow.ellipsis,
+                                                      // Use ellipsis for overflow
+                                                    )
+                                                  : ((widget.user == null ||
+                                                              widget.user!
+                                                                      .username ==
+                                                                  (SharedPrefs()
+                                                                          .getUserName()
+                                                                      as String)) &&
+                                                          match != null)
+                                                      ? Text(
+                                                          "${match!.username.replaceFirstMapped(
+                                                            RegExp(r'^\w'),
+                                                            (match) => match
+                                                                .group(0)!
+                                                                .toUpperCase(), // Capitalize the first letter
+                                                          )}",
+                                                          textAlign:
+                                                              TextAlign.center,
+                                                          style: GoogleFonts
+                                                              .poppins(
+                                                                  textStyle:
+                                                                      const TextStyle(
+                                                            color: Colors.black,
+                                                            fontSize: 18,
+                                                            fontWeight:
+                                                                FontWeight.w700,
+                                                          )),
+                                                          overflow: TextOverflow
+                                                              .ellipsis,
+                                                          // Use ellipsis for overflow
+                                                        )
+                                                      : const SizedBox
+                                                          .shrink(), // Use SizedBox.shrink() for cases where no text should be shown
+                                        ),
                                       ),
+
+                                      // Add other Flexible widgets for additional text elements as needed.
                                     ],
                                   ),
                                 ],
