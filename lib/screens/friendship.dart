@@ -157,7 +157,7 @@ class _FriendshipState extends State<friendship>
             // some bool that can automatically call set state from other widget?
 
             if (title == 'Standard') {
-              String username = window.sessionStorage['UserName'] ?? "" ;
+              String username = window.sessionStorage['UserName'] ?? "";
 
               Navigator.pop(context);
               createStandardChallenge(username, groupId).then((_) {
@@ -436,7 +436,7 @@ class _FriendshipState extends State<friendship>
 
   List<String> verbaMatchGroup = [];
   Future<void> _loadChallenges() async {
-    String username = window.sessionStorage['UserName'] ?? "" ;
+    String username = window.sessionStorage['UserName'] ?? "";
 
     getFriendStats(username, widget.friendUsername);
     verbaMatchGroup = [username, widget.friendUsername];
@@ -457,7 +457,7 @@ class _FriendshipState extends State<friendship>
   @override
   Widget build(BuildContext context) {
     const String assetName = 'assets/img1.svg';
-    String username = SharedPrefs().getUserName() ?? "";
+    String username = window.sessionStorage['UserName'] ?? "";
 
     return SafeArea(
         child: Scaffold(
