@@ -64,7 +64,8 @@ class _GuestGlobalState extends State<guestGlobal> {
       print("what is she?${fetchQuestions.body}");
       final Map<String, dynamic>? data = json.decode(fetchQuestions.body);
 
-      id = data!['globalChallengeId'];
+//NOTE
+      id = data!['globalChallengeDisplayNum'];
 
       question1 = data['q1'];
       question2 = data['q2'];
@@ -78,7 +79,7 @@ class _GuestGlobalState extends State<guestGlobal> {
       categoryQ4 = data['categoryQ4'];
       categoryQ5 = data['categoryQ5'];
 
-      // totalResponses = data['totalResponses'];
+      totalResponses = data['totalResponses'];
     }
   }
 
@@ -233,10 +234,11 @@ class _GuestGlobalState extends State<guestGlobal> {
                                             SizedBox(
                                               child: RichText(
                                                 text: TextSpan(
-                                                  //TODO:
+
                                                   children: [
                                                     TextSpan(
-                                                      text: 'TBD\n',
+                                                      //TODO: 
+                                                      text: totalResponses.toString(),
                                                       style:
                                                           GoogleFonts.poppins(
                                                         textStyle:

@@ -800,7 +800,7 @@ class _ProfileState extends State<Profile> {
                                             )
                                           ]),
                                       child: MyStatsTile(
-                                          field: "Custom \nChallenges",
+                                          field: "Group \nChallenges",
                                           stat: stats[3].toString(),
                                           icon: customIcon),
                                     )),
