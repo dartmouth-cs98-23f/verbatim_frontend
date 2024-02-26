@@ -53,9 +53,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
     if (response.statusCode == 200) {
       final dynamic jsonData = json.decode(response.body);
 
-      print("this is groupstats json code $jsonData");
       double rating = jsonData["groupRating"];
-      print("this is the rating in mygroup $rating");
       groupRating = rating;
 
       List<dynamic> verbaMatchList = jsonData["verbaMatch"];

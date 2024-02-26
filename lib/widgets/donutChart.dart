@@ -23,6 +23,10 @@ class _DonutChartState extends State<DonutChart> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(
+                20.0), //  this will fix weird looking border?
+          ),
           contentPadding: EdgeInsets.zero,
           content: Container(
               width: 160,
@@ -52,11 +56,9 @@ class _DonutChartState extends State<DonutChart> {
                       text: TextSpan(
                         children: [
                           TextSpan(
-
                             text: 'Your score increases when you:\n\n',
                             style: GoogleFonts.poppins(
                               textStyle: const TextStyle(
-
                                 color: Colors.black,
                                 fontSize: 19,
                                 fontWeight: FontWeight.bold,
@@ -67,14 +69,12 @@ class _DonutChartState extends State<DonutChart> {
                           TextSpan(
                             text:
                                 'Verbatim, Build Streaks, and Play Challenges!',
-
                             style: GoogleFonts.poppins(
                               textStyle: const TextStyle(
                                 color: Colors.orange,
                                 fontSize: 21,
                                 fontWeight: FontWeight.w900,
                               ),
-
                             ),
                           ),
                         ],
