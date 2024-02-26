@@ -53,7 +53,6 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   final String assetName = 'assets/img1.svg';
-  // final String profile = 'assets/default.jpeg';
   final String friendsIcon = 'assets/friends.svg';
   final String streakIcon = 'assets/streak.svg';
   final String globalChallengeIcon = 'assets/globalChallenges.svg';
@@ -276,7 +275,6 @@ class _ProfileState extends State<Profile> {
         SharedPrefs().getProfileUrl() ??
         'assets/profile_pic.png';
 
-    print("\nprofileURl $profileUrl");
     // Populate the initial values for other user details
     firstName =
         (widget.user?.firstName ?? SharedPrefs().getFirstName() ?? "User")
