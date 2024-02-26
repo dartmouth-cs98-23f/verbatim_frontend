@@ -69,7 +69,8 @@ class _ProfileState extends State<Profile> {
   String initial = '';
 
   String displayName = '';
-  String username = '';
+  String username = window.sessionStorage['UserName'] ?? "";
+
 
   String bio = '';
   String profileUrl = '';
@@ -106,48 +107,47 @@ class _ProfileState extends State<Profile> {
       if (verbaMatchScore == -1) {
         verbaMatchScore = 0;
       }
+      if (stats.match != null) {
+        final Map<String, dynamic> matchDeets = stats.match;
+        print("this is match deets $matchDeets");
+        // Remove the current user's details from matchDeets
 
-      final Map<String, dynamic> matchDeets = stats.match;
+        print("\nthis is match deets after remove where $matchDeets");
 
-      print("this is match deets $matchDeets");
-      // Remove the current user's details from matchDeets
+        // Set match to null if matchDeets still contains elements
+        User? newMatch = matchDeets["username"] == username
+            ? null
+            : User(
+                username: matchDeets["username"],
+                bio: matchDeets['bio'],
+                id: matchDeets['id'],
+                email: matchDeets['email'],
+                lastName: matchDeets['lastName'],
+                firstName: matchDeets['firstName'],
+                profilePicture: matchDeets['profilePicture'],
+                numGlobalChallengesCompleted:
+                    matchDeets['numGlobalChallengesCompleted'],
+                numCustomChallengesCompleted:
+                    matchDeets['numCustomChallengesCompleted'],
+                streak: matchDeets['streak'],
+                hasCompletedDailyChallenge:
+                    matchDeets['hasCompletedDailyChallenge'],
+              );
+        print("newmatch username: ");
+        print(newMatch?.username);
 
-      print("\nthis is match deets after remove where $matchDeets");
+        newMatch?.profilePicture ??= 'assets/profile_pic.png';
 
-      // Set match to null if matchDeets still contains elements
-      User? newMatch =
-          matchDeets["username"] == username
-              ? null
-              : User(
-                  username: matchDeets["username"],
-                  bio: matchDeets['bio'],
-                  id: matchDeets['id'],
-                  email: matchDeets['email'],
-                  lastName: matchDeets['lastName'],
-                  firstName: matchDeets['firstName'],
-                  profilePicture: matchDeets['profilePicture'],
-                  numGlobalChallengesCompleted:
-                      matchDeets['numGlobalChallengesCompleted'],
-                  numCustomChallengesCompleted:
-                      matchDeets['numCustomChallengesCompleted'],
-                  streak: matchDeets['streak'],
-                  hasCompletedDailyChallenge:
-                      matchDeets['hasCompletedDailyChallenge'],
-                );
-      print("newmatch username: ");
-      print(newMatch?.username);
-
-      newMatch?.profilePicture ??= 'assets/profile_pic.png';
-
-      print(newMatch?.profilePicture);
-      setState(() {
-        match = newMatch;
-      });
+        print(newMatch?.profilePicture);
+        setState(() {
+          match = newMatch;
+        });
+      }
 
       // Print statements for debugging (can be removed in production)
       print("\nVerba match score: $verbaMatchScore\n");
       print("\nMatch user: $match\n");
-      print("\nMatchDeets : $matchDeets\n");
+      //  print("\nMatchDeets : $matchDeets\n");
       print("\nStats.match is : ${stats.match}\n");
     } else {
       print(
@@ -207,7 +207,7 @@ class _ProfileState extends State<Profile> {
         });
       }
 
-      print("\n The user's is reqeusted: ${widget.user!.isRequested}\n");
+      //print("\n The user's is reqeusted: ${widget.user!.isRequested}\n");
     } else {
       print(
           '\nIn addFriends getUsersIHaveRequested: Failed to send responses. Status code: ${response.statusCode}\n');
@@ -262,27 +262,29 @@ class _ProfileState extends State<Profile> {
   @override
   void initState() {
     super.initState();
-    username =  window.sessionStorage['UserName']?? "";
+    username = window.sessionStorage['UserName'] ?? "";
     getUsersIHaveRequested(username);
     if (widget.user != null) {
       groupName = widget.user!.username;
     }
 
     // Initialize username from SharedPrefs if not provided through the widget
-   // username = widget.user?.username ?? username ?? " ";
+    username = widget.user?.username ?? username ?? " ";
 
     // Initialize bio, ensuring it's never null
-    bio = widget.user?.bio ??  window.sessionStorage['Bio']?? "Thats what she said";
+    bio = widget.user?.bio ??
+        window.sessionStorage['Bio'] ??
+        "Thats what she said";
 
     // Initialize profileUrl, ensuring a default is used if null
     profileUrl = widget.user?.profilePicture ??
-         window.sessionStorage['ProfileUrl']?? 
+        window.sessionStorage['ProfileUrl'] ??
         'assets/profile_pic.png';
 
     print("\nprofileURl $profileUrl");
     // Populate the initial values for other user details
     firstName =
-        (widget.user?.firstName ?? window.sessionStorage['FirstName']??  "User")
+        (widget.user?.firstName ?? window.sessionStorage['FirstName'] ?? "User")
             .replaceFirstMapped(
       RegExp(r'^\w'),
       (match) => match
@@ -290,13 +292,12 @@ class _ProfileState extends State<Profile> {
           .toUpperCase(), // Ensures the first letter of first name is capitalized.
     );
 
-    lastName = widget.user?.lastName ??  window.sessionStorage['LastName']??  "Name";
+    lastName =
+        widget.user?.lastName ?? window.sessionStorage['LastName'] ?? "Name";
     initial = lastName.isNotEmpty ? lastName.substring(0, 1).toUpperCase() : "";
 
-    if (widget.user != null &&
-        (widget.user!.username != username)) {
-      getFriendshipDate(
-          username, widget.user!.username);
+    if (widget.user != null && (widget.user!.username != username)) {
+      getFriendshipDate(username, widget.user!.username);
     }
 
     // Format displayName using firstName and initial
@@ -305,7 +306,7 @@ class _ProfileState extends State<Profile> {
     // Get the current user stats
     _getStats(username).then((_) {
       setState(() {
-        stats = [friends, streaks, globals, customs];
+        stats = [friends, globals, customs, streaks];
       });
     });
 
@@ -313,7 +314,7 @@ class _ProfileState extends State<Profile> {
       // Get the other user stats if we are on a friend's or stranger's profile
       _getStats(username).then((_) {
         setState(() {
-          stats = [friends, streaks, globals, customs];
+          stats = [friends, globals, customs, streaks];
         });
       });
     }
@@ -321,7 +322,9 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-   // print(" In profile Shared prefs: " + SharedPrefs().getUserName()!);
+    // print(" In profile Shared prefs: " + SharedPrefs().getUserName()!);
+    //TODO: 
+    username = widget.user?.username ?? username ?? " ";
     return SafeArea(
       child: Theme(
         data: ThemeData(
@@ -434,7 +437,7 @@ class _ProfileState extends State<Profile> {
                                                           false &&
                                                       friendshipDate.isEmpty) {
                                                     await sendFriendRequest(
-                                                      username,
+                                                        username,
                                                         widget.user!.username);
 
                                                     setState(() {
@@ -490,7 +493,7 @@ class _ProfileState extends State<Profile> {
                                                             friendshipDate
                                                                 .isEmpty) {
                                                           sendFriendRequest(
-                                                             username,
+                                                              username,
                                                               widget.user!
                                                                   .username);
                                                         } else {
@@ -593,11 +596,13 @@ class _ProfileState extends State<Profile> {
                                                               //         ? friendshipStatusDescription // It is 'friendship request pending' if a request was sent, else if they are friends, it is 'friends since <date>'
                                                               //         : "Add Friend",
                                                               // Determine button text
+                                                   
                                                               (widget.user ==
-                                                                          null ||
-                                                                      widget.user!
-                                                                              .username ==
-                                                                          (username))
+                                                                          null 
+                                                                          //     widget.user!
+                                                                          //     .username ==
+                                                                          // (username)
+                                                                 )
                                                                   ? "Edit Profile" // User is viewing their own profile
                                                                   : friendshipDate
                                                                           .isNotEmpty
@@ -724,7 +729,7 @@ class _ProfileState extends State<Profile> {
                                           ]),
                                       child: MyStatsTile(
                                           field: "Friends",
-                                          stat: (stats[0]).toString(),
+                                          stat: stats[0].toString(),
                                           icon: friendsIcon),
                                     )),
                                     const SizedBox(
@@ -749,7 +754,7 @@ class _ProfileState extends State<Profile> {
                                           ]),
                                       child: MyStatsTile(
                                           field: "Current \nStreak",
-                                          stat: stats[1].toString(),
+                                          stat: stats[3].toString(),
                                           icon: streakIcon),
                                     )),
                                   ]),
@@ -776,12 +781,14 @@ class _ProfileState extends State<Profile> {
                                           ]),
                                       child: MyStatsTile(
                                           field: "Global \nChallenges",
-                                          stat: stats[2].toString(),
+                                          stat: stats[1].toString(),
                                           icon: globalChallengeIcon),
                                     )),
                                     const SizedBox(
                                       width: 15,
                                     ),
+                                    //TODO:
+                                    // [friends, globals, customs, streaks];
                                     Expanded(
                                         child: Container(
                                       height: 80,
@@ -801,7 +808,7 @@ class _ProfileState extends State<Profile> {
                                           ]),
                                       child: MyStatsTile(
                                           field: "Group \nChallenges",
-                                          stat: stats[3].toString(),
+                                          stat: stats[2].toString(),
                                           icon: customIcon),
                                     )),
                                   ]),
@@ -908,7 +915,9 @@ class _ProfileState extends State<Profile> {
                                                     width: 100,
                                                     height: 100,
                                                     child: FirebaseStorageImage(
-                                                      profileUrl: window.sessionStorage['ProfileUrl']!,
+                                                      profileUrl:
+                                                          window.sessionStorage[
+                                                              'ProfileUrl']!,
                                                     ),
                                                   )),
                                       ),
@@ -1009,8 +1018,7 @@ class _ProfileState extends State<Profile> {
                                                       .ellipsis, // Prevent overflow with ellipsis
                                                 )
                                               : Text(
-                                                  (username)
-                                                      .replaceFirstMapped(
+                                                  (username).replaceFirstMapped(
                                                     RegExp(r'^\w'),
                                                     (match) => match
                                                         .group(0)!
