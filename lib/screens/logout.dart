@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 import 'package:verbatim_frontend/screens/logIn.dart';
 import 'package:verbatim_frontend/widgets/guest_utility.dart';
 import '../Components/shared_prefs.dart';
@@ -15,6 +16,20 @@ class _LogoutPageState extends State<LogoutPage> {
   Map<String, Text> validationErrors = {};
 
   Future<void> logout(BuildContext context) async {
+    // Initialize GoogleSignIn
+    final GoogleSignIn googleSignIn = GoogleSignIn(
+        scopes: ['email'],
+        clientId:
+            '1052195157201-9d7dskf4jihdd8b3ad6bmidnkoilu9ht.apps.googleusercontent.com');
+
+    try {
+      // Attempt to sign out from Google first
+      await googleSignIn.signOut();
+      print("\nSuccessfully signed out of Google\n");
+    } catch (error) {
+      print("Error signing out from Google: $error");
+    }
+
     // Clear out all the user information
     await SharedPrefs().init();
     SharedPrefs().setEmail('');
@@ -26,7 +41,7 @@ class _LogoutPageState extends State<LogoutPage> {
     SharedPrefs().setCurrentPage('/login');
 
     //TODO:clear stats, clear guest stuff
-    final GuestUtility guestUtility= GuestUtility();
+    final GuestUtility guestUtility = GuestUtility();
     guestUtility.clearStats();
     guestUtility.clearGameObject();
 

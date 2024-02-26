@@ -17,8 +17,8 @@ class MyButtonNoImage extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          width: 265,
-          height: 50,
+          width: 328,
+          height: 49,
           decoration: ShapeDecoration(
             color: const Color(0xFFE76F51),
             shape: RoundedRectangleBorder(
@@ -46,7 +46,6 @@ class MyButtonNoImage extends StatelessWidget {
                           textStyle: const TextStyle(
                             color: Colors.white,
                             fontSize: 14,
-                            fontFamily: 'Mulish',
                             fontWeight: FontWeight.w700,
                             height: 1.0,
                             letterSpacing: 0.30,

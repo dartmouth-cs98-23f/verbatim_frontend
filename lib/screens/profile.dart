@@ -1146,7 +1146,7 @@ class _ProfileState extends State<Profile> {
                           // Only allow the user to create custom challenge with a friend.
                           (friendshipDate.isNotEmpty)
                               ? CustomChallengeButton(
-                                  drawButton: drawButton,
+                                  drawButton: friendshipDate.isNotEmpty,
                                   groupName: groupName,
                                 )
                               : Container(),
