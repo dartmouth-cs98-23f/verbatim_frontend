@@ -322,7 +322,7 @@ class Stats extends StatelessWidget {
                             height: 250,
                             child: friends.isEmpty
                                 ? Padding(
-                                    padding: EdgeInsets.only(top: 20.0),
+                                    padding: const EdgeInsets.only(top: 20.0),
                                     child: Text(
                                       "None of your friends have played today. Add friends to see their answers!",
                                       textAlign: TextAlign.center,
@@ -573,7 +573,7 @@ class Stats extends StatelessWidget {
                               height: 250,
                               child: friends.isEmpty
                                   ? Padding(
-                                      padding: EdgeInsets.only(top: 20.0),
+                                      padding: const EdgeInsets.only(top: 20.0),
                                       child: Text(
                                         "None of your friends have played today. Add friends to see their answers!",
                                         textAlign: TextAlign.center,
@@ -822,7 +822,7 @@ class Stats extends StatelessWidget {
                             height: 250,
                             child: friends.isEmpty
                                 ? Padding(
-                                    padding: EdgeInsets.only(top: 20.0),
+                                    padding: const EdgeInsets.only(top: 20.0),
                                     child: Text(
                                         "None of your friends have played today. Add friends to see their answers!",
                                         textAlign: TextAlign.center,
@@ -1074,7 +1074,7 @@ class Stats extends StatelessWidget {
                               height: 250,
                               child: friends.isEmpty
                                   ? Padding(
-                                      padding: EdgeInsets.only(top: 20.0),
+                                      padding: const EdgeInsets.only(top: 20.0),
                                       child: Text(
                                         "None of your friends have played today. Add friends to see their answers!",
                                         textAlign: TextAlign.center,
@@ -1324,7 +1324,7 @@ class Stats extends StatelessWidget {
                               height: 250,
                               child: friends.isEmpty
                                   ? Padding(
-                                      padding: EdgeInsets.only(top: 20.0),
+                                      padding: const EdgeInsets.only(top: 20.0),
                                       child: Text(
                                           "None of your friends have played today. Add friends to see their answers!",
                                           textAlign: TextAlign.center,

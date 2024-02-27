@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:verbatim_frontend/BackendService.dart';
@@ -7,7 +9,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:verbatim_frontend/widgets/showSuccessDialog.dart';
-import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/widgets/center_custom_app_bar.dart';
 
 class ResetPassword extends StatefulWidget {
@@ -34,7 +35,7 @@ class _ResetPasswordState extends State<ResetPassword> {
           'Content-Type': 'application/json',
         },
         body: jsonEncode({
-          'username': SharedPrefs().getUserName(),
+          'username': window.sessionStorage['UserName']?? "",
           'oldPassword': oldPassword,
           'newPassword': newPassword,
         }),
@@ -42,7 +43,8 @@ class _ResetPasswordState extends State<ResetPassword> {
       // do something to verify the response,
       if (response.statusCode == 200) {
         // get the account info to display as dummy text
-        SharedPrefs().setPassword(newPassword);
+        // SharedPrefs.setPassword(newPassword);
+        window.sessionStorage['Password']= newPassword;
         SuccessDialog.show(context, 'Your password has been updated!');
       } else {
         print("\nSomething went wrong - Status code ${response.statusCode}\n");
@@ -64,7 +66,7 @@ class _ResetPasswordState extends State<ResetPassword> {
       setValidationError("passwordMismatch", "Passwords do not match.");
       return false;
     }
-    if (SharedPrefs().getPassword() != oldPassword) {
+    if (window.sessionStorage['Password']! != oldPassword) {
       setValidationError(
           "incorrectPassword", "Incorrect value for currrent password");
       return false;
@@ -126,7 +128,7 @@ class _ResetPasswordState extends State<ResetPassword> {
 
                       const SizedBox(height: 42),
                       Padding(
-                        padding: EdgeInsets.only(left: 30.0),
+                        padding: const EdgeInsets.only(left: 30.0),
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
@@ -151,7 +153,7 @@ class _ResetPasswordState extends State<ResetPassword> {
 
                       const SizedBox(height: 42),
                       Padding(
-                        padding: EdgeInsets.only(left: 30.0),
+                        padding: const EdgeInsets.only(left: 30.0),
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(

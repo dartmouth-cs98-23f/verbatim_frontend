@@ -76,7 +76,7 @@ class StatsContent extends StatelessWidget {
                       TextSpan(
                         text: 'Verba-',
                         style: GoogleFonts.poppins(
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                             color: Colors.orange,
                             fontSize: 24,
                             fontWeight: FontWeight.bold,
@@ -86,7 +86,7 @@ class StatsContent extends StatelessWidget {
                       TextSpan(
                         text: 'Matches...',
                         style: GoogleFonts.poppins(
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                             color: Colors.black,
                             fontSize: 24,
                             fontWeight: FontWeight.bold,

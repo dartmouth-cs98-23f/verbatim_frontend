@@ -1,3 +1,5 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:verbatim_frontend/BackendService.dart';
@@ -9,7 +11,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
 import 'package:verbatim_frontend/widgets/custom_tab.dart';
 import 'dart:async';
-import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:intl/intl.dart';
 import 'globalSubmitGuest.dart';
 
@@ -23,7 +24,7 @@ class guestGlobal extends StatefulWidget {
 }
 
 class _GuestGlobalState extends State<guestGlobal> {
-  String username = SharedPrefs().getUserName() ?? "";
+  String username = '';
   List<String> userResponses = ['', '', '', '', ''];
   String userResponse = '';
   List<String> responses123 = [];
@@ -62,7 +63,8 @@ class _GuestGlobalState extends State<guestGlobal> {
       print("what is she?${fetchQuestions.body}");
       final Map<String, dynamic>? data = json.decode(fetchQuestions.body);
 
-      id = data!['globalChallengeId'];
+//NOTE
+      id = data!['globalChallengeDisplayNum'];
 
       question1 = data['q1'];
       question2 = data['q2'];
@@ -76,13 +78,15 @@ class _GuestGlobalState extends State<guestGlobal> {
       categoryQ4 = data['categoryQ4'];
       categoryQ5 = data['categoryQ5'];
 
-      // totalResponses = data['totalResponses'];
+      totalResponses = data['totalResponses'];
     }
   }
 
   @override
   void initState() {
     super.initState();
+    username = window.sessionStorage['UserName']?? "";
+    print("In guest an usename is:$username");
     if (username == '') {
       _fecthNoSignInData().then((_) {
         setState(() {
@@ -140,7 +144,7 @@ class _GuestGlobalState extends State<guestGlobal> {
   @override
   Widget build(BuildContext context) {
     String idString = id.toString();
-    username = SharedPrefs().getUserName() ?? "";
+    username = window.sessionStorage['UserName']?? "";
 
     //get time and format
     DateTime now = DateTime.now();
@@ -167,8 +171,6 @@ class _GuestGlobalState extends State<guestGlobal> {
       showText = !showText;
     }
 
-    print("In Guest Global, username: $username ,responded: $responded");
-    print("In Guest Global, username: $username ,responded: $responded");
 
     return SafeArea(
       child: Scaffold(
@@ -231,10 +233,11 @@ class _GuestGlobalState extends State<guestGlobal> {
                                             SizedBox(
                                               child: RichText(
                                                 text: TextSpan(
-                                                  //TODO:
+
                                                   children: [
                                                     TextSpan(
-                                                      text: 'TBD\n',
+                                                      //TODO: 
+                                                      text: totalResponses.toString(),
                                                       style:
                                                           GoogleFonts.poppins(
                                                         textStyle:
@@ -252,7 +255,7 @@ class _GuestGlobalState extends State<guestGlobal> {
                                                         style:
                                                             GoogleFonts.poppins(
                                                                 textStyle:
-                                                                    TextStyle(
+                                                                    const TextStyle(
                                                           fontSize: 14,
                                                           color: Colors.black,
                                                         ))),
@@ -391,10 +394,10 @@ class _GuestGlobalState extends State<guestGlobal> {
                                   } else if (responded == false) {
                                     return Column(
                                       children: [
-                                        SizedBox(height: 20.0),
+                                        const SizedBox(height: 20.0),
                                         Column(
                                           children: [
-                                            SizedBox(height: 50),
+                                            const SizedBox(height: 50),
                                             Center(
                                               child: Text(
                                                 'Play the',

@@ -1,12 +1,14 @@
+import 'dart:html';
+
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 //import 'package:google_sign_in/google_sign_in.dart';
 import 'package:verbatim_frontend/BackendService.dart';
+
 import 'package:verbatim_frontend/widgets/my_button_with_image.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'package:verbatim_frontend/screens/signupErrorMessage.dart';
-import '../Components/shared_prefs.dart';
 import '../widgets/my_button_no_image.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -152,16 +154,17 @@ class _LogInState extends State<LogIn> {
         final responseData = json.decode(response.body);
 
         if (responseData != null) {
-          // Authentication successful: Save the user info to the disk so that they can persist to other pages
-          SharedPrefs().setEmail(responseData['email']);
-          SharedPrefs().setUserName(responseData['username']);
-          SharedPrefs().setPassword(responseData['password']);
-          SharedPrefs().setFirstName(responseData['firstName'] ?? '');
-          SharedPrefs().setLastName(responseData['lastName'] ?? '');
-          SharedPrefs().setBio(responseData['bio'] ?? '');
-          SharedPrefs().setProfileUrl(
-              responseData['profilePicture'] ?? 'assets/profile_pic.png');
-
+          window.sessionStorage['UserName'] = responseData['username'];
+          window.sessionStorage['LastName'] = responseData['lastName'];
+          window.sessionStorage['FirstName'] = responseData['firstName'];
+          window.sessionStorage['FullName'] =
+              '${responseData['firstName']} ${responseData['lastName']}';
+          window.sessionStorage['Bio'] =
+              responseData['bio'] ?? "That's what she said!";
+          window.sessionStorage['Email'] = responseData['email'];
+          window.sessionStorage['Password'] = responseData['password'];
+          window.sessionStorage['ProfileUrl'] =
+              responseData['profilePicture'] ?? 'assets/profile_pic.png';
           Navigator.pushNamed(context, '/global_challenge');
         }
       } else {
@@ -202,7 +205,7 @@ class _LogInState extends State<LogIn> {
           await auth.signInWithPopup(authProvider);
       user = userCredential.user;
     } catch (e) {
-      print("\nError while sign in with Google: ${e}\n");
+      print("\nError while sign in with Google: $e\n");
     }
 
     if (user != null) {

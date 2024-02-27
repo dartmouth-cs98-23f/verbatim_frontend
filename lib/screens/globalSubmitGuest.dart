@@ -4,7 +4,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
 import 'package:verbatim_frontend/gameObject.dart';
 
-import 'package:google_fonts/google_fonts.dart';
 
 class Guest extends StatelessWidget {
   final String formattedTimeUntilMidnight;

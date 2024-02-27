@@ -1,6 +1,7 @@
+import 'dart:html';
+
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 
 class FriendsAppBarTest extends StatelessWidget {
@@ -76,7 +77,7 @@ class FriendsAppBarTest extends StatelessWidget {
                     width: 40,
                     height: 40.45,
                     child: FirebaseStorageImage(
-                      profileUrl: SharedPrefs().getProfileUrl() as String,
+                      profileUrl: window.sessionStorage['ProfileUrl']?? "assets/profile_pic.png",
                     )),
               ],
             ),

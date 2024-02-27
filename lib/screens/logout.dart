@@ -2,7 +2,6 @@ import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:verbatim_frontend/screens/logIn.dart';
 import 'package:verbatim_frontend/widgets/guest_utility.dart';
-import '../Components/shared_prefs.dart';
 import 'package:google_fonts/google_fonts.dart';
 
 class LogoutPage extends StatefulWidget {
@@ -31,19 +30,20 @@ class _LogoutPageState extends State<LogoutPage> {
     }
 
     // Clear out all the user information
-    await SharedPrefs().init();
-    SharedPrefs().setEmail('');
-    SharedPrefs().setUserName('');
-    SharedPrefs().setPassword('');
-    SharedPrefs().setFirstName('');
-    SharedPrefs().setLastName('');
-    SharedPrefs().setBio('');
-    SharedPrefs().setCurrentPage('/login');
+    // await SharedPrefs().init();
+    // SharedPrefs.setEmail('');
+    // SharedPrefs.setUserName('');
+    // SharedPrefs.setPassword('');
+    // SharedPrefs.setFirstName('');
+    // SharedPrefs.setLastName('');
+    // SharedPrefs.setBio('');
+    // SharedPrefs.setCurrentPage('/login');
 
     //TODO:clear stats, clear guest stuff
     final GuestUtility guestUtility = GuestUtility();
     guestUtility.clearStats();
     guestUtility.clearGameObject();
+    guestUtility.clearUserInfo();
 
     // Navigate to the login page after logout
     Navigator.push(
@@ -92,11 +92,11 @@ class _LogoutPageState extends State<LogoutPage> {
                 ),
                 const SizedBox(height: 30),
                 Padding(
-                  padding: EdgeInsets.only(left: 15.0),
+                  padding: const EdgeInsets.only(left: 15.0),
                   child: Column(
                     crossAxisAlignment: CrossAxisAlignment.center,
                     children: [
-                      SizedBox(height: 20),
+                      const SizedBox(height: 20),
                       Text(
                         'Are you sure you want to log out?',
                         style: GoogleFonts.poppins(

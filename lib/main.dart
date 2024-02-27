@@ -1,39 +1,46 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:provider/provider.dart';
+import 'package:verbatim_frontend/UserData.dart';
 import 'package:verbatim_frontend/screens/landingPage.dart';
 import 'BackendService.dart';
 import 'Components/defineRoutes.dart';
-import 'Components/shared_prefs.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:flutter_dotenv/flutter_dotenv.dart';
 
 final GlobalKey<NavigatorState> navigatorKey = GlobalKey<NavigatorState>();
 
 Future<void> main() async {
   WidgetsFlutterBinding.ensureInitialized();
-  await SharedPrefs().init();
+  //await SharedPrefs().init();
 
   const String environment =
       String.fromEnvironment('FLUTTER_BACKEND_ENV', defaultValue: 'prod');
-  await dotenv.load(fileName: ".env");
 
   BackendService.loadProperties(environment);
   try {
     await Firebase.initializeApp(
-      options: FirebaseOptions(
+      options: const FirebaseOptions(
         authDomain: "verbatim-b4c2c.firebaseapp.com",
-        apiKey: dotenv.env['apiKey']!,
-        appId: dotenv.env['appId']!,
-        messagingSenderId: dotenv.env['messagingSenderId']!,
-        projectId: dotenv.env['projectId']!,
-        storageBucket: dotenv.env['storageBucket']!,
+        apiKey: "AIzaSyCoMI1z4rnhlRtgkctBH84iN4j-AuVqpx0",
+        appId: "1:1052195157201:android:c403d36febd4de5e5a81f0",
+        messagingSenderId: "1052195157201",
+        projectId: "verbatim-b4c2c",
+        storageBucket: "gs://verbatim-b4c2c.appspot.com",
       ),
     );
   } catch (e) {
-    print('\n\nError initializing Firebase: $e\n\n');
+    print('\nError initializing Firebase: $e\n');
   }
 
-  runApp(const MyApp());
+  runApp(
+    RestorationScope(
+      restorationId: 'rootRestorationScope',
+      child: ChangeNotifierProvider(
+        create: (context) => UserData(),
+        child: const MyApp(),
+      ),
+    ),
+  );
 
   defineRoutes();
 }

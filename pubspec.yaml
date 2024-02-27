@@ -66,6 +66,7 @@ dependencies:
   confetti: ^0.7.0
   firebase_remote_config: ^4.3.8
   flutter_dotenv: ^5.1.0
+  get_it: ^7.6.7
   firebase_auth: ^4.17.4
   cloud_firestore: ^4.15.5
 
@@ -129,7 +130,6 @@ flutter:
     - assets/statstoggle.svg
 
     - assets/config.properties
-    - .env
 
   #     - images/a_dot_ham.jpeg
 

@@ -39,7 +39,7 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
             mainAxisAlignment: MainAxisAlignment.spaceBetween,
             children: [
               Padding(
-                padding: EdgeInsets.only(left: 12.0),
+                padding: const EdgeInsets.only(left: 12.0),
                 child: Align(
                   alignment: Alignment.topCenter,
                   child: Text(

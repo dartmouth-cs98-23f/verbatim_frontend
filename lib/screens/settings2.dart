@@ -3,11 +3,11 @@ import 'dart:html';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/Components/EditProfilePicturePopup.dart';
+import 'package:verbatim_frontend/screens/sideBar.dart';
 import 'package:verbatim_frontend/widgets/MyTextFieldSettings.dart';
 import 'package:verbatim_frontend/widgets/button_settings.dart';
 import 'package:http/http.dart' as http;
@@ -18,6 +18,83 @@ import 'dart:async';
 //import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/resetPassword.dart';
 import 'package:verbatim_frontend/widgets/center_custom_app_bar.dart';
+
+void edits(
+  BuildContext context,
+  String fullName,
+  String username,
+  String newUsername,
+  String bio,
+  String email,
+  String profilePic,
+) async {
+  try {
+    Map<String, String> nameMap = getFirstAndLastName(fullName);
+
+    String firstName = nameMap['firstName'] ?? '';
+    String lastName = nameMap['lastName'] ?? '';
+
+    final response = await http.post(
+      Uri.parse('${BackendService.getBackendUrl()}accountSettings'),
+      headers: <String, String>{
+        'Content-Type': 'application/json',
+      },
+      body: jsonEncode({
+        'firstName': firstName,
+        'lastName': lastName,
+        'username': username,
+        'newUsername': newUsername,
+        'email': email,
+        'bio': bio,
+        'profilePic': profilePic,
+      }),
+    );
+
+    //do sth to verify the response,
+    if (response.statusCode == 200) {
+      print("\nprofile pic url: $profilePic");
+      //get the account info to display as dummy text
+      // SharedPrefs.setFirstName(firstName);
+      // SharedPrefs.setLastName(lastName);
+      // SharedPrefs.setBio(bio);
+      // SharedPrefs.setEmail(email);
+      // SharedPrefs.setUserName(newUsername);
+      // SharedPrefs.setProfileUrl(profilePic);
+
+        window.sessionStorage['UserName'] = newUsername;
+        window.sessionStorage['FirstName'] = firstName;
+        window.sessionStorage['LastName'] = lastName;
+        window.sessionStorage['Bio'] = "That's what she said!";
+        window.sessionStorage['Email'] = email;
+        window.sessionStorage['ProfileUrl'] = profilePic;
+
+
+      
+
+      SuccessDialog.show(context, 'Your changes have been recorded!');
+    }
+  } catch (error) {
+    print('Sorry cannot edit account settings:$error');
+  }
+}
+
+Map<String, String> getFirstAndLastName(String fullName) {
+  // Split the full name by whitespace
+  List<String> nameParts = fullName.trim().split(' ');
+
+  // Extract the first name and last name
+  String firstName = nameParts.isNotEmpty ? nameParts.first : '';
+  String lastName = nameParts.length > 1 ? nameParts.last : '';
+
+  // Return the first name and last name as a map
+  return {'firstName': firstName, 'lastName': lastName};
+}
+
+String getVal(String? fieldval, String currentval) {
+  String finalVal;
+  fieldval!.isEmpty ? finalVal = currentval : finalVal = fieldval;
+  return finalVal;
+}
 
 class settings extends StatefulWidget {
   const settings({super.key});
@@ -37,8 +114,9 @@ class _settingsState extends State<settings> {
   final String assetName = 'assets/img1.svg';
 
   final String imagePath = 'assets/profile_pic.png';
-  late String _currentProfileUrl =
-      window.sessionStorage['ProfileUrl'] ?? 'assets/profile_pic.png';
+  //TODO: late
+  String _currentProfileUrl = window.sessionStorage['ProfileUrl'] ??
+       'assets/profile_pic.png';
 
   final ImagePicker picker = ImagePicker();
 
@@ -51,74 +129,6 @@ class _settingsState extends State<settings> {
     super.initState();
 
     _loadProfileImage();
-  }
-
-  void edits(
-    BuildContext context,
-    String fullName,
-    String username,
-    String newUsername,
-    String bio,
-    String email,
-    String profilePic,
-  ) async {
-    try {
-      Map<String, String> nameMap = getFirstAndLastName(fullName);
-
-      String firstName = nameMap['firstName'] ?? '';
-      String lastName = nameMap['lastName'] ?? '';
-
-      final response = await http.post(
-        Uri.parse('${BackendService.getBackendUrl()}accountSettings'),
-        headers: <String, String>{
-          'Content-Type': 'application/json',
-        },
-        body: jsonEncode({
-          'firstName': firstName,
-          'lastName': lastName,
-          'username': username,
-          'newUsername': newUsername,
-          'email': email,
-          'bio': bio,
-          'profilePic': profilePic,
-        }),
-      );
-
-      //do sth to verify the response,
-      if (response.statusCode == 200) {
-        //get the account info to display as dummy text
-        setState(() {
-          window.sessionStorage['FirstName'] = firstName;
-          window.sessionStorage['LastName'] = lastName;
-          window.sessionStorage['Bio'] = bio;
-          window.sessionStorage['Email'] = email;
-          window.sessionStorage['ProfileUrl'] = profilePic;
-          window.sessionStorage['UserName'] = newUsername;
-        });
-
-        SuccessDialog.show(context, 'Your changes have been recorded!');
-      }
-    } catch (error) {
-      print('Sorry cannot edit account settings:$error');
-    }
-  }
-
-  Map<String, String> getFirstAndLastName(String fullName) {
-    // Split the full name by whitespace
-    List<String> nameParts = fullName.trim().split(' ');
-
-    // Extract the first name and last name
-    String firstName = nameParts.isNotEmpty ? nameParts.first : '';
-    String lastName = nameParts.length > 1 ? nameParts.last : '';
-
-    // Return the first name and last name as a map
-    return {'firstName': firstName, 'lastName': lastName};
-  }
-
-  String getVal(String? fieldval, String currentval) {
-    String finalVal;
-    fieldval!.isEmpty ? finalVal = currentval : finalVal = fieldval;
-    return finalVal;
   }
 
   Future<void> _loadProfileImage() async {
@@ -171,12 +181,12 @@ class _settingsState extends State<settings> {
       var bytes = await image.readAsBytes();
       String newProfileUrl =
           await uploadFileToFirebase(bytes); // Get new profile picture URL
-      String prevProfileUrl = window.sessionStorage['ProfileUrl'] ??
+      String prevProfileUrl =  window.sessionStorage['ProfileUrl']??
           ''; // Get previous profile picture URL
 
       // Update profile picture URL in SharedPrefs
       //SharedPrefs.setProfileUrl(newProfileUrl);
-      window.sessionStorage['ProfileUrl'] = newProfileUrl;
+       window.sessionStorage['ProfileUrl'] = newProfileUrl;
 
       // Delete previous profile picture if URL is not empty and different from new URL
       if (prevProfileUrl.isNotEmpty && prevProfileUrl != newProfileUrl) {
@@ -187,19 +197,24 @@ class _settingsState extends State<settings> {
       setState(() {
         selectedImage = MemoryImage(bytes);
         window.sessionStorage['ProfileUrl'] = newProfileUrl;
-        // SharedPrefs.setProfileUrl(newProfileUrl);
+        //SharedPrefs.setProfileUrl(newProfileUrl);
       });
 
       Navigator.pop(context);
-
+  //     String fullName,
+  // String username,
+  // String newUsername,
+  // String bio,
+  // String email,
+  // String profilePic,
       edits(
         context,
-        window.sessionStorage['FirstName'] ??
-            '' + (window.sessionStorage['LastName'] ?? ''),
-        window.sessionStorage['UserName'] as String,
-        window.sessionStorage['UserName'] as String,
-        window.sessionStorage['Bio'] as String,
-        window.sessionStorage['Email'] as String,
+              window.sessionStorage['FirstName'] ??
+            '' " " + (       window.sessionStorage['LastName'] ?? ''),
+              window.sessionStorage['UserName']!,
+        window.sessionStorage['UserName']!,
+        window.sessionStorage['Bio'] !,
+        window.sessionStorage['Email']! ,
         newProfileUrl,
       );
     } else {
@@ -244,13 +259,14 @@ class _settingsState extends State<settings> {
   }
 
   Future<void> _removeCurrentPicture() async {
-    String prevProfileUrl = window.sessionStorage['ProfileUrl'] ?? "";
+    String prevProfileUrl =  window.sessionStorage['ProfileUrl']?? " ";
+
     String newProfileUrl = 'assets/profile_pic.png';
 
     setState(() {
       selectedImage = const AssetImage('assets/profile_pic.png');
-      // SharedPrefs.setProfileUrl(newProfileUrl);
       window.sessionStorage['ProfileUrl'] = newProfileUrl;
+      //SharedPrefs.setProfileUrl(newProfileUrl);
 
       // Close the pop-up
       Navigator.pop(context);
@@ -397,18 +413,18 @@ class _settingsState extends State<settings> {
                                 ));
                               },
                               borderRadius: BorderRadius.circular(8),
-                              child: Padding(
-                                padding: const EdgeInsets.all(8.0),
+                              child: const Padding(
+                                padding: EdgeInsets.all(8.0),
                                 child: Text(
                                   'Reset Password',
-                                  style: GoogleFonts.poppins(
-                                      textStyle: const TextStyle(
+                                  style: TextStyle(
                                     color: Color(0xFF3C64B1),
                                     fontWeight: FontWeight.w400,
+                                    fontFamily: 'Poppins',
                                     fontSize: 16, // Adjust font size as needed
                                     height: 0.06,
                                     letterSpacing: 0.30,
-                                  )),
+                                  ),
                                 ),
                               ),
                             ),
@@ -417,20 +433,20 @@ class _settingsState extends State<settings> {
                   ),
 
                   const SizedBox(height: 38),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 30.0),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 30.0),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Name',
-                        style: GoogleFonts.poppins(
-                            textStyle: const TextStyle(
+                        style: TextStyle(
                           color: Colors.black,
                           fontSize: 20,
+                          fontFamily: 'Poppins',
                           fontWeight: FontWeight.w700,
                           height: 0.04,
                           letterSpacing: 0.30,
-                        )),
+                        ),
                       ),
                     ),
                   ),
@@ -439,86 +455,85 @@ class _settingsState extends State<settings> {
                   MyTextFieldSettings(
                       controller: fullNameSettings,
                       hintText:
-                          "${window.sessionStorage['FirstName'] ?? ""} ${window.sessionStorage['LastName'] ?? ""}",
+                          "${window.sessionStorage['FirstName']?? "" } ${window.sessionStorage['LastName']?? "" }",
                       obscureText: false),
 
                   //username
                   const SizedBox(height: 38),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 30.0),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 30.0),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Username',
-                        style: GoogleFonts.poppins(
-                            textStyle: const TextStyle(
+                        style: TextStyle(
                           color: Colors.black,
                           fontSize: 20,
+                          fontFamily: 'Poppins',
                           fontWeight: FontWeight.w700,
                           height: 0.04,
                           letterSpacing: 0.30,
-                        )),
+                        ),
                       ),
                     ),
                   ),
                   const SizedBox(height: 20),
                   MyTextFieldSettings(
                       controller: usernameSettings,
-                      hintText: window.sessionStorage['UserName'] ?? "",
+                      hintText: window.sessionStorage['UserName']?? "",
                       obscureText: false),
 
                   //bio
 
                   const SizedBox(height: 38),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 30.0),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 30.0),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Bio',
-                        style: GoogleFonts.poppins(
-                            textStyle: const TextStyle(
+                        style: TextStyle(
                           color: Colors.black,
                           fontSize: 20,
+                          fontFamily: 'Poppins',
                           fontWeight: FontWeight.w700,
                           height: 0.04,
                           letterSpacing: 0.30,
-                        )),
+                        ),
                       ),
                     ),
                   ),
                   const SizedBox(height: 20),
                   MyTextFieldSettings(
                       controller: bioSettings,
-                      hintText:
-                          window.sessionStorage['Bio'] ?? "Enter your bio",
+                      hintText: window.sessionStorage['Bio']??  "Enter your bio",
                       obscureText: false),
 
                   //email
                   //bio
 
                   const SizedBox(height: 38),
-                  Padding(
-                    padding: const EdgeInsets.only(left: 30.0),
+                  const Padding(
+                    padding: EdgeInsets.only(left: 30.0),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
                         'Email',
-                        style: GoogleFonts.poppins(
-                            textStyle: const TextStyle(
+                        style: TextStyle(
                           color: Colors.black,
                           fontSize: 20,
+                          fontFamily: 'Poppins',
                           fontWeight: FontWeight.w700,
                           height: 0.04,
                           letterSpacing: 0.30,
-                        )),
+                        ),
                       ),
                     ),
                   ),
                   const SizedBox(height: 20),
                   MyTextFieldSettings(
                       controller: emailSettings,
-                      hintText: window.sessionStorage['Email'] ?? "",
+                      hintText: window.sessionStorage['Email']?? "",
                       obscureText: false),
 
                   Center(
@@ -536,17 +551,17 @@ class _settingsState extends State<settings> {
                               edits(
                                   context,
                                   getVal(fullNameSettings.text,
-                                      window.sessionStorage['FullName'] ?? ""),
-                                  window.sessionStorage['UserName'] ?? "",
+                                      window.sessionStorage['FirstName']??  ""),
+                                  window.sessionStorage['LastName']?? "",
                                   getVal(
                                     usernameSettings.text,
-                                    window.sessionStorage['UserName'] ?? "",
+                                    window.sessionStorage['UserName']?? "",
                                   ),
                                   getVal(bioSettings.text,
-                                      window.sessionStorage['Bio'] ?? ""),
+                                      window.sessionStorage['Bio']?? ""),
                                   getVal(emailSettings.text,
-                                      window.sessionStorage['Email'] ?? ""),
-                                  window.sessionStorage['ProfileUrl']!);
+                                            window.sessionStorage['Email'] ?? ""),
+                                  window.sessionStorage['ProfileUrl']?? "assets/profile_pic.png");
                             },
                           ),
                         ),
@@ -557,6 +572,7 @@ class _settingsState extends State<settings> {
                 ],
               )),
         )),
+        drawer: const SideBar(),
       ),
     );
   }

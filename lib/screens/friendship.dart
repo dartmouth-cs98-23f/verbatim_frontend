@@ -1,7 +1,8 @@
 import 'dart:async';
+import 'dart:html';
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/BackendService.dart';
-import 'package:verbatim_frontend/Components/shared_prefs.dart';
+//import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/customChallenge.dart';
 import 'package:verbatim_frontend/screens/groupChallenge.dart';
 import 'sideBar.dart';
@@ -156,7 +157,7 @@ class _FriendshipState extends State<friendship>
             // some bool that can automatically call set state from other widget?
 
             if (title == 'Standard') {
-              String username = SharedPrefs().getUserName() ?? "";
+              String username = window.sessionStorage['UserName'] ?? "";
 
               Navigator.pop(context);
               createStandardChallenge(username, groupId).then((_) {
@@ -249,6 +250,24 @@ class _FriendshipState extends State<friendship>
     } else {
       print(
           'failed to get friendship stats. Status code: ${response.statusCode}');
+    }
+  }
+
+  Future<void> removeFriend(
+      String baseUsername, String usernameToRemove) async {
+    final url = Uri.parse('${BackendService.getBackendUrl()}removeFriend');
+    final headers = <String, String>{'Content-Type': 'application/json'};
+
+    final response = await http.post(url,
+        headers: headers,
+        body: json.encode(({
+          'baseUsername': baseUsername,
+          'usernameToRemove': usernameToRemove
+        })));
+    if (response.statusCode == 200) {
+      print("success");
+    } else {
+      print("failure");
     }
   }
 
@@ -417,7 +436,7 @@ class _FriendshipState extends State<friendship>
 
   List<String> verbaMatchGroup = [];
   Future<void> _loadChallenges() async {
-    String username = SharedPrefs().getUserName() ?? "";
+    String username = window.sessionStorage['UserName'] ?? "";
 
     getFriendStats(username, widget.friendUsername);
     verbaMatchGroup = [username, widget.friendUsername];
@@ -438,6 +457,7 @@ class _FriendshipState extends State<friendship>
   @override
   Widget build(BuildContext context) {
     const String assetName = 'assets/img1.svg';
+    String username = window.sessionStorage['UserName'] ?? "";
 
     return SafeArea(
         child: Scaffold(
@@ -467,26 +487,60 @@ class _FriendshipState extends State<friendship>
                               ),
                             ),
                             const CustomAppBar(),
-                            Center(
-                                child: Container(
-                                    padding: const EdgeInsets.only(top: 100),
-                                    child: Column(children: [
-                                      Text(
-                                        'You and ${widget.friendUsername.replaceFirstMapped(
-                                          RegExp(r'^\w'),
-                                          (match) => match
-                                              .group(0)!
-                                              .toUpperCase(), // Ensures the first letter of first name is capitalized.
-                                        )}',
-                                        style: GoogleFonts.poppins(
-                                          textStyle: const TextStyle(
-                                            fontSize: 27,
-                                            color: Colors.white,
-                                            fontWeight: FontWeight.w900,
+                            Column(children: [
+                              Center(
+                                  child: Container(
+                                      padding: const EdgeInsets.only(top: 100),
+                                      child: Column(children: [
+                                        Text(
+                                          'You and ${widget.friendUsername.replaceFirstMapped(
+                                            RegExp(r'^\w'),
+                                            (match) => match
+                                                .group(0)!
+                                                .toUpperCase(), // Ensures the first letter of first name is capitalized.
+                                          )}',
+                                          style: GoogleFonts.poppins(
+                                            textStyle: const TextStyle(
+                                              fontSize: 27,
+                                              color: Colors.white,
+                                              fontWeight: FontWeight.w900,
+                                            ),
                                           ),
                                         ),
-                                      ),
-                                    ])))
+                                      ]))),
+                              Center(
+                                  child: Container(
+                                      margin: const EdgeInsets.only(top: 13),
+                                      child: Row(
+                                          mainAxisAlignment:
+                                              MainAxisAlignment.spaceAround,
+                                          children: [
+                                            ElevatedButton(
+                                              onPressed: () {
+                                                removeFriend(username,
+                                                    widget.friendUsername);
+                                                Navigator.pushNamed(context,
+                                                    '/global_challenge');
+                                              },
+                                              style: ElevatedButton.styleFrom(
+                                                backgroundColor: Colors.white,
+                                                padding:
+                                                    const EdgeInsets.symmetric(
+                                                        horizontal: 8,
+                                                        vertical: 4),
+                                              ),
+                                              child: Text(
+                                                  "Unfriend ${widget.friendUsername}",
+                                                  style: GoogleFonts.poppins(
+                                                      textStyle:
+                                                          const TextStyle(
+                                                    fontSize: 12,
+                                                    fontWeight: FontWeight.bold,
+                                                    color: Color(0xFFE76F51),
+                                                  ))),
+                                            ),
+                                          ])))
+                            ])
                           ],
                         ),
                       ),
@@ -564,8 +618,7 @@ class _FriendshipState extends State<friendship>
                                       Column(
                                         children: [
                                           Visibility(
-                                              visible:
-                                                  mappedChallenges.isEmpty,
+                                              visible: mappedChallenges.isEmpty,
                                               child: Container(
                                                 padding: const EdgeInsets.only(
                                                     top: 10,
@@ -1129,6 +1182,10 @@ class _DonutChartState extends State<DonutChart> {
       context: context,
       builder: (BuildContext context) {
         return AlertDialog(
+          shape: RoundedRectangleBorder(
+            borderRadius: BorderRadius.circular(
+                20.0), //  this will fix weird looking border?
+          ),
           contentPadding: EdgeInsets.zero,
           content: Container(
               width: 160,

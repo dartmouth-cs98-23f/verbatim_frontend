@@ -1,4 +1,6 @@
 
+import 'dart:html';
+
 import 'package:fluro/fluro.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/addFriend.dart';
@@ -52,7 +54,7 @@ void defineRoutes() {
     handler: signUpHandler,
   );
 
-  Application.router.define(
+  Application.router.define(         
     '/landingPage',
     handler: landingPageHandler,
   );
@@ -125,12 +127,12 @@ void defineRoutes() {
 
 var myGroupHandler = Handler(
   handlerFunc: (context, params) {
-    if (SharedPrefs().getEmail() == '' ||
-        SharedPrefs().getUserName() == '' ||
-        SharedPrefs().getPassword() == '') {
+    if ((window.sessionStorage['UserName'] ?? "" ).isEmpty||
+       (window.sessionStorage['Email'] ?? "" ).isEmpty||
+        (window.sessionStorage['Password'] ?? "" ).isEmpty) {
       return const LogIn();
     } else {
-      SharedPrefs().setCurrentPage('/myGroup');
+      SharedPrefs.setCurrentPage('/myGroup');
       String assetName = params["groupName"]![0];
 
       int? groupId = int.tryParse(params["groupId"]![0]);
@@ -161,25 +163,21 @@ var myGroupHandler = Handler(
 );
 
 var landingPageHandler = Handler(handlerFunc: (context, parameters) {
-  if (SharedPrefs().getEmail() == '' ||
-      SharedPrefs().getUserName() == '' ||
-      SharedPrefs().getPassword() == '') {
-    return const LandingPage();
-  } else {
+  
     // Update the current page in the shared prefs
-    SharedPrefs().setCurrentPage('/landingPage');
-    return const LandingPage();
-  }
+    SharedPrefs.setCurrentPage('/landingPage');
+        return const LandingPage();
 });
 
 var friendshipHandler = Handler(handlerFunc: (context, parameters) {
-  if (SharedPrefs().getEmail() == '' ||
-      SharedPrefs().getUserName() == '' ||
-      SharedPrefs().getPassword() == '') {
+  if ((window.sessionStorage['UserName'] ?? "" ).isEmpty||
+       (window.sessionStorage['Email'] ?? "" ).isEmpty||
+        (window.sessionStorage['Password'] ?? "" ).isEmpty) {
+      SharedPrefs.setCurrentPage('/landingPage');
     return const LandingPage();
   } else {
     // Update the current page in the shared prefs
-    SharedPrefs().setCurrentPage('/friendship');
+    SharedPrefs.setCurrentPage('/friendship');
     String assetName = 'Frances';
 
     assetName = parameters["friendUsername"]![0];
@@ -188,29 +186,30 @@ var friendshipHandler = Handler(handlerFunc: (context, parameters) {
 });
 
 var settingsHandler = Handler(handlerFunc: (context, parameters) {
-  if (SharedPrefs().getEmail() == '' ||
-      SharedPrefs().getUserName() == '' ||
-      SharedPrefs().getPassword() == '') {
+  if ((window.sessionStorage['UserName'] ?? "" ).isEmpty||
+       (window.sessionStorage['Email'] ?? "" ).isEmpty||
+        (window.sessionStorage['Password'] ?? "" ).isEmpty) {
+      SharedPrefs.setCurrentPage('/login');
     return const LogIn();
   } else {
     // Update the current page in the shared prefs
-    SharedPrefs().setCurrentPage('/settings');
+    SharedPrefs.setCurrentPage('/settings');
     return const settings();
   }
 });
 
 //TODO: 
 var guestGlobalHandler = Handler(handlerFunc: (context, parameters){
-  print("Just cleaning up mu house");
-  if (SharedPrefs().getEmail() == '' ||
-        SharedPrefs().getUserName() == '' ||
-        SharedPrefs().getPassword() == '') {
-          print("Ok lets see");
+
+  if ((window.sessionStorage['UserName'] ?? "" ).isEmpty||
+       (window.sessionStorage['Email'] ?? "" ).isEmpty||
+        (window.sessionStorage['Password'] ?? "" ).isEmpty) {
+        SharedPrefs.setCurrentPage('/guestGlobal');
       return const guestGlobal();
   } else {
       // Update the current page in the shared prefs
-        print("Whattt anomaly");
-      SharedPrefs().setCurrentPage('/globalChallenge');
+       
+      SharedPrefs.setCurrentPage('/globalChallenge');
       return const globalChallenge();
 }
 });
@@ -218,7 +217,7 @@ var guestGlobalHandler = Handler(handlerFunc: (context, parameters){
 
 //TODO: 
 var guestSignUpHandler = Handler(handlerFunc: (context, parameters){
-    SharedPrefs().setCurrentPage('/guest_signup');
+    SharedPrefs.setCurrentPage('/guest_signup');
 
     return const GuestSignUp();
 });
@@ -227,39 +226,43 @@ var guestSignUpHandler = Handler(handlerFunc: (context, parameters){
 
 Handler onBoardingPage1Handler = Handler(
   handlerFunc: (context, parameters) {
-    if (SharedPrefs().getEmail() == '' ||
-        SharedPrefs().getUserName() == '' ||
-        SharedPrefs().getPassword() == '') {
+    if ((window.sessionStorage['UserName'] ?? "" ).isEmpty||
+       (window.sessionStorage['Email'] ?? "" ).isEmpty||
+        (window.sessionStorage['Password'] ?? "" ).isEmpty) {
+        SharedPrefs.setCurrentPage('/login');
       return const LogIn();
     } else {
       // Update the current page in the shared prefs
-      SharedPrefs().setCurrentPage('/onboarding_page1');
+      SharedPrefs.setCurrentPage('/onboarding_page1');
       return const OnBoardingPage1();
     }
   },
 );
 
 var profileHandler = Handler(handlerFunc: (context, parameters) {
-  if (SharedPrefs().getEmail() == '' ||
-      SharedPrefs().getUserName() == '' ||
-      SharedPrefs().getPassword() == '') {
+  if ((window.sessionStorage['UserName'] ?? "" ).isEmpty||
+       (window.sessionStorage['Email'] ?? "" ).isEmpty||
+        (window.sessionStorage['Password'] ?? "" ).isEmpty) {
+          print("WTH:::${window.sessionStorage['UserName']?? ""}");
+      SharedPrefs.setCurrentPage('/login');
     return const LogIn();
   } else {
     // Update the current page in the shared prefs
-    SharedPrefs().setCurrentPage('/profile');
+    SharedPrefs.setCurrentPage('/profile');
     return const Profile();
   }
 });
 
 var onBoardingPage2Handler = Handler(
   handlerFunc: (context, parameters) {
-    if (SharedPrefs().getEmail() == '' ||
-        SharedPrefs().getUserName() == '' ||
-        SharedPrefs().getPassword() == '') {
+    if ((window.sessionStorage['UserName'] ?? "" ).isEmpty||
+       (window.sessionStorage['Email'] ?? "" ).isEmpty||
+        (window.sessionStorage['Password'] ?? "" ).isEmpty) {
+        SharedPrefs.setCurrentPage('/login');
       return const LogIn();
     } else {
       // Update the current page in the shared prefs
-      SharedPrefs().setCurrentPage('/onboarding_page2');
+      SharedPrefs.setCurrentPage('/onboarding_page2');
       return const OnBoardingPage2();
     }
   },
@@ -267,13 +270,14 @@ var onBoardingPage2Handler = Handler(
 
 var onBoardingPage3Handler = Handler(
   handlerFunc: (context, parameters) {
-    if (SharedPrefs().getEmail() == '' ||
-        SharedPrefs().getUserName() == '' ||
-        SharedPrefs().getPassword() == '') {
+    if ((window.sessionStorage['UserName'] ?? "" ).isEmpty||
+       (window.sessionStorage['Email'] ?? "" ).isEmpty||
+        (window.sessionStorage['Password'] ?? "" ).isEmpty) {
+           SharedPrefs.setCurrentPage('/login');
       return const LogIn();
     } else {
       // Update the current page in the shared prefs
-      SharedPrefs().setCurrentPage('/onboarding_page3');
+      SharedPrefs.setCurrentPage('/onboarding_page3');
       return const OnBoardingPage3();
     }
   },
@@ -281,13 +285,14 @@ var onBoardingPage3Handler = Handler(
 
 var onBoardingPage4Handler = Handler(
   handlerFunc: (context, parameters) {
-    if (SharedPrefs().getEmail() == '' ||
-        SharedPrefs().getUserName() == '' ||
-        SharedPrefs().getPassword() == '') {
+    if ((window.sessionStorage['UserName'] ?? "" ).isEmpty||
+       (window.sessionStorage['Email'] ?? "" ).isEmpty||
+        (window.sessionStorage['Password'] ?? "" ).isEmpty) {
+           SharedPrefs.setCurrentPage('/login');
       return const LogIn();
     } else {
       // Update the current page in the shared prefs
-      SharedPrefs().setCurrentPage('/onboarding_page4');
+      SharedPrefs.setCurrentPage('/onboarding_page4');
       return const OnBoardingPage4();
     }
   },
@@ -296,7 +301,7 @@ var onBoardingPage4Handler = Handler(
 Handler signUpHandler = Handler(
   handlerFunc: (context, parameters) {
     // Update the current page in the shared prefs
-    SharedPrefs().setCurrentPage('/signup');
+    SharedPrefs.setCurrentPage('/signup');
     //TODO: check for this
 
     return const SignUp();
@@ -307,26 +312,27 @@ Handler signUpHandler = Handler(
 Handler logInHandler = Handler(
   handlerFunc: (context, parameters) {
     // Update the current page in the shared prefs
-    SharedPrefs().setCurrentPage('/login');
+    SharedPrefs.setCurrentPage('/login');
     return const LogIn();
   },
 );
 
 Handler globalChallengeHandler = Handler(handlerFunc: (context, parameters) {
   // Update the current page in the shared prefs
-  SharedPrefs().setCurrentPage('/global_challenge');
+  SharedPrefs.setCurrentPage('/global_challenge');
   return const globalChallenge();
 });
 
 Handler addFriendHandler = Handler(
   handlerFunc: (context, parameters) {
-    if (SharedPrefs().getEmail() == '' ||
-        SharedPrefs().getUserName() == '' ||
-        SharedPrefs().getPassword() == '') {
+    if ((window.sessionStorage['UserName'] ?? "" ).isEmpty||
+       (window.sessionStorage['Email'] ?? "" ).isEmpty||
+        (window.sessionStorage['Password'] ?? "" ).isEmpty) {
+           SharedPrefs.setCurrentPage('/login');
       return const LogIn();
     } else {
       // Update the current page in the shared prefs
-      SharedPrefs().setCurrentPage('/add_friend');
+      SharedPrefs.setCurrentPage('/add_friend');
       return const addFriend();
     }
   },
@@ -334,13 +340,14 @@ Handler addFriendHandler = Handler(
 
 Handler createGroupHandler = Handler(
   handlerFunc: (context, parameters) {
-    if (SharedPrefs().getEmail() == '' ||
-        SharedPrefs().getUserName() == '' ||
-        SharedPrefs().getPassword() == '') {
+    if ((window.sessionStorage['UserName'] ?? "" ).isEmpty||
+       (window.sessionStorage['Email'] ?? "" ).isEmpty||
+        (window.sessionStorage['Password'] ?? "" ).isEmpty) {
+           SharedPrefs.setCurrentPage('/login');
       return const LogIn();
     } else {
       // Update the current page in the shared prefs
-      SharedPrefs().setCurrentPage('/create_group');
+      SharedPrefs.setCurrentPage('/create_group');
       return const createGroup();
     }
   },
@@ -349,20 +356,20 @@ Handler createGroupHandler = Handler(
 Handler forgotPasswordHandler = Handler(
   handlerFunc: (context, parameters) {
     // Update the current page in the shared prefs
-    SharedPrefs().setCurrentPage('/forgot_password');
+    SharedPrefs.setCurrentPage('/forgot_password');
     return const ForgotPassword();
   },
 );
 
 Handler signupErrorMessageHandler = Handler(
   handlerFunc: (context, parameters) {
-    if (SharedPrefs().getEmail() == '' ||
-        SharedPrefs().getUserName() == '' ||
-        SharedPrefs().getPassword() == '') {
+    if ((window.sessionStorage['UserName'] ?? "" ).isEmpty||
+       (window.sessionStorage['Email'] ?? "" ).isEmpty||
+        (window.sessionStorage['Password'] ?? "" ).isEmpty) {
       return const LogIn();
     } else {
       // Update the current page in the shared prefs
-      SharedPrefs().setCurrentPage('/signup_error_message');
+      SharedPrefs.setCurrentPage('/signup_error_message');
       return const SignupErrorMessage(pageName: 'log in');
     }
   },
@@ -370,13 +377,13 @@ Handler signupErrorMessageHandler = Handler(
 
 Handler logoutHandler = Handler(
   handlerFunc: (context, parameters) {
-    if (SharedPrefs().getEmail() == '' ||
-        SharedPrefs().getUserName() == '' ||
-        SharedPrefs().getPassword() == '') {
+    if ((window.sessionStorage['UserName'] ?? "" ).isEmpty||
+       (window.sessionStorage['Email'] ?? "" ).isEmpty||
+        (window.sessionStorage['Password'] ?? "" ).isEmpty) {
       return const LogIn();
     } else {
       // Update the current page in the shared prefs
-      SharedPrefs().setCurrentPage('/logout');
+      SharedPrefs.setCurrentPage('/logout');
       return const LogoutPage();
     }
   },

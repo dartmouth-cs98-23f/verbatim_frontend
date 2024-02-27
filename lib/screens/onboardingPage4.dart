@@ -46,7 +46,7 @@ class OnBoardingPage4 extends StatelessWidget {
                       ),
                       SizedBox(height: 30.v),
                       Padding(
-                        padding: EdgeInsets.only(left: 30.0, right: 30.0),
+                        padding: const EdgeInsets.only(left: 30.0, right: 30.0),
                         child: Align(
                           alignment: Alignment.center,
                           child: Text(
@@ -109,7 +109,7 @@ class OnBoardingPage4 extends StatelessWidget {
                     child: Text(
                       'Get Started',
                       style: GoogleFonts.poppins(
-                          textStyle: TextStyle(
+                          textStyle: const TextStyle(
                         color: Colors.white,
                       )),
                     ),

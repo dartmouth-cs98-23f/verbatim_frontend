@@ -1,12 +1,12 @@
 import 'dart:convert';
+import 'dart:html';
 
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:verbatim_frontend/BackendService.dart';
-import 'package:verbatim_frontend/Components/shared_prefs.dart';
-import 'package:verbatim_frontend/screens/profile.dart';
+//import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/sideBar.dart';
 import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 import 'package:verbatim_frontend/widgets/friends_app_bar.dart';
@@ -68,7 +68,7 @@ class addFriend extends StatefulWidget {
 }
 
 class _AddFriendState extends State<addFriend> {
-  String username = SharedPrefs().getUserName() ?? "";
+  String username = window.sessionStorage['UserName'] ?? "";
   final TextEditingController _searchController = TextEditingController();
   String _searchText = "";
   bool usersFetched = false; // only call users once per run
@@ -178,12 +178,13 @@ class _AddFriendState extends State<addFriend> {
           data.map((item) => User.fromJson(item)).toList();
 
       userUsernames = userList
-          .where((user) => user.username != SharedPrefs().getUserName())
+          //TODO:
+          .where((user) => user.username != window.sessionStorage['UserName']!)
           .map((user) => user.username)
           .toList();
 
       searchResults = userList
-          .where((user) => user.username != SharedPrefs().getUserName())
+          .where((user) => user.username != window.sessionStorage['UserName']!)
           .map((user) => user)
           .toList();
 
@@ -198,6 +199,7 @@ class _AddFriendState extends State<addFriend> {
   @override
   void initState() {
     super.initState();
+
     getUsersIHaveRequested(username);
 
     _searchController.addListener(() {
@@ -206,7 +208,7 @@ class _AddFriendState extends State<addFriend> {
       });
     });
     if (!usersFetched) {
-      final String currentUserUsername = SharedPrefs().getUserName() as String;
+      final String currentUserUsername = window.sessionStorage['UserName']!;
 
       // wait to load
       Future.wait([
@@ -287,7 +289,7 @@ class _AddFriendState extends State<addFriend> {
     List<User> filteredSearchResults = searchResults
         .where((item) =>
             item.username.toLowerCase().contains(_searchText.toLowerCase()) &&
-            item.username != SharedPrefs().getUserName())
+            item.username != window.sessionStorage['UserName']!)
         .toList();
     return filteredSearchResults;
   }
@@ -313,7 +315,7 @@ class _AddFriendState extends State<addFriend> {
 
   @override
   Widget build(BuildContext context) {
-    String username = SharedPrefs().getUserName() ?? "";
+    String username = window.sessionStorage['UserName'] ?? "";
 
     const String assetName = 'assets/img1.svg';
 
