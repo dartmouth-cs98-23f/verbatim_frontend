@@ -80,6 +80,11 @@ class _GroupChallengeState extends State<groupChallenge> {
   List<dynamic> verbaMatchSubmit = [];
   double verbaMatchSimilaritySubmit = 0;
 
+
+  void test(){
+    print("In here at least");
+  }
+
   Future<void> submitChallenge(
       String username, int challengeId, List<String> userResponses) async {
     final url =
@@ -273,7 +278,7 @@ class _GroupChallengeState extends State<groupChallenge> {
                         width: 300,
                         height: 400,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(50),
+                          borderRadius: BorderRadius.circular(35),
                           boxShadow: [
                             BoxShadow(
                               color: const Color.fromARGB(255, 117, 19, 12)
@@ -388,14 +393,43 @@ class _GroupChallengeState extends State<groupChallenge> {
                 else if (responded && (widget.completed != true))
                   _verbaMatch(verbaMatchSubmit, verbaMatchSimilaritySubmit),
                 if (responded)
-                  for (int i = 0; i < numQuestions; i++)
-                    if (widget.completed == true)
-                      _buildResponseRectangle(i, answersMap),
-                if (responded)
-                  for (int x = 0; x < numQuestions; x++)
-                    if (widget.completed == false)
-                      _buildResponseRectangle(x, answersSubmitMap),
-                SizedBox(height: 50.v),
+                  Container(
+                    clipBehavior: Clip.hardEdge,
+                    margin: EdgeInsets.only(top: 10.v),
+                    //    padding: EdgeInsets.symmetric(horizontal: 10),
+                    width: 350,
+                    height: 500,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(50),
+                      boxShadow: [
+                        BoxShadow(
+                          color: const Color.fromARGB(255, 117, 19, 12)
+                              .withOpacity(0.9),
+                          blurRadius: 5,
+                          offset: const Offset(3, 7),
+                        ),
+                      ],
+                      color: Colors.white,
+                    ),
+
+                    child: ListView.builder(
+                      itemCount: numQuestions,
+                      padding: EdgeInsets.only(top: 20),
+                      itemBuilder: (context, index) {
+                        if (!widget.completed) {
+             
+                          return _buildResponseRectangle(
+                              index, answersSubmitMap);
+                        } 
+                        else {
+                          
+                          return _buildResponseRectangle(index, answersMap);
+                        }
+                      },
+                    ),
+                  ),
+     
+                SizedBox(height: 20.v),
                 Visibility(
                   visible: responded,
                   child: ElevatedButton(
@@ -470,135 +504,146 @@ class _GroupChallengeState extends State<groupChallenge> {
           isDropdownVisible[index] = expandedStates[index];
         });
       },
-      child: AnimatedContainer(
-          duration: const Duration(milliseconds: 400),
-          height: expandedStates[index] ? 125 : 50,
-          width: double.infinity,
-          margin: const EdgeInsets.symmetric(vertical: 5, horizontal: 15),
-          padding: const EdgeInsets.only(top: 1, bottom: 1, left: 1, right: 1),
-          child: SingleChildScrollView(
-              child: Column(
-            children: [
-              //if clicked on
-              Visibility(
-                visible: expandedStates[index],
+      
+      child: SingleChildScrollView(
+        child: AnimatedContainer(
+            duration: const Duration(milliseconds: 400),
+            //TODO: 
+            height: expandedStates[index] ? 120 : 50,
+            width: double.infinity,
+            margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
+            padding:
+                const EdgeInsets.only(top: 1, bottom: 1, left: 10, right: 10),
+            child: SingleChildScrollView(
                 child: Column(
-                  children: [
-                    Center(
-                      child: Row(
-                        children: [
-                          Expanded(
-                            child: Text(
-                              prompts[index],
-                              style: GoogleFonts.poppins(
-                                textStyle: const TextStyle(
-                                  fontSize: 16,
-                                  fontWeight: FontWeight.bold,
+              children: [
+                //if clicked on
+              
+                Visibility(
+                  
+                  visible: expandedStates[index],
+                  child: Column(
+                    children: [
+                      Center(
+                        child: Row(
+                          children: [
+                            Expanded(
+                              child: Text(
+                                prompts[index],
+                                style: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(
+                                    fontSize: 16,
+                                    fontWeight: FontWeight.bold,
+                                  ),
                                 ),
                               ),
                             ),
-                          ),
-                          const Icon(Icons.arrow_upward),
-                        ],
+                            const Icon(Icons.arrow_upward),
+                          ],
+                        ),
                       ),
-                    ),
-                    AnimatedContainer(
-                      duration: const Duration(milliseconds: 1000),
-                      height: 70,
-                      child: ListView.builder(
-                        scrollDirection: Axis.horizontal,
-                        itemCount: usersList.length,
-                        itemBuilder: (context, indexB) {
-                          return Container(
-                              height: 40,
-                              //   width: 100,
-                              margin: const EdgeInsets.only(
-                                  left: 8, right: 8, top: 10),
-                              padding: const EdgeInsets.only(
-                                  left: 5, right: 5, top: 8, bottom: 8),
-                              decoration: BoxDecoration(
-                                color: const Color(0xFFE76F51),
-                                borderRadius: BorderRadius.circular(5),
-                              ),
-                              child: Center(
-                                  child: Column(children: [
-                                Flexible(
-                                  child: ConstrainedBox(
-                                    constraints: const BoxConstraints(
-                                      minWidth: 100,
-                                    ),
-                                    child: Align(
-                                      alignment: Alignment.center,
-                                      child: Text(
-                                        usersList[indexB],
-                                        style: GoogleFonts.poppins(
-                                          textStyle: const TextStyle(
-                                            fontSize: 14,
-                                            overflow: TextOverflow.ellipsis,
-                                            fontWeight: FontWeight.bold,
-                                            color: Colors.white,
+                      
+                      Container(
+                        //duration: const Duration(milliseconds: 1000),
+                        height: 70,
+                        child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          itemCount: usersList.length,
+                          itemBuilder: (context, indexB) {
+                            return Container(
+                                height: 70,
+                                width: 100,
+                                margin: const EdgeInsets.only(
+                                    left: 8, right: 8, top: 10),
+                                padding: const EdgeInsets.only(
+                                    left: 5, right: 5, top: 8),
+                                decoration: BoxDecoration(
+                                  color: const Color(0xFFE76F51),
+                                  borderRadius: BorderRadius.circular(5),
+                                ),
+                                child: Center(
+                                    child: Column(children: [
+                                  Flexible(
+                                    child: ConstrainedBox(
+                                      constraints: const BoxConstraints(
+                                        minWidth: 100,
+                                      ),
+                                      child: Align(
+                                        alignment: Alignment.center,
+                                        child: Text(
+                                          usersList[indexB],
+                                          style: GoogleFonts.poppins(
+                                            textStyle: const TextStyle(
+                                              fontSize: 14,
+                                              overflow: TextOverflow.ellipsis,
+                                              fontWeight: FontWeight.bold,
+                                              color: Colors.white,
+                                            ),
                                           ),
                                         ),
                                       ),
                                     ),
                                   ),
-                                ),
-                                Flexible(
-                                    child: ConstrainedBox(
-                                        constraints: const BoxConstraints(
-                                          minWidth: 100,
-                                        ),
-                                        child: Align(
-                                            alignment: Alignment.center,
-                                            child: Text(
-                                              answersMap.containsKey(
-                                                          prompts[indexB]) &&
-                                                      answersMap[
-                                                              prompts[indexB]]!
-                                                          .containsKey(
-                                                              usersList[indexB])
-                                                  ? answersMap[prompts[index]]![
-                                                      usersList[indexB]]
-                                                  : 'No response found',
-                                              style: GoogleFonts.poppins(
-                                                textStyle: const TextStyle(
-                                                  fontSize: 12,
-                                                  overflow:
-                                                      TextOverflow.ellipsis,
-                                                  color: Colors.white,
+                                  Flexible(
+                                      child: ConstrainedBox(
+                                          constraints: const BoxConstraints(
+                                            minWidth: 100,
+                                          ),
+                                          child: Align(
+                                              alignment: Alignment.center,
+                                              child: Text(
+                                                answersMap.containsKey(
+                                                            prompts[indexB]) &&
+                                                        answersMap[prompts[
+                                                                indexB]]!
+                                                            .containsKey(
+                                                                usersList[
+                                                                    indexB])
+                                                    ? answersMap[
+                                                            prompts[index]]![
+                                                        usersList[indexB]]
+                                                    : 'No response found',
+                                                style: GoogleFonts.poppins(
+                                                  textStyle: const TextStyle(
+                                                    fontSize: 12,
+                                                    overflow:
+                                                        TextOverflow.ellipsis,
+                                                    color: Colors.white,
+                                                  ),
                                                 ),
-                                              ),
-                                            ))))
-                              ])));
-                        },
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              // if not clicked on
-              if (!expandedStates[index])
-                Center(
-                  child: Row(
-                    children: [
-                      Flexible(
-                        child: Text(
-                          prompts[index],
-                          style: GoogleFonts.poppins(
-                            textStyle: const TextStyle(
-                              fontSize: 16,
-                              fontWeight: FontWeight.bold,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
+                                              ))))
+                                ]))
+                                );
+                          },
                         ),
                       ),
-                      const Icon(Icons.arrow_downward),
                     ],
                   ),
                 ),
-            ],
-          ))),
+                // if not clicked on
+                if (!expandedStates[index])
+                  Center(
+                    child: Row(
+                      children: [
+                        Flexible(
+                          child: Text(
+                            prompts[index],
+                            style: GoogleFonts.poppins(
+                              textStyle: const TextStyle(
+                                fontSize: 16,
+                                fontWeight: FontWeight.bold,
+                                overflow: TextOverflow.ellipsis,
+                              ),
+                            ),
+                          ),
+                        ),
+                        const Icon(Icons.arrow_downward),
+                      ],
+                    ),
+                  ),
+              ],
+            ))),
+      ),
     );
   }
 }
@@ -620,155 +665,169 @@ Widget _verbaMatch(
   }
   String verb1 = verbaMatchInVerbaMatch[0];
   String verb2 = verbaMatchInVerbaMatch[1];
-  return Align(
+  return Padding(padding: EdgeInsets.only(bottom: 20),
+  child:Align(
       alignment: Alignment.topCenter,
-      child: SizedBox(
-          width: 600,
+      child: Container(
+          width: 350,
           height: 200,
-          // color: Colors.yellow,
-          child: Row(
-            mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-            children: [
-              Visibility(
-                visible: !isThereVerbaMatch,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: 'No',
-                            style: GoogleFonts.poppins(
-                              textStyle: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Colors.black,
-                                fontSize: 21,
-                              ),
-                            ),
-                          ),
-                          TextSpan(
-                            text: 'Verba',
-                            style: GoogleFonts.poppins(
-                              textStyle: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFFE76F51),
-                                fontSize: 22,
-                              ),
-                            ),
-                          ),
-                          TextSpan(
-                            text: "Match",
-                            style: GoogleFonts.poppins(
-                                textStyle: const TextStyle(
-                              fontSize: 21,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            )),
-                          ),
-                        ],
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
-                    const SizedBox(height: 10),
-                    const Row(children: [
-                      Icon(Icons.help_outline, size: 50),
-                      Icon(Icons.help_outline, size: 50),
-                    ]),
-                    const SizedBox(height: 10),
-                    Text(
-                      '...yet!',
-                      style: GoogleFonts.poppins(
-                        textStyle: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
+          decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(35),
+            boxShadow: [
+              BoxShadow(
+                color: const Color.fromARGB(255, 117, 19, 12).withOpacity(0.9),
+                blurRadius: 5,
+                offset: const Offset(3, 7),
               ),
-              Visibility(
-                visible: isThereVerbaMatch,
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    RichText(
-                      text: TextSpan(
-                        children: [
-                          TextSpan(
-                            text: 'Verba',
-                            style: GoogleFonts.poppins(
-                              textStyle: const TextStyle(
-                                fontWeight: FontWeight.bold,
-                                color: Color(0xFFE76F51),
-                                fontSize: 23,
-                              ),
-                            ),
-                          ),
-                          TextSpan(
-                            text: "Match!",
-                            style: GoogleFonts.poppins(
-                                textStyle: const TextStyle(
-                              fontSize: 23,
-                              fontWeight: FontWeight.bold,
-                              color: Colors.black,
-                            )),
-                          ),
-                        ],
-                      ),
-                      textAlign: TextAlign.left,
-                    ),
-                    const SizedBox(height: 10),
-                    Row(children: [
-                      Image.asset('assets/Ellipse 42.png',
-                          height: 50, width: 50),
-                      Image.asset('assets/Ellipse 43.png',
-                          height: 50, width: 50),
-                    ]),
-                    const SizedBox(height: 10),
-                    Text(
-                      '$verb1 and $verb2',
-                      style: GoogleFonts.poppins(
-                        textStyle: const TextStyle(
-                          fontSize: 18,
-                          fontWeight: FontWeight.bold,
-                        ),
-                      ),
-                    ),
-                  ],
-                ),
-              ),
-              Visibility(
-                  visible: isThereVerbaMatch,
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Container(
-                          height: 190,
-                          width: 190,
-                          alignment: Alignment.center,
-                          child: DonutChart(
-                              groupSimilarity: verbaMatchSimilarity,
-                              match: true),
-                        ),
-                      ])),
-              Visibility(
-                  visible: !isThereVerbaMatch,
-                  child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        Container(
-                          height: 190,
-                          width: 190,
-                          alignment: Alignment.center,
-                          child: DonutChart(
-                              groupSimilarity: verbaMatchSimilarity,
-                              match: false),
-                        ),
-                      ]))
             ],
-          )));
+            color: Colors.white,
+          ),
+          // color: Colors.yellow,
+          child: Padding(
+              padding: EdgeInsets.only(top: 25, left: 10,),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                children: [
+                  Visibility(
+                    visible: !isThereVerbaMatch,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'No ',
+                                style: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Colors.black,
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ),
+                              TextSpan(
+                                text: 'Verba',
+                                style: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFFE76F51),
+                                    fontSize: 18,
+                                  ),
+                                ),
+                              ),
+                              TextSpan(
+                                text: "Match",
+                                style: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                )),
+                              ),
+                            ],
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                        const SizedBox(height: 10),
+                        const Row(children: [
+                          Icon(Icons.help_outline, size: 50),
+                          Icon(Icons.help_outline, size: 50),
+                        ]),
+                        const SizedBox(height: 10),
+                        Text(
+                          '...yet!',
+                          style: GoogleFonts.poppins(
+                            textStyle: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Visibility(
+                    visible: isThereVerbaMatch,
+                    child: Column(
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        RichText(
+                          text: TextSpan(
+                            children: [
+                              TextSpan(
+                                text: 'Verba',
+                                style: GoogleFonts.poppins(
+                                  textStyle: const TextStyle(
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFFE76F51),
+                                    fontSize: 23,
+                                  ),
+                                ),
+                              ),
+                              TextSpan(
+                                text: "Match!",
+                                style: GoogleFonts.poppins(
+                                    textStyle: const TextStyle(
+                                  fontSize: 23,
+                                  fontWeight: FontWeight.bold,
+                                  color: Colors.black,
+                                )),
+                              ),
+                            ],
+                          ),
+                          textAlign: TextAlign.left,
+                        ),
+                        const SizedBox(height: 10),
+                        Row(children: [
+                          Image.asset('assets/Ellipse 42.png',
+                              height: 50, width: 50),
+                          Image.asset('assets/Ellipse 43.png',
+                              height: 50, width: 50),
+                        ]),
+                        const SizedBox(height: 10),
+                        Text(
+                          '$verb1 and $verb2',
+                          style: GoogleFonts.poppins(
+                            textStyle: const TextStyle(
+                              fontSize: 18,
+                              fontWeight: FontWeight.bold,
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                  Visibility(
+                      visible: isThereVerbaMatch,
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: 150,
+                              width: 150,
+                              alignment: Alignment.center,
+                              child: DonutChart(
+                                  groupSimilarity: verbaMatchSimilarity,
+                                  match: true),
+                            ),
+                          ])),
+                  Visibility(
+                      visible: !isThereVerbaMatch,
+                      child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            Container(
+                              height: 150,
+                              width: 150,
+                              alignment: Alignment.center,
+                              child: DonutChart(
+                                  groupSimilarity: verbaMatchSimilarity,
+                                  match: false),
+                            ),
+                          ]))
+                ],
+              )))));
 }
 
 class DonutChart extends StatefulWidget {
@@ -912,106 +971,5 @@ class _DonutChartState extends State<DonutChart> {
             ],
           ),
         ));
-  }
-}
-
-class HorizontalScrollDropdown extends StatefulWidget {
-  const HorizontalScrollDropdown({super.key});
-
-  @override
-  _HorizontalScrollDropdownState createState() =>
-      _HorizontalScrollDropdownState();
-}
-
-class _HorizontalScrollDropdownState extends State<HorizontalScrollDropdown> {
-  List<String> items = ['Item 1', 'Item 2', 'Item 3', 'Item 4', 'Item 5'];
-  String selectedValue = 'Item 1';
-  bool isDropdownVisible = true;
-
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(10),
-      decoration: BoxDecoration(
-        border: Border.all(color: Colors.black),
-        borderRadius: BorderRadius.circular(5),
-      ),
-      child: Column(
-        children: [
-          Row(
-            children: [
-              GestureDetector(
-                onTap: () {
-                  setState(() {
-                    isDropdownVisible = !isDropdownVisible;
-                  });
-                },
-                child: Text(
-                  selectedValue,
-                  style: GoogleFonts.poppins(
-                    textStyle: const TextStyle(
-                      fontSize: 16,
-                    ),
-                  ),
-                ),
-              ),
-              const Icon(Icons.arrow_drop_down),
-            ],
-          ),
-          if (isDropdownVisible)
-            SizedBox(
-              height: 150,
-              child: ListView.builder(
-                scrollDirection: Axis.horizontal,
-                itemCount: items.length,
-                itemBuilder: (context, index) {
-                  bool isSelected = selectedValue == items[index];
-                  return GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        selectedValue = items[index];
-                        isDropdownVisible = false;
-                      });
-                    },
-                    child: Container(
-                      margin: const EdgeInsets.symmetric(horizontal: 8),
-                      padding: const EdgeInsets.symmetric(
-                          horizontal: 20, vertical: 10),
-                      decoration: BoxDecoration(
-                        gradient: isSelected
-                            ? LinearGradient(
-                                colors: [
-                                  Colors.orange.shade800,
-                                  Colors.orange.shade500
-                                ],
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                              )
-                            : LinearGradient(
-                                colors: [
-                                  Colors.orange.shade200,
-                                  Colors.orange.shade100
-                                ],
-                                begin: Alignment.centerLeft,
-                                end: Alignment.centerRight,
-                              ),
-                        borderRadius: BorderRadius.circular(5),
-                      ),
-                      child: Text(
-                        items[index],
-                        style: GoogleFonts.poppins(
-                          textStyle: const TextStyle(
-                            fontSize: 16,
-                          ),
-                        ),
-                      ),
-                    ),
-                  );
-                },
-              ),
-            ),
-        ],
-      ),
-    );
   }
 }
