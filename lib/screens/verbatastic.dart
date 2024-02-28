@@ -98,8 +98,8 @@ class Verbatastic extends StatelessWidget {
                           top: 0,
                           left: 30.0,
                           child: FirebaseStorageImage(
-                              profileUrl:
-                                  window.sessionStorage['ProfileUrl']?? 'assets/profile_pic.png'),
+                              profileUrl: window.sessionStorage['ProfileUrl'] ??
+                                  'assets/profile_pic.png'),
                         ),
                       ],
                     ),
