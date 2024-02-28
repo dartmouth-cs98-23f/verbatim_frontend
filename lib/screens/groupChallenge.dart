@@ -59,8 +59,8 @@ class _GroupChallengeState extends State<groupChallenge> {
       await precacheImage(image, context);
     }
   }
-
-  String username = window.sessionStorage['UserName'] ?? "";
+  
+  String username = window.sessionStorage['UserName'] ?? "" ;
 
   TextEditingController responseController = TextEditingController();
   String userResponse = '';
