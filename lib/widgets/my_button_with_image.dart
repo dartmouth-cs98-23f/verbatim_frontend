@@ -19,7 +19,7 @@ class MyButtonWithImage extends StatelessWidget {
       child: GestureDetector(
         onTap: onTap,
         child: Container(
-          width: 333,
+          width: 328,
           height: 49,
           decoration: ShapeDecoration(
             color: const Color(0xFFE76F51),
@@ -27,8 +27,10 @@ class MyButtonWithImage extends StatelessWidget {
               borderRadius: BorderRadius.circular(14),
             ),
           ),
-          child: Material( // Use Material widget to enable ink splash
-            color: Colors.transparent, // Make it transparent to prevent background color overlay
+          child: Material(
+            // Use Material widget to enable ink splash
+            color: Colors
+                .transparent, // Make it transparent to prevent background color overlay
             child: InkWell(
               onTap: onTap,
               child: Row(
@@ -42,9 +44,9 @@ class MyButtonWithImage extends StatelessWidget {
                     decoration: BoxDecoration(
                       image: hasButtonImage
                           ? const DecorationImage(
-                        image: AssetImage('assets/googleImage.png'),
-                        fit: BoxFit.fill,
-                      )
+                              image: AssetImage('assets/googleImage.png'),
+                              fit: BoxFit.fill,
+                            )
                           : null,
                       //color: Color(0xFFE76F51),
                     ),
@@ -55,15 +57,15 @@ class MyButtonWithImage extends StatelessWidget {
                     child: Center(
                       child: Text(
                         buttonText,
-                           style: GoogleFonts.poppins(
+                        style: GoogleFonts.poppins(
                           textStyle: const TextStyle(
                             color: Colors.white,
                             fontSize: 14,
-                            fontFamily: 'Mulish',
                             fontWeight: FontWeight.w700,
                             height: 1.0,
                             letterSpacing: 0.30,
-                          ),),
+                          ),
+                        ),
                       ),
                     ),
                   )
@@ -76,6 +78,3 @@ class MyButtonWithImage extends StatelessWidget {
     );
   }
 }
-
-
-

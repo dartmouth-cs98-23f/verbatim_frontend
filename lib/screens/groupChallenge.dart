@@ -3,8 +3,10 @@ import 'dart:math';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/BackendService.dart';
+import 'package:verbatim_frontend/screens/addFriend.dart';
 //import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/friendship.dart';
+import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 import 'sideBar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
@@ -59,8 +61,8 @@ class _GroupChallengeState extends State<groupChallenge> {
       await precacheImage(image, context);
     }
   }
-  
-  String username = window.sessionStorage['UserName'] ?? "" ;
+
+  String username = window.sessionStorage['UserName'] ?? "";
 
   TextEditingController responseController = TextEditingController();
   String userResponse = '';
@@ -614,12 +616,52 @@ Widget _verbaMatch(
       "this is verbaMatchInVerbaMatch in _verba amtch $verbaMatchInVerbaMatch");
   // if there isnt a verbamatch hardcode it rn so it runs while i debug
   if (!isThereVerbaMatch) {
-    print("in the if state");
-    verbaMatchInVerbaMatch = ["empty", "verbamatch"];
-    print("yea its empty");
+    print("\n verbaMatchInVerbaMatch is empty!\n");
   }
-  String verb1 = verbaMatchInVerbaMatch[0];
-  String verb2 = verbaMatchInVerbaMatch[1];
+
+  String verb1 = '';
+  String verb2 = '';
+
+  if (verbaMatchInVerbaMatch.isNotEmpty) {
+    verb1 = verbaMatchInVerbaMatch[0];
+    verb2 = verbaMatchInVerbaMatch[1];
+  }
+
+  User? user1;
+  User? user2;
+
+  Future<void> getUsers() async {
+    final url = Uri.parse('${BackendService.getBackendUrl()}users');
+
+    final response = await http.get(url);
+
+    if (response.statusCode == 200) {
+      List<dynamic> allUsers = json.decode(response.body);
+
+      List<User> users = allUsers.map((item) => User.fromJson(item)).toList();
+
+      for (int i = 0; i < users.length; i++) {
+        if (verbaMatchInVerbaMatch.isNotEmpty) {
+          if (users[i].username == verb1) {
+            user1 = users[i];
+          } else if (users[i].username == verb2) {
+            user2 = users[i];
+          }
+
+          print(
+              "\n Found user1: ${user1!.username} and user2: ${user2!.username}\n");
+        }
+      }
+    } else {
+      print(
+          '\nIn addFriends getUsersIHaveRequested: Failed to send responses. Status code: ${response.statusCode}\n');
+    }
+  }
+
+  getUsers();
+
+  print("\nverb1 : ${user1!.username} while verb2: ${user2!.username}\n");
+
   return Align(
       alignment: Alignment.topCenter,
       child: SizedBox(
@@ -720,22 +762,43 @@ Widget _verbaMatch(
                       textAlign: TextAlign.left,
                     ),
                     const SizedBox(height: 10),
-                    Row(children: [
-                      Image.asset('assets/Ellipse 42.png',
-                          height: 50, width: 50),
-                      Image.asset('assets/Ellipse 43.png',
-                          height: 50, width: 50),
-                    ]),
+                    Row(
+                      children: [
+                        // Check if user1 is not null before displaying FirebaseStorageImage
+                        user1 != null
+                            ? FirebaseStorageImage(
+                                profileUrl: user1!.profilePicture,
+                                user: user1,
+                              )
+                            : Icon(
+                                Icons.help_outline,
+                                size: 50,
+                                color: Color(0xFFE76F51),
+                              ), // Show help icon if user1 is null
+
+                        // Similarly, check if user2 is not null before displaying FirebaseStorageImage
+                        user2 != null
+                            ? FirebaseStorageImage(
+                                profileUrl: user2!.profilePicture,
+                                user: user2,
+                              )
+                            : Icon(
+                                Icons.help_outline,
+                                size: 50,
+                                color: Color(0xFFE76F51),
+                              ), // Show help icon if user2 is null
+                      ],
+                    ),
                     const SizedBox(height: 10),
                     Text(
-                      '$verb1 and $verb2',
+                      '${user1?.username ?? 'empty1'} and ${user2?.username ?? 'empty2'}',
                       style: GoogleFonts.poppins(
                         textStyle: const TextStyle(
                           fontSize: 18,
                           fontWeight: FontWeight.bold,
                         ),
                       ),
-                    ),
+                    )
                   ],
                 ),
               ),

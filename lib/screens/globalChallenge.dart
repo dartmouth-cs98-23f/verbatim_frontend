@@ -28,13 +28,12 @@ class globalChallenge extends StatefulWidget {
   _GlobalChallengeState createState() => _GlobalChallengeState();
 }
 
-String email = window.sessionStorage['Email'] ?? "" ;
-String password = window.sessionStorage['Password'] ?? "" ;
+String email = window.sessionStorage['Email'] ?? "";
+String password = window.sessionStorage['Password'] ?? "";
 
 class _GlobalChallengeState extends State<globalChallenge> {
-  //TODO: 
+  //TODO:
   String username = '';
-
 
   String userResponse = '';
   List<String> userResponses = [];
@@ -153,7 +152,7 @@ class _GlobalChallengeState extends State<globalChallenge> {
       print("\nUserList is of length: ${userList.length}\n");
 
       List<String> neededUserNames = verbatasticUsernames;
-      neededUserNames.add(window.sessionStorage['UserName']?? "");
+      neededUserNames.add(window.sessionStorage['UserName'] ?? "");
 
       // Users who are verba matches
       verbatasticUserObjects = userList
@@ -261,16 +260,14 @@ class _GlobalChallengeState extends State<globalChallenge> {
       } else {
         print("data in ressponse q1 is null");
       }
-    } else {
-      
-    }
+    } else {}
   }
 
   @override
   void initState() {
     super.initState();
-    username = window.sessionStorage['UserName'] ?? "" ;
-    print("Username in global challenge: " + username);
+    username = window.sessionStorage['UserName'] ?? "";
+    print("Username in global challenge: $username");
     _fetchData(username).then((_) {
       setState(() {
         questions = [question1, question2, question3, question4, question5];
@@ -378,7 +375,6 @@ class _GlobalChallengeState extends State<globalChallenge> {
 
   @override
   Widget build(BuildContext context) {
-
     String idString = id.toString();
     DateTime now = DateTime.now();
     DateTime midnight =
@@ -632,10 +628,10 @@ class _GlobalChallengeState extends State<globalChallenge> {
                                   } else if (responded == false) {
                                     return Column(
                                       children: [
-                                        SizedBox(height: 20.0),
+                                        const SizedBox(height: 20.0),
                                         Column(
                                           children: [
-                                            SizedBox(height: 50),
+                                            const SizedBox(height: 50),
                                             Center(
                                               child: Text(
                                                 'Play the',

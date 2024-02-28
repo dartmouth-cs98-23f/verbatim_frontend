@@ -1,7 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
-import 'package:google_fonts/google_fonts.dart';
 
 class OnBoardingPage2 extends StatelessWidget {
   const OnBoardingPage2({super.key});
@@ -46,7 +45,7 @@ class OnBoardingPage2 extends StatelessWidget {
                       ),
                       SizedBox(height: 30.v),
                       Padding(
-                        padding: EdgeInsets.only(left: 30.0, right: 30.0),
+                        padding: const EdgeInsets.only(left: 30.0, right: 30.0),
                         child: Align(
                           alignment: Alignment.center,
                           child: Text(

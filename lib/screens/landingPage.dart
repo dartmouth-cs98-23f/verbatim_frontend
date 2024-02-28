@@ -1,4 +1,3 @@
-import 'dart:html';
 
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
@@ -66,7 +65,7 @@ class _LandingPageState extends State<LandingPage> {
               ),
             ),
             Padding(
-                padding: EdgeInsets.only(right: 20, left: 20),
+                padding: const EdgeInsets.only(right: 20, left: 20),
                 child: Align(
                   alignment: Alignment.center,
                   child: Text(
@@ -82,7 +81,7 @@ class _LandingPageState extends State<LandingPage> {
                 )),
             const SizedBox(height: 30),
             Padding(
-              padding: EdgeInsets.only(right: 50, left: 50),
+              padding: const EdgeInsets.only(right: 50, left: 50),
               child: Align(
                   alignment: Alignment.center,
                   child: Center(

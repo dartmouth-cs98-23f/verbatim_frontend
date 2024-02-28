@@ -243,7 +243,7 @@ var profileHandler = Handler(handlerFunc: (context, parameters) {
   if ((window.sessionStorage['UserName'] ?? "" ).isEmpty||
        (window.sessionStorage['Email'] ?? "" ).isEmpty||
         (window.sessionStorage['Password'] ?? "" ).isEmpty) {
-          print("WTH:::" +( window.sessionStorage['UserName']?? ""));
+          print("WTH:::${window.sessionStorage['UserName']?? ""}");
       SharedPrefs.setCurrentPage('/login');
     return const LogIn();
   } else {

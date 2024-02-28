@@ -8,7 +8,6 @@ import 'package:image_picker/image_picker.dart';
 import 'package:uuid/uuid.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/Components/EditProfilePicturePopup.dart';
-import 'package:verbatim_frontend/screens/sideBar.dart';
 import 'package:verbatim_frontend/widgets/MyTextFieldSettings.dart';
 import 'package:verbatim_frontend/widgets/button_settings.dart';
 import 'package:http/http.dart' as http;
@@ -87,14 +86,7 @@ class _settingsState extends State<settings> {
 
       //do sth to verify the response,
       if (response.statusCode == 200) {
-        print("\nprofile pic url: $profilePic");
         //get the account info to display as dummy text
-        // SharedPrefs.setFirstName(firstName);
-        // SharedPrefs.setLastName(lastName);
-        // SharedPrefs.setBio(bio);
-        // SharedPrefs.setEmail(email);
-        // SharedPrefs.setUserName(newUsername);
-        // SharedPrefs.setProfileUrl(profilePic);
         setState(() {
           window.sessionStorage['FirstName'] = firstName;
           window.sessionStorage['LastName'] = lastName;
@@ -203,7 +195,7 @@ class _settingsState extends State<settings> {
       edits(
         context,
         window.sessionStorage['FirstName'] ??
-            '' " " + (window.sessionStorage['LastName'] ?? ''),
+            '' + (window.sessionStorage['LastName'] ?? ''),
         window.sessionStorage['UserName'] as String,
         window.sessionStorage['UserName'] as String,
         window.sessionStorage['Bio'] as String,
@@ -426,7 +418,7 @@ class _settingsState extends State<settings> {
 
                   const SizedBox(height: 38),
                   Padding(
-                    padding: EdgeInsets.only(left: 30.0),
+                    padding: const EdgeInsets.only(left: 30.0),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -453,7 +445,7 @@ class _settingsState extends State<settings> {
                   //username
                   const SizedBox(height: 38),
                   Padding(
-                    padding: EdgeInsets.only(left: 30.0),
+                    padding: const EdgeInsets.only(left: 30.0),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -479,7 +471,7 @@ class _settingsState extends State<settings> {
 
                   const SizedBox(height: 38),
                   Padding(
-                    padding: EdgeInsets.only(left: 30.0),
+                    padding: const EdgeInsets.only(left: 30.0),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -507,7 +499,7 @@ class _settingsState extends State<settings> {
 
                   const SizedBox(height: 38),
                   Padding(
-                    padding: EdgeInsets.only(left: 30.0),
+                    padding: const EdgeInsets.only(left: 30.0),
                     child: Align(
                       alignment: Alignment.centerLeft,
                       child: Text(
@@ -544,7 +536,7 @@ class _settingsState extends State<settings> {
                               edits(
                                   context,
                                   getVal(fullNameSettings.text,
-                                      window.sessionStorage['FirstName'] ?? ""),
+                                      window.sessionStorage['FullName'] ?? ""),
                                   window.sessionStorage['UserName'] ?? "",
                                   getVal(
                                     usernameSettings.text,

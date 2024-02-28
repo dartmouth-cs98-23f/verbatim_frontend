@@ -3,13 +3,10 @@ import 'dart:html';
 import 'package:email_validator/email_validator.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
-import 'package:provider/provider.dart';
 import 'package:verbatim_frontend/BackendService.dart';
-import 'package:verbatim_frontend/UserData.dart';
 import 'package:verbatim_frontend/gameObject.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
-import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/signupErrorMessage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -289,7 +286,7 @@ class _GuestSignUpState extends State<GuestSignUp> {
                 ),
                 const SizedBox(height: 50),
                 Padding(
-                  padding: EdgeInsets.only(left: 30.0),
+                  padding: const EdgeInsets.only(left: 30.0),
                   child: Align(
                     alignment: Alignment.centerLeft,
                     child: Text(

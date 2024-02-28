@@ -9,7 +9,6 @@ import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:verbatim_frontend/widgets/showSuccessDialog.dart';
-import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/widgets/center_custom_app_bar.dart';
 
 class ResetPassword extends StatefulWidget {
@@ -129,7 +128,7 @@ class _ResetPasswordState extends State<ResetPassword> {
 
                       const SizedBox(height: 42),
                       Padding(
-                        padding: EdgeInsets.only(left: 30.0),
+                        padding: const EdgeInsets.only(left: 30.0),
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(
@@ -154,7 +153,7 @@ class _ResetPasswordState extends State<ResetPassword> {
 
                       const SizedBox(height: 42),
                       Padding(
-                        padding: EdgeInsets.only(left: 30.0),
+                        padding: const EdgeInsets.only(left: 30.0),
                         child: Align(
                           alignment: Alignment.centerLeft,
                           child: Text(

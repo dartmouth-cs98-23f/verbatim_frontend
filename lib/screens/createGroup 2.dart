@@ -341,7 +341,7 @@ class _CreateGroupState extends State<createGroup> {
                                             MainAxisAlignment.start,
                                         children: [
                                             Padding(
-                                              padding: EdgeInsets.only(
+                                              padding: const EdgeInsets.only(
                                                   left: 12.0, top: 14.0),
                                               child: Text("All Friends",
                                                   style: GoogleFonts.poppins(
@@ -416,7 +416,7 @@ class _CreateGroupState extends State<createGroup> {
                             Column(children: [
                               const SizedBox(height: 30),
                               Padding(
-                                padding: EdgeInsets.symmetric(horizontal: 16.0),
+                                padding: const EdgeInsets.symmetric(horizontal: 16.0),
                                 child: Text(
                                   'Word! Give your group a name!',
                                   style: GoogleFonts.poppins(

@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:flutter/widgets.dart';
-import 'package:shared_preferences/shared_preferences.dart';
 import 'package:verbatim_frontend/Components/shared_prefs.dart';
 
 class UserData with ChangeNotifier {
@@ -22,7 +21,7 @@ class UserData with ChangeNotifier {
 
    Future<void>loadUserName() async {
     _userName = SharedPrefs().getUserName() ?? '';
-    print("Username in the data stuff is: "+ _userName);
+    print("Username in the data stuff is: $_userName");
     notifyListeners();
   }
 

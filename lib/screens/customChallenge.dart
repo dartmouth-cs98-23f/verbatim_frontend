@@ -133,13 +133,13 @@ class _CustomChallengeState extends State<customChallenge>
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.start,
                         children: [
-                          SizedBox(width: 10),
-                          Icon(
+                          const SizedBox(width: 10),
+                          const Icon(
                             Icons.add,
                             size: 20,
                             color: Color(0xFFE76F51),
                           ),
-                          SizedBox(width: 5),
+                          const SizedBox(width: 5),
                           Text(
                             'Add Prompt',
                             style: GoogleFonts.poppins(
@@ -335,7 +335,7 @@ class _CustomChallengeState extends State<customChallenge>
                                 overflow: TextOverflow.ellipsis,
                               ))
                             : GoogleFonts.poppins(
-                                textStyle: TextStyle(
+                                textStyle: const TextStyle(
                                 fontSize: 16,
                                 fontWeight: FontWeight.bold,
                                 overflow: TextOverflow.ellipsis,

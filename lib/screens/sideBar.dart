@@ -4,12 +4,10 @@ import 'dart:math';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
-import 'package:provider/provider.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/Components/defineRoutes.dart';
 import 'dart:convert';
-import 'package:verbatim_frontend/UserData.dart';
 
 import 'package:verbatim_frontend/screens/addFriend.dart';
 
@@ -278,8 +276,8 @@ class _SideBarState extends State<SideBar> {
 
     // NOTE
     lastNameInitial =
-        LastName!.isNotEmpty ? LastName.substring(0, 1).toUpperCase() : "";
-    print("Checking out lastName: " + LastName);
+        LastName.isNotEmpty ? LastName.substring(0, 1).toUpperCase() : "";
+    print("Checking out lastName: $LastName");
 
     _confettiController =
         ConfettiController(duration: const Duration(seconds: 3));
@@ -793,10 +791,10 @@ class _SideBarState extends State<SideBar> {
                                   fontWeight: FontWeight.w700,
                                   fontSize: 15),
                             )),
-                        leading: Icon(Icons.favorite,
+                        leading: const Icon(Icons.favorite,
                             color: Colors.red, size: 17 // Set the color to red
                             ),
-                        trailing: Icon(Icons.favorite,
+                        trailing: const Icon(Icons.favorite,
                             color: Colors.red, size: 17 // Set the color to red
                             ),
                       ),

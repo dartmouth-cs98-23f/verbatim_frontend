@@ -7,7 +7,6 @@ import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
 import 'package:verbatim_frontend/BackendService.dart';
 //import 'package:verbatim_frontend/Components/shared_prefs.dart';
-import 'package:verbatim_frontend/screens/profile.dart';
 import 'package:verbatim_frontend/screens/sideBar.dart';
 import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 import 'package:verbatim_frontend/widgets/friends_app_bar.dart';
@@ -69,7 +68,7 @@ class addFriend extends StatefulWidget {
 }
 
 class _AddFriendState extends State<addFriend> {
-  String username = window.sessionStorage['UserName'] ?? "" ;
+  String username = window.sessionStorage['UserName'] ?? "";
   final TextEditingController _searchController = TextEditingController();
   String _searchText = "";
   bool usersFetched = false; // only call users once per run
@@ -179,7 +178,7 @@ class _AddFriendState extends State<addFriend> {
           data.map((item) => User.fromJson(item)).toList();
 
       userUsernames = userList
-      //TODO: 
+          //TODO:
           .where((user) => user.username != window.sessionStorage['UserName']!)
           .map((user) => user.username)
           .toList();
@@ -200,6 +199,7 @@ class _AddFriendState extends State<addFriend> {
   @override
   void initState() {
     super.initState();
+
     getUsersIHaveRequested(username);
 
     _searchController.addListener(() {
@@ -315,7 +315,7 @@ class _AddFriendState extends State<addFriend> {
 
   @override
   Widget build(BuildContext context) {
-    String username = window.sessionStorage['UserName'] ?? "" ;
+    String username = window.sessionStorage['UserName'] ?? "";
 
     const String assetName = 'assets/img1.svg';
 

@@ -1,6 +1,5 @@
 import 'dart:html';
 import 'dart:math';
-import 'package:firebase_core/firebase_core.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
@@ -99,8 +98,8 @@ class Verbatastic extends StatelessWidget {
                           top: 0,
                           left: 30.0,
                           child: FirebaseStorageImage(
-                              profileUrl:
-                                  window.sessionStorage['ProfileUrl']?? 'assets/profile_pic.png'),
+                              profileUrl: window.sessionStorage['ProfileUrl'] ??
+                                  'assets/profile_pic.png'),
                         ),
                       ],
                     ),

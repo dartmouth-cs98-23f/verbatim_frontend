@@ -11,7 +11,6 @@ import 'package:flutter_svg/flutter_svg.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
 import 'package:verbatim_frontend/widgets/custom_tab.dart';
 import 'dart:async';
-import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:intl/intl.dart';
 import 'globalSubmitGuest.dart';
 
@@ -87,7 +86,7 @@ class _GuestGlobalState extends State<guestGlobal> {
   void initState() {
     super.initState();
     username = window.sessionStorage['UserName']?? "";
-    print("In guest an usename is:" + username);
+    print("In guest an usename is:$username");
     if (username == '') {
       _fecthNoSignInData().then((_) {
         setState(() {
@@ -256,7 +255,7 @@ class _GuestGlobalState extends State<guestGlobal> {
                                                         style:
                                                             GoogleFonts.poppins(
                                                                 textStyle:
-                                                                    TextStyle(
+                                                                    const TextStyle(
                                                           fontSize: 14,
                                                           color: Colors.black,
                                                         ))),
@@ -395,10 +394,10 @@ class _GuestGlobalState extends State<guestGlobal> {
                                   } else if (responded == false) {
                                     return Column(
                                       children: [
-                                        SizedBox(height: 20.0),
+                                        const SizedBox(height: 20.0),
                                         Column(
                                           children: [
-                                            SizedBox(height: 50),
+                                            const SizedBox(height: 50),
                                             Center(
                                               child: Text(
                                                 'Play the',

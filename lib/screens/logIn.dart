@@ -1,16 +1,14 @@
 import 'dart:html';
 
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 //import 'package:google_sign_in/google_sign_in.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 
-
-
+import 'package:verbatim_frontend/widgets/my_button_with_image.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'package:verbatim_frontend/screens/signupErrorMessage.dart';
-import '../Components/shared_prefs.dart';
-import '../UserData.dart';
 import '../widgets/my_button_no_image.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
@@ -156,46 +154,17 @@ class _LogInState extends State<LogIn> {
         final responseData = json.decode(response.body);
 
         if (responseData != null) {
-          // Authentication successful: Save the user info to the disk so that they can persist to other pages
-          // final userData = Provider.of<UserData>(context, listen: false);
-          // userData.setBio(responseData['bio'] ?? 'That\'s what she said!');
-          // userData.setEmail(responseData['email']);
-          // userData.setFirstName(responseData['firstName'] ?? '');
-          // userData.setLastName(responseData['lastName'] ?? '');
-          // userData.setUserName(responseData['username']);
-          // userData.setProfileUrl(responseData['profilePicture'] ?? 'assets/profile_pic.png');
-          // userData.setPassword(responseData['password']);
-
-
-       
           window.sessionStorage['UserName'] = responseData['username'];
           window.sessionStorage['LastName'] = responseData['lastName'];
           window.sessionStorage['FirstName'] = responseData['firstName'];
-          window.sessionStorage['Bio'] = responseData['bio']?? "That's what she said!";
+          window.sessionStorage['FullName'] =
+              '${responseData['firstName']} ${responseData['lastName']}';
+          window.sessionStorage['Bio'] =
+              responseData['bio'] ?? "That's what she said!";
           window.sessionStorage['Email'] = responseData['email'];
           window.sessionStorage['Password'] = responseData['password'];
-          window.sessionStorage['ProfileUrl'] = responseData['profilePicture'] ?? 'assets/profile_pic.png';
-
-
-
-// if (user != null) {
-//     for (final providerProfile in user.providerData) {
-//         // ID of the provider (google.com, apple.com, etc.)
-//         final provider = providerProfile.providerId;
-
-//         // UID specific to the provider
-//         final uid = providerProfile.uid;
-
-//         // Name, email address, and profile photo URL
-//         final name = providerProfile.displayName;
-//         final emailAddress = providerProfile.email;
-//         final profilePhoto = providerProfile.photoURL;
-//     }
-// }
-          
-
-        
-
+          window.sessionStorage['ProfileUrl'] =
+              responseData['profilePicture'] ?? 'assets/profile_pic.png';
           Navigator.pushNamed(context, '/global_challenge');
         }
       } else {
@@ -212,19 +181,41 @@ class _LogInState extends State<LogIn> {
     }
   }
 
-  // Sign in with Google functionality
-  // Future<void> signInWithGoogle() async {
-  //   try {
-  //     final GoogleSignInAccount? account = await _googleSignIn.signIn();
+  Map<String, String> getFirstAndLastName(String fullName) {
+    // Split the full name by whitespace
+    List<String> nameParts = fullName.trim().split(' ');
 
-  //     if (account != null) {
-  //       saveUsersInfo(account.email, 'unavailable');
-  //     }
-  //   } catch (error) {
-  //     // Handle any errors that occur during the Google Sign-In process.
-  //     print('Error during Google Sign-In: $error');
-  //   }
-  // }
+    // Extract the first name and last name
+    String firstName = nameParts.isNotEmpty ? nameParts.first : '';
+    String lastName = nameParts.length > 1 ? nameParts.last : '';
+
+    // Return the first name and last name as a map
+    return {'firstName': firstName, 'lastName': lastName};
+  }
+
+  // Sign in with Google functionality
+  Future<User?> signInWithGoogle() async {
+    User? user;
+    FirebaseAuth auth = FirebaseAuth.instance;
+    // The `GoogleAuthProvider` can only be used while running on the web
+    GoogleAuthProvider authProvider = GoogleAuthProvider();
+
+    try {
+      final UserCredential userCredential =
+          await auth.signInWithPopup(authProvider);
+      user = userCredential.user;
+    } catch (e) {
+      print("\nError while sign in with Google: $e\n");
+    }
+
+    if (user != null) {
+      logIn(context, user.email as String, " ");
+
+      print("\nname: ${user.displayName as String}");
+      print("\nuserEmail: ${user.email as String}");
+    }
+    return user;
+  }
 
   bool isValidEmail(String email) {
     // Use a regular expression to validate email format
@@ -364,18 +355,14 @@ class _LogInState extends State<LogIn> {
                           );
                         },
                       ),
-
-                      //taking this out for now
-                      /*
                       const SizedBox(height: 20),
                       MyButtonWithImage(
                         buttonText: 'Sign in with Google',
                         hasButtonImage: true,
                         onTap: () {
-                          // signInWithGoogle();
+                          signInWithGoogle();
                         },
                       ),
-                      */
                       const SizedBox(height: 10),
                       Center(
                         child: RichText(
