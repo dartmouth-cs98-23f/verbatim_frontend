@@ -80,8 +80,7 @@ class _GroupChallengeState extends State<groupChallenge> {
   List<dynamic> verbaMatchSubmit = [];
   double verbaMatchSimilaritySubmit = 0;
 
-
-  void test(){
+  void test() {
     print("In here at least");
   }
 
@@ -278,19 +277,19 @@ class _GroupChallengeState extends State<groupChallenge> {
                         width: 300,
                         height: 400,
                         decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(35),
+                          borderRadius: BorderRadius.circular(20),
                           boxShadow: [
                             BoxShadow(
                               color: const Color.fromARGB(255, 117, 19, 12)
-                                  .withOpacity(0.9),
+                                  .withOpacity(0.1),
                               blurRadius: 5,
                               offset: const Offset(3, 7),
                             ),
                           ],
                           color: Colors.white,
                         ),
-
-                        child: Column(
+                        child: Padding(padding: EdgeInsets.all(10),
+                                                child: Column(
                           children: [
                             const SizedBox(height: 30),
                             Padding(
@@ -379,6 +378,8 @@ class _GroupChallengeState extends State<groupChallenge> {
                             ),
                           ],
                         ),
+                        )
+
                       ),
                       Visibility(
                         visible: !responded,
@@ -400,7 +401,7 @@ class _GroupChallengeState extends State<groupChallenge> {
                     width: 350,
                     height: 500,
                     decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(50),
+                      borderRadius: BorderRadius.circular(35),
                       boxShadow: [
                         BoxShadow(
                           color: const Color.fromARGB(255, 117, 19, 12)
@@ -417,19 +418,15 @@ class _GroupChallengeState extends State<groupChallenge> {
                       padding: EdgeInsets.only(top: 20),
                       itemBuilder: (context, index) {
                         if (!widget.completed) {
-             
                           return _buildResponseRectangle(
                               index, answersSubmitMap);
-                        } 
-                        else {
-                          
+                        } else {
                           return _buildResponseRectangle(index, answersMap);
                         }
                       },
                     ),
                   ),
-     
-                SizedBox(height: 20.v),
+                SizedBox(height: 50.v),
                 Visibility(
                   visible: responded,
                   child: ElevatedButton(
@@ -504,11 +501,10 @@ class _GroupChallengeState extends State<groupChallenge> {
           isDropdownVisible[index] = expandedStates[index];
         });
       },
-      
       child: SingleChildScrollView(
         child: AnimatedContainer(
             duration: const Duration(milliseconds: 400),
-            //TODO: 
+            //TODO:
             height: expandedStates[index] ? 120 : 50,
             width: double.infinity,
             margin: const EdgeInsets.symmetric(horizontal: 10, vertical: 5),
@@ -518,9 +514,8 @@ class _GroupChallengeState extends State<groupChallenge> {
                 child: Column(
               children: [
                 //if clicked on
-              
+
                 Visibility(
-                  
                   visible: expandedStates[index],
                   child: Column(
                     children: [
@@ -533,16 +528,19 @@ class _GroupChallengeState extends State<groupChallenge> {
                                 style: GoogleFonts.poppins(
                                   textStyle: const TextStyle(
                                     fontSize: 16,
-                                    fontWeight: FontWeight.bold,
+                                      fontWeight: FontWeight.w700,
                                   ),
                                 ),
                               ),
                             ),
-                            const Icon(Icons.arrow_upward),
+                                                    const Padding(
+                          padding:  EdgeInsets.only(
+                              right: 5), // Adjust as needed
+                          child: const Icon(Icons.arrow_drop_up),
+                        ),
                           ],
                         ),
                       ),
-                      
                       Container(
                         //duration: const Duration(milliseconds: 1000),
                         height: 70,
@@ -612,8 +610,7 @@ class _GroupChallengeState extends State<groupChallenge> {
                                                   ),
                                                 ),
                                               ))))
-                                ]))
-                                );
+                                ])));
                           },
                         ),
                       ),
@@ -631,13 +628,17 @@ class _GroupChallengeState extends State<groupChallenge> {
                             style: GoogleFonts.poppins(
                               textStyle: const TextStyle(
                                 fontSize: 16,
-                                fontWeight: FontWeight.bold,
+                                fontWeight: FontWeight.w400,
                                 overflow: TextOverflow.ellipsis,
                               ),
                             ),
                           ),
                         ),
-                        const Icon(Icons.arrow_downward),
+                        const Padding(
+                          padding:  EdgeInsets.only(
+                              right: 5), // Adjust as needed
+                          child: const Icon(Icons.arrow_drop_down),
+                        ),
                       ],
                     ),
                   ),
@@ -665,169 +666,174 @@ Widget _verbaMatch(
   }
   String verb1 = verbaMatchInVerbaMatch[0];
   String verb2 = verbaMatchInVerbaMatch[1];
-  return Padding(padding: EdgeInsets.only(bottom: 20),
-  child:Align(
-      alignment: Alignment.topCenter,
-      child: Container(
-          width: 350,
-          height: 200,
-          decoration: BoxDecoration(
-            borderRadius: BorderRadius.circular(35),
-            boxShadow: [
-              BoxShadow(
-                color: const Color.fromARGB(255, 117, 19, 12).withOpacity(0.9),
-                blurRadius: 5,
-                offset: const Offset(3, 7),
+  return Padding(
+      padding: EdgeInsets.only(bottom: 20),
+      child: Align(
+          alignment: Alignment.topCenter,
+          child: Container(
+              width: 350,
+              height: 200,
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(35),
+                boxShadow: [
+                  BoxShadow(
+                    color:
+                        const Color.fromARGB(255, 117, 19, 12).withOpacity(0.6),
+                    blurRadius: 5,
+                    offset: const Offset(3, 7),
+                  ),
+                ],
+                color: Colors.white,
               ),
-            ],
-            color: Colors.white,
-          ),
-          // color: Colors.yellow,
-          child: Padding(
-              padding: EdgeInsets.only(top: 25, left: 10,),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  Visibility(
-                    visible: !isThereVerbaMatch,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: 'No ',
-                                style: GoogleFonts.poppins(
-                                  textStyle: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Colors.black,
-                                    fontSize: 18,
+              // color: Colors.yellow,
+              child: Padding(
+                  padding: EdgeInsets.only(
+                    top: 25,
+                    left: 10,
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      Visibility(
+                        visible: !isThereVerbaMatch,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: 'No ',
+                                    style: GoogleFonts.poppins(
+                                      textStyle: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Colors.black,
+                                        fontSize: 18,
+                                      ),
+                                    ),
                                   ),
-                                ),
-                              ),
-                              TextSpan(
-                                text: 'Verba',
-                                style: GoogleFonts.poppins(
-                                  textStyle: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xFFE76F51),
-                                    fontSize: 18,
+                                  TextSpan(
+                                    text: 'Verba',
+                                    style: GoogleFonts.poppins(
+                                      textStyle: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xFFE76F51),
+                                        fontSize: 18,
+                                      ),
+                                    ),
                                   ),
-                                ),
+                                  TextSpan(
+                                    text: "Match",
+                                    style: GoogleFonts.poppins(
+                                        textStyle: const TextStyle(
+                                      fontSize: 18,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    )),
+                                  ),
+                                ],
                               ),
-                              TextSpan(
-                                text: "Match",
-                                style: GoogleFonts.poppins(
-                                    textStyle: const TextStyle(
+                              textAlign: TextAlign.left,
+                            ),
+                            const SizedBox(height: 10),
+                            const Row(children: [
+                              Icon(Icons.help_outline, size: 50),
+                              Icon(Icons.help_outline, size: 50),
+                            ]),
+                            const SizedBox(height: 10),
+                            Text(
+                              '...yet!',
+                              style: GoogleFonts.poppins(
+                                textStyle: const TextStyle(
                                   fontSize: 18,
                                   fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                )),
-                              ),
-                            ],
-                          ),
-                          textAlign: TextAlign.left,
-                        ),
-                        const SizedBox(height: 10),
-                        const Row(children: [
-                          Icon(Icons.help_outline, size: 50),
-                          Icon(Icons.help_outline, size: 50),
-                        ]),
-                        const SizedBox(height: 10),
-                        Text(
-                          '...yet!',
-                          style: GoogleFonts.poppins(
-                            textStyle: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Visibility(
-                    visible: isThereVerbaMatch,
-                    child: Column(
-                      mainAxisAlignment: MainAxisAlignment.start,
-                      children: [
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              TextSpan(
-                                text: 'Verba',
-                                style: GoogleFonts.poppins(
-                                  textStyle: const TextStyle(
-                                    fontWeight: FontWeight.bold,
-                                    color: Color(0xFFE76F51),
-                                    fontSize: 23,
-                                  ),
                                 ),
                               ),
-                              TextSpan(
-                                text: "Match!",
-                                style: GoogleFonts.poppins(
-                                    textStyle: const TextStyle(
-                                  fontSize: 23,
-                                  fontWeight: FontWeight.bold,
-                                  color: Colors.black,
-                                )),
+                            ),
+                          ],
+                        ),
+                      ),
+                      Visibility(
+                        visible: isThereVerbaMatch,
+                        child: Column(
+                          mainAxisAlignment: MainAxisAlignment.start,
+                          children: [
+                            RichText(
+                              text: TextSpan(
+                                children: [
+                                  TextSpan(
+                                    text: 'Verba',
+                                    style: GoogleFonts.poppins(
+                                      textStyle: const TextStyle(
+                                        fontWeight: FontWeight.bold,
+                                        color: Color(0xFFE76F51),
+                                        fontSize: 23,
+                                      ),
+                                    ),
+                                  ),
+                                  TextSpan(
+                                    text: "Match!",
+                                    style: GoogleFonts.poppins(
+                                        textStyle: const TextStyle(
+                                      fontSize: 23,
+                                      fontWeight: FontWeight.bold,
+                                      color: Colors.black,
+                                    )),
+                                  ),
+                                ],
                               ),
-                            ],
-                          ),
-                          textAlign: TextAlign.left,
+                              textAlign: TextAlign.left,
+                            ),
+                            const SizedBox(height: 10),
+                            Row(children: [
+                              Image.asset('assets/Ellipse 42.png',
+                                  height: 50, width: 50),
+                              Image.asset('assets/Ellipse 43.png',
+                                  height: 50, width: 50),
+                            ]),
+                            const SizedBox(height: 10),
+                            Text(
+                              '$verb1 and $verb2',
+                              style: GoogleFonts.poppins(
+                                textStyle: const TextStyle(
+                                  fontSize: 18,
+                                  fontWeight: FontWeight.bold,
+                                ),
+                              ),
+                            ),
+                          ],
                         ),
-                        const SizedBox(height: 10),
-                        Row(children: [
-                          Image.asset('assets/Ellipse 42.png',
-                              height: 50, width: 50),
-                          Image.asset('assets/Ellipse 43.png',
-                              height: 50, width: 50),
-                        ]),
-                        const SizedBox(height: 10),
-                        Text(
-                          '$verb1 and $verb2',
-                          style: GoogleFonts.poppins(
-                            textStyle: const TextStyle(
-                              fontSize: 18,
-                              fontWeight: FontWeight.bold,
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                  Visibility(
-                      visible: isThereVerbaMatch,
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Container(
-                              height: 150,
-                              width: 150,
-                              alignment: Alignment.center,
-                              child: DonutChart(
-                                  groupSimilarity: verbaMatchSimilarity,
-                                  match: true),
-                            ),
-                          ])),
-                  Visibility(
-                      visible: !isThereVerbaMatch,
-                      child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            Container(
-                              height: 150,
-                              width: 150,
-                              alignment: Alignment.center,
-                              child: DonutChart(
-                                  groupSimilarity: verbaMatchSimilarity,
-                                  match: false),
-                            ),
-                          ]))
-                ],
-              )))));
+                      ),
+                      Visibility(
+                          visible: isThereVerbaMatch,
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
+                                  height: 150,
+                                  width: 150,
+                                  alignment: Alignment.center,
+                                  child: DonutChart(
+                                      groupSimilarity: verbaMatchSimilarity,
+                                      match: true),
+                                ),
+                              ])),
+                      Visibility(
+                          visible: !isThereVerbaMatch,
+                          child: Column(
+                              mainAxisAlignment: MainAxisAlignment.start,
+                              children: [
+                                Container(
+                                  height: 150,
+                                  width: 150,
+                                  alignment: Alignment.center,
+                                  child: DonutChart(
+                                      groupSimilarity: verbaMatchSimilarity,
+                                      match: false),
+                                ),
+                              ]))
+                    ],
+                  )))));
 }
 
 class DonutChart extends StatefulWidget {
