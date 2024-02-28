@@ -1,8 +1,9 @@
+import 'dart:html';
 import 'dart:math';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/BackendService.dart';
-import 'package:verbatim_frontend/Components/shared_prefs.dart';
+//import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/friendship.dart';
 import 'sideBar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
@@ -59,7 +60,7 @@ class _GroupChallengeState extends State<groupChallenge> {
     }
   }
 
-  String username = SharedPrefs().getUserName() ?? "";
+  String username = window.sessionStorage['UserName'] ?? "";
 
   TextEditingController responseController = TextEditingController();
   String userResponse = '';
