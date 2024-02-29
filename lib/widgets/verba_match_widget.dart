@@ -3,6 +3,7 @@ import 'dart:html';
 
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter/widgets.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'package:verbatim_frontend/BackendService.dart';
@@ -89,7 +90,7 @@ class _VerbaMatchWidgetState extends State<VerbaMatchWidget> {
 
   @override
   Widget build(BuildContext context) {
-    return isLoading ? CircularProgressIndicator() : _buildVerbaMatchWidget();
+    return _buildVerbaMatchWidget();
   }
 
   Widget _buildVerbaMatchWidget() {
@@ -163,10 +164,37 @@ class _VerbaMatchWidgetState extends State<VerbaMatchWidget> {
                                 textAlign: TextAlign.left,
                               ),
                               const SizedBox(height: 10),
-                              const Row(children: [
-                                Icon(Icons.help_outline, size: 50),
-                                Icon(Icons.help_outline, size: 50),
-                              ]),
+                              SizedBox(
+                                width: 150,
+                                height: 50,
+                                child: Row(
+                                  children: [
+                                    const SizedBox(
+                                      width: 20,
+                                    ),
+                                    Align(
+                                      alignment: Alignment.center,
+                                      child: SizedBox(
+                                        width: 50,
+                                        height: 50,
+                                        child: FirebaseStorageImage(
+                                          profileUrl: window.sessionStorage[
+                                                  'ProfileUrl'] ??
+                                              '', // Ensure profileUrl is not null
+                                        ),
+                                      ),
+                                    ),
+                                    const Align(
+                                      alignment: Alignment.center,
+                                      child: Icon(
+                                        Icons.help_outline,
+                                        size: 50,
+                                        color: Color(0xFFE76F51),
+                                      ),
+                                    ),
+                                  ],
+                                ),
+                              ),
                               const SizedBox(height: 10),
                               Text(
                                 '...yet!',
@@ -232,7 +260,7 @@ class _VerbaMatchWidgetState extends State<VerbaMatchWidget> {
                                             user: verbUser,
                                           ),
                                         )
-                                      : Align(
+                                      : const Align(
                                           alignment: Alignment
                                               .center, // Align the icon to the center
                                           child: Icon(

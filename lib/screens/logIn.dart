@@ -3,6 +3,7 @@ import 'dart:html';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
+import 'package:google_sign_in/google_sign_in.dart';
 //import 'package:google_sign_in/google_sign_in.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 
@@ -28,11 +29,10 @@ class _LogInState extends State<LogIn> {
   Map<String, Text> validationErrors = {};
   final usernameEmailController = TextEditingController();
   final passwordController = TextEditingController();
-  // final GoogleSignIn _googleSignIn = GoogleSignIn(
-  //   scopes: ['email'],
-  //   clientId:
-  //       '297398575103-o3engamrir3bf4pupurvj8lm4mn0iuqt.apps.googleusercontent.com',
-  // );
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+      scopes: ['email'],
+      clientId:
+          '1052195157201-9d7dskf4jihdd8b3ad6bmidnkoilu9ht.apps.googleusercontent.com');
 
   void logIn(
       BuildContext context, String usernameOrEmail, String password) async {

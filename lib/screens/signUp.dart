@@ -7,12 +7,17 @@ import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:verbatim_frontend/BackendService.dart';
+import 'package:verbatim_frontend/screens/addFriend.dart';
+import 'package:verbatim_frontend/widgets/errorDialog.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
 import 'package:verbatim_frontend/widgets/my_button_with_image.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'package:verbatim_frontend/screens/signupErrorMessage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
+
+import 'package:verbatim_frontend/widgets/showSuccessDialog.dart';
+import 'package:verbatim_frontend/widgets/signUpWithGoogle.dart';
 
 class SignUp extends StatefulWidget {
   //TODO: figure out how to not need the
@@ -32,11 +37,6 @@ class _SignUpState extends State<SignUp> {
   final emailController = TextEditingController();
   final passwordController = TextEditingController();
   final confirmPasswordController = TextEditingController();
-
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
-      scopes: ['email'],
-      clientId:
-          '1052195157201-9d7dskf4jihdd8b3ad6bmidnkoilu9ht.apps.googleusercontent.com');
 
   void signUp(BuildContext context, String firstName, String lastName,
       String username, String email, String password, String confirmPassword) {
@@ -93,36 +93,36 @@ class _SignUpState extends State<SignUp> {
     }
   }
 
-  // Function to sign up with Google
-  Future<void> signUpWithGoogle() async {
-    if (kIsWeb) {
-      final GoogleSignInAccount? account = await _googleSignIn.signIn();
-      try {
-        if (account != null) {
-          print("\nSigning with google: \n");
-          print("\nEmail: ${account.email}\n");
-          print("\nName: ${account.displayName} \n");
+  // // Function to sign up with Google
+  // Future<void> signUpWithGoogle() async {
+  //   if (kIsWeb) {
+  //     final GoogleSignInAccount? account = await _googleSignIn.signIn();
+  //     try {
+  //       if (account != null) {
+  //         print("\nSigning with google: \n");
+  //         print("\nEmail: ${account.email}\n");
+  //         print("\nName: ${account.displayName} \n");
 
-          Map<String, String> nameMap =
-              getFirstAndLastName(account.displayName as String);
+  //         Map<String, String> nameMap =
+  //             getFirstAndLastName(account.displayName as String);
 
-          String firstName = nameMap['firstName'] ?? '';
-          String lastName = nameMap['lastName'] ?? '';
+  //         String firstName = nameMap['firstName'] ?? '';
+  //         String lastName = nameMap['lastName'] ?? '';
 
-          print("\n firstName: $firstName\n");
-          print("\n lastName: $lastName \n");
+  //         print("\n firstName: $firstName\n");
+  //         print("\n lastName: $lastName \n");
 
-          saveUsersInfo(
-              context, firstName, lastName, firstName, account.email, " ", " ");
-        } else {
-          print('\nThe google account is not found.');
-        }
-      } catch (e) {
-        debugPrint('error on web signin: $e');
-        rethrow;
-      }
-    }
-  }
+  //         saveUsersInfo(
+  //             context, firstName, lastName, firstName, account.email, " ", " ");
+  //       } else {
+  //         print('\nThe google account is not found.');
+  //       }
+  //     } catch (e) {
+  //       debugPrint('error on web signin: $e');
+  //       rethrow;
+  //     }
+  //   }
+  // }
 
   Map<String, String> getFirstAndLastName(String fullName) {
     // Split the full name by whitespace
@@ -395,7 +395,10 @@ class _SignUpState extends State<SignUp> {
                         buttonText: "Sign up with Google",
                         hasButtonImage: true,
                         onTap: () {
-                          signUpWithGoogle();
+                          SignUpWithGoogle signUpWithGoogle =
+                              SignUpWithGoogle();
+
+                          signUpWithGoogle.signUpWithGoogle(context);
                         },
                       ),
                       const SizedBox(height: 10),
