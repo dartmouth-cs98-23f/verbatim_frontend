@@ -159,8 +159,7 @@ class _LogInState extends State<LogIn> {
           window.sessionStorage['FirstName'] = responseData['firstName'];
           window.sessionStorage['FullName'] =
               '${responseData['firstName']} ${responseData['lastName']}';
-          window.sessionStorage['Bio'] =
-              responseData['bio'] ?? "That's what she said!";
+          window.sessionStorage['Bio'] = responseData['bio'] ?? "";
           window.sessionStorage['Email'] = responseData['email'];
           window.sessionStorage['Password'] = responseData['password'];
           window.sessionStorage['ProfileUrl'] =
