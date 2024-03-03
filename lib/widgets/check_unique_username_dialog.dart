@@ -76,7 +76,7 @@ class CheckUsernameDialog {
   // Function to check if username is unique
   Future<bool> checkUsernameUnique(String username) async {
     await getUsers(); // Fetch list of existing usernames
-    return !userUsernames.contains(username);
+    return !userUsernames.contains(username.toLowerCase());
   }
 
   // Function to get all users to display
@@ -91,7 +91,10 @@ class CheckUsernameDialog {
       final List<User> userList =
           data.map((item) => User.fromJson(item)).toList();
 
-      userUsernames = userList.map((user) => user.username).toList();
+      userUsernames =
+          userList.map((user) => user.username.toLowerCase()).toList();
+
+      print("\n Existing usernames are ${userUsernames} \n");
     } else {
       print("failure");
     }
