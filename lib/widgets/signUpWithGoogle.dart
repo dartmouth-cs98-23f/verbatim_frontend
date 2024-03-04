@@ -112,7 +112,7 @@ class SignUpWithGoogle {
         window.sessionStorage['FirstName'] = firstName;
         window.sessionStorage['LastName'] = lastName;
         window.sessionStorage['FullName'] = '$firstName $lastName';
-        window.sessionStorage['Bio'] = "That's what she said!";
+        window.sessionStorage['Bio'] = "";
         window.sessionStorage['Email'] = email;
         window.sessionStorage['Password'] = password;
         window.sessionStorage['ProfileUrl'] = 'assets/profile_pic.png';
