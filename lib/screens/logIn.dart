@@ -1,6 +1,7 @@
 import 'dart:html';
 
 import 'package:firebase_auth/firebase_auth.dart';
+import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -29,10 +30,6 @@ class _LogInState extends State<LogIn> {
   Map<String, Text> validationErrors = {};
   final usernameEmailController = TextEditingController();
   final passwordController = TextEditingController();
-  final GoogleSignIn _googleSignIn = GoogleSignIn(
-      scopes: ['email'],
-      clientId:
-          '1052195157201-9d7dskf4jihdd8b3ad6bmidnkoilu9ht.apps.googleusercontent.com');
 
   void logIn(
       BuildContext context, String usernameOrEmail, String password) async {
@@ -193,27 +190,51 @@ class _LogInState extends State<LogIn> {
   }
 
   // Sign in with Google functionality
-  Future<User?> signInWithGoogle() async {
-    User? user;
-    FirebaseAuth auth = FirebaseAuth.instance;
-    // The `GoogleAuthProvider` can only be used while running on the web
-    GoogleAuthProvider authProvider = GoogleAuthProvider();
+  // Future<User?> signInWithGoogle() async {
+  //   User? user;
+  //   FirebaseAuth auth = FirebaseAuth.instance;
+  //   // The `GoogleAuthProvider` can only be used while running on the web
+  //   GoogleAuthProvider authProvider = GoogleAuthProvider();
 
-    try {
-      final UserCredential userCredential =
-          await auth.signInWithPopup(authProvider);
-      user = userCredential.user;
-    } catch (e) {
-      print("\nError while sign in with Google: $e\n");
+  //   try {
+  //     final UserCredential userCredential =
+  //         await auth.signInWithPopup(authProvider);
+  //     user = userCredential.user;
+  //   } catch (e) {
+  //     print("\nError while sign in with Google: $e\n");
+  //   }
+
+  //   if (user != null) {
+  //     logIn(context, user.email as String, " ");
+
+  //     print("\nname: ${user.displayName as String}");
+  //     print("\nuserEmail: ${user.email as String}");
+  //   }
+  //   return user;
+  // }
+
+  final GoogleSignIn _googleSignIn = GoogleSignIn(
+      scopes: ['email'],
+      clientId:
+          '1052195157201-9d7dskf4jihdd8b3ad6bmidnkoilu9ht.apps.googleusercontent.com');
+
+  // Function to sign up with Google
+  Future<void> signInWithGoogle(BuildContext context) async {
+    if (kIsWeb) {
+      final GoogleSignInAccount? account = await _googleSignIn.signIn();
+      try {
+        if (account != null) {
+          print("\nSigning in with google: \n");
+          print("\nEmail: ${account.email}\n");
+          print("\nName: ${account.displayName} \n");
+
+          logIn(context, account.email, " ");
+        }
+      } catch (e) {
+        debugPrint('error on web signin with Google: $e');
+        rethrow;
+      }
     }
-
-    if (user != null) {
-      logIn(context, user.email as String, " ");
-
-      print("\nname: ${user.displayName as String}");
-      print("\nuserEmail: ${user.email as String}");
-    }
-    return user;
   }
 
   bool isValidEmail(String email) {
@@ -359,7 +380,7 @@ class _LogInState extends State<LogIn> {
                         buttonText: 'Sign in with Google',
                         hasButtonImage: true,
                         onTap: () {
-                          signInWithGoogle();
+                          signInWithGoogle(context);
                         },
                       ),
                       const SizedBox(height: 10),
