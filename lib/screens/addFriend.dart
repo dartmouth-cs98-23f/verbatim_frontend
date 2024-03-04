@@ -360,7 +360,7 @@ class _AddFriendState extends State<addFriend> {
                                 alignment: Alignment.center,
                                 child: Container(
                                     width: 357,
-                                    height: 50,
+                                    height: 40,
                                     decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(20),

@@ -21,7 +21,7 @@ class FriendsAppBar extends StatelessWidget implements PreferredSizeWidget {
       elevation: 0,
       title: Container(
         height: 50,
-        width: 160,
+        width: 170,
         alignment: const Alignment(-2.0, 0),
         decoration: BoxDecoration(
           color: Colors.transparent,
@@ -30,11 +30,13 @@ class FriendsAppBar extends StatelessWidget implements PreferredSizeWidget {
         child: Center(
           child: Text(
             'Add Friends',
-            style: GoogleFonts.poppins(textStyle: const TextStyle(
-              fontSize: 24,
-              color: Colors.white,
-              fontWeight: FontWeight.w900,
-            ),),
+            style: GoogleFonts.poppins(
+              textStyle: const TextStyle(
+                fontSize: 24,
+                color: Colors.white,
+                fontWeight: FontWeight.w900,
+              ),
+            ),
           ),
         ),
       ),
