@@ -36,4 +36,4 @@ Ryan Dudak, Eve Wening, Eric Richardson, Dahlia Igiraneza, Jackline Gathoni
 
 ## Acknowledgments
 
-- Eric Richardson (For not only creating the initial starter code for this frontend project but also taking the lead in its overall setup.)
+- Thank you to the CS department and especially Tim Tregubov + Natalie Svoboda for guiding us throughout this project.
