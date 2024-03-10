@@ -32,7 +32,6 @@ String email = window.sessionStorage['Email'] ?? "";
 String password = window.sessionStorage['Password'] ?? "";
 
 class _GlobalChallengeState extends State<globalChallenge> {
-  //TODO:
   String username = '';
 
   String userResponse = '';
