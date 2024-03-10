@@ -52,7 +52,7 @@ class groupChallenge extends StatefulWidget {
 }
 
 class _GroupChallengeState extends State<groupChallenge> {
-// HARD CODED - load pics a diff way
+// HARD CODED - no longer in use
   List<int> groupUsers = [1, 2, 3, 4, 5, 6];
 
 //fix image getting but jsut use this for now
@@ -142,7 +142,7 @@ class _GroupChallengeState extends State<groupChallenge> {
         var question = answer['question'];
         var responses = answer['responses'];
 
-        // Create a Map for the current question if not already created
+        //map for the current question if not already created
         answersSubmitMap.putIfAbsent(question, () => {});
 
         // Iterate over responses and add them to the Map
