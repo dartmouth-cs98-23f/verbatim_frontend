@@ -1,6 +1,5 @@
 import 'dart:convert';
 import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -178,7 +177,6 @@ class _AddFriendState extends State<addFriend> {
           data.map((item) => User.fromJson(item)).toList();
 
       userUsernames = userList
-          //TODO:
           .where((user) => user.username != window.sessionStorage['UserName']!)
           .map((user) => user.username)
           .toList();
@@ -316,7 +314,6 @@ class _AddFriendState extends State<addFriend> {
   @override
   Widget build(BuildContext context) {
     String username = window.sessionStorage['UserName'] ?? "";
-
     const String assetName = 'assets/img1.svg';
 
     return SafeArea(
@@ -360,7 +357,7 @@ class _AddFriendState extends State<addFriend> {
                                 alignment: Alignment.center,
                                 child: Container(
                                     width: 357,
-                                    height: 50,
+                                    height: 40,
                                     decoration: BoxDecoration(
                                       color: Colors.white,
                                       borderRadius: BorderRadius.circular(20),
@@ -471,14 +468,12 @@ class _AddFriendState extends State<addFriend> {
                                             RegExp(r'^\w'),
                                             (match) => match
                                                 .group(0)!
-                                                .toUpperCase(), // Ensures the first letter of first name is capitalized.
+                                                .toUpperCase(), // capitalize first letter of name
                                           ),
                                           style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               color: Colors.black,
-                                              fontFamily:
-                                                  'Poppins' // Optional: Change text color to blue for clickable effect
-                                              ),
+                                              fontFamily: 'Poppins'),
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                       ),
@@ -528,16 +523,13 @@ class _AddFriendState extends State<addFriend> {
                                         child: Text(
                                           name.replaceFirstMapped(
                                             RegExp(r'^\w'),
-                                            (match) => match
-                                                .group(0)!
-                                                .toUpperCase(), // Ensures the first letter of first name is capitalized.
+                                            (match) =>
+                                                match.group(0)!.toUpperCase(),
                                           ),
                                           style: const TextStyle(
                                               fontWeight: FontWeight.bold,
                                               color: Colors.black,
-                                              fontFamily:
-                                                  'Poppins' // Optional: Change text color to blue for clickable effect
-                                              ),
+                                              fontFamily: 'Poppins'),
                                           overflow: TextOverflow.ellipsis,
                                         ),
                                       ),

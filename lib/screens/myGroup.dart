@@ -63,9 +63,6 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
       }
       verbaMatchGroup = usernames;
 
-      // For testing purposes;
-      // verbaMatchGroup = ['ian', 'ange'];
-
       groupMembers = List<String>.from(jsonData["groupMembers"]);
 
       await getGroupMemberObjects(groupMembers);
@@ -98,7 +95,6 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
           .toList();
     } else {
       print("Failure: ${response.statusCode}");
-      // Handle failure if needed
     }
   }
 
@@ -166,7 +162,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
     return mappedChallenges;
   }
 
-//jadded
+//j added
   List<dynamic> groupAnswers = [];
   double verbaMatchSimilarity = 0;
   int totalResponses = 0;
@@ -261,7 +257,6 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
       BuildContext context, String groupName, int? groupId) async {
     return showDialog<void>(
       context: context,
-      // barrierColor: Color(0x00ffffff), / maybe this will fix weird looking border?
       builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
@@ -384,7 +379,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
               //   activeChallengesHard.add('New Standard Challenge');
 
               Navigator.pop(context);
-              String username = window.sessionStorage['UserName']?? "";
+              String username = window.sessionStorage['UserName'] ?? "";
 
               createStandardChallenge(username, groupID).then((_) {
                 // re-initiate to load
@@ -458,7 +453,7 @@ class _MyGroupState extends State<myGroup> with SingleTickerProviderStateMixin {
   @override
   void initState() {
     super.initState();
-    username = window.sessionStorage['UserName']?? "";
+    username = window.sessionStorage['UserName'] ?? "";
     _tabController = TabController(length: 2, vsync: this);
     _loadChallenges();
   }

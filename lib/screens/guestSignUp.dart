@@ -5,13 +5,16 @@ import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/gameObject.dart';
+import 'package:verbatim_frontend/widgets/guestSignUpWithGoogle.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
+import 'package:verbatim_frontend/widgets/my_button_with_image.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'package:verbatim_frontend/screens/signupErrorMessage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 import 'package:verbatim_frontend/statsGameObject.dart';
 import 'package:google_fonts/google_fonts.dart';
+import 'package:verbatim_frontend/widgets/signUpWithGoogle.dart';
 
 class GuestSignUp extends StatefulWidget {
   //TODO: figure out how to not need the
@@ -112,6 +115,7 @@ class _GuestSignUpState extends State<GuestSignUp> {
         }
       }
 
+
         window.sessionStorage['UserName'] = username;
         window.sessionStorage['FirstName'] = firstName;
         window.sessionStorage['LastName'] = lastName;
@@ -119,6 +123,7 @@ class _GuestSignUpState extends State<GuestSignUp> {
         window.sessionStorage['Email'] = email;
         window.sessionStorage['Password'] = password;
         window.sessionStorage['ProfileUrl'] = 'assets/profile_pic.png';
+
 
       Navigator.pushNamed(context,
           '/global_challenge'); //push them to the stats page if we have one
@@ -372,6 +377,17 @@ class _GuestSignUpState extends State<GuestSignUp> {
                             passwordController.text,
                             confirmPasswordController.text,
                           );
+                        },
+                      ),
+                      const SizedBox(height: 10),
+                      MyButtonWithImage(
+                        buttonText: "Sign up with Google",
+                        hasButtonImage: true,
+                        onTap: () {
+                          GuestSignUpWithGoogle guestSignUpWithGoogle =
+                              GuestSignUpWithGoogle();
+
+                          guestSignUpWithGoogle.signUpWithGoogle(context);
                         },
                       ),
                       const SizedBox(height: 10),

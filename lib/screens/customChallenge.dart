@@ -116,7 +116,7 @@ class _CustomChallengeState extends State<customChallenge>
                                 SizedBox(height: 10.v),
                               ]))
                         ])),
-                    // List of 5 rectangles
+                    //  5 rectangles
                     for (int i = 0; i < prompts.length; i++)
                       _buildEditableRectangle(i),
                     const SizedBox(height: 20),
@@ -169,7 +169,8 @@ class _CustomChallengeState extends State<customChallenge>
                         if (widget.friendship) {
                           int groupID = widget.groupId!;
                           String name = widget.groupName;
-                          String username = window.sessionStorage['UserName']?? "";
+                          String username =
+                              window.sessionStorage['UserName'] ?? "";
                           Navigator.pop(context);
                           createCustomChallenge(username, prompts, groupID)
                               .then((_) {
@@ -184,7 +185,8 @@ class _CustomChallengeState extends State<customChallenge>
                           });
                         } else {
                           int groupID = widget.groupId!;
-                          String username = window.sessionStorage['UserName']?? "";
+                          String username =
+                              window.sessionStorage['UserName'] ?? "";
                           Navigator.pop(context);
                           createCustomChallenge(username, prompts, groupID)
                               .then((_) {
@@ -281,7 +283,6 @@ class _CustomChallengeState extends State<customChallenge>
                     child: TextField(
                       focusNode: focusNode,
                       autofocus: true,
-                      //maxLength: 100,
                       controller: editingController,
                       decoration: const InputDecoration(
                         hintText: "Enter your challenge question...",

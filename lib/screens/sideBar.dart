@@ -1,6 +1,5 @@
 import 'dart:html';
 import 'dart:math';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:http/http.dart' as http;
@@ -8,9 +7,7 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/Components/defineRoutes.dart';
 import 'dart:convert';
-
 import 'package:verbatim_frontend/screens/addFriend.dart';
-
 import 'package:verbatim_frontend/screens/profile.dart';
 import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 import 'package:confetti/confetti.dart';
@@ -155,7 +152,6 @@ class _SideBarState extends State<SideBar> {
       });
     } else {
       print("Failure: ${response.statusCode}");
-      // Handle failure if needed
     }
   }
 
@@ -261,11 +257,9 @@ class _SideBarState extends State<SideBar> {
   void initState() {
     super.initState();
 
-
-
-    username = window.sessionStorage['UserName']?? "";
-    String FirstName = window.sessionStorage['FirstName']?? "";
-    String LastName = window.sessionStorage['LastName']?? "";
+    username = window.sessionStorage['UserName'] ?? "";
+    String FirstName = window.sessionStorage['FirstName'] ?? "";
+    String LastName = window.sessionStorage['LastName'] ?? "";
 
     firstName = FirstName.replaceFirstMapped(
       RegExp(r'^\w'),
@@ -323,7 +317,8 @@ class _SideBarState extends State<SideBar> {
                         child: Center(
                           child: ListTile(
                             title: Text(
-                              (window.sessionStorage['LastName']?? " ").isNotEmpty
+                              (window.sessionStorage['LastName'] ?? " ")
+                                      .isNotEmpty
                                   ? '$firstName $lastNameInitial.'
                                   : firstName,
                               style: const TextStyle(
@@ -334,7 +329,7 @@ class _SideBarState extends State<SideBar> {
                             ),
                             leading: FirebaseStorageImage(
                                 profileUrl:
-                                    window.sessionStorage['ProfileUrl']?? ""),
+                                    window.sessionStorage['ProfileUrl'] ?? ""),
                             trailing: const Icon(Icons.settings,
                                 color: Colors.white, size: 26),
                             onTap: () {
@@ -422,9 +417,7 @@ class _SideBarState extends State<SideBar> {
                                   child: Text(
                                     friend.username.replaceFirstMapped(
                                       RegExp(r'^\w'),
-                                      (match) => match
-                                          .group(0)!
-                                          .toUpperCase(), // Ensures the first letter of first name is capitalized.
+                                      (match) => match.group(0)!.toUpperCase(),
                                     ),
                                     style: GoogleFonts.poppins(
                                         textStyle: const TextStyle(
@@ -458,23 +451,17 @@ class _SideBarState extends State<SideBar> {
                       ),
                     ],
                   ),
+                  // confetti doesnt work yet :(
                   ConfettiWidget(
                     confettiController: _confettiController,
                     blastDirectionality: BlastDirectionality.explosive,
-                    maxBlastForce: 20, // Adjust the blast force as needed
-                    minBlastForce: 8, // Adjust the blast force as needed
-                    emissionFrequency:
-                        0.05, // Adjust the frequency of confetti emission
-                    numberOfParticles:
-                        50, // Adjust the number of confetti particles
-                    gravity: 0.05, // Adjust the gravity of confetti particles
-                    shouldLoop:
-                        false, // Set to true if you want the confetti to loop
-                    colors: const [
-                      Colors.blue,
-                      Colors.green,
-                      Colors.pink
-                    ], // Add your desired confetti colors
+                    maxBlastForce: 20,
+                    minBlastForce: 8,
+                    emissionFrequency: 0.05,
+                    numberOfParticles: 50,
+                    gravity: 0.05,
+                    shouldLoop: false,
+                    colors: const [Colors.blue, Colors.green, Colors.pink],
                   ),
                   const SizedBox(height: 20.0),
                   ExpansionTile(
@@ -518,9 +505,8 @@ class _SideBarState extends State<SideBar> {
                                 // If you want the images to appear before the text, keep this block here
                                 SizedBox(
                                   width: 20.0 +
-                                      min(memberObjects.length, 6) *
-                                          20.0, // Adjust based on the number of images
-                                  height: 30.0, // Height to accommodate images
+                                      min(memberObjects.length, 6) * 20.0,
+                                  height: 30.0,
                                   child: Stack(
                                     children: [
                                       for (int i = 0;
@@ -614,9 +600,7 @@ class _SideBarState extends State<SideBar> {
                                 child: Text(
                                   requester.username.replaceFirstMapped(
                                     RegExp(r'^\w'),
-                                    (match) => match
-                                        .group(0)!
-                                        .toUpperCase(), // Ensures the first letter of first name is capitalized.
+                                    (match) => match.group(0)!.toUpperCase(),
                                   ),
                                   style: GoogleFonts.poppins(
                                       textStyle: const TextStyle(
@@ -633,33 +617,6 @@ class _SideBarState extends State<SideBar> {
                               trailing: Row(
                                 mainAxisSize: MainAxisSize.min,
                                 children: [
-                                  /*GestureDetector(
-                                    onTap: () {
-                                      _showAcceptDeclineDialog(context,
-                                          (accepted) {
-                                        setState(() {
-                                          friendRequests.remove(requester);
-                                          if (friendRequests.isNotEmpty) {
-                                            trailingIconColor = Colors.orange;
-                                          } else {
-                                            trailingIconColor = Colors.black;
-                                          }
-                                          if (accepted) {
-                                            handleFriendRequests(username,
-                                                requester.username, true);
-                                          } else {
-                                            handleFriendRequests(username,
-                                                requester.username, false);
-                                          }
-                                        });
-                                      });
-                                    },
-                                    child: CircleAvatar(
-                                      backgroundColor: Colors.transparent,
-                                      child: Image.asset('assets/decision.png'),
-                                      radius: 18,
-                                    ),
-                                  ),*/
                                   GestureDetector(
                                     onTap: () {
                                       setState(() {
@@ -698,35 +655,6 @@ class _SideBarState extends State<SideBar> {
                                     child: const Icon(Icons.cancel,
                                         color: Colors.black),
                                   ),
-
-                                  /*
-                                  GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        friendRequests.remove(requester);
-                                        handleFriendRequests(
-                                            username, requester.username, true);
-                                      });
-                                    },
-                                    child: const Icon(Icons.check_box,
-                                        color: Colors.black),
-                                  ),
-                                  */
-
-                                  /*
-                                  GestureDetector(
-                                    onTap: () {
-                                      setState(() {
-                                        handleFriendRequests(username,
-                                            requester.username, false);
-
-                                        // friendRequests.remove(requester);
-                                      });
-                                    },
-                                    child: const Icon(Icons.cancel,
-                                        color: Colors.black),
-                                  ),
-                                  */
                                 ],
                               ),
                               onTap:

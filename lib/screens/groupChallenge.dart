@@ -1,10 +1,14 @@
 import 'dart:html';
 import 'dart:math';
+import 'package:firebase_core/firebase_core.dart';
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/BackendService.dart';
+import 'package:verbatim_frontend/screens/addFriend.dart';
 //import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/friendship.dart';
+import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
+import 'package:verbatim_frontend/widgets/verba_match_widget.dart';
 import 'sideBar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
@@ -48,7 +52,7 @@ class groupChallenge extends StatefulWidget {
 }
 
 class _GroupChallengeState extends State<groupChallenge> {
-// HARD CODED - load pics a diff way
+// HARD CODED - no longer in use
   List<int> groupUsers = [1, 2, 3, 4, 5, 6];
 
 //fix image getting but jsut use this for now
@@ -138,7 +142,7 @@ class _GroupChallengeState extends State<groupChallenge> {
         var question = answer['question'];
         var responses = answer['responses'];
 
-        // Create a Map for the current question if not already created
+        //map for the current question if not already created
         answersSubmitMap.putIfAbsent(question, () => {});
 
         // Iterate over responses and add them to the Map
@@ -271,116 +275,116 @@ class _GroupChallengeState extends State<groupChallenge> {
                     visible: !responded,
                     child: Stack(alignment: Alignment.bottomRight, children: [
                       Container(
-                        clipBehavior: Clip.hardEdge,
-                        margin: EdgeInsets.only(top: 10.h),
-                        //    padding: EdgeInsets.symmetric(horizontal: 10),
-                        width: 300,
-                        height: 400,
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(20),
-                          boxShadow: [
-                            BoxShadow(
-                              color: const Color.fromARGB(255, 117, 19, 12)
-                                  .withOpacity(0.1),
-                              blurRadius: 5,
-                              offset: const Offset(3, 7),
-                            ),
-                          ],
-                          color: Colors.white,
-                        ),
-                        child: Padding(padding: EdgeInsets.all(10),
-                                                child: Column(
-                          children: [
-                            const SizedBox(height: 30),
-                            Padding(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 16.0),
-                              child: Text(
-                                questions[currentQuestionIndex],
-                                style: GoogleFonts.poppins(
-                                  textStyle: const TextStyle(
-                                    fontSize: 18,
-                                    fontWeight: FontWeight.bold,
+                          clipBehavior: Clip.hardEdge,
+                          margin: EdgeInsets.only(top: 10.h),
+                          //    padding: EdgeInsets.symmetric(horizontal: 10),
+                          width: 300,
+                          height: 400,
+                          decoration: BoxDecoration(
+                            borderRadius: BorderRadius.circular(20),
+                            boxShadow: [
+                              BoxShadow(
+                                color: const Color.fromARGB(255, 117, 19, 12)
+                                    .withOpacity(0.1),
+                                blurRadius: 5,
+                                offset: const Offset(3, 7),
+                              ),
+                            ],
+                            color: Colors.white,
+                          ),
+                          child: Padding(
+                            padding: EdgeInsets.all(10),
+                            child: Column(
+                              children: [
+                                const SizedBox(height: 30),
+                                Padding(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 16.0),
+                                  child: Text(
+                                    questions[currentQuestionIndex],
+                                    style: GoogleFonts.poppins(
+                                      textStyle: const TextStyle(
+                                        fontSize: 18,
+                                        fontWeight: FontWeight.bold,
+                                      ),
+                                    ),
                                   ),
                                 ),
-                              ),
-                            ),
-                            const SizedBox(height: 30.0),
-                            Container(
-                              padding:
-                                  const EdgeInsets.symmetric(horizontal: 20.0),
-                              child: TextField(
-                                controller: responseController,
-                                onChanged: (value) {
-                                  setState(() {
-                                    userResponse = value;
-                                  });
-                                },
-                                decoration: const InputDecoration(
-                                  hintText: 'Type your answer here...',
-                                ),
-                              ),
-                            ),
-                            const SizedBox(height: 40.0),
-                            ElevatedButton(
-                              style: ElevatedButton.styleFrom(
-                                elevation: 0,
-                                backgroundColor: const Color(0xFFE76F51),
-                                foregroundColor: Colors.white,
-                                shape: RoundedRectangleBorder(
-                                  borderRadius: BorderRadius.circular(30),
-                                ),
-                                minimumSize: const Size(150, 40),
-                                padding: const EdgeInsets.all(16),
-                              ),
-                              onPressed: () {
-                                setState(() {
-                                  userResponse = responseController.text;
-                                  if (userResponse == "") {
-                                    // print("U GOTTA SAY SOMETHING");
-                                  } else {
-                                    userResponses.add(userResponse);
-                                    responseController.clear();
-                                    if (currentQuestionIndex <=
-                                        (numQuestions - 2)) {
-                                      updateProgress();
-                                      currentQuestionIndex += 1;
-                                    } else {
-                                      submitChallenge(
-                                        username,
-                                        widget.challengeId,
-                                        userResponses,
-                                      ).then((_) {
-                                        setState(() {
-                                          responded = true;
-                                        });
+                                const SizedBox(height: 30.0),
+                                Container(
+                                  padding: const EdgeInsets.symmetric(
+                                      horizontal: 20.0),
+                                  child: TextField(
+                                    controller: responseController,
+                                    onChanged: (value) {
+                                      setState(() {
+                                        userResponse = value;
                                       });
-                                    }
-                                  }
-                                });
-                              },
-                              child: Text(
-                                currentQuestionIndex == (numQuestions - 1)
-                                    ? 'Submit'
-                                    : 'Next',
-                              ),
+                                    },
+                                    decoration: const InputDecoration(
+                                      hintText: 'Type your answer here...',
+                                    ),
+                                  ),
+                                ),
+                                const SizedBox(height: 40.0),
+                                ElevatedButton(
+                                  style: ElevatedButton.styleFrom(
+                                    elevation: 0,
+                                    backgroundColor: const Color(0xFFE76F51),
+                                    foregroundColor: Colors.white,
+                                    shape: RoundedRectangleBorder(
+                                      borderRadius: BorderRadius.circular(30),
+                                    ),
+                                    minimumSize: const Size(150, 40),
+                                    padding: const EdgeInsets.all(16),
+                                  ),
+                                  onPressed: () {
+                                    setState(() {
+                                      userResponse = responseController.text;
+                                      if (userResponse == "") {
+                                        // print("U GOTTA SAY SOMETHING");
+                                      } else {
+                                        userResponses.add(userResponse);
+                                        responseController.clear();
+                                        if (currentQuestionIndex <=
+                                            (numQuestions - 2)) {
+                                          updateProgress();
+                                          currentQuestionIndex += 1;
+                                        } else {
+                                          submitChallenge(
+                                            username,
+                                            widget.challengeId,
+                                            userResponses,
+                                          ).then((_) {
+                                            setState(() {
+                                              responded = true;
+                                            });
+                                          });
+                                        }
+                                      }
+                                    });
+                                  },
+                                  child: Text(
+                                    currentQuestionIndex == (numQuestions - 1)
+                                        ? 'Submit'
+                                        : 'Next',
+                                  ),
+                                ),
+                                const SizedBox(height: 20),
+                                SizedBox(
+                                  width: 200,
+                                  child: LinearProgressIndicator(
+                                    value: progressValue,
+                                    backgroundColor: Colors.grey[300],
+                                    valueColor:
+                                        const AlwaysStoppedAnimation<Color>(
+                                            Colors.orange),
+                                    minHeight: 10,
+                                  ),
+                                ),
+                              ],
                             ),
-                            const SizedBox(height: 20),
-                            SizedBox(
-                              width: 200,
-                              child: LinearProgressIndicator(
-                                value: progressValue,
-                                backgroundColor: Colors.grey[300],
-                                valueColor: const AlwaysStoppedAnimation<Color>(
-                                    Colors.orange),
-                                minHeight: 10,
-                              ),
-                            ),
-                          ],
-                        ),
-                        )
-
-                      ),
+                          )),
                       Visibility(
                         visible: !responded,
                         child: Image.asset(
@@ -390,9 +394,16 @@ class _GroupChallengeState extends State<groupChallenge> {
                       )
                     ])),
                 if (responded && widget.completed == true)
-                  _verbaMatch(verbaMatchUsers2, verbaMatchSimilarity2)
+                  //_verbaMatch(verbaMatchUsers2, verbaMatchSimilarity2)
+                  VerbaMatchWidget(
+                    verbaMatchInVerbaMatch: verbaMatchUsers2,
+                    verbaMatchSimilarity: verbaMatchSimilarity2,
+                  )
                 else if (responded && (widget.completed != true))
-                  _verbaMatch(verbaMatchSubmit, verbaMatchSimilaritySubmit),
+                  //_verbaMatch(verbaMatchSubmit, verbaMatchSimilaritySubmit),
+                  VerbaMatchWidget(
+                      verbaMatchInVerbaMatch: verbaMatchSubmit,
+                      verbaMatchSimilarity: verbaMatchSimilaritySubmit),
                 if (responded)
                   Container(
                     clipBehavior: Clip.hardEdge,
@@ -528,16 +539,16 @@ class _GroupChallengeState extends State<groupChallenge> {
                                 style: GoogleFonts.poppins(
                                   textStyle: const TextStyle(
                                     fontSize: 16,
-                                      fontWeight: FontWeight.w700,
+                                    fontWeight: FontWeight.w700,
                                   ),
                                 ),
                               ),
                             ),
-                                                    const Padding(
-                          padding:  EdgeInsets.only(
-                              right: 5), // Adjust as needed
-                          child: const Icon(Icons.arrow_drop_up),
-                        ),
+                            const Padding(
+                              padding:
+                                  EdgeInsets.only(right: 5), // Adjust as needed
+                              child: const Icon(Icons.arrow_drop_up),
+                            ),
                           ],
                         ),
                       ),
@@ -569,7 +580,12 @@ class _GroupChallengeState extends State<groupChallenge> {
                                       child: Align(
                                         alignment: Alignment.center,
                                         child: Text(
-                                          usersList[indexB],
+                                          usersList[indexB].replaceFirstMapped(
+                                            RegExp(r'^\w'),
+                                            (match) => match
+                                                .group(0)!
+                                                .toUpperCase(), // Ensures the first letter of first name is capitalized.
+                                          ),
                                           style: GoogleFonts.poppins(
                                             textStyle: const TextStyle(
                                               fontSize: 14,
@@ -635,8 +651,8 @@ class _GroupChallengeState extends State<groupChallenge> {
                           ),
                         ),
                         const Padding(
-                          padding:  EdgeInsets.only(
-                              right: 5), // Adjust as needed
+                          padding:
+                              EdgeInsets.only(right: 5), // Adjust as needed
                           child: const Icon(Icons.arrow_drop_down),
                         ),
                       ],
@@ -646,336 +662,5 @@ class _GroupChallengeState extends State<groupChallenge> {
             ))),
       ),
     );
-  }
-}
-
-Widget _verbaMatch(
-    List<dynamic> verbaMatchInVerbaMatch, double verbaMatchSimilarity) {
-  print("verbaMatchUsers: $verbaMatchInVerbaMatch");
-  bool isThereVerbaMatch = verbaMatchInVerbaMatch.isNotEmpty;
-
-  print("bool is there a verba match: $isThereVerbaMatch");
-
-  print(
-      "this is verbaMatchInVerbaMatch in _verba amtch $verbaMatchInVerbaMatch");
-  // if there isnt a verbamatch hardcode it rn so it runs while i debug
-  if (!isThereVerbaMatch) {
-    print("in the if state");
-    verbaMatchInVerbaMatch = ["empty", "verbamatch"];
-    print("yea its empty");
-  }
-  String verb1 = verbaMatchInVerbaMatch[0];
-  String verb2 = verbaMatchInVerbaMatch[1];
-  return Padding(
-      padding: EdgeInsets.only(bottom: 20),
-      child: Align(
-          alignment: Alignment.topCenter,
-          child: Container(
-              width: 350,
-              height: 200,
-              decoration: BoxDecoration(
-                borderRadius: BorderRadius.circular(35),
-                boxShadow: [
-                  BoxShadow(
-                    color:
-                        const Color.fromARGB(255, 117, 19, 12).withOpacity(0.6),
-                    blurRadius: 5,
-                    offset: const Offset(3, 7),
-                  ),
-                ],
-                color: Colors.white,
-              ),
-              // color: Colors.yellow,
-              child: Padding(
-                  padding: EdgeInsets.only(
-                    top: 25,
-                    left: 10,
-                  ),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      Visibility(
-                        visible: !isThereVerbaMatch,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: 'No ',
-                                    style: GoogleFonts.poppins(
-                                      textStyle: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Colors.black,
-                                        fontSize: 18,
-                                      ),
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: 'Verba',
-                                    style: GoogleFonts.poppins(
-                                      textStyle: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(0xFFE76F51),
-                                        fontSize: 18,
-                                      ),
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: "Match",
-                                    style: GoogleFonts.poppins(
-                                        textStyle: const TextStyle(
-                                      fontSize: 18,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    )),
-                                  ),
-                                ],
-                              ),
-                              textAlign: TextAlign.left,
-                            ),
-                            const SizedBox(height: 10),
-                            const Row(children: [
-                              Icon(Icons.help_outline, size: 50),
-                              Icon(Icons.help_outline, size: 50),
-                            ]),
-                            const SizedBox(height: 10),
-                            Text(
-                              '...yet!',
-                              style: GoogleFonts.poppins(
-                                textStyle: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Visibility(
-                        visible: isThereVerbaMatch,
-                        child: Column(
-                          mainAxisAlignment: MainAxisAlignment.start,
-                          children: [
-                            RichText(
-                              text: TextSpan(
-                                children: [
-                                  TextSpan(
-                                    text: 'Verba',
-                                    style: GoogleFonts.poppins(
-                                      textStyle: const TextStyle(
-                                        fontWeight: FontWeight.bold,
-                                        color: Color(0xFFE76F51),
-                                        fontSize: 23,
-                                      ),
-                                    ),
-                                  ),
-                                  TextSpan(
-                                    text: "Match!",
-                                    style: GoogleFonts.poppins(
-                                        textStyle: const TextStyle(
-                                      fontSize: 23,
-                                      fontWeight: FontWeight.bold,
-                                      color: Colors.black,
-                                    )),
-                                  ),
-                                ],
-                              ),
-                              textAlign: TextAlign.left,
-                            ),
-                            const SizedBox(height: 10),
-                            Row(children: [
-                              Image.asset('assets/Ellipse 42.png',
-                                  height: 50, width: 50),
-                              Image.asset('assets/Ellipse 43.png',
-                                  height: 50, width: 50),
-                            ]),
-                            const SizedBox(height: 10),
-                            Text(
-                              '$verb1 and $verb2',
-                              style: GoogleFonts.poppins(
-                                textStyle: const TextStyle(
-                                  fontSize: 18,
-                                  fontWeight: FontWeight.bold,
-                                ),
-                              ),
-                            ),
-                          ],
-                        ),
-                      ),
-                      Visibility(
-                          visible: isThereVerbaMatch,
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                  height: 150,
-                                  width: 150,
-                                  alignment: Alignment.center,
-                                  child: DonutChart(
-                                      groupSimilarity: verbaMatchSimilarity,
-                                      match: true),
-                                ),
-                              ])),
-                      Visibility(
-                          visible: !isThereVerbaMatch,
-                          child: Column(
-                              mainAxisAlignment: MainAxisAlignment.start,
-                              children: [
-                                Container(
-                                  height: 150,
-                                  width: 150,
-                                  alignment: Alignment.center,
-                                  child: DonutChart(
-                                      groupSimilarity: verbaMatchSimilarity,
-                                      match: false),
-                                ),
-                              ]))
-                    ],
-                  )))));
-}
-
-class DonutChart extends StatefulWidget {
-  final double groupSimilarity;
-  final bool match;
-
-  const DonutChart({
-    Key? key,
-    required this.groupSimilarity,
-    required this.match,
-  }) : super(key: key);
-
-  @override
-  State<DonutChart> createState() => _DonutChartState();
-}
-
-class _DonutChartState extends State<DonutChart> {
-  @override
-  Widget build(BuildContext context) {
-    Color calculateColor(double similarity) {
-      int score = similarity.truncate();
-      score = (score / 2).truncate();
-
-      return Color.fromARGB(255, 250, 192 + score, 94 + score);
-    }
-
-    return Scaffold(
-        backgroundColor: Colors.transparent,
-        body: SizedBox(
-          height: 180,
-          width: 180,
-          child: Column(
-            children: [
-              SizedBox(
-                height: 125,
-                child: Stack(
-                  alignment: Alignment.center,
-                  children: [
-                    PieChart(
-                      PieChartData(
-                        startDegreeOffset: 250,
-                        sectionsSpace: 0,
-                        centerSpaceRadius: 50,
-                        sections: [
-                          PieChartSectionData(
-                            value: widget.groupSimilarity,
-                            color: const Color(0xFFE76F51),
-                            radius: 19,
-                            showTitle: false,
-                          ),
-                          PieChartSectionData(
-                            value: 100 - widget.groupSimilarity,
-                            color: calculateColor(widget.groupSimilarity),
-                            radius: 19,
-                            showTitle: false,
-                          ),
-                        ],
-                      ),
-                    ),
-                    // text inside chart
-                    Visibility(
-                        visible: widget.match,
-                        child: Positioned.fill(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                height: 80,
-                                width: 80,
-                                decoration: const BoxDecoration(
-                                  color: Color.fromARGB(255, 255, 243, 238),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Align(
-                                  alignment: Alignment.center,
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(
-                                        "${widget.groupSimilarity.toStringAsFixed(2)}%",
-                                        style: GoogleFonts.poppins(
-                                          textStyle: const TextStyle(
-                                            fontSize: 13,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                      Text(
-                                        "Similarity",
-                                        style: GoogleFonts.poppins(
-                                          textStyle: const TextStyle(
-                                            fontSize: 10,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        )),
-                    Visibility(
-                        visible: !widget.match,
-                        child: Positioned.fill(
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Container(
-                                height: 80,
-                                width: 80,
-                                decoration: const BoxDecoration(
-                                  color: Color.fromARGB(255, 255, 243, 238),
-                                  shape: BoxShape.circle,
-                                ),
-                                child: Align(
-                                  alignment: Alignment.center,
-                                  child: Column(
-                                    mainAxisSize: MainAxisSize.min,
-                                    children: [
-                                      Text(
-                                        "?",
-                                        style: GoogleFonts.poppins(
-                                          textStyle: const TextStyle(
-                                            fontSize: 17,
-                                            fontWeight: FontWeight.bold,
-                                          ),
-                                        ),
-                                      ),
-                                    ],
-                                  ),
-                                ),
-                              )
-                            ],
-                          ),
-                        )),
-                  ],
-                ),
-              )
-            ],
-          ),
-        ));
   }
 }

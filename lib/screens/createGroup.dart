@@ -1,5 +1,4 @@
 import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 //import 'package:verbatim_frontend/Components/shared_prefs.dart';
@@ -9,7 +8,6 @@ import 'sideBar.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:verbatim_frontend/widgets/create_group_app_bar.dart';
 import 'package:google_fonts/google_fonts.dart';
-
 import 'package:http/http.dart' as http;
 import 'dart:convert';
 
@@ -78,8 +76,6 @@ class _CreateGroupState extends State<createGroup> {
       return {groupId: true};
     } else {
       return {groupId: false};
-      print(
-          'Failed to send responses.ok/??? Status code: ${response.statusCode}');
     }
   }
 
@@ -118,7 +114,7 @@ class _CreateGroupState extends State<createGroup> {
   @override
   void initState() {
     super.initState();
-    username = window.sessionStorage['UserName']?? "";
+    username = window.sessionStorage['UserName'] ?? "";
     _searchController.addListener(() {
       setState(() {
         _searchText = _searchController.text;
@@ -160,8 +156,6 @@ class _CreateGroupState extends State<createGroup> {
 
   @override
   Widget build(BuildContext context) {
-
-
     const String assetName = 'assets/img1.svg'; // orange (top) background
 
     return SafeArea(
@@ -338,7 +332,7 @@ class _CreateGroupState extends State<createGroup> {
                                                       RegExp(r'^\w'),
                                                       (match) => match
                                                           .group(0)!
-                                                          .toUpperCase(), // Ensures the first letter of first name is capitalized.
+                                                          .toUpperCase(), // capitalize first letter of name
                                                     ),
                                                     style: GoogleFonts.poppins(
                                                       textStyle:
@@ -430,7 +424,7 @@ class _CreateGroupState extends State<createGroup> {
                                                               RegExp(r'^\w'),
                                                               (match) => match
                                                                   .group(0)!
-                                                                  .toUpperCase(), // Ensures the first letter of first name is capitalized.
+                                                                  .toUpperCase(),
                                                             ),
                                                             style: GoogleFonts
                                                                 .poppins(
@@ -537,7 +531,6 @@ class _CreateGroupState extends State<createGroup> {
                         elevation: 0.0,
                         shape: RoundedRectangleBorder(
                           borderRadius: BorderRadius.circular(10.0),
-                          //why doesnt this work  side: BorderSide(width: 20.0),
                         ),
                         minimumSize: const Size(100, 50),
                         side: const BorderSide(color: Color(0xFFE76F51)),
