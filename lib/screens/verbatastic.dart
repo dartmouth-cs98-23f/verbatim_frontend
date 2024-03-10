@@ -3,7 +3,6 @@ import 'dart:math';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
-//import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/addFriend.dart';
 import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 import 'package:verbatim_frontend/widgets/my_button_with_svg.dart';
@@ -31,9 +30,7 @@ class Verbatastic extends StatelessWidget {
     Clipboard.setData(ClipboardData(text: inviteLink));
   }
 
-  void sendInvite() {
-    //new dialogue box, takes in phone number, get the pop up from existing code
-  }
+
   Future<void> preloadImages(BuildContext context) async {
     for (int i = 0; i < min(verbatasticUsernames!.length + 1, 6); i++) {
       final key = 'assets/Ellipse ${41 + i}.png';
@@ -212,9 +209,7 @@ class Verbatastic extends StatelessWidget {
             buttonText: "Copy Invite Link",
             iconImage: copyIcon,
             onTap: copyInvite),
-        // const SizedBox(height: 10),
-        // MyButtonWithSvg(
-        //     buttonText: "Send Invite", iconImage: sendIcon, onTap: sendInvite),
+
         SizedBox(height: 25.v),
         SizedBox(
           width: 220,

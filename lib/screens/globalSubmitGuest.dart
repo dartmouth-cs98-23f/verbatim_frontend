@@ -19,7 +19,6 @@ class Guest extends StatelessWidget {
     String sendIcon = 'assets/send.svg';
     String inviteText =
         "\nWant to know how your friend's responses compare to yours? Sign up to meet Verba-friends, create custom challenges, and compare scores!";
-    // ignore: unused_element
     void onTap() {
       String routeName = ModalRoute.of(context)?.settings.name ?? '';
       Map<String, dynamic>? arguments = Uri.parse(routeName).queryParameters;
@@ -37,9 +36,6 @@ class Guest extends StatelessWidget {
       children: [
         const SizedBox(height: 20),
         Center(
-          // child: Padding(
-          // padding: const EdgeInsets.only(left: 25, right: 25.0),
-
           child: RichText(
             text: TextSpan(
               children: [

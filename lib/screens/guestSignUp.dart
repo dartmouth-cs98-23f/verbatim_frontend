@@ -111,16 +111,8 @@ class _GuestSignUpState extends State<GuestSignUp> {
           print("verbatasticUsers is empty");
         }
       }
-        // final userData = Provider.of<UserData>(context, listen: false);
-        // userData.setBio('That\'s what she said!');
-        // userData.setEmail(email);
-        // userData.setFirstName(firstName);
-        // userData.setLastName(lastName);
-        // userData.setUserName(username);
-        // userData.setProfileUrl('assets/profile_pic.png');
-        // userData.setPassword(password);
 
-                window.sessionStorage['UserName'] = username;
+        window.sessionStorage['UserName'] = username;
         window.sessionStorage['FirstName'] = firstName;
         window.sessionStorage['LastName'] = lastName;
         window.sessionStorage['Bio'] = "That's what she said!";
@@ -128,13 +120,6 @@ class _GuestSignUpState extends State<GuestSignUp> {
         window.sessionStorage['Password'] = password;
         window.sessionStorage['ProfileUrl'] = 'assets/profile_pic.png';
 
-      // SharedPrefs.setEmail(email);
-      //   SharedPrefs.setFirstName(firstName);
-      //   SharedPrefs.setLastName(lastName);
-      // SharedPrefs.setPassword(password);
-      // SharedPrefs.setUserName(username);
-      // SharedPrefs.setBio("");
-      // SharedPrefs.setProfileUrl("assets/profile_pic.png");
       Navigator.pushNamed(context,
           '/global_challenge'); //push them to the stats page if we have one
     } else {
@@ -278,8 +263,8 @@ class _GuestSignUpState extends State<GuestSignUp> {
                   child: Align(
                     alignment: Alignment.topCenter,
                     child: Image.asset(
-                      'assets/Logo.png', // Replace with the path to your image asset
-                      width: 150, // Set the width and height to your preference
+                      'assets/Logo.png', 
+                      width: 150, 
                       height: 120,
                     ),
                   ),
@@ -409,8 +394,6 @@ class _GuestSignUpState extends State<GuestSignUp> {
                                   textStyle: const TextStyle(
                                     color: Color(0xFF3C64B1),
                                     fontWeight: FontWeight.w800,
-
-// Blue color for the link
                                   ),
                                 ),
                                 recognizer: TapGestureRecognizer()

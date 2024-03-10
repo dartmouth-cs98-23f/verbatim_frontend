@@ -88,15 +88,7 @@ class GuestUtility {
     List<String>? verbatasticUsernames = [];
   }
 
-  void updateStats() {}
 
-  void clearUserInfo() {
-    String EMAIL = '';
-    String FIRSTNAME = '';
-    String LASTNAME = '';
-    String USERNAME = '';
-    String BIO = '';
-    String PROFILEURL = '';
-    String PASSWORD = '';
-  }
+
+
 }
