@@ -26,9 +26,12 @@ To run dev frontend on a realistic phone for mac/iOS:
 3. run the frontend with flutter run -d chrome --web-port 3000 
 4. copy and paste the url from chrome (http://localhost:3000/) into the emulator's safari browser
 
+
+Note: For full functionality during development testing, you will need a local instance of a PostgreSQL database connected to our backend (which also should be running locally).
+See README.md on the verbatim_backend repo for more details.
 ## Deployment
 
-The frontend is deployed via Firebase.
+The frontend is deployed via Firebase. Additionally, we have configured a Firebase storage bucket in the same project for storing profile pictures.
 
 ## Authors
 
