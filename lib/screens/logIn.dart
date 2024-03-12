@@ -1,13 +1,10 @@
+// Import required packages
 import 'dart:html';
-
-import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
-//import 'package:google_sign_in/google_sign_in.dart';
 import 'package:verbatim_frontend/BackendService.dart';
-
 import 'package:verbatim_frontend/widgets/my_button_with_image.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'package:verbatim_frontend/screens/signupErrorMessage.dart';
@@ -31,12 +28,14 @@ class _LogInState extends State<LogIn> {
   final usernameEmailController = TextEditingController();
   final passwordController = TextEditingController();
 
+// Function to implement the login functionality
   void logIn(
       BuildContext context, String usernameOrEmail, String password) async {
     // Save user's info to the database
     saveUsersInfo(usernameOrEmail, password);
   }
 
+// Function to implement the login functionality for a guest user
   void logInGuest(
       BuildContext context, String usernameOrEmail, String password) async {
     final response = await http.post(
@@ -65,8 +64,6 @@ class _LogInState extends State<LogIn> {
 
     if (response.statusCode == 200) {
       //save user SharedPrefs
-      print("So the sign up actually works:");
-
       final Map<String, dynamic>? data = json.decode(response.body);
       setState(() {
         responded = true;
@@ -119,16 +116,8 @@ class _LogInState extends State<LogIn> {
           print("verbatasticUsers is empty");
         }
       }
-      // SharedPrefs().setEmail(email);
-      // SharedPrefs().setFirstName(firstName);
-      // SharedPrefs().setLastName(lastName);
-      // SharedPrefs().setPassword(password);
-      // SharedPrefs().setUserName(username);
-      // SharedPrefs().setBio("");
-      // SharedPrefs().setProfileUrl("assets/profile_pic.png");
       saveUsersInfo(usernameOrEmail, password);
     } else {
-      print("Records show that user already played Challenge!");
       logIn(context, usernameOrEmail, password);
     }
   }
@@ -164,19 +153,18 @@ class _LogInState extends State<LogIn> {
           Navigator.pushNamed(context, '/global_challenge');
         }
       } else {
-        print('Error during log-in: ${response.statusCode.toString()}');
         Navigator.of(context).push(MaterialPageRoute(
             builder: (context) =>
                 const SignupErrorMessage(pageName: 'log in')));
       }
     } catch (e) {
-      print('Error during sign-up: $e');
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => const SignupErrorMessage(pageName: 'log in'),
       ));
     }
   }
 
+// Function to get the first and last name of a user given their full name
   Map<String, String> getFirstAndLastName(String fullName) {
     // Split the full name by whitespace
     List<String> nameParts = fullName.trim().split(' ');
@@ -189,30 +177,6 @@ class _LogInState extends State<LogIn> {
     return {'firstName': firstName, 'lastName': lastName};
   }
 
-  // Sign in with Google functionality
-  // Future<User?> signInWithGoogle() async {
-  //   User? user;
-  //   FirebaseAuth auth = FirebaseAuth.instance;
-  //   // The `GoogleAuthProvider` can only be used while running on the web
-  //   GoogleAuthProvider authProvider = GoogleAuthProvider();
-
-  //   try {
-  //     final UserCredential userCredential =
-  //         await auth.signInWithPopup(authProvider);
-  //     user = userCredential.user;
-  //   } catch (e) {
-  //     print("\nError while sign in with Google: $e\n");
-  //   }
-
-  //   if (user != null) {
-  //     logIn(context, user.email as String, " ");
-
-  //     print("\nname: ${user.displayName as String}");
-  //     print("\nuserEmail: ${user.email as String}");
-  //   }
-  //   return user;
-  // }
-
   final GoogleSignIn _googleSignIn = GoogleSignIn(
       scopes: ['email'],
       clientId:
@@ -224,10 +188,6 @@ class _LogInState extends State<LogIn> {
       final GoogleSignInAccount? account = await _googleSignIn.signIn();
       try {
         if (account != null) {
-          print("\nSigning in with google: \n");
-          print("\nEmail: ${account.email}\n");
-          print("\nName: ${account.displayName} \n");
-
           logIn(context, account.email, " ");
         }
       } catch (e) {
@@ -237,6 +197,7 @@ class _LogInState extends State<LogIn> {
     }
   }
 
+// Validate a user's email
   bool isValidEmail(String email) {
     // Use a regular expression to validate email format
     final emailRegex = RegExp(
@@ -244,6 +205,7 @@ class _LogInState extends State<LogIn> {
     return emailRegex.hasMatch(email);
   }
 
+// Show the appropriate error message during login
   void setValidationError(String field, String message) {
     setState(() {
       validationErrors[field] = Text(
@@ -257,12 +219,14 @@ class _LogInState extends State<LogIn> {
     });
   }
 
+// Update the error message appropriately
   void validateField(String value, String fieldName, String errorMessage) {
     if (value.isEmpty) {
       setValidationError(fieldName, errorMessage);
     }
   }
 
+// Check if there is any error during login
   void validateUserInfo(BuildContext context, String email, String password) {
     // Clear any previous validation errors
     setState(() {
@@ -285,6 +249,7 @@ class _LogInState extends State<LogIn> {
     }
   }
 
+// Show the error message if any
   Widget? getValidationErrorWidget(String field) {
     return validationErrors.containsKey(field) ? validationErrors[field] : null;
   }
@@ -403,8 +368,6 @@ class _LogInState extends State<LogIn> {
                                   textStyle: const TextStyle(
                                     color: Color(0xFF3C64B1),
                                     fontWeight: FontWeight.w700,
-
-// Blue color for the link
                                   ),
                                 ),
                                 recognizer: TapGestureRecognizer()

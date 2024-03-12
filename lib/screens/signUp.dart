@@ -1,26 +1,19 @@
+// Import the required packages
 import 'dart:html';
-
 import 'package:email_validator/email_validator.dart';
-import 'package:flutter/foundation.dart';
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-import 'package:google_sign_in/google_sign_in.dart';
 import 'package:verbatim_frontend/BackendService.dart';
-import 'package:verbatim_frontend/screens/addFriend.dart';
-import 'package:verbatim_frontend/widgets/errorDialog.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
 import 'package:verbatim_frontend/widgets/my_button_with_image.dart';
 import 'package:verbatim_frontend/widgets/my_textfield.dart';
 import 'package:verbatim_frontend/screens/signupErrorMessage.dart';
 import 'package:http/http.dart' as http;
 import 'dart:convert';
-
-import 'package:verbatim_frontend/widgets/showSuccessDialog.dart';
 import 'package:verbatim_frontend/widgets/signUpWithGoogle.dart';
 
 class SignUp extends StatefulWidget {
-  //TODO: figure out how to not need the
   const SignUp({
     super.key,
   });
@@ -86,44 +79,13 @@ class _SignUpState extends State<SignUp> {
         ));
       }
     } catch (e) {
-      print('Error during sign-up: ${e.toString()}');
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => const SignupErrorMessage(pageName: 'sign up'),
       ));
     }
   }
 
-  // // Function to sign up with Google
-  // Future<void> signUpWithGoogle() async {
-  //   if (kIsWeb) {
-  //     final GoogleSignInAccount? account = await _googleSignIn.signIn();
-  //     try {
-  //       if (account != null) {
-  //         print("\nSigning with google: \n");
-  //         print("\nEmail: ${account.email}\n");
-  //         print("\nName: ${account.displayName} \n");
-
-  //         Map<String, String> nameMap =
-  //             getFirstAndLastName(account.displayName as String);
-
-  //         String firstName = nameMap['firstName'] ?? '';
-  //         String lastName = nameMap['lastName'] ?? '';
-
-  //         print("\n firstName: $firstName\n");
-  //         print("\n lastName: $lastName \n");
-
-  //         saveUsersInfo(
-  //             context, firstName, lastName, firstName, account.email, " ", " ");
-  //       } else {
-  //         print('\nThe google account is not found.');
-  //       }
-  //     } catch (e) {
-  //       debugPrint('error on web signin: $e');
-  //       rethrow;
-  //     }
-  //   }
-  // }
-
+// Get the first and last names of a user given their full name
   Map<String, String> getFirstAndLastName(String fullName) {
     // Split the full name by whitespace
     List<String> nameParts = fullName.trim().split(' ');
@@ -162,8 +124,6 @@ class _SignUpState extends State<SignUp> {
         r"^[a-zA-Z\s\-'_]+$"); // regex for validating first and last names
     final usernameValidCharacters =
         RegExp(r'^[a-zA-Z0-9_]+$'); // regex for validating a username
-    final passwordComplexity = RegExp(
-        r'^(?=.*[A-Z])(?=.*[a-z])(?=.*\d)(?=.*[!@#$%^&*]).+$'); // regex for validating a password
 
     if (firstName.isNotEmpty) {
       // Check for length
@@ -211,13 +171,6 @@ class _SignUpState extends State<SignUp> {
 
     // Validate password
     if (password.isNotEmpty) {
-      // Check password length and complexity (at least one uppercase letter, one lowercase letter, one number, and one special character)
-
-      // if (!passwordComplexity.hasMatch(password) || password.length < 8) {
-      //   setValidationError("password",
-      //       "Your password should be at least 8 characters long and include an uppercase letter, a lowercase letter, a number, and one of the following special characters: !, @, #, \$, %, ^, &, *");
-      // }
-
       if (password.length < 8) {
         setValidationError(
             "password", "Your password should be at least 8 characters long.");
@@ -232,12 +185,6 @@ class _SignUpState extends State<SignUp> {
     // Validate there are no errors at all
     if (validationErrors.isEmpty) {
       // Continue with sign-up
-      print(
-          'Successfully signed up with this info: $firstName, $lastName, $username, $email, $password, $confirmedPassword');
-
-      //if user hasnt played global challenge yer
-      print("signup 1");
-
       signUp(context, firstName, lastName, username.toLowerCase(),
           email.toLowerCase(), password, confirmedPassword);
     }
@@ -267,7 +214,6 @@ class _SignUpState extends State<SignUp> {
 
   @override
   Widget build(BuildContext context) {
-    //TODO: homie use this
     return Scaffold(
       backgroundColor: const Color(0xFFFFF3EE),
       body: SafeArea(
@@ -280,8 +226,8 @@ class _SignUpState extends State<SignUp> {
                   child: Align(
                     alignment: Alignment.topCenter,
                     child: Image.asset(
-                      'assets/Logo.png', // Replace with the path to your image asset
-                      width: 150, // Set the width and height to your preference
+                      'assets/Logo.png',
+                      width: 150,
                       height: 120,
                     ),
                   ),
@@ -420,7 +366,6 @@ class _SignUpState extends State<SignUp> {
                                     textStyle: const TextStyle(
                                   color: Color(0xFF3C64B1),
                                   fontWeight: FontWeight.w800,
-// Blue color for the link
                                 )),
                                 recognizer: TapGestureRecognizer()
                                   ..onTap = () {

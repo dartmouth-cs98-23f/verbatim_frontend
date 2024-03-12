@@ -1,14 +1,12 @@
+// Import the required packages
 import 'dart:convert';
 import 'dart:html';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
-import 'package:google_fonts/google_fonts.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:verbatim_frontend/screens/signupErrorMessage.dart';
 import 'package:verbatim_frontend/widgets/check_unique_username_dialog.dart';
-import 'package:verbatim_frontend/widgets/errorDialog.dart';
 import 'package:http/http.dart' as http;
 
 class SignUpWithGoogle {
@@ -25,19 +23,11 @@ class SignUpWithGoogle {
       final GoogleSignInAccount? account = await _googleSignIn.signIn();
       try {
         if (account != null) {
-          print("\nSigning with google: \n");
-          print("\nEmail: ${account.email}\n");
-          print("\nName: ${account.displayName} \n");
-
           Map<String, String> nameMap =
               getFirstAndLastName(account.displayName as String);
 
           String firstName = nameMap['firstName'] ?? '';
           String lastName = nameMap['lastName'] ?? '';
-
-          print("\n firstName: $firstName\n");
-          print("\n lastName: $lastName \n");
-
           // Show dialog to get unique username
           String? username = await _getUniqueUsername(context);
 
@@ -125,7 +115,6 @@ class SignUpWithGoogle {
         ));
       }
     } catch (e) {
-      print('Error during sign-up: ${e.toString()}');
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => const SignupErrorMessage(pageName: 'sign up'),
       ));

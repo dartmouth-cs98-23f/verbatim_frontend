@@ -113,7 +113,6 @@ class _VerbaMatchWidgetState extends State<VerbaMatchWidget> {
                   ],
                   color: Colors.white,
                 ),
-                // color: Colors.yellow,
                 child: Padding(
                     padding: EdgeInsets.only(
                       top: 25,

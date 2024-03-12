@@ -1,3 +1,4 @@
+// Import the required packages
 import 'dart:async';
 import 'dart:typed_data';
 import 'package:flutter/material.dart';
@@ -99,13 +100,13 @@ class FirebaseStorageImage extends StatelessWidget {
                     ),
                   ),
                 ));
-            // Placeholder widget while image is loading
           }
         },
       );
     }
   }
 
+// Function to download an image from firebase storage
   Future<Uint8List> downloadImage(String url) async {
     final response = await http.get(Uri.parse(url));
     if (response.statusCode == 200) {
