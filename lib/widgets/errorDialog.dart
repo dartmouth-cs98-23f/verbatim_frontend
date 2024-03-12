@@ -1,3 +1,4 @@
+// Import the required packages
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -8,10 +9,9 @@ class ErrorDialog {
       builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(10.0), // Set the corner radius
+            borderRadius: BorderRadius.circular(10.0),
           ),
-          backgroundColor: const Color.fromARGB(
-              255, 255, 243, 238), // Set the background color
+          backgroundColor: const Color.fromARGB(255, 255, 243, 238),
           title: RichText(
             text: TextSpan(
               children: [

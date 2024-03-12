@@ -1,3 +1,4 @@
+// Import the required packages
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:verbatim_frontend/widgets/size.dart';
@@ -18,14 +19,12 @@ class OnBoardingPage4 extends StatelessWidget {
                   child: Column(
                     children: [
                       Padding(
-                        padding: const EdgeInsets.only(
-                            top: 30.0), //Color(0xFFFFF3EE)
+                        padding: const EdgeInsets.only(top: 30.0),
                         child: Align(
                           alignment: Alignment.center,
                           child: Image.asset(
-                            'assets/onboardingPage4Image.png', // Replace with the path to your image asset
-                            width: 454
-                                .v, // Set the width and height to your preference
+                            'assets/onboardingPage4Image.png',
+                            width: 454.v,
                             height: 354.v,
                           ),
                         ),
@@ -55,7 +54,6 @@ class OnBoardingPage4 extends StatelessWidget {
                                 textStyle: const TextStyle(
                               color: Colors.black,
                               fontSize: 15,
-                              // fontWeight: FontWeight.w700,
                               height: 1.5,
                               letterSpacing: 0.30,
                             )),

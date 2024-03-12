@@ -1,3 +1,4 @@
+// Import required packages
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:verbatim_frontend/screens/signUp.dart';
@@ -50,7 +51,6 @@ class GetStarted extends StatelessWidget {
                   ElevatedButton(
                     onPressed: () {
                       // Navigate to the 'Sign Up' page
-
                       Navigator.of(context).push(MaterialPageRoute(
                           builder: (context) => const SignUp()));
                     },

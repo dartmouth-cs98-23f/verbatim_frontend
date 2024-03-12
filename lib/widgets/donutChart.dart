@@ -1,3 +1,4 @@
+// Import the required packages
 import 'package:fl_chart/fl_chart.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -24,8 +25,7 @@ class _DonutChartState extends State<DonutChart> {
       builder: (BuildContext context) {
         return AlertDialog(
           shape: RoundedRectangleBorder(
-            borderRadius: BorderRadius.circular(
-                20.0), //  this will fix weird looking border?
+            borderRadius: BorderRadius.circular(20.0),
           ),
           contentPadding: EdgeInsets.zero,
           content: Container(
@@ -132,7 +132,6 @@ class _DonutChartState extends State<DonutChart> {
               children: [
                 PieChart(
                   //set the values of offset
-
                   PieChartData(
                     startDegreeOffset: 250,
                     sectionsSpace: 0,

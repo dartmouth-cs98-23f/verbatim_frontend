@@ -1,3 +1,4 @@
+// Import the required packages
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
 import 'package:verbatim_frontend/screens/logIn.dart';
@@ -24,18 +25,15 @@ class _LogoutPageState extends State<LogoutPage> {
     try {
       // Attempt to sign out from Google first
       await googleSignIn.signOut();
-      print("\nSuccessfully signed out of Google\n");
     } catch (error) {
       print("Error signing out from Google: $error");
     }
-
-
 
     //clear stats, clear guest stuff
     final GuestUtility guestUtility = GuestUtility();
     guestUtility.clearStats();
     guestUtility.clearGameObject();
-    
+
     // Navigate to the login page after logout
     Navigator.push(
       context,

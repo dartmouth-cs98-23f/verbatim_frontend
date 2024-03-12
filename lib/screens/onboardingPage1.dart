@@ -1,3 +1,4 @@
+// Import the required packages
 import 'package:flutter/material.dart';
 
 class OnBoardingPage1 extends StatefulWidget {
@@ -30,8 +31,8 @@ class _OnBoardingPage1State extends State<OnBoardingPage1> {
               child: Align(
                 alignment: Alignment.center,
                 child: Image.asset(
-                  'assets/Logo.png', // Replace with the path to your image asset
-                  width: 250, // Set the width and height to your preference
+                  'assets/Logo.png',
+                  width: 250,
                   height: 300,
                 ),
               ),

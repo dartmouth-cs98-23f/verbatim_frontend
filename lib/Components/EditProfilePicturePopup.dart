@@ -1,3 +1,4 @@
+// Import all required packages
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 
@@ -25,8 +26,10 @@ class EditProfilePicturePopup extends StatefulWidget {
 }
 
 class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
-  bool isHovered = false;
+  bool isHovered =
+      false; // Keeps track of whether the user is hovering on the picture or not
 
+// Creates a pop-up giving the user different options to edit their profile picture
   @override
   Widget build(BuildContext context) {
     return AlertDialog(
@@ -69,12 +72,11 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
             onExit: (_) => _onHover(false),
             child: GestureDetector(
               onTap: widget.onImageTap,
-              child: Container(
-                  // ... (your existing image container)
-                  ),
+              child: Container(),
             ),
           ),
           const SizedBox(height: 20),
+          // Option to use camera to upload a new profile picture
           Container(
               padding: const EdgeInsets.all(0),
               child: Center(
@@ -90,14 +92,13 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
                       color: Colors.black,
                       fontSize: 16,
                       fontWeight: FontWeight.w600,
-                      //   height: 0.09,
-                      //  letterSpacing: 0.10,
                     )),
                   ),
                   onTap: widget.onChangeImageCamera,
                 ),
               )),
           const SizedBox(height: 10),
+          // Option to use gallery to upload a new profile picture
           Container(
               padding: const EdgeInsets.all(0),
               child: Center(
@@ -119,6 +120,7 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
                 ),
               )),
           const SizedBox(height: 10),
+          // Option to remove one's profile picture
           Container(
               child: Center(
             child: ListTile(
@@ -142,6 +144,7 @@ class _EditProfilePicturePopupState extends State<EditProfilePicturePopup> {
     );
   }
 
+  // Updates the isHovered boolean appropriately
   void _onHover(bool hover) {
     setState(() {
       isHovered = hover;

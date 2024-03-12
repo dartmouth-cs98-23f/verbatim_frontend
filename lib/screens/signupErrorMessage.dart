@@ -1,3 +1,4 @@
+// Import the required packages
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import '../widgets/my_button_no_image.dart';
@@ -60,7 +61,7 @@ class SignupErrorMessage extends StatelessWidget {
                     children: [
                       const SizedBox(height: 20),
                       Text(
-                        getErrorMessage(), // Use the error message based on the pageName
+                        getErrorMessage(),
                         style: GoogleFonts.poppins(
                             textStyle: const TextStyle(
                           color: Colors.black,

@@ -1,6 +1,6 @@
+// Import the required packages
 import 'dart:convert';
 import 'dart:html';
-
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
 import 'package:google_sign_in/google_sign_in.dart';
@@ -25,19 +25,11 @@ class GuestSignUpWithGoogle {
       final GoogleSignInAccount? account = await _googleSignIn.signIn();
       try {
         if (account != null) {
-          print("\nSigning with google: \n");
-          print("\nEmail: ${account.email}\n");
-          print("\nName: ${account.displayName} \n");
-
           Map<String, String> nameMap =
               getFirstAndLastName(account.displayName as String);
 
           String firstName = nameMap['firstName'] ?? '';
           String lastName = nameMap['lastName'] ?? '';
-
-          print("\n firstName: $firstName\n");
-          print("\n lastName: $lastName \n");
-
           String? username = await _getUniqueUsername(context);
 
           if (username != null && username.isNotEmpty) {
@@ -56,6 +48,7 @@ class GuestSignUpWithGoogle {
     }
   }
 
+// Function to get the first and last name of a user given their full name
   Map<String, String> getFirstAndLastName(String fullName) {
     List<String> nameParts = fullName.trim().split(' ');
     String firstName = nameParts.isNotEmpty ? nameParts.first : '';
@@ -75,6 +68,7 @@ class GuestSignUpWithGoogle {
     return uniqueUsername;
   }
 
+// Function to implement the sign up functionality for a guest user
   void guestSignUp(BuildContext context, String firstName, String lastName,
       String username, String email, String password) async {
     final response = await http.post(
@@ -162,7 +156,6 @@ class GuestSignUpWithGoogle {
 
       Navigator.pushNamed(context, '/global_challenge');
     } else {
-      print('Error during sign-up: ${response.statusCode.toString()}');
       Navigator.of(context).push(MaterialPageRoute(
         builder: (context) => const SignupErrorMessage(pageName: 'sign up'),
       ));

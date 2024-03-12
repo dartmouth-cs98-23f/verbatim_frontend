@@ -1,3 +1,4 @@
+// Import the required packages
 import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
@@ -86,15 +87,12 @@ class CheckUsernameDialog {
     final response = await http.get(url);
 
     if (response.statusCode == 200) {
-      print("response successful");
       final List<dynamic> data = json.decode(response.body);
       final List<User> userList =
           data.map((item) => User.fromJson(item)).toList();
 
       userUsernames =
           userList.map((user) => user.username.toLowerCase()).toList();
-
-      print("\n Existing usernames are ${userUsernames} \n");
     } else {
       print("failure");
     }

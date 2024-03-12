@@ -115,15 +115,13 @@ class _GuestSignUpState extends State<GuestSignUp> {
         }
       }
 
-
-        window.sessionStorage['UserName'] = username;
-        window.sessionStorage['FirstName'] = firstName;
-        window.sessionStorage['LastName'] = lastName;
-        window.sessionStorage['Bio'] = "That's what she said!";
-        window.sessionStorage['Email'] = email;
-        window.sessionStorage['Password'] = password;
-        window.sessionStorage['ProfileUrl'] = 'assets/profile_pic.png';
-
+      window.sessionStorage['UserName'] = username;
+      window.sessionStorage['FirstName'] = firstName;
+      window.sessionStorage['LastName'] = lastName;
+      window.sessionStorage['Bio'] = "That's what she said!";
+      window.sessionStorage['Email'] = email;
+      window.sessionStorage['Password'] = password;
+      window.sessionStorage['ProfileUrl'] = 'assets/profile_pic.png';
 
       Navigator.pushNamed(context,
           '/global_challenge'); //push them to the stats page if we have one
@@ -268,8 +266,8 @@ class _GuestSignUpState extends State<GuestSignUp> {
                   child: Align(
                     alignment: Alignment.topCenter,
                     child: Image.asset(
-                      'assets/Logo.png', 
-                      width: 150, 
+                      'assets/Logo.png',
+                      width: 150,
                       height: 120,
                     ),
                   ),

@@ -1,5 +1,5 @@
+// Import the required packages
 import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/svg.dart';
 import 'package:intl/intl.dart';
@@ -9,7 +9,6 @@ import 'package:verbatim_frontend/widgets/center_custom_app_bar.dart';
 import 'package:verbatim_frontend/widgets/custom_challenge_button.dart';
 import 'package:verbatim_frontend/widgets/firebase_download_image.dart';
 import 'package:verbatim_frontend/widgets/showSuccessDialog.dart';
-// import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/widgets/stats_tile.dart';
 import 'package:verbatim_frontend/BackendService.dart';
 import 'package:http/http.dart' as http;
@@ -55,7 +54,6 @@ class Profile extends StatefulWidget {
 
 class _ProfileState extends State<Profile> {
   final String assetName = 'assets/img1.svg';
-  // final String profile = 'assets/default.jpeg';
   final String friendsIcon = 'assets/friends.svg';
   final String streakIcon = 'assets/streak.svg';
   final String globalChallengeIcon = 'assets/globalChallenges.svg';
@@ -85,8 +83,8 @@ class _ProfileState extends State<Profile> {
   static int customs = 0;
   static int streaks = 0;
   static double verbaMatchScore = 0;
-  static String profile = 'assets/default.jpeg';
 
+// Retrieve the user's stats from backend
   Future<void> _getStats(String username) async {
     final url =
         Uri.parse("${BackendService.getBackendUrl()}$username/getUserStats");
@@ -103,8 +101,6 @@ class _ProfileState extends State<Profile> {
         streaks = stats.streaks;
         verbaMatchScore = stats.verbaMatchScore;
       });
-
-      print("\nthis is nbr of frnds: $friends for user: $username\n");
 
       if (verbaMatchScore == -1) {
         verbaMatchScore = 0;
@@ -134,7 +130,6 @@ class _ProfileState extends State<Profile> {
 
       newMatch?.profilePicture ??= 'assets/profile_pic.png';
 
-      print(newMatch?.profilePicture);
       setState(() {
         match = newMatch;
       });
@@ -145,6 +140,7 @@ class _ProfileState extends State<Profile> {
     }
   }
 
+// Send friend request from one user to another
   Future<void> sendFriendRequest(
       String requestingUsername, String requestedUsername) async {
     final url = Uri.parse('${BackendService.getBackendUrl()}addFriend');
@@ -167,6 +163,7 @@ class _ProfileState extends State<Profile> {
     }
   }
 
+// Get all the users who were sent friend requests by the current user
   Future<void> getUsersIHaveRequested(String username) async {
     final url =
         Uri.parse('${BackendService.getBackendUrl()}getUsersIHaveRequested');
@@ -182,10 +179,6 @@ class _ProfileState extends State<Profile> {
       List<User> friendRequestsList =
           myFriendRequests.map((item) => User.fromJson(item)).toList();
 
-      for (int i = 0; i < friendRequestsList.length; i++) {
-        print(friendRequestsList[i].username);
-      }
-
       if (friendRequestsList
           .any((user) => user.username == widget.user!.username)) {
         setState(() {
@@ -198,6 +191,7 @@ class _ProfileState extends State<Profile> {
     }
   }
 
+// Retrieve the date on which two users became friends
   void getFriendshipDate(String currentUsername, String friendUsername) async {
     final String url =
         "${BackendService.getBackendUrl()}$currentUsername/$friendUsername/getUserStats";
@@ -220,9 +214,6 @@ class _ProfileState extends State<Profile> {
           setState(() {
             friendshipDate = DateFormat("MM/dd/yy").format(dateTime);
           });
-
-          print(
-              '\nFriendship Date between users ${currentUsername} and ${friendUsername} is $friendshipDate\n');
         } else {
           print(
               '\nError: "friendsSince" is null or not found in JSON response\n');
@@ -234,8 +225,6 @@ class _ProfileState extends State<Profile> {
 
       if (friendshipDate.isNotEmpty) {
         friendshipStatusDescription = "Friends Since $friendshipDate";
-
-        print("\nFrndship description is: $friendshipStatusDescription\n");
       }
     } catch (error) {
       print('\nError getting friendship data: $error\n');
@@ -263,7 +252,6 @@ class _ProfileState extends State<Profile> {
         window.sessionStorage['ProfileUrl'] ??
         'assets/profile_pic.png';
 
-    print("\nprofileURl $profileUrl");
     // Populate the initial values for other user details
     firstName =
         (widget.user?.firstName ?? window.sessionStorage['FirstName'] ?? "User")
@@ -304,14 +292,10 @@ class _ProfileState extends State<Profile> {
 
   @override
   Widget build(BuildContext context) {
-    // print(" In profile Shared prefs: " + SharedPrefs().getUserName()!);
     return SafeArea(
       child: Theme(
         data: ThemeData(
-          // Set the color of the drawer icon
-          primaryColor: Colors.white, // Change to your desired color
-
-          // Remove the shadow when hovering over the drawer
+          primaryColor: Colors.white,
           highlightColor: Colors.transparent,
           splashColor: Colors.transparent,
         ),
@@ -394,8 +378,7 @@ class _ProfileState extends State<Profile> {
                                               ),
                                               overflow: TextOverflow
                                                   .ellipsis, // Use ellipsis to indicate text overflow
-                                              maxLines:
-                                                  2, // Example: Limit text to 2 lines; adjust as needed
+                                              maxLines: 2,
                                             ),
                                           ),
                                           const SizedBox(
@@ -466,7 +449,7 @@ class _ProfileState extends State<Profile> {
                                                             context,
                                                             '/settings');
                                                       } else {
-                                                        // If they are not
+                                                        // If they are not friends
                                                         if (widget.user!
                                                                     .isRequested ==
                                                                 false &&
@@ -612,7 +595,6 @@ class _ProfileState extends State<Profile> {
                                   const SizedBox(height: 20),
 
                                   // Bio
-
                                   Text(
                                     bio ?? "Bio goes here",
                                     softWrap: true,
@@ -683,8 +665,7 @@ class _ProfileState extends State<Profile> {
                                           ]),
                                       child: MyStatsTile(
                                           field: "Friends",
-                                          stat: friends
-                                              .toString(), //(stats[0]).toString(),
+                                          stat: friends.toString(),
                                           icon: friendsIcon),
                                     )),
                                     const SizedBox(
@@ -709,8 +690,7 @@ class _ProfileState extends State<Profile> {
                                           ]),
                                       child: MyStatsTile(
                                           field: "Current \nStreak",
-                                          stat: streaks
-                                              .toString(), //stats[1].toString(),
+                                          stat: streaks.toString(),
                                           icon: streakIcon),
                                     )),
                                   ]),
@@ -737,8 +717,7 @@ class _ProfileState extends State<Profile> {
                                           ]),
                                       child: MyStatsTile(
                                           field: "Global \nChallenges",
-                                          stat: globals
-                                              .toString(), // stats[2].toString(),
+                                          stat: globals.toString(),
                                           icon: globalChallengeIcon),
                                     )),
                                     const SizedBox(
@@ -763,8 +742,7 @@ class _ProfileState extends State<Profile> {
                                           ]),
                                       child: MyStatsTile(
                                           field: "Group \nChallenges",
-                                          stat: customs
-                                              .toString(), //stats[3].toString(),
+                                          stat: customs.toString(),
                                           icon: customIcon),
                                     )),
                                   ]),
@@ -946,12 +924,10 @@ class _ProfileState extends State<Profile> {
                                   Row(
                                     mainAxisAlignment: MainAxisAlignment.center,
                                     children: [
-                                      // Removed Align and widthFactor as they conflict with the approach of allowing text to wrap.
                                       Flexible(
                                         // Allow the text to expand within the limits of the row.
                                         child: SizedBox(
-                                          width:
-                                              91, // You can maintain a width for the container if needed for layout.
+                                          width: 91,
                                           child: (widget.user != null &&
                                                   friendshipDate.isEmpty)
                                               ? Text(
@@ -960,7 +936,7 @@ class _ProfileState extends State<Profile> {
                                                     RegExp(r'^\w'),
                                                     (match) => match
                                                         .group(0)!
-                                                        .toUpperCase(), // Capitalize the first letter
+                                                        .toUpperCase(),
                                                   ),
                                                   textAlign: TextAlign.center,
                                                   style: GoogleFonts.poppins(
@@ -979,7 +955,7 @@ class _ProfileState extends State<Profile> {
                                                     RegExp(r'^\w'),
                                                     (match) => match
                                                         .group(0)!
-                                                        .toUpperCase(), // Capitalize the first letter
+                                                        .toUpperCase(),
                                                   ),
                                                   textAlign: TextAlign.center,
                                                   style: GoogleFonts.poppins(
@@ -995,13 +971,10 @@ class _ProfileState extends State<Profile> {
                                                 ),
                                         ),
                                       ),
-                                      const SizedBox(
-                                          width: 5), // Spacing between elements
+                                      const SizedBox(width: 5),
                                       Flexible(
-                                        // Repeat the Flexible widget for the second text
                                         child: SizedBox(
-                                          width:
-                                              100, // Maintain width for consistency
+                                          width: 100,
                                           child: (widget.user != null &&
                                                   friendshipDate.isNotEmpty)
                                               ? Text(
@@ -1009,7 +982,7 @@ class _ProfileState extends State<Profile> {
                                                     RegExp(r'^\w'),
                                                     (match) => match
                                                         .group(0)!
-                                                        .toUpperCase(), // Capitalize the first letter
+                                                        .toUpperCase(),
                                                   )}",
                                                   textAlign: TextAlign.center,
                                                   style: GoogleFonts.poppins(
@@ -1021,7 +994,6 @@ class _ProfileState extends State<Profile> {
                                                   )),
                                                   overflow:
                                                       TextOverflow.ellipsis,
-                                                  // Use ellipsis for overflow
                                                 )
                                               : (widget.user != null &&
                                                       friendshipDate.isEmpty &&
@@ -1031,7 +1003,7 @@ class _ProfileState extends State<Profile> {
                                                         RegExp(r'^\w'),
                                                         (match) => match
                                                             .group(0)!
-                                                            .toUpperCase(), // Capitalize the first letter
+                                                            .toUpperCase(),
                                                       )}",
                                                       textAlign:
                                                           TextAlign.center,
@@ -1079,8 +1051,6 @@ class _ProfileState extends State<Profile> {
                                                           .shrink(), // Use SizedBox.shrink() for cases where no text should be shown
                                         ),
                                       ),
-
-                                      // Add other Flexible widgets for additional text elements as needed.
                                     ],
                                   ),
                                 ],

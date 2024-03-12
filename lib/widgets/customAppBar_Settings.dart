@@ -30,8 +30,6 @@ class CustomAppBarSettings extends StatelessWidget
         children: [
           const SizedBox(height: 100),
           const NewNavBar(),
-          // SizedBox(height: 30), // Adjust the distance as needed
-
           TitleFrame(
             title: title,
             showBackArrow: showBackButton,
@@ -55,9 +53,8 @@ class NewNavBar extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final String profileUrl = window.sessionStorage['ProfileUrl']?? "assets/profile_pic.png"
-        ;
-
+    final String profileUrl =
+        window.sessionStorage['ProfileUrl'] ?? "assets/profile_pic.png";
 
     return Container(
       padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
@@ -83,7 +80,7 @@ class NewNavBar extends StatelessWidget {
           // SearchBarTextField(),
           const SizedBox(width: 80),
           FirebaseStorageImage(
-            profileUrl: window.sessionStorage['ProfileUrl']?? "",
+            profileUrl: window.sessionStorage['ProfileUrl'] ?? "",
           ),
         ],
       ),
