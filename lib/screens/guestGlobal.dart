@@ -1,5 +1,4 @@
 import 'dart:html';
-
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
 import 'package:verbatim_frontend/BackendService.dart';
@@ -56,10 +55,9 @@ class _GuestGlobalState extends State<guestGlobal> {
         Uri.parse("${BackendService.getBackendUrl()}globalChallengeNoSignIn");
     final headers = <String, String>{'Content-Type': 'application/json'};
     final fetchQuestions = await http.get(url, headers: headers);
-    print("Before getting qs with no username");
+   
 
     if (fetchQuestions.statusCode == 200) {
-      print("what is she?${fetchQuestions.body}");
       final Map<String, dynamic>? data = json.decode(fetchQuestions.body);
 
 
@@ -235,7 +233,7 @@ class _GuestGlobalState extends State<guestGlobal> {
 
                                                   children: [
                                                     TextSpan(
-                                                      //TODO: 
+                                                    
                                                       text: totalResponses.toString(),
                                                       style:
                                                           GoogleFonts.poppins(
@@ -284,7 +282,7 @@ class _GuestGlobalState extends State<guestGlobal> {
                       Container(
                         clipBehavior: Clip.hardEdge,
                         margin: EdgeInsets.only(top: 10.v),
-                        //    padding: EdgeInsets.symmetric(horizontal: 10),
+                       
                         width: 330,
                         height: 400,
                         decoration: BoxDecoration(
@@ -449,14 +447,10 @@ class _GuestGlobalState extends State<guestGlobal> {
                                       ],
                                     );
                                   }
-                                  //if guest and has responded 
+                                  //if guest
                                   else if (username == '' &&
                                       responded == true) {
-                                    setState(() {
-                                      responded = true;
-                                    });
                                     setGuestUserResponses();
-
                                     return Column(
                                       children: [
                                         Guest(
@@ -466,7 +460,6 @@ class _GuestGlobalState extends State<guestGlobal> {
                                       ],
                                     );
                                   }
-                  
                                   else {
                                     return Column(
                                       children: [
