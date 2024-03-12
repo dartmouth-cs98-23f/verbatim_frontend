@@ -45,7 +45,6 @@ class _GuestGlobalState extends State<guestGlobal> {
   String categoryQ5 = "";
   int id = 0;
 
-  // bool responded = false;
   double progressValue = 0.0;
   int currQIdx = 0;
   int totalResponses = 0;
@@ -63,7 +62,7 @@ class _GuestGlobalState extends State<guestGlobal> {
       print("what is she?${fetchQuestions.body}");
       final Map<String, dynamic>? data = json.decode(fetchQuestions.body);
 
-//NOTE
+
       id = data!['globalChallengeDisplayNum'];
 
       question1 = data['q1'];
@@ -106,7 +105,7 @@ class _GuestGlobalState extends State<guestGlobal> {
 
       final words = responseWithoutPunctuation
           .split(' ')
-          .where((word) => word.isNotEmpty); // shld fix the whitespace thing
+          .where((word) => word.isNotEmpty); 
 
       final capitalizedWords = words.map((word) {
         if (word.isNotEmpty) {
@@ -366,7 +365,6 @@ class _GuestGlobalState extends State<guestGlobal> {
                                                 updateProgress();
                                                 currQIdx += 1;
                                               } else {
-                                                //setGuestUserResponses();
                                                 setState(() {
                                                   responded = true;
                                                 });
@@ -451,12 +449,12 @@ class _GuestGlobalState extends State<guestGlobal> {
                                       ],
                                     );
                                   }
-                                  //if guest
+                                  //if guest and has responded 
                                   else if (username == '' &&
                                       responded == true) {
-                                    // setState(() {
-                                    //   responded = true;
-                                    // });
+                                    setState(() {
+                                      responded = true;
+                                    });
                                     setGuestUserResponses();
 
                                     return Column(
@@ -468,7 +466,7 @@ class _GuestGlobalState extends State<guestGlobal> {
                                       ],
                                     );
                                   }
-                                  //NEED TO CHANGE THIS SNIPPET OF CODE TO HAVE THE CARD AND A SIGN UP
+                  
                                   else {
                                     return Column(
                                       children: [
@@ -494,7 +492,6 @@ class _GuestGlobalState extends State<guestGlobal> {
                 ],
               )),
         ),
-        //   drawer: const SideBar(),
       ),
     );
   }

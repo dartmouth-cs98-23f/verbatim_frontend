@@ -1,5 +1,4 @@
 import 'dart:html';
-
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/foundation.dart';
 import 'package:flutter/material.dart';
@@ -15,7 +14,6 @@ import 'dart:convert';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:verbatim_frontend/widgets/showSuccessDialog.dart';
 import 'dart:async';
-//import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/screens/resetPassword.dart';
 import 'package:verbatim_frontend/widgets/center_custom_app_bar.dart';
 
@@ -174,8 +172,7 @@ class _settingsState extends State<settings> {
       String prevProfileUrl = window.sessionStorage['ProfileUrl'] ??
           ''; // Get previous profile picture URL
 
-      // Update profile picture URL in SharedPrefs
-      //SharedPrefs.setProfileUrl(newProfileUrl);
+      // Update profile picture URL in local storage
       window.sessionStorage['ProfileUrl'] = newProfileUrl;
 
       // Delete previous profile picture if URL is not empty and different from new URL
@@ -187,7 +184,6 @@ class _settingsState extends State<settings> {
       setState(() {
         selectedImage = MemoryImage(bytes);
         window.sessionStorage['ProfileUrl'] = newProfileUrl;
-        // SharedPrefs.setProfileUrl(newProfileUrl);
       });
 
       Navigator.pop(context);
@@ -305,7 +301,6 @@ class _settingsState extends State<settings> {
                               ),
 
                               // app bar on top of background
-
                               const centerAppBar(
                                 title: 'Settings',
                               ),
@@ -318,7 +313,7 @@ class _settingsState extends State<settings> {
 
                   Padding(
                     padding: const EdgeInsets.only(
-                        left: 50.0), // Adjust the left padding as needed
+                        left: 50.0), 
                     child: Align(
                       alignment: Alignment.topLeft,
                       child: GestureDetector(
@@ -405,7 +400,7 @@ class _settingsState extends State<settings> {
                                       textStyle: const TextStyle(
                                     color: Color(0xFF3C64B1),
                                     fontWeight: FontWeight.w400,
-                                    fontSize: 16, // Adjust font size as needed
+                                    fontSize: 16, 
                                     height: 0.06,
                                     letterSpacing: 0.30,
                                   )),
@@ -468,7 +463,6 @@ class _settingsState extends State<settings> {
                       obscureText: false),
 
                   //bio
-
                   const SizedBox(height: 38),
                   Padding(
                     padding: const EdgeInsets.only(left: 30.0),
@@ -495,8 +489,6 @@ class _settingsState extends State<settings> {
                       obscureText: false),
 
                   //email
-                  //bio
-
                   const SizedBox(height: 38),
                   Padding(
                     padding: const EdgeInsets.only(left: 30.0),
@@ -527,7 +519,7 @@ class _settingsState extends State<settings> {
                       const SizedBox(height: 28),
                       Padding(
                         padding: const EdgeInsets.only(
-                            left: 27.0), // Adjust the left padding as needed
+                            left: 27.0), 
                         child: Align(
                           alignment: Alignment.topLeft,
                           child: DeepOrangeButton(
@@ -581,7 +573,7 @@ class EnlargedImageView extends StatelessWidget {
             child: Image(
               image: imageProvider,
               fit: BoxFit
-                  .cover, // BoxFit.contain,  // using this second method makes the image fit a certain portion leaving the rest of the space to be entirely black
+                  .cover, 
             ),
           ),
         ),

@@ -2,7 +2,6 @@
 import 'package:flutter/gestures.dart';
 import 'package:flutter/material.dart';
 import 'package:google_fonts/google_fonts.dart';
-// import 'package:verbatim_frontend/Components/shared_prefs.dart';
 import 'package:verbatim_frontend/widgets/my_button_no_image.dart';
 
 class LandingPage extends StatefulWidget {
@@ -14,18 +13,7 @@ class LandingPage extends StatefulWidget {
 
 class _LandingPageState extends State<LandingPage> {
   
-  void clearSharedPrefs() {
-    // await SharedPrefs().init();
-    // SharedPrefs.setEmail('');
-    // SharedPrefs.setUserName('');
-    // SharedPrefs.setPassword('');
-    // SharedPrefs.setFirstName('');
-    // SharedPrefs.setLastName('');
-    // SharedPrefs.setBio('');
-    //window.sessionStorage.clear();
 
-  
-  }
 
   void onTap() {
     String routeName = ModalRoute.of(context)?.settings.name ?? '';
@@ -34,15 +22,14 @@ class _LandingPageState extends State<LandingPage> {
     Map<String, dynamic>? arguments = uri.queryParameters;
     String referer = arguments['referer'] ?? '';
 
-    //Navigator.pushNamed(context, '/guest_global');
+    //check if theres a referer and propagate that info for guest
     Navigator.pushNamed(context, '/guest_global?referer=$referer');
   }
 
-// will this make shared preferences clear on opening?
+
   @override
   void initState() {
     super.initState();
-    clearSharedPrefs();
   }
 
   @override
@@ -51,15 +38,14 @@ class _LandingPageState extends State<LandingPage> {
       backgroundColor: const Color(0xFFFFF3EE),
       body: Center(
         child: Column(
-          //mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Padding(
               padding: const EdgeInsets.only(top: 0.0),
               child: Align(
                 alignment: Alignment.center,
                 child: Image.asset(
-                  'assets/Logo.png', // Replace with the path to your image asset
-                  width: 250, // Set the width and height to your preference
+                  'assets/Logo.png', 
+                  width: 250, 
                   height: 180,
                 ),
               ),
